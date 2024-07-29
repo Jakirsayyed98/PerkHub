@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">PerkHub</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="enter_mobile_number">Enter Mobile Number</string>
+    <string name="perkhub">PerkHub</string>
+    <string name="all_you_need_in_one_app">All You need in One App</string>
+    <string name="login_register">Login / Register</string>
+</resources>

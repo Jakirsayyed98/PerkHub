@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".login.EnterMobileNFragment">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp400"
+        android:layout_marginStart="@dimen/dpminus50"
+        android:layout_marginEnd="@dimen/dpminus50"
+        android:src="@drawable/half_downcircle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/title1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp100"
+        android:text="@string/perkhub"
+        android:textAlignment="center"
+        android:textSize="@dimen/sp50"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/title2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp10"
+        android:text="@string/all_you_need_in_one_app"
+        android:textAlignment="center"
+        android:textSize="@dimen/sp20"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title1" />
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/mobilenumberlayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp40"
+        android:layout_marginTop="@dimen/dp250"
+        android:layout_marginEnd="@dimen/dp40"
+        app:cardCornerRadius="@dimen/dp50"
+        app:cardElevation="@dimen/dp10"
+
+        app:layout_constraintTop_toBottomOf="@id/title2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp35"
+                android:text="@string/login_register"
+                android:textAlignment="center"
+                android:textSize="@dimen/sp30"
+                android:textStyle="bold"
+                android:textColor="@color/main"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/numberlayout"
+                app:boxStrokeColor="@color/black"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp15"
+                android:layout_marginTop="@dimen/dp25"
+                android:layout_marginEnd="@dimen/dp15"
+                android:hint="@string/enter_mobile_number"
+                app:layout_constraintTop_toBottomOf="@id/title"
+                android:textColorHint="@color/grey"
+                app:hintTextColor="@color/black"
+                app:prefixText="+91 ">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/mobilenumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionDone"
+                    android:inputType="number"
+                    android:textSize="@dimen/sp20"
+                    android:maxLength="10" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <RelativeLayout
+                android:id="@+id/sendOTP"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp50"
+                android:layout_marginStart="@dimen/dp15"
+                android:layout_marginTop="@dimen/dp30"
+                android:layout_marginEnd="@dimen/dp15"
+                android:layout_marginBottom="@dimen/dp50"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:background="@drawable/selected_button_layout"
+                app:layout_constraintTop_toBottomOf="@+id/numberlayout">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Send OTP"
+                    android:textColor="@color/white"
+                    android:gravity="center"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/OTPlayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp40"
+        android:layout_marginTop="@dimen/dp250"
+        android:layout_marginEnd="@dimen/dp40"
+        app:cardCornerRadius="@dimen/dp50"
+        app:cardElevation="@dimen/dp10"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/title2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/titleOTP"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp35"
+                android:text="Verify OTP"
+                android:textAlignment="center"
+                android:textSize="@dimen/sp30"
+                android:textStyle="bold"
+                android:textColor="@color/main"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/otplayout"
+                app:boxStrokeColor="@color/black"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp25"
+                android:layout_marginStart="@dimen/dp25"
+                android:layout_marginEnd="@dimen/dp25"
+                android:textAlignment="center"
+                app:layout_constraintTop_toBottomOf="@id/titleOTP"
+                android:textColorHint="@color/grey"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:hintTextColor="@color/black">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/OTP"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionDone"
+                    android:inputType="number"
+                    android:textSize="@dimen/sp20"
+                    android:hint="Enter OTP"
+                    android:textAlignment="center"
+                    android:maxLength="5" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/timerCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Resend"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="@dimen/dp20"
+                android:layout_marginBottom="@dimen/dp10"
+                android:padding="5dp"
+                android:textColor="@color/blue"
+                app:layout_constraintTop_toBottomOf="@id/otplayout"
+                app:layout_constraintBottom_toTopOf="@id/verifyOTP"
+                android:gravity="center"
+                android:textStyle="bold" />
+
+
+            <RelativeLayout
+                android:id="@+id/verifyOTP"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp50"
+                android:layout_marginStart="@dimen/dp15"
+                android:layout_marginTop="@dimen/dp30"
+                android:layout_marginEnd="@dimen/dp15"
+                android:layout_marginBottom="@dimen/dp50"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:background="@drawable/selected_button_layout"
+                app:layout_constraintTop_toBottomOf="@+id/otplayout">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Verify OTP"
+                    android:textColor="@color/white"
+                    android:gravity="center"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
