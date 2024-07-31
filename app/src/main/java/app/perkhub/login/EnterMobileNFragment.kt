@@ -44,9 +44,7 @@ class EnterMobileNFragment : BaseFragment<FragmentEnterMobileNBinding>() {
 
         clickEvent()
 
-        if (sharedPrefrence().getBoolen(LOGIN) == true){
-            requireContext().toast("Success Login Already")
-        }
+
 
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
@@ -110,7 +108,9 @@ class EnterMobileNFragment : BaseFragment<FragmentEnterMobileNBinding>() {
                     override fun onSuccess(t: LoginRes?, mess: String) {
                         dissmissProgress()
                         requireContext().toast(t!!.errorMsg)
-                        sharedPrefrence().saveBool(LOGIN,true)
+                        getSharedpref().saveBool(LOGIN,true)
+                        ContainerActivity.OpenContainer(requireContext(),"EnterDetailFragment",null)
+                        activity?.finish()
                     }
 
                     override fun onError(mess: String) {

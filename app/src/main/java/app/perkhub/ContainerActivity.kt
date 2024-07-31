@@ -14,6 +14,7 @@ import app.perkhub.Utils.BaseActivity
 import app.perkhub.Utils.CONTAINER_TYPE_KEY
 import app.perkhub.Utils.DATA
 import app.perkhub.databinding.ActivityContainerBinding
+import app.perkhub.login.EnterDetailFragment
 import app.perkhub.login.EnterMobileNFragment
 import com.google.gson.Gson
 
@@ -58,6 +59,9 @@ class ContainerActivity : BaseActivity<ActivityContainerBinding>() {
         when(type){
             "EnterMobileNumber" ->{
                 addFragment(EnterMobileNFragment.newInstance())
+            }
+            "EnterDetailFragment" ->{
+                addFragment(EnterDetailFragment.newInstance())
             }
         }
     }

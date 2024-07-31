@@ -17,4 +17,9 @@ abstract class BaseActivity<T : ViewBinding> : AppCompatActivity() {
     fun statusBarColor(color : Int){
         window.statusBarColor = ContextCompat.getColor(this,color)
     }
+
+    fun getSharedpref():AppSharedPefrence{
+        return AppSharedPefrence.getInstance(this)
+    }
+
 }

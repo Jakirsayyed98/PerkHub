@@ -35,7 +35,7 @@ abstract class BaseFragment<T:ViewBinding> : Fragment() {
         progress.dismiss()
     }
 
-    fun sharedPrefrence():AppSharedPefrence{
+    fun getSharedpref():AppSharedPefrence{
         return AppSharedPefrence.getInstance(requireContext())
     }
 }
