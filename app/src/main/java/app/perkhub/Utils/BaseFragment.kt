@@ -24,9 +24,9 @@ abstract class BaseFragment<T:ViewBinding> : Fragment() {
         progress.setContentView(R.layout.progress_dialog)
     }
 
-    fun statusBarColor(color : Int){
-        activity?.window?.statusBarColor = ContextCompat.getColor(requireContext(),color)
-    }
+//    fun statusBarColor(color : Int){
+//        activity?.window?.statusBarColor = ContextCompat.getColor(requireContext(),color)
+//    }
 
     fun showProgress (){
         progress.show()
@@ -38,4 +38,9 @@ abstract class BaseFragment<T:ViewBinding> : Fragment() {
     fun getSharedpref():AppSharedPefrence{
         return AppSharedPefrence.getInstance(requireContext())
     }
+
+    fun getUserID():String?{
+        return getSharedpref().getUser(USERDATA).data[0].id.toString()
+    }
+
 }

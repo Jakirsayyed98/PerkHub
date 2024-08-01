@@ -3,19 +3,23 @@ package app.perkhub
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
+import app.perkhub.Screens.Home.HomeScreenFragment
 import app.perkhub.Utils.BaseActivity
 import app.perkhub.Utils.CONTAINER_TYPE_KEY
 import app.perkhub.Utils.DATA
 import app.perkhub.databinding.ActivityContainerBinding
-import app.perkhub.login.EnterDetailFragment
-import app.perkhub.login.EnterMobileNFragment
+import app.perkhub.Screens.login.EnterDetailFragment
+import app.perkhub.Screens.login.EnterMobileNFragment
 import com.google.gson.Gson
 
 class ContainerActivity : BaseActivity<ActivityContainerBinding>() {
@@ -42,7 +46,7 @@ class ContainerActivity : BaseActivity<ActivityContainerBinding>() {
         binding = ActivityContainerBinding.inflate(layoutInflater)
         enableEdgeToEdge()
         setContentView(binding.root)
-        statusBarColor(R.color.main)
+//        statusBarColor(R.color.main)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.container)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -50,8 +54,6 @@ class ContainerActivity : BaseActivity<ActivityContainerBinding>() {
         }
 
         val type = intent.getStringExtra(CONTAINER_TYPE_KEY)
-        print(type)
-        println("TYPE Screen "+type)
         PassScreen(type)
     }
 
@@ -62,6 +64,10 @@ class ContainerActivity : BaseActivity<ActivityContainerBinding>() {
             }
             "EnterDetailFragment" ->{
                 addFragment(EnterDetailFragment.newInstance())
+            }
+
+            "HomeScreenFragment" ->{
+                addFragment(HomeScreenFragment.newInstance())
             }
         }
     }

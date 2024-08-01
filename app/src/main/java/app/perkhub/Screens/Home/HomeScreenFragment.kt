@@ -1,4 +1,4 @@
-package app.perkhub.login
+package app.perkhub.Screens.Home
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,10 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import app.perkhub.R
 import app.perkhub.Utils.BaseFragment
-import app.perkhub.databinding.FragmentEnterDetailBinding
+import app.perkhub.Utils.USERDATA
+import app.perkhub.databinding.FragmentHomeScreenBinding
 
 
-class EnterDetailFragment : BaseFragment<FragmentEnterDetailBinding>() {
+class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,8 +24,8 @@ class EnterDetailFragment : BaseFragment<FragmentEnterDetailBinding>() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        _binding = FragmentEnterDetailBinding.inflate(layoutInflater,container,false)
-
+        _binding =FragmentHomeScreenBinding.inflate(layoutInflater,container,false)
+        _binding!!.title.text=getSharedpref().getUser(USERDATA).data[0].name
         return _binding?.root
     }
 
@@ -31,7 +33,7 @@ class EnterDetailFragment : BaseFragment<FragmentEnterDetailBinding>() {
 
         @JvmStatic
         fun newInstance() =
-            EnterDetailFragment().apply {
+            HomeScreenFragment().apply {
 
             }
     }

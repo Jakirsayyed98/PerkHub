@@ -7,4 +7,6 @@
     <string name="all_you_need_in_one_app">All You need in One App</string>
     <string name="login_register">Login with Mobile number</string>
     <string name="login_registerdis">We will send you an <font color="#5550BC">One Time Password(OTP)</font>\non this mobile number</string>
+    <string name="please_enter_your_detail">Please Enter your Detail</string>
+    <string name="enter_your_detail_for">Enter your detail for Better Experience</string>
 </resources>

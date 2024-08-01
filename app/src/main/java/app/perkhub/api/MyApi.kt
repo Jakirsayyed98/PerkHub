@@ -1,6 +1,6 @@
 package app.perkhub.api
 
-import app.perkhub.login.models.LoginRes
+import app.perkhub.Screens.login.models.LoginRes
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -25,6 +25,16 @@ interface MyApi {
     suspend fun verifyOTP(
         @Field("number")  number:String,
         @Field("otp")  otp:String
+    ):Response<LoginRes>
+
+  @FormUrlEncoded
+    @POST("savedetail")
+    suspend fun SaveDetail(
+        @Field("name")  name:String,
+        @Field("number")  number:String,
+        @Field("email")  email:String,
+        @Field("gender")  gender:String,
+        @Field("dob")  dob:String
     ):Response<LoginRes>
 
 

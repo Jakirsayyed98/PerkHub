@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".login.EnterMobileNFragment">
+    tools:context=".Screens.login.EnterMobileNFragment">
 
 
     <ImageView
@@ -18,13 +18,12 @@
 
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/mobilenumberlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp30"
         android:layout_marginTop="@dimen/dp50"
         android:layout_marginEnd="@dimen/dp30"
-        app:cardCornerRadius="@dimen/dp50"
+        app:cardCornerRadius="@dimen/dp10"
         app:cardElevation="@dimen/dp10"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -32,6 +31,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/mobilenumberlayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -62,6 +62,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/title" />
 
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/numberlayout"
                 android:layout_width="match_parent"
@@ -71,7 +72,6 @@
                 android:layout_marginEnd="@dimen/dp15"
                 android:hint="@string/enter_mobile_number"
                 android:textColorHint="@color/grey"
-
                 app:boxStrokeColor="@color/black"
                 app:hintTextColor="@color/black"
                 app:layout_constraintTop_toBottomOf="@id/dis"
@@ -86,6 +86,7 @@
                     android:maxLength="10" />
 
             </com.google.android.material.textfield.TextInputLayout>
+
 
             <RelativeLayout
                 android:id="@+id/sendOTP"
@@ -110,25 +111,12 @@
             </RelativeLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/OTPlayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dp30"
-        android:layout_marginTop="@dimen/dp250"
-        android:layout_marginEnd="@dimen/dp30"
-        android:visibility="gone"
-        app:cardCornerRadius="@dimen/dp50"
-        app:cardElevation="@dimen/dp10"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/OTPlayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/title1"
@@ -225,5 +213,6 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

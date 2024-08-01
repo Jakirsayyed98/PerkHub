@@ -1,13 +1,264 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".login.EnterDetailFragment">
+    tools:context=".Screens.login.EnterDetailFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
 
+            <ImageView
+                android:id="@+id/icon"
+                android:layout_width="@dimen/dp150"
+                android:layout_height="@dimen/dp150"
+                android:layout_marginTop="@dimen/dp40"
+                android:src="@drawable/loginicon"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
 
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp30"
+                android:layout_marginTop="@dimen/dp10"
+                android:layout_marginEnd="@dimen/dp30"
+                app:cardCornerRadius="@dimen/dp15"
+                app:cardElevation="@dimen/dp10"
+                android:layout_marginBottom="@dimen/dp150"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/icon">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/mobilenumberlayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp35"
+                        android:text="@string/please_enter_your_detail"
+                        android:textAlignment="center"
+                        android:textColor="@color/main"
+                        android:textSize="@dimen/sp20"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/dis"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp5"
+                        android:text="@string/enter_your_detail_for"
+                        android:textAlignment="center"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/sp14"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/title" />
+
+
+                    <TextView
+                        android:id="@+id/nametitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dp20"
+                        android:layout_marginTop="@dimen/dp10"
+                        android:text="Enter your Name"
+                        android:textColor="@color/black"
+                        app:layout_constraintTop_toBottomOf="@id/dis" />
+
+                    <LinearLayout
+                        android:id="@+id/namelayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="@dimen/dp15"
+                        android:layout_marginTop="@dimen/dp10"
+                        android:layout_marginEnd="@dimen/dp15"
+                        android:background="@drawable/border_view"
+                        android:orientation="vertical"
+                        android:padding="4dp"
+                        android:textColorHint="@color/grey"
+                        app:boxStrokeColor="@color/black"
+                        app:hintTextColor="@color/black"
+                        app:layout_constraintTop_toBottomOf="@id/nametitle">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/name"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/white"
+                            android:gravity="center_vertical"
+                            android:imeOptions="actionNext" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/emailtitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dp20"
+                        android:layout_marginTop="@dimen/dp15"
+                        android:text="Enter your Email Id"
+                        android:textColor="@color/black"
+                        app:layout_constraintTop_toBottomOf="@id/namelayout" />
+
+                    <LinearLayout
+                        android:id="@+id/emaillayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="@dimen/dp15"
+                        android:layout_marginTop="@dimen/dp10"
+                        android:layout_marginEnd="@dimen/dp15"
+                        android:background="@drawable/border_view"
+                        android:orientation="vertical"
+                        android:padding="4dp"
+                        android:textColorHint="@color/grey"
+                        app:boxStrokeColor="@color/black"
+                        app:hintTextColor="@color/black"
+                        app:layout_constraintTop_toBottomOf="@id/emailtitle">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/emailid"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:background="@color/white"
+                            android:imeOptions="actionNext" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/DOBtitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dp20"
+                        android:layout_marginTop="@dimen/dp15"
+                        android:text="Select your Date of Birth"
+                        android:textColor="@color/black"
+                        app:layout_constraintTop_toBottomOf="@id/emaillayout" />
+
+                    <LinearLayout
+                        android:id="@+id/doblayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="@dimen/dp15"
+                        android:layout_marginTop="@dimen/dp10"
+                        android:layout_marginEnd="@dimen/dp15"
+                        android:background="@drawable/border_view"
+                        android:orientation="vertical"
+                        android:textColorHint="@color/grey"
+                        app:boxStrokeColor="@color/black"
+                        app:hintTextColor="@color/black"
+                        app:layout_constraintTop_toBottomOf="@id/DOBtitle">
+
+                        <TextView
+                            android:id="@+id/DOB"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:paddingStart="@dimen/dp15"
+                            android:text="Select your Date of Birth"
+                            android:textColor="@color/black" />
+
+                    </LinearLayout>
+
+                    <RadioGroup
+                        android:id="@+id/gender"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp10"
+                        app:layout_constraintTop_toBottomOf="@+id/doblayout">
+
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp5"
+                            android:paddingStart="@dimen/sp25"
+                            android:text="Gender"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/sp15"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/title" />
+
+
+                        <RadioButton
+                            android:id="@+id/male"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/dp30"
+                            android:layout_marginEnd="@dimen/dp30"
+                            android:buttonTint="@color/main"
+                            android:checked="true"
+                            android:text="Male" />
+
+
+                        <RadioButton
+                            android:id="@+id/female"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/dp30"
+                            android:layout_marginEnd="@dimen/dp30"
+                            android:buttonTint="@color/main"
+                            android:text="Female" />
+
+                        <RadioButton
+                            android:id="@+id/other"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/dp30"
+                            android:layout_marginEnd="@dimen/dp30"
+                            android:buttonTint="@color/main"
+                            android:text="Other" />
+
+
+                    </RadioGroup>
+
+
+                    <RelativeLayout
+                        android:id="@+id/detail"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp50"
+                        android:layout_marginStart="@dimen/dp75"
+                        android:layout_marginTop="@dimen/dp10"
+                        android:layout_marginEnd="@dimen/dp75"
+                        android:layout_marginBottom="@dimen/dp20"
+                        android:background="@drawable/selected_button_layout"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/gender">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:text="Register"
+                            android:textColor="@color/white"
+                            android:textStyle="bold" />
+
+                    </RelativeLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </androidx.cardview.widget.CardView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+</ScrollView>

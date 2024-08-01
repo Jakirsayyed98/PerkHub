@@ -1,4 +1,4 @@
-package app.perkhub.login.models
+package app.perkhub.Screens.login.models
 
 data class Data(
     val FCMtoken: String,

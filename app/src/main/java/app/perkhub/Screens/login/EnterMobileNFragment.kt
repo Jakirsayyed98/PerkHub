@@ -1,4 +1,4 @@
-package app.perkhub.login
+package app.perkhub.Screens.login
 
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -13,10 +13,12 @@ import app.perkhub.ContainerActivity
 import app.perkhub.R
 import app.perkhub.Utils.BaseFragment
 import app.perkhub.Utils.LOGIN
+import app.perkhub.Utils.NUMBER
 import app.perkhub.Utils.toast
 import app.perkhub.api.ApiListener
 import app.perkhub.databinding.FragmentEnterMobileNBinding
-import app.perkhub.login.models.LoginRes
+import app.perkhub.Screens.login.models.LoginRes
+import app.perkhub.Utils.USERDATA
 import java.util.Timer
 import java.util.TimerTask
 
@@ -40,12 +42,9 @@ class EnterMobileNFragment : BaseFragment<FragmentEnterMobileNBinding>() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        _binding = FragmentEnterMobileNBinding.inflate(layoutInflater,container,false)
+        _binding = FragmentEnterMobileNBinding.inflate(layoutInflater, container, false)
 
         clickEvent()
-
-
-
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             if (_binding!!.OTPlayout.isVisible) {
@@ -63,68 +62,93 @@ class EnterMobileNFragment : BaseFragment<FragmentEnterMobileNBinding>() {
 
     private fun clickEvent() {
         _binding!!.mobilenumber.addTextChangedListener {
-            if (it!!.length==10){
+            if (it!!.length == 10) {
                 _binding!!.sendOTP.isSelected = true
-            }else{
+            } else {
                 _binding!!.sendOTP.isSelected = false
             }
         }
 
         _binding!!.sendOTP.setOnClickListener {
-            if (_binding!!.sendOTP.isSelected){
+            if (_binding!!.sendOTP.isSelected) {
                 showProgress()
 
                 _binding!!.mobilenumberlayout.visibility = View.GONE
                 _binding!!.OTPlayout.visibility = View.VISIBLE
-                viewModel.SendOTP(_binding!!.mobilenumber.text.toString(),object :ApiListener<LoginRes>{
-                    override fun onSuccess(t: LoginRes?, mess: String) {
-                        dissmissProgress()
-                        requireContext().toast(t!!.data.get(0).otp)
-                        countDownStart()
-                    }
+                viewModel.SendOTP(_binding!!.mobilenumber.text.toString(),
+                    object : ApiListener<LoginRes> {
+                        override fun onSuccess(t: LoginRes?, mess: String) {
 
-                    override fun onError(mess: String) {
-                        super.onError(mess)
-                        dissmissProgress()
-                        requireContext().toast(mess)
-                    }
-                })
+                            dissmissProgress()
+                            requireContext().toast(t!!.data.get(0).otp)
+                            countDownStart()
+                        }
+
+                        override fun onError(mess: String) {
+                            super.onError(mess)
+                            dissmissProgress()
+                            requireContext().toast(mess)
+                        }
+                    })
 
             }
         }
 
         _binding!!.OTP.addTextChangedListener {
-            if (_binding!!.OTP.length()==5){
+            if (_binding!!.OTP.length() == 5) {
                 _binding!!.verifyOTP.isSelected = true
-            }else{
+            } else {
                 _binding!!.verifyOTP.isSelected = false
             }
         }
 
         _binding!!.verifyOTP.setOnClickListener {
-            if (_binding!!.verifyOTP.isSelected){
+            if (_binding!!.verifyOTP.isSelected) {
                 showProgress()
-                viewModel.VerifyOTP(_binding!!.mobilenumber.text.toString(),_binding!!.OTP.text.toString(),object:ApiListener<LoginRes>{
-                    override fun onSuccess(t: LoginRes?, mess: String) {
-                        dissmissProgress()
-                        requireContext().toast(t!!.errorMsg)
-                        getSharedpref().saveBool(LOGIN,true)
-                        ContainerActivity.OpenContainer(requireContext(),"EnterDetailFragment",null)
-                        activity?.finish()
-                    }
+                viewModel.VerifyOTP(
+                    _binding!!.mobilenumber.text.toString(),
+                    _binding!!.OTP.text.toString(),
+                    object : ApiListener<LoginRes> {
+                        override fun onSuccess(t: LoginRes?, mess: String) {
 
-                    override fun onError(mess: String) {
-                        super.onError(mess)
-                        dissmissProgress()
-                        requireContext().toast(mess)
-                    }
+                            dissmissProgress()
+                            requireContext().toast(t!!.errorMsg)
+                            getSharedpref().saveString(
+                                NUMBER,
+                                _binding!!.mobilenumber.text.toString()
+                            )
 
-                })
+                            if (t!!.data[0].name.isNullOrEmpty()) {
+                                ContainerActivity.OpenContainer(
+                                    requireContext(),
+                                    "EnterDetailFragment",
+                                    null
+                                )
+                                activity?.finish()
+                            } else {
+                                getSharedpref().saveBool(LOGIN, true)
+                                getSharedpref().saveUser(USERDATA, t)
+                                ContainerActivity.OpenContainer(
+                                    requireContext(),
+                                    "HomeScreenFragment",
+                                    null
+                                )
+                                activity?.finish()
+                            }
+                        }
+
+                        override fun onError(mess: String) {
+                            super.onError(mess)
+                            dissmissProgress()
+                            requireContext().toast(mess)
+                        }
+
+                    })
             }
         }
 
         _binding!!.timerCount.setOnClickListener {
-            if (_binding!!.timerCount.text =="Resend"){
+            if (_binding!!.timerCount.text == "Resend") {
                 countDownStart()
             }
         }
@@ -134,7 +158,7 @@ class EnterMobileNFragment : BaseFragment<FragmentEnterMobileNBinding>() {
 
     private fun countDownStart() {
 
-        timer.schedule(object :TimerTask(){
+        timer.schedule(object : TimerTask() {
             override fun run() {
                 if (timeLeft > 0) {
                     val minutes = timeLeft / 60
@@ -151,7 +175,7 @@ class EnterMobileNFragment : BaseFragment<FragmentEnterMobileNBinding>() {
                 }
             }
 
-        },0,1000) // Run every 1 second
+        }, 0, 1000) // Run every 1 second
     }
 
 
