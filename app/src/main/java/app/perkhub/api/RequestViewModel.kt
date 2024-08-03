@@ -2,6 +2,7 @@ package app.perkhub.api
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import app.perkhub.Screens.Home.Model.Home.HomeRes
 import app.perkhub.Screens.login.models.LoginRes
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -50,5 +51,17 @@ class RequestViewModel : ViewModel() {
         }
     }
 
+
+    fun getHomeData(
+        user_id:String,listner: ApiListener<HomeRes>
+    ){
+        viewModelScope.launch(SetErrorhandler()) {
+            withContext(coroutineContext){
+                MyApi().getHomePage(user_id).body()?.let {it->
+                    listner.onResponse(it)
+                }
+            }
+        }
+    }
 
 }

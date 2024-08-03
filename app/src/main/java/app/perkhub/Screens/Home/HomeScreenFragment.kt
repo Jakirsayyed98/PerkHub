@@ -5,9 +5,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.GridLayout
+import androidx.recyclerview.widget.GridLayoutManager
 import app.perkhub.R
+import app.perkhub.Screens.Home.Adapter.CategoryAdapter
+import app.perkhub.Screens.Home.Model.Home.Category
+import app.perkhub.Screens.Home.Model.Home.HomeRes
 import app.perkhub.Utils.BaseFragment
+import app.perkhub.Utils.RecyclerClickListener
 import app.perkhub.Utils.USERDATA
+import app.perkhub.api.ApiListener
 import app.perkhub.databinding.FragmentHomeScreenBinding
 
 
@@ -25,8 +32,42 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
     ): View? {
         // Inflate the layout for this fragment
         _binding =FragmentHomeScreenBinding.inflate(layoutInflater,container,false)
-        _binding!!.title.text=getSharedpref().getUser(USERDATA).data[0].name
+
+
+        getHomeData()
+
         return _binding?.root
+    }
+
+    private fun getHomeData() {
+        viewModel.getHomeData(getUserID()!!,object : ApiListener<HomeRes>{
+            override fun onSuccess(t: HomeRes?, mess: String) {
+                if (t!!.errorCode.equals("0")){
+                    t.data.get(0).let {
+                        setMainCategoryLayout(it.categories)
+                    }
+                }
+            }
+
+            override fun onError(mess: String) {
+                super.onError(mess)
+
+            }
+        })
+    }
+
+    private fun setMainCategoryLayout(categories: ArrayList<Category>) {
+        val mAdapter = CategoryAdapter<Category>(object : RecyclerClickListener{
+            override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
+
+            }
+
+        })
+        _binding!!.categories.apply {
+            layoutManager = GridLayoutManager(requireContext(),4)
+            adapter = mAdapter
+        }
+        mAdapter.addAllItem(categories)
     }
 
     companion object {

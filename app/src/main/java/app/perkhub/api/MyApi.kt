@@ -1,5 +1,6 @@
 package app.perkhub.api
 
+import app.perkhub.Screens.Home.Model.Home.HomeRes
 import app.perkhub.Screens.login.models.LoginRes
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -13,6 +14,8 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 
 interface MyApi {
+
+    //Login APIs
 
     @FormUrlEncoded
     @POST("sendOTP")
@@ -37,6 +40,12 @@ interface MyApi {
         @Field("dob")  dob:String
     ):Response<LoginRes>
 
+    //Home
+    @FormUrlEncoded
+    @POST("getHomePage")
+    suspend fun getHomePage(
+        @Field("user_id") user_id:String
+    ):Response<HomeRes>
 
     companion object{
       operator  fun invoke():MyApi{
