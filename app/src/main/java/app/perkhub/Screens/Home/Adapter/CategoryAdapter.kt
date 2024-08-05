@@ -14,10 +14,8 @@ class CategoryAdapter<S>(clickList: RecyclerClickListener):BaseRecyclerView<S,Ca
     inner class Holder(val binding: CategoryLayoutBinding):RecyclerView.ViewHolder(binding.root){
         fun setdata(s: S) {
             if (s is Category){
-                Glide
+
             }
-
-
         }
     }
 
