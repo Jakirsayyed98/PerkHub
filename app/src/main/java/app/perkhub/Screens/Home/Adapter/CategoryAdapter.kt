@@ -8,13 +8,14 @@ import app.perkhub.Utils.BaseRecyclerView
 import app.perkhub.Utils.RecyclerClickListener
 import app.perkhub.databinding.CategoryLayoutBinding
 import app.perkhub.databinding.FragmentHomeScreenBinding
+import com.bumptech.glide.Glide
 
 class CategoryAdapter<S>(clickList: RecyclerClickListener):BaseRecyclerView<S,CategoryAdapter<S>.Holder>() {
 
     inner class Holder(val binding: CategoryLayoutBinding):RecyclerView.ViewHolder(binding.root){
         fun setdata(s: S) {
             if (s is Category){
-
+                Glide.with(itemView.context).load(s.image).into(binding.image)
             }
         }
     }

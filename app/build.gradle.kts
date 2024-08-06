@@ -50,15 +50,16 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
-//    implementation(libs.androidx.tools)
+   // implementation(libs.androidx.tools)
     implementation(libs.androidx.gson)
     implementation(libs.androidx.retrofit)
     implementation(libs.androidx.retrofit.gson)
     implementation(libs.androidx.okhttp)
     implementation(libs.androidx.lifecycle.viewmodel.android)
     implementation(libs.firebase.auth)
+    implementation(libs.androidx.glide)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(libs.androidx.glide)
+
 }
