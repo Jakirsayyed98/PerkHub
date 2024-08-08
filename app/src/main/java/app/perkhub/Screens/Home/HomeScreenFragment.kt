@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import app.perkhub.R
 import app.perkhub.Screens.Home.Adapter.CategoryAdapter
 import app.perkhub.Screens.Home.Adapter.PopularStoresAdapter
+import app.perkhub.Screens.Home.Adapter.TrendingStoresAdapter
 import app.perkhub.Screens.Home.Model.Home.Category
 import app.perkhub.Screens.Home.Model.Home.HomeRes
 import app.perkhub.Screens.Home.Model.Home.MiniApp
@@ -50,6 +51,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
                     t.data.get(0).let {
                         setMainCategoryLayout(it.categories)
                         setPopularStore(it.popular)
+                        setTrendingStores(it.trending)
                     }
                 }
             }
@@ -59,6 +61,21 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
 
             }
         })
+    }
+
+    private fun setTrendingStores(trending: java.util.ArrayList<MiniApp>) {
+        trending.shuffled()
+        var mAdapter = TrendingStoresAdapter<MiniApp>(object:RecyclerClickListener{
+            override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
+
+            }
+        })
+
+        _binding!!.trendingstore.apply {
+            layoutManager = GridLayoutManager(requireContext(),2,LinearLayoutManager.HORIZONTAL,false)
+            adapter = mAdapter
+        }
+        mAdapter.addAllItem(if (trending.size>20) trending.subList(0,20) else trending)
     }
 
     private fun setPopularStore(popular: java.util.ArrayList<MiniApp>) {
