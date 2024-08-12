@@ -1,6 +1,7 @@
 package app.perkhub.api
 
 import app.perkhub.Screens.Home.Model.Home.HomeRes
+import app.perkhub.Screens.Home.Model.LootProduct.LootProductRes
 import app.perkhub.Screens.login.models.LoginRes
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -12,6 +13,7 @@ import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Query
 
 interface MyApi {
 
@@ -46,6 +48,13 @@ interface MyApi {
     suspend fun getHomePage(
         @Field("user_id") user_id:String
     ):Response<HomeRes>
+
+    //Loot Products
+    @POST("getAllLootoffers")
+    suspend fun getLootProduct(
+        @Query("user_id") user_id:String,
+        @Query("page") page:String
+    ):Response<LootProductRes>
 
     companion object{
       operator  fun invoke():MyApi{

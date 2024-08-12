@@ -3,6 +3,7 @@ package app.perkhub.api
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.perkhub.Screens.Home.Model.Home.HomeRes
+import app.perkhub.Screens.Home.Model.LootProduct.LootProductRes
 import app.perkhub.Screens.login.models.LoginRes
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -58,6 +59,17 @@ class RequestViewModel : ViewModel() {
         viewModelScope.launch(SetErrorhandler()) {
             withContext(coroutineContext){
                 MyApi().getHomePage(user_id).body()?.let {it->
+                    listner.onResponse(it)
+                }
+            }
+        }
+    }
+ fun getLootProduct(
+        user_id:String, page:String,listner: ApiListener<LootProductRes>
+    ){
+        viewModelScope.launch(SetErrorhandler()) {
+            withContext(coroutineContext){
+                MyApi().getLootProduct(user_id,page).body()?.let {it->
                     listner.onResponse(it)
                 }
             }

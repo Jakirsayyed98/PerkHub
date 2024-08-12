@@ -20,6 +20,10 @@
     <dimen name="sp25">25sp</dimen>
     <dimen name="dp75">75sp</dimen>
     <dimen name="sp20">20sp</dimen>
+    <dimen name="sp17">17sp</dimen>
+    <dimen name="sp18">18sp</dimen>
+    <dimen name="sp19">19sp</dimen>
+    <dimen name="sp16">16sp</dimen>
     <dimen name="dp250">250dp</dimen>
     <dimen name="dp150">150dp</dimen>
     <dimen name="dp180">180dp</dimen>
