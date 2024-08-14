@@ -14,6 +14,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import app.perkhub.Screens.Home.HomeScreenFragment
+import app.perkhub.Screens.Home.SelectedCategoryFragment
 import app.perkhub.Utils.BaseActivity
 import app.perkhub.Utils.CONTAINER_TYPE_KEY
 import app.perkhub.Utils.DATA
@@ -68,6 +69,10 @@ class ContainerActivity : BaseActivity<ActivityContainerBinding>() {
 
             "HomeScreenFragment" ->{
                 addFragment(HomeScreenFragment.newInstance())
+            }
+
+            "SelectedCategoryFragment" ->{
+                addFragment(SelectedCategoryFragment.newInstance())
             }
         }
     }

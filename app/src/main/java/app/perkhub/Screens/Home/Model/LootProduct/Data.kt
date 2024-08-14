@@ -1,5 +1,7 @@
 package app.perkhub.Screens.Home.Model.LootProduct
 
+import app.perkhub.Screens.Home.Model.Home.MiniApp
+
 data class Data(
     val MiniApps: List<MiniApp>,
     val coupon_code: Any,

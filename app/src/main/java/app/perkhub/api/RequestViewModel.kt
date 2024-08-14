@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.perkhub.Screens.Home.Model.Home.HomeRes
 import app.perkhub.Screens.Home.Model.LootProduct.LootProductRes
+import app.perkhub.Screens.Home.Model.MiniAppByCategory.MiniAppbyCategory
 import app.perkhub.Screens.login.models.LoginRes
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -54,26 +55,54 @@ class RequestViewModel : ViewModel() {
 
 
     fun getHomeData(
-        user_id:String,listner: ApiListener<HomeRes>
-    ){
+        user_id: String, listner: ApiListener<HomeRes>
+    ) {
         viewModelScope.launch(SetErrorhandler()) {
-            withContext(coroutineContext){
-                MyApi().getHomePage(user_id).body()?.let {it->
-                    listner.onResponse(it)
-                }
-            }
-        }
-    }
- fun getLootProduct(
-        user_id:String, page:String,listner: ApiListener<LootProductRes>
-    ){
-        viewModelScope.launch(SetErrorhandler()) {
-            withContext(coroutineContext){
-                MyApi().getLootProduct(user_id,page).body()?.let {it->
+            withContext(coroutineContext) {
+                MyApi().getHomePage(user_id).body()?.let { it ->
                     listner.onResponse(it)
                 }
             }
         }
     }
 
+
+    fun getLootProduct(
+        user_id: String, page: String, listner: ApiListener<LootProductRes>
+    ) {
+        viewModelScope.launch(SetErrorhandler()) {
+            withContext(coroutineContext) {
+                MyApi().getLootProduct(user_id, page).body()?.let { it ->
+                    listner.onResponse(it)
+                }
+            }
+        }
+    }
+
+    fun getMiniAppByCategory(
+        user_id: String, category_id: String, listner: ApiListener<MiniAppbyCategory>
+    ) {
+        viewModelScope.launch(SetErrorhandler()) {
+            withContext(kotlin.coroutines.coroutineContext) {
+                MyApi().getMiniAppByCategory(user_id, category_id).body()?.let { it ->
+                    listner.onResponse(it)
+                }
+            }
+        }
+    }
+
+    fun searchminiApps(
+        user_id: String, miniapp_name: String, listner: ApiListener<MiniAppbyCategory>
+    ) {
+        viewModelScope.launch(SetErrorhandler()) {
+            withContext(kotlin.coroutines.coroutineContext) {
+                MyApi().searchminiApps(user_id, miniapp_name).body()?.let { it ->
+                    listner.onResponse(it)
+                }
+            }
+        }
+    }
+
+
 }
+

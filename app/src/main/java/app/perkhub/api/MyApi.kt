@@ -2,6 +2,7 @@ package app.perkhub.api
 
 import app.perkhub.Screens.Home.Model.Home.HomeRes
 import app.perkhub.Screens.Home.Model.LootProduct.LootProductRes
+import app.perkhub.Screens.Home.Model.MiniAppByCategory.MiniAppbyCategory
 import app.perkhub.Screens.login.models.LoginRes
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -55,6 +56,19 @@ interface MyApi {
         @Query("user_id") user_id:String,
         @Query("page") page:String
     ):Response<LootProductRes>
+
+   //MiniAppByCategory
+    @POST("getMiniAppByCategory")
+    suspend fun getMiniAppByCategory(
+        @Query("user_id") user_id:String,
+        @Query("category_id") category_id:String
+    ):Response<MiniAppbyCategory>
+//searchMiniApps
+    @POST("searchMiniApps")
+    suspend fun searchminiApps(
+        @Query("user_id") user_id:String,
+        @Query("miniapp_name") miniapp_name:String
+    ):Response<MiniAppbyCategory>
 
     companion object{
       operator  fun invoke():MyApi{

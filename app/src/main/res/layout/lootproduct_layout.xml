@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout"
     android:layout_width="@dimen/dp200"
     android:layout_height="@dimen/dp250"
-    android:orientation="vertical"
-    android:id="@+id/layout"
     android:layout_margin="@dimen/dp5"
     android:background="@drawable/border_5dp"
+    android:orientation="vertical"
     android:padding="@dimen/dp10">
 
     <ImageView
@@ -19,6 +19,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:maxLines="1"
         android:text="2505"
         android:textColor="@color/black"
         android:textSize="@dimen/sp18"

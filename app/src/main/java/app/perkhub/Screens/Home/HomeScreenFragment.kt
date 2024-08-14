@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager.widget.ViewPager
+import app.perkhub.ContainerActivity
 import app.perkhub.Screens.Home.Adapter.BannerViewPagerAdapter
 import app.perkhub.Screens.Home.Adapter.CategoryAdapter
 import app.perkhub.Screens.Home.Adapter.LootProductAdapter
@@ -26,6 +27,7 @@ import app.perkhub.Screens.Home.Model.LootProduct.Data
 import app.perkhub.Screens.Home.Model.LootProduct.LootProductRes
 import app.perkhub.Utils.BaseFragment
 import app.perkhub.Utils.RecyclerClickListener
+import app.perkhub.Utils.openCustomTab
 import app.perkhub.Utils.toast
 import app.perkhub.api.ApiListener
 import app.perkhub.databinding.FragmentHomeScreenBinding
@@ -47,12 +49,25 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentHomeScreenBinding.inflate(layoutInflater, container, false)
+        _binding!!.progressbar.visibility = View.VISIBLE
+        _binding!!.mainlayout.visibility = View.GONE
+        clickEvenets()
 
         GlobalScope.async {
             getHomeData()
+        }
+        GlobalScope.async {
             getLootProduct()
         }
         return _binding?.root
+    }
+
+    private fun clickEvenets() {
+        with(_binding!!){
+            search.setOnClickListener {
+                ContainerActivity.OpenContainer(requireContext(),"SelectedCategoryFragment",null)
+            }
+        }
     }
 
     private fun getHomeData() {
@@ -60,7 +75,8 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
             override fun onSuccess(t: HomeRes?, mess: String) {
                 if (t!!.errorCode.equals("0")) {
                     t.data.get(0).let {
-
+                        _binding!!.progressbar.visibility = View.GONE
+                        _binding!!.mainlayout.visibility = View.VISIBLE
                         setMainCategoryLayout(it.categories)
 
                         if (it.popular.size < 1) {
@@ -98,7 +114,9 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
     private fun setMainCategoryLayout(categories: ArrayList<Category>) {
         val mAdapter = CategoryAdapter<Category>(object : RecyclerClickListener {
             override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
-
+                if (data is Category){
+                    ContainerActivity.OpenContainer(requireContext(),"SelectedCategoryFragment",data)
+                }
             }
 
         })
@@ -113,7 +131,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         val mAdapter = PopularStoresAdapter<MiniApp>(object : RecyclerClickListener {
             override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
 
-                openCustomTab(type)
+               requireContext().openCustomTab(type)
             }
         })
         _binding!!.popularstore.apply {
@@ -129,7 +147,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         trending.shuffled()
         var mAdapter = TrendingStoresAdapter<MiniApp>(object : RecyclerClickListener {
             override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
-                openCustomTab(type)
+                requireContext().openCustomTab(type)
             }
         })
 
@@ -187,7 +205,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
     private fun setLootProductLayout(data: List<Data>) {
         val mAdapter = LootProductAdapter<Data>(object : RecyclerClickListener {
             override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
-                openCustomTab(type)
+                requireContext().openCustomTab(type)
             }
         })
         _binding!!.lootProduct.apply {
@@ -199,33 +217,6 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         mAdapter.addAllItem(data)
     }
 
-
-    fun openCustomTab(uri: String?) {
-        val customIntent = CustomTabsIntent.Builder()
-        val customTabsIntent = customIntent.build()
-
-        // below line is setting toolbar color
-        // for our custom chrome tab.
-        customIntent.setToolbarColor(ContextCompat.getColor(requireContext(), R.color.white))
-        val packageName = "com.android.chrome"
-        if (packageName != null) {
-            // we are checking if the package name is not null
-            // if package name is not null then we are calling
-            // that custom chrome tab with intent by passing its
-            // package name.
-
-            customTabsIntent.intent.setPackage(packageName)
-
-
-            // in that custom tab intent we are passing
-            // our url which we have to browse.
-            customTabsIntent.launchUrl(requireActivity(), Uri.parse(uri))
-        } else {
-            // if the custom tabs fails to load then we are simply
-            // redirecting our user to users device default browser.
-            requireContext().startActivity(Intent(Intent.ACTION_VIEW,Uri.parse(uri)))
-        }
-    }
 
     companion object {
 
