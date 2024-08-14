@@ -70,6 +70,13 @@ interface MyApi {
         @Query("miniapp_name") miniapp_name:String
     ):Response<MiniAppbyCategory>
 
+    //searchMiniApps
+    @POST("updateNotificationToken")
+    suspend fun updateNotification(
+        @Query("user_id") user_id:String,
+        @Query("token") token:String
+    ):Response<MiniAppbyCategory>
+
     companion object{
       operator  fun invoke():MyApi{
             var BaseURl = "http://perkhub.in/perkAdmin/api/"

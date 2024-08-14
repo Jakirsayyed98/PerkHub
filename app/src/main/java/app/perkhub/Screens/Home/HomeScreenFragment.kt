@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,12 +26,15 @@ import app.perkhub.Screens.Home.Model.Home.HomeRes
 import app.perkhub.Screens.Home.Model.Home.MiniApp
 import app.perkhub.Screens.Home.Model.LootProduct.Data
 import app.perkhub.Screens.Home.Model.LootProduct.LootProductRes
+import app.perkhub.Screens.Home.Model.MiniAppByCategory.MiniAppbyCategory
 import app.perkhub.Utils.BaseFragment
 import app.perkhub.Utils.RecyclerClickListener
 import app.perkhub.Utils.openCustomTab
 import app.perkhub.Utils.toast
 import app.perkhub.api.ApiListener
 import app.perkhub.databinding.FragmentHomeScreenBinding
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 
@@ -59,6 +63,8 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         GlobalScope.async {
             getLootProduct()
         }
+
+        updateFirebaseToken()
         return _binding?.root
     }
 
@@ -217,6 +223,23 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         mAdapter.addAllItem(data)
     }
 
+    private fun updateFirebaseToken() {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                return@OnCompleteListener
+            }
+            // Token ID :-  d8F1TQ_rQCqJ_kY9ELyd4M:APA91bH_yeiKZdAaVYSjnNhe3tDrzX4nwZal-FSzSD0d4uASMpq191G-m8ObnH9Tj8tNiw4wQ6dEQANIlSkKiffGU9KyOzeWndoGe4MAC_I-QmJsS0aBGsdO5BwqBTd-FU1mgtAljE8k
+            // Get new FCM registration token
+            val token = task.result
+
+            Log.d("Token",token)
+            viewModel.updateNotification(getUserID()!!, token, object : ApiListener<MiniAppbyCategory> {
+                override fun onSuccess(t: MiniAppbyCategory?, mess: String) {
+
+                }
+            })
+        })
+    }
 
     companion object {
 

@@ -102,6 +102,17 @@ class RequestViewModel : ViewModel() {
             }
         }
     }
+ fun updateNotification(
+        user_id: String, token: String, listner: ApiListener<MiniAppbyCategory>
+    ) {
+        viewModelScope.launch(SetErrorhandler()) {
+            withContext(kotlin.coroutines.coroutineContext) {
+                MyApi().updateNotification(user_id, token).body()?.let { it ->
+                    listner.onResponse(it)
+                }
+            }
+        }
+    }
 
 
 }
