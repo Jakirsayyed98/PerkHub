@@ -6,41 +6,64 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.widget.ViewPager2
 import app.perkhub.Screens.Home.Model.Home.Banner1
+import app.perkhub.Utils.RecyclerClickListener
 import com.bumptech.glide.Glide
 
 
-class BannerViewPagerAdapter(private val context: Context,banner : ArrayList<Banner1>) : PagerAdapter() {
+class BannerViewPagerAdapter  internal constructor(sliderItem: MutableList<SliderModelMain>, viewPager: ViewPager2, val clickListener: RecyclerClickListener):
+    RecyclerView.Adapter<BannerViewPagerAdapter.SliderViewHolder>(){
+    lateinit var context: Context
+    val SliderItemlist:List<SliderModelMain>
+    val ViewPager2: ViewPager2
 
-    private var inflater: LayoutInflater? = null
-    private val images = banner
 
-    override fun isViewFromObject(view: View, `object`: Any):    Boolean {
-
-        return view === `object`
+    init {
+        this.SliderItemlist=sliderItem
+        this.ViewPager2=viewPager
     }
 
-    override fun getCount(): Int {
-        return images.size
+    class SliderViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
+        val sliderItem: ImageView =itemView.findViewById(R.id.bannerItem)
+//        val icon: ImageView =itemView.findViewById(R.id.icon)
+//        val cashback : TextView = itemView.findViewById(R.id.cashback)
+
+        fun SliderData(SliderImageItem: SliderModelMain){
+            kotlin.runCatching {
+                Glide.with(itemView.context).load(SliderImageItem.image).centerCrop().into(sliderItem)
+            }
+//            kotlin.runCatching {
+//                Glide.with(itemView.context).load(SliderImageItem.icon).placeholder(R.drawable.loding_app_icon).circleCrop().into(icon)
+//            }
+
+
+//            cashback.text = SliderImageItem.cashback!!.replace(" Cashback","\nCashback").replace(" cashback","\ncashback")
+        }
     }
 
-    override fun instantiateItem(container: ViewGroup, position: Int): Any {
-
-        inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        val view =inflater!!.inflate(R.layout.banners_layout, null)
-        val image = view!!.findViewById<ImageView>(R.id.bannerItem)
-        Glide.with(context).load(images[position].image).into(image)
-
-        val vp = container as ViewPager
-        vp.addView(view, 0)
-        return view
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SliderViewHolder {
+        return SliderViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.banners_layout,parent,false))
     }
 
-    override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
-        val vp = container as ViewPager
-        val view = `object` as View
-        vp.removeView(view)
+    override fun onBindViewHolder(holder: SliderViewHolder, position: Int) {
+        holder.SliderData(SliderItemlist[position])
+        holder.sliderItem.setOnClickListener {
+            clickListener.RecyclerClickListener(0, SliderItemlist[position].id.toString(), "AppCategory")
+        }
     }
+
+
+    override fun getItemCount(): Int {
+        return SliderItemlist.size
+    }
+
+//    @SuppressLint("NotifyDataSetChanged")
+//    private val runnable= Runnable {
+//        sliderItem.addAll(sliderItem)
+//        notifyDataSetChanged()
+//    }
 }

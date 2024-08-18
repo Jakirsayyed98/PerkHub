@@ -21,6 +21,7 @@ import app.perkhub.Utils.DATA
 import app.perkhub.databinding.ActivityContainerBinding
 import app.perkhub.Screens.login.EnterDetailFragment
 import app.perkhub.Screens.login.EnterMobileNFragment
+import app.perkhub.Utils.CONTAINER_TYPE_KEY1
 import com.google.gson.Gson
 
 class ContainerActivity : BaseActivity<ActivityContainerBinding>() {
@@ -33,6 +34,22 @@ class ContainerActivity : BaseActivity<ActivityContainerBinding>() {
         ){
             context?.startActivity(Intent(context,ContainerActivity::class.java).apply{
                 putExtra(CONTAINER_TYPE_KEY,type)
+                when (data){
+                    is Bundle -> putExtras(data)
+                    else ->putExtra(DATA,Gson().toJson(data))
+                }
+            })
+
+        }
+        fun OpenContainerType2(
+            context: Context?,
+            type : String?,
+            type1 : String?,
+            data:Any?
+        ){
+            context?.startActivity(Intent(context,ContainerActivity::class.java).apply{
+                putExtra(CONTAINER_TYPE_KEY,type)
+                putExtra(CONTAINER_TYPE_KEY1,type1)
                 when (data){
                     is Bundle -> putExtras(data)
                     else ->putExtra(DATA,Gson().toJson(data))

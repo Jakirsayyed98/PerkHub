@@ -5,6 +5,8 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -13,12 +15,14 @@ import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import app.perkhub.ContainerActivity
 import app.perkhub.Screens.Home.Adapter.BannerViewPagerAdapter
 import app.perkhub.Screens.Home.Adapter.CategoryAdapter
 import app.perkhub.Screens.Home.Adapter.LootProductAdapter
 import app.perkhub.Screens.Home.Adapter.PopularStoresAdapter
+import app.perkhub.Screens.Home.Adapter.SliderModelMain
 import app.perkhub.Screens.Home.Adapter.TrendingStoresAdapter
 import app.perkhub.Screens.Home.Model.Home.Banner1
 import app.perkhub.Screens.Home.Model.Home.Category
@@ -34,6 +38,7 @@ import app.perkhub.Utils.toast
 import app.perkhub.api.ApiListener
 import app.perkhub.databinding.FragmentHomeScreenBinding
 import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
@@ -41,6 +46,7 @@ import kotlinx.coroutines.async
 
 class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
 
+    private val handler = Handler(Looper.getMainLooper())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,8 +77,9 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
     private fun clickEvenets() {
         with(_binding!!){
             search.setOnClickListener {
-                ContainerActivity.OpenContainer(requireContext(),"SelectedCategoryFragment",null)
+                ContainerActivity.OpenContainerType2(requireContext(),"SelectedCategoryFragment","Search",null)
             }
+
         }
     }
 
@@ -121,7 +128,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         val mAdapter = CategoryAdapter<Category>(object : RecyclerClickListener {
             override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
                 if (data is Category){
-                    ContainerActivity.OpenContainer(requireContext(),"SelectedCategoryFragment",data)
+                    ContainerActivity.OpenContainerType2(requireContext(),"SelectedCategoryFragment","CategoryMiniApp",data)
                 }
             }
 
@@ -131,9 +138,14 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
             adapter = mAdapter
         }
         mAdapter.addAllItem(if (categories.size <= 8) categories else categories.subList(0, 8))
+
+        _binding!!.AllCategories.setOnClickListener {
+            ContainerActivity.OpenContainerType2(requireContext(),"SelectedCategoryFragment","Categorires",categories)
+        }
     }
 
     private fun setPopularStore(popular: java.util.ArrayList<MiniApp>) {
+        Log.d("PopularCount",popular.size.toString())
         val mAdapter = PopularStoresAdapter<MiniApp>(object : RecyclerClickListener {
             override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
 
@@ -147,10 +159,14 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         }
         popular.shuffled()
         mAdapter.addAllItem(if (popular.size <= 12) popular else popular.subList(0, 12))
+        _binding!!.allPopular.setOnClickListener {
+            ContainerActivity.OpenContainerType2(requireContext(),"SelectedCategoryFragment","Popular",if (popular.size > 18) popular.subList(0, 18) else popular)
+        }
     }
 
     private fun setTrendingStores(trending: java.util.ArrayList<MiniApp>) {
         trending.shuffled()
+        Log.d("PopularCountTre",trending.size.toString())
         var mAdapter = TrendingStoresAdapter<MiniApp>(object : RecyclerClickListener {
             override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
                 requireContext().openCustomTab(type)
@@ -162,36 +178,71 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
                 GridLayoutManager(requireContext(), 2, LinearLayoutManager.HORIZONTAL, false)
             adapter = mAdapter
         }
-        mAdapter.addAllItem(if (trending.size > 20) trending.subList(0, 20) else trending)
+        mAdapter.addAllItem(if (trending.size > 16) trending.subList(0, 16) else trending)
+        _binding!!.allTrending.setOnClickListener {
+            ContainerActivity.OpenContainerType2(requireContext(),"SelectedCategoryFragment","Trending",if (trending.size > 18) trending.subList(0, 18) else trending)
+        }
     }
 
-    private fun Banner1Func(banner: ArrayList<Banner1>) {
 
-        val adapter = BannerViewPagerAdapter(requireContext(), banner)
+    private fun Banner1Func(banners: java.util.ArrayList<Banner1>) {
 
-        _binding!!.bannerKocMarket.adapter = adapter
-        _binding!!.tabDots.setupWithViewPager(_binding!!.bannerKocMarket, true)
+        if (banners.isNullOrEmpty()) {
+            _binding!!.banner1layout.visibility = View.GONE
 
-        _binding!!.bannerKocMarket.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+        } else {
+            _binding!!.banner1layout.visibility = View.VISIBLE
 
-            override fun onPageScrollStateChanged(state: Int) {
+        }
+
+        val imageList = java.util.ArrayList<SliderModelMain>()
+        //   bannerlist4 = bannerList4
+
+        for (x in banners) {
+            if (x.image.isNullOrEmpty().not()){
+                imageList.add(SliderModelMain(x.image,"",x.url,x.id))
             }
+        }
 
-            override fun onPageScrolled(
-                position: Int,
-                positionOffset: Float,
-                positionOffsetPixels: Int
-            ) {
 
-            }
+        _binding!!.bannerKocMarket.adapter = BannerViewPagerAdapter(imageList, _binding!!.bannerKocMarket, object : RecyclerClickListener {
+            override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
 
-            override fun onPageSelected(position: Int) {
-                requireContext().toast(_binding!!.bannerKocMarket.currentItem.toString())
             }
         })
 
+        _binding!!.bannerKocMarket.clipToPadding = false
+        _binding!!.bannerKocMarket.clipChildren = false
+        _binding!!.bannerKocMarket.offscreenPageLimit = 3
+        _binding!!.bannerKocMarket.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
+        _binding!!.bannerKocMarket.setPadding(20, 0, 20, 0)
 
+        //Handler Start
+
+        Handler(Looper.getMainLooper()).apply {
+            val runnable = object : Runnable {
+                override fun run() {
+                    kotlin.runCatching {
+                        var i = _binding!!.bannerKocMarket.currentItem
+
+                        if (i == banners.size - 1) {
+                            i = -1//0
+                            _binding!!.bannerKocMarket.currentItem = i
+                        }
+                        i++
+                        _binding!!.bannerKocMarket.setCurrentItem(i, true)
+                        postDelayed(this, 3000)
+                    }
+                }
+            }
+            postDelayed(runnable, 3000)
+        }
+
+
+        TabLayoutMediator(_binding!!.tabDots, _binding!!.bannerKocMarket,false) { _,_ -> }.attach()
     }
+
+
 
     fun getLootProduct() {
         viewModel.getLootProduct(getUserID()!!, "1", object : ApiListener<LootProductRes> {

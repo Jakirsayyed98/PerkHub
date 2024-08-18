@@ -1,30 +1,28 @@
 package app.perkhub.Screens.Home
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
-import android.widget.EditText
-import android.widget.TextView
 import androidx.core.widget.addTextChangedListener
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import app.perkhub.R
+import app.perkhub.ContainerActivity
+import app.perkhub.Screens.Home.Adapter.CategoryAdapter
 import app.perkhub.Screens.Home.Adapter.MiniAppCategoryAdapter
 import app.perkhub.Screens.Home.Model.Home.Category
 import app.perkhub.Screens.Home.Model.Home.MiniApp
-import app.perkhub.Screens.Home.Model.LootProduct.LootProductRes
 import app.perkhub.Screens.Home.Model.MiniAppByCategory.MiniAppbyCategory
 import app.perkhub.Utils.BaseFragment
+import app.perkhub.Utils.CONTAINER_TYPE_KEY1
 import app.perkhub.Utils.DATA
 import app.perkhub.Utils.RecyclerClickListener
 import app.perkhub.Utils.openCustomTab
-import app.perkhub.Utils.toast
 import app.perkhub.api.ApiListener
 import app.perkhub.databinding.FragmentSelectedCategoryBinding
-import com.google.android.material.textfield.TextInputEditText
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 
 class SelectedCategoryFragment : BaseFragment<FragmentSelectedCategoryBinding>() {
@@ -43,16 +41,50 @@ class SelectedCategoryFragment : BaseFragment<FragmentSelectedCategoryBinding>()
         _binding!!.toolbar.backbtn.setOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
-        val value = requireActivity().intent.getStringExtra(DATA)
-        if (Gson().fromJson<Category>(value, Category::class.java)!=null) {
 
-            val data = Gson().fromJson<Category>(value, Category::class.java)
-            _binding!!.toolbar.name.text = data.name
-            _binding!!.searchLayout.visibility = View.GONE
-            getListOfMiniApps(data.id)
-        } else {
-            _binding!!.searchLayout.visibility = View.VISIBLE
-            _binding!!.toolbar.name.text = "Search"
+        val type1 = requireActivity().intent.getStringExtra(CONTAINER_TYPE_KEY1)
+        when(type1){
+            "CategoryMiniApp"->{
+                val value = requireActivity().intent.getStringExtra(DATA)
+                val data = Gson().fromJson<Category>(value, Category::class.java)
+                _binding!!.toolbar.name.text = data.name
+                _binding!!.searchLayout.visibility = View.GONE
+                getListOfMiniApps(data.id)
+            }
+            "Categorires"->{
+                _binding!!.toolbar.name.text = "All Categories"
+                _binding!!.searchLayout.visibility = View.GONE
+                val value = requireActivity().intent.getStringExtra(DATA)
+                val gson = Gson()
+                val categoryListType = object : TypeToken<ArrayList<Category?>?>() {}.type
+                val categories: ArrayList<Category> = gson.fromJson(value, categoryListType)
+                setMainCategoryLayout(categories)
+
+            }
+            "Popular"->{
+                _binding!!.toolbar.name.text = "Popular Stores"
+                _binding!!.searchLayout.visibility = View.GONE
+                val value = requireActivity().intent.getStringExtra(DATA)
+                val gson = Gson()
+                val popularType = object : TypeToken<ArrayList<MiniApp?>?>() {}.type
+                val Popular: ArrayList<MiniApp> = gson.fromJson(value, popularType)
+                setLayout(Popular)
+            }
+            "Trending"->{
+                _binding!!.toolbar.name.text = "Trending Stores"
+                _binding!!.searchLayout.visibility = View.GONE
+                val value = requireActivity().intent.getStringExtra(DATA)
+                val gson = Gson()
+                val TrendingType = object : TypeToken<ArrayList<MiniApp?>?>() {}.type
+                val Trending: ArrayList<MiniApp> = gson.fromJson(value, TrendingType)
+                setLayout(Trending)
+            }
+
+            "Search"->{
+                _binding!!.searchLayout.visibility = View.VISIBLE
+                _binding!!.toolbar.name.text = "Search"
+            }
+
         }
 
         _binding!!.search.addTextChangedListener {
@@ -61,6 +93,22 @@ class SelectedCategoryFragment : BaseFragment<FragmentSelectedCategoryBinding>()
         return _binding?.root
     }
 
+    private fun setMainCategoryLayout(categories: ArrayList<Category>) {
+        val mAdapter = CategoryAdapter<Category>(object : RecyclerClickListener {
+            override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
+                if (data is Category){
+                    ContainerActivity.OpenContainerType2(requireContext(),"SelectedCategoryFragment","CategoryMiniApp",data)
+                }
+            }
+
+        })
+        _binding!!.listOfStores.apply {
+            layoutManager = GridLayoutManager(requireContext(), 4)
+            adapter = mAdapter
+        }
+        mAdapter.addAllItem(categories)
+
+    }
 
 
     private fun SearchMiniApps(name: String) {

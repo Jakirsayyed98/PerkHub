@@ -57,6 +57,7 @@
                 android:background="@color/white"
                 android:orientation="vertical">
 
+<!--                Search-->
                 <androidx.cardview.widget.CardView
                     android:id="@+id/search"
                     android:layout_width="match_parent"
@@ -117,6 +118,7 @@
                             android:textStyle="bold" />
 
                         <TextView
+                            android:id="@+id/AllCategories"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
@@ -223,7 +225,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp15">
 
-                    <androidx.viewpager.widget.ViewPager
+                    <androidx.viewpager2.widget.ViewPager2
                         android:id="@+id/bannerKocMarket"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
