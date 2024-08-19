@@ -15,7 +15,7 @@ import app.perkhub.Utils.RecyclerClickListener
 import com.bumptech.glide.Glide
 
 
-class BannerViewPagerAdapter  internal constructor(sliderItem: MutableList<SliderModelMain>, viewPager: ViewPager2, val clickListener: RecyclerClickListener):
+class BannerViewPagerAdapter(sliderItem: MutableList<SliderModelMain>, viewPager: ViewPager2, var clickListener: RecyclerClickListener):
     RecyclerView.Adapter<BannerViewPagerAdapter.SliderViewHolder>(){
     lateinit var context: Context
     val SliderItemlist:List<SliderModelMain>
@@ -29,19 +29,12 @@ class BannerViewPagerAdapter  internal constructor(sliderItem: MutableList<Slide
 
     class SliderViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
         val sliderItem: ImageView =itemView.findViewById(R.id.bannerItem)
-//        val icon: ImageView =itemView.findViewById(R.id.icon)
-//        val cashback : TextView = itemView.findViewById(R.id.cashback)
 
         fun SliderData(SliderImageItem: SliderModelMain){
             kotlin.runCatching {
                 Glide.with(itemView.context).load(SliderImageItem.image).centerCrop().into(sliderItem)
             }
-//            kotlin.runCatching {
-//                Glide.with(itemView.context).load(SliderImageItem.icon).placeholder(R.drawable.loding_app_icon).circleCrop().into(icon)
-//            }
 
-
-//            cashback.text = SliderImageItem.cashback!!.replace(" Cashback","\nCashback").replace(" cashback","\ncashback")
         }
     }
 
@@ -52,18 +45,10 @@ class BannerViewPagerAdapter  internal constructor(sliderItem: MutableList<Slide
     override fun onBindViewHolder(holder: SliderViewHolder, position: Int) {
         holder.SliderData(SliderItemlist[position])
         holder.sliderItem.setOnClickListener {
-            clickListener.RecyclerClickListener(0, SliderItemlist[position].id.toString(), "AppCategory")
+            clickListener.RecyclerClickListener(0, SliderItemlist[position].url.toString(), "AppCategory")
         }
     }
-
-
     override fun getItemCount(): Int {
         return SliderItemlist.size
     }
-
-//    @SuppressLint("NotifyDataSetChanged")
-//    private val runnable= Runnable {
-//        sliderItem.addAll(sliderItem)
-//        notifyDataSetChanged()
-//    }
 }

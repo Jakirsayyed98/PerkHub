@@ -21,7 +21,7 @@ class TrendingStoresAdapter<S>(val cliklistner : RecyclerClickListener): BaseRec
                     rupee.visibility =if (s.cb_active=="1")  View.VISIBLE else View.GONE
                     storename.text = s.name
                     binding.root.setOnClickListener {
-                        cliklistner.RecyclerClickListener(0,s.url,null)
+                        cliklistner.RecyclerClickListener(0,s.url,s)
                     }
                 }
             }

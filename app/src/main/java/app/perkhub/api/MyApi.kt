@@ -77,6 +77,15 @@ interface MyApi {
         @Query("token") token:String
     ):Response<MiniAppbyCategory>
 
+    //searchMiniApps
+    @POST("genrateSubID")
+    suspend fun generateUrl(
+        @Query("user_id") user_id:String,
+        @Query("miniapp_id") miniapp_id:String
+    ):Response<MiniAppbyCategory>
+
+
+
     companion object{
       operator  fun invoke():MyApi{
             var BaseURl = "http://perkhub.in/perkAdmin/api/"

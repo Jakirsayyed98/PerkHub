@@ -142,7 +142,10 @@ class SelectedCategoryFragment : BaseFragment<FragmentSelectedCategoryBinding>()
     private fun setLayout(data: List<MiniApp>) {
         var mAdapter = MiniAppCategoryAdapter<MiniApp>(object : RecyclerClickListener {
             override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
-                requireContext().openCustomTab(type)
+                if (data is MiniApp){
+                    ContainerActivity.OpenContainerType2(requireContext(),"StoreDetailFragment",data.name,data)
+                }
+
             }
         })
         _binding!!.listOfStores.apply {

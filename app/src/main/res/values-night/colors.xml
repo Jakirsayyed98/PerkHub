@@ -6,8 +6,9 @@
     <color name="blue">#FFF</color>
     <color name="grey">#BDBDBD</color>
     <color name="BG_color">#000</color>
+    <color name="btn_text">#fff</color>
     <color name="main_color">#5550BC</color>
-
+    <color name="green">#56C35B</color>
 
 
     <!--    // const BG_color = Color(0xFFF7F5F7);-->

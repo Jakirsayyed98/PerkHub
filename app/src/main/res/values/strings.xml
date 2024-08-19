@@ -10,4 +10,7 @@
     <string name="please_enter_your_detail">Please Enter your Detail</string>
     <string name="enter_your_detail_for">Enter your detail for Better Experience</string>
     <string name="search_by_store_name">\tSearch by Store name</string>
+    <string name="about_s">About %s</string>
+    <string name="share_earn"><![CDATA[Share & Earn]]></string>
+    <string name="shop_earn"><![CDATA[Shop & Earn]]></string>
 </resources>

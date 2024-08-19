@@ -29,3 +29,11 @@ fun Context.openCustomTab(uri: String?) {
 fun setSuffixAmount(text : String):String{
     return "₹"+text
 }
+
+fun Context.Share(name:String,url:String){
+    val shareData = Intent(Intent.ACTION_SEND)
+    shareData.type = "text/plain"
+    val dataToShare = "Hi,\n\n I found best offer on $name just shop now bu using below url Shop now :)\n\n $url"
+    shareData.putExtra(Intent.EXTRA_TEXT, dataToShare)
+    startActivity(Intent.createChooser(shareData, "Share Via"))
+}

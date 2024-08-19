@@ -20,7 +20,7 @@ class PopularStoresAdapter<S>(val clickListener: RecyclerClickListener):BaseRecy
                     name.text = s.name
                     cbtext.text = s.cb_percentage
                     root.setOnClickListener {
-                        clickListener.RecyclerClickListener(position,s.url,"")
+                        clickListener.RecyclerClickListener(position,s.name,s)
                     }
                 }
             }

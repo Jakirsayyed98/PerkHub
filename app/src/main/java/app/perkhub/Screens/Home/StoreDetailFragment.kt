@@ -1,0 +1,90 @@
+package app.perkhub.Screens.Home
+
+import android.os.Build
+import android.os.Bundle
+import android.text.Html
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import app.perkhub.R
+import app.perkhub.Screens.Home.Model.Home.MiniApp
+import app.perkhub.Screens.Home.Model.MiniAppByCategory.MiniAppbyCategory
+import app.perkhub.Utils.BaseFragment
+import app.perkhub.Utils.CONTAINER_TYPE_KEY1
+import app.perkhub.Utils.DATA
+import app.perkhub.Utils.Share
+import app.perkhub.Utils.openCustomTab
+import app.perkhub.api.ApiListener
+import app.perkhub.databinding.FragmentStoreDetailBinding
+import com.bumptech.glide.Glide
+import com.google.gson.Gson
+
+
+class StoreDetailFragment : BaseFragment<FragmentStoreDetailBinding>() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        _binding = FragmentStoreDetailBinding.inflate(layoutInflater,container,false)
+
+        _binding!!.toolbar.backbtn.setOnClickListener {
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
+        var data = Gson().fromJson<MiniApp>(requireActivity().intent.getStringExtra(DATA),MiniApp::class.java)
+        _binding!!.toolbar.name.text = data.name
+        _binding!!.AboutTitle.text = getString(R.string.about_s,data.name)
+        Glide.with(requireContext()).load(data.logo).into(_binding!!.logo)
+        _binding!!.AboutStore.text = data.about
+        _binding!!.terms.text = Html.fromHtml(data.cashback_terms, Html.FROM_HTML_MODE_COMPACT)
+        _binding!!.Cashbackrates.text = Html.fromHtml(data.cashback_rates, Html.FROM_HTML_MODE_COMPACT)
+        _binding!!.working.text = Html.fromHtml(data.howitswork, Html.FROM_HTML_MODE_COMPACT)
+
+        _binding!!.Share.setOnClickListener {
+            GetUrl(data.id,"Share")
+        }
+        _binding!!.Shop.setOnClickListener {
+            GetUrl(data.id,"Shop")
+        }
+
+
+        return _binding?.root
+    }
+
+    private fun GetUrl(id: Int, type: String) {
+        viewModel.generateUrl(getUserID()!!,id.toString(),object : ApiListener<MiniAppbyCategory>{
+            override fun onSuccess(t: MiniAppbyCategory?, mess: String) {
+
+                t!!.let {
+                    if (it.errorCode=="0" && it.data.size>0){
+                        if (type.equals("Share")){
+                            t!!.data.get(0).let {
+                                requireContext().Share(it.name,it.url)
+                            }
+
+                        }else{
+                            requireContext().openCustomTab(t!!.data.get(0).url)
+                        }
+                    }
+                }
+
+            }
+        })
+
+
+    }
+
+    companion object {
+        @JvmStatic
+        fun newInstance() =
+            StoreDetailFragment().apply {
+
+            }
+    }
+}

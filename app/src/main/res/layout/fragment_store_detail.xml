@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Screens.Home.StoreDetailFragment">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentTop="true"/>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@id/toolbar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingStart="@dimen/dp15"
+            android:paddingEnd="@dimen/dp15">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="@dimen/dp150"
+                android:layout_height="@dimen/dp75"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/dp30"
+                android:layout_marginBottom="@dimen/dp15"
+                app:cardCornerRadius="@dimen/dp10"
+                app:cardElevation="@dimen/dp5">
+
+                <ImageView
+                    android:id="@+id/logo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </androidx.cardview.widget.CardView>
+            <!--            About Stores -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp20"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/AboutTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/about_s"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp18"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/AboutStore"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp5"
+                    android:text="About %s"
+                    android:lineSpacingExtra="1dp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp14" />
+
+
+            </LinearLayout>
+
+            <!--            Terms And Conditions-->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp20"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/TermsTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Terms and Condition "
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp18"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/terms"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp5"
+                    android:text="About %s"
+                    android:lineSpacingExtra="1dp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp14" />
+
+
+            </LinearLayout>
+
+            <!--            Cashback rates Stores -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp20"
+                android:orientation="vertical">
+
+                <TextView
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Cashback rates"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp18"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/Cashbackrates"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp5"
+                    android:text="About %s"
+                    android:lineSpacingExtra="1dp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp14" />
+
+
+            </LinearLayout>
+
+            <!--            Work And Conditions-->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp20"
+
+                android:orientation="vertical">
+
+                <TextView
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="How it's Work"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp18"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/working"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp5"
+                    android:text="About %s"
+                    android:lineSpacingExtra="1dp"
+                    android:textColor="@color/black"
+                    android:layout_marginBottom="@dimen/dp150"
+                    android:textSize="@dimen/sp14" />
+
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/Share"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAllCaps="false"
+            android:background="@color/green"
+            android:layout_margin="@dimen/dp10"
+            android:textColor="@color/btn_text"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:text="@string/share_earn"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/Shop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAllCaps="false"
+            android:background="@color/main"
+            android:layout_margin="@dimen/dp10"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/btn_text"
+            android:text="@string/shop_earn"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

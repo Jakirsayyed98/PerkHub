@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="black">#FF000000</color>
+
     <color name="white">#FFFFFFFF</color>
     <color name="main">#5550BC</color>
     <color name="blue">#1F10C3</color>
     <color name="grey">#595959</color>
     <color name="BG_color">#F7F5F7</color>
+    <color name="btn_text">#fff</color>
     <color name="main_color">#5550BC</color>
-
+    <color name="green">#56C35B</color>
 
 
 <!--    // const BG_color = Color(0xFFF7F5F7);-->

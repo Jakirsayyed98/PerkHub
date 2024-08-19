@@ -149,7 +149,10 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         val mAdapter = PopularStoresAdapter<MiniApp>(object : RecyclerClickListener {
             override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
 
-               requireContext().openCustomTab(type)
+                if (data is MiniApp){
+                    ContainerActivity.OpenContainerType2(requireContext(),"StoreDetailFragment",data.name,data)
+                }
+
             }
         })
         _binding!!.popularstore.apply {
@@ -169,7 +172,10 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         Log.d("PopularCountTre",trending.size.toString())
         var mAdapter = TrendingStoresAdapter<MiniApp>(object : RecyclerClickListener {
             override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
-                requireContext().openCustomTab(type)
+                if (data is MiniApp){
+                    ContainerActivity.OpenContainerType2(requireContext(),"StoreDetailFragment",data.name,data)
+                }
+
             }
         })
 
@@ -207,7 +213,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
 
         _binding!!.bannerKocMarket.adapter = BannerViewPagerAdapter(imageList, _binding!!.bannerKocMarket, object : RecyclerClickListener {
             override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
-
+                requireContext().openCustomTab(type)
             }
         })
 
@@ -282,8 +288,6 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
             // Token ID :-  d8F1TQ_rQCqJ_kY9ELyd4M:APA91bH_yeiKZdAaVYSjnNhe3tDrzX4nwZal-FSzSD0d4uASMpq191G-m8ObnH9Tj8tNiw4wQ6dEQANIlSkKiffGU9KyOzeWndoGe4MAC_I-QmJsS0aBGsdO5BwqBTd-FU1mgtAljE8k
             // Get new FCM registration token
             val token = task.result
-
-            Log.d("Token",token)
             viewModel.updateNotification(getUserID()!!, token, object : ApiListener<MiniAppbyCategory> {
                 override fun onSuccess(t: MiniAppbyCategory?, mess: String) {
 

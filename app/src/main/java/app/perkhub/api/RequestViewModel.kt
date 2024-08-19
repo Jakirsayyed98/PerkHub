@@ -102,7 +102,20 @@ class RequestViewModel : ViewModel() {
             }
         }
     }
- fun updateNotification(
+
+    fun generateUrl(
+        user_id: String, miniapp_id: String, listner: ApiListener<MiniAppbyCategory>
+    ) {
+        viewModelScope.launch(SetErrorhandler()) {
+            withContext(kotlin.coroutines.coroutineContext) {
+                MyApi().generateUrl(user_id, miniapp_id).body()?.let { it ->
+                    listner.onResponse(it)
+                }
+            }
+        }
+    }
+
+    fun updateNotification(
         user_id: String, token: String, listner: ApiListener<MiniAppbyCategory>
     ) {
         viewModelScope.launch(SetErrorhandler()) {
