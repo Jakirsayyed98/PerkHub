@@ -1,5 +1,6 @@
 package app.perkhub.api
 
+import app.perkhub.Screens.Home.Model.Games.GamesRes
 import app.perkhub.Screens.Home.Model.Home.HomeRes
 import app.perkhub.Screens.Home.Model.LootProduct.LootProductRes
 import app.perkhub.Screens.Home.Model.MiniAppByCategory.MiniAppbyCategory
@@ -83,6 +84,12 @@ interface MyApi {
         @Query("user_id") user_id:String,
         @Query("miniapp_id") miniapp_id:String
     ):Response<MiniAppbyCategory>
+
+    //searchMiniApps
+    @POST("getAllGames")
+    suspend fun getAllGames(
+        @Query("user_id") user_id:String
+    ):Response<GamesRes>
 
 
 

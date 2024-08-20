@@ -16,7 +16,7 @@ class PopularStoresAdapter<S>(val clickListener: RecyclerClickListener):BaseRecy
         fun setData(s : S,position : Int){
             if (s is MiniApp){
                 with(binding){
-                    Glide.with(itemView.context).load(s.logo).into(logo)
+                    Glide.with(itemView.context).load(s.logo).centerCrop().into(logo)
                     name.text = s.name
                     cbtext.text = s.cb_percentage
                     root.setOnClickListener {

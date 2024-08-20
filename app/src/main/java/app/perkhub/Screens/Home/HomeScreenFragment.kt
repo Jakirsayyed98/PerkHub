@@ -21,9 +21,11 @@ import app.perkhub.ContainerActivity
 import app.perkhub.Screens.Home.Adapter.BannerViewPagerAdapter
 import app.perkhub.Screens.Home.Adapter.CategoryAdapter
 import app.perkhub.Screens.Home.Adapter.LootProductAdapter
+import app.perkhub.Screens.Home.Adapter.PopularGameAdapter
 import app.perkhub.Screens.Home.Adapter.PopularStoresAdapter
 import app.perkhub.Screens.Home.Adapter.SliderModelMain
 import app.perkhub.Screens.Home.Adapter.TrendingStoresAdapter
+import app.perkhub.Screens.Home.Model.Games.GamesRes
 import app.perkhub.Screens.Home.Model.Home.Banner1
 import app.perkhub.Screens.Home.Model.Home.Category
 import app.perkhub.Screens.Home.Model.Home.HomeRes
@@ -68,6 +70,10 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         }
         GlobalScope.async {
             getLootProduct()
+        }
+
+        GlobalScope.async {
+            getGamesData()
         }
 
         updateFirebaseToken()
@@ -145,7 +151,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
     }
 
     private fun setPopularStore(popular: java.util.ArrayList<MiniApp>) {
-        Log.d("PopularCount",popular.size.toString())
+        popular.shuffled()
         val mAdapter = PopularStoresAdapter<MiniApp>(object : RecyclerClickListener {
             override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
 
@@ -279,6 +285,38 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
 
         mAdapter.addAllItem(data)
     }
+
+
+    private fun getGamesData() {
+        viewModel.getAllGames(getUserID()!!,object : ApiListener<GamesRes>{
+            override fun onSuccess(t: GamesRes?, mess: String) {
+                if (t!!.errorCode == "0"){
+                    setPopularGamesLayout(t!!.data)
+                }
+            }
+
+            override fun onError(mess: String) {
+                super.onError(mess)
+
+            }
+        })
+    }
+
+    private fun setPopularGamesLayout(data: java.util.ArrayList<app.perkhub.Screens.Home.Model.Games.Data>) {
+        val mAdapter = PopularGameAdapter<app.perkhub.Screens.Home.Model.Games.Data>(object : RecyclerClickListener{
+            override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
+                if (data is app.perkhub.Screens.Home.Model.Games.Data){
+                    requireContext().openCustomTab(data.url)
+                }
+            }
+        })
+        _binding!!.populargames.apply {
+            layoutManager = GridLayoutManager(requireContext(),3,GridLayoutManager.HORIZONTAL,false)
+            adapter = mAdapter
+        }
+        mAdapter.addAllItem(if (data.size>24) data.subList(0,24) else data)
+    }
+
 
     private fun updateFirebaseToken() {
         FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->

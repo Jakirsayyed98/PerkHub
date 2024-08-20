@@ -2,6 +2,7 @@ package app.perkhub.api
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import app.perkhub.Screens.Home.Model.Games.GamesRes
 import app.perkhub.Screens.Home.Model.Home.HomeRes
 import app.perkhub.Screens.Home.Model.LootProduct.LootProductRes
 import app.perkhub.Screens.Home.Model.MiniAppByCategory.MiniAppbyCategory
@@ -121,6 +122,17 @@ class RequestViewModel : ViewModel() {
         viewModelScope.launch(SetErrorhandler()) {
             withContext(kotlin.coroutines.coroutineContext) {
                 MyApi().updateNotification(user_id, token).body()?.let { it ->
+                    listner.onResponse(it)
+                }
+            }
+        }
+    }
+
+
+    fun getAllGames(user_id: String,listner: ApiListener<GamesRes>){
+        viewModelScope.launch(SetErrorhandler()) {
+            withContext(kotlin.coroutines.coroutineContext){
+                MyApi().getAllGames(user_id).body()?.let {
                     listner.onResponse(it)
                 }
             }
