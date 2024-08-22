@@ -12,7 +12,6 @@
         android:id="@+id/mainlayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
         android:orientation="vertical">
 
 
@@ -55,10 +54,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/white"
-                android:paddingBottom="@dimen/dp15"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/dp15">
 
-<!--                Search-->
+                <!--                Search-->
                 <androidx.cardview.widget.CardView
                     android:id="@+id/search"
                     android:layout_width="match_parent"
@@ -295,7 +294,6 @@
                 </LinearLayout>
 
 
-
                 <!--            Games  -->
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -336,6 +334,39 @@
                         android:layout_height="wrap_content" />
                 </LinearLayout>
 
+                <!--            Categoryies Active Deactive -->
+                <LinearLayout
+                    android:id="@+id/Activecategorylayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp10"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/dp10">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="Trending Shopping Categories"
+                            android:textAlignment="textStart"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/sp15"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/ActiveCategoryList"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </LinearLayout>
@@ -345,5 +376,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:indeterminateTint="@color/black"/>
+        android:indeterminateTint="@color/black" />
 </RelativeLayout>

@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import app.perkhub.ContainerActivity
 import app.perkhub.Screens.Home.Adapter.BannerViewPagerAdapter
+import app.perkhub.Screens.Home.Adapter.CategoryActiveAdapter
 import app.perkhub.Screens.Home.Adapter.CategoryAdapter
 import app.perkhub.Screens.Home.Adapter.LootProductAdapter
 import app.perkhub.Screens.Home.Adapter.PopularGameAdapter
@@ -28,6 +29,7 @@ import app.perkhub.Screens.Home.Adapter.TrendingStoresAdapter
 import app.perkhub.Screens.Home.Model.Games.GamesRes
 import app.perkhub.Screens.Home.Model.Home.Banner1
 import app.perkhub.Screens.Home.Model.Home.Category
+import app.perkhub.Screens.Home.Model.Home.CategoryX
 import app.perkhub.Screens.Home.Model.Home.HomeRes
 import app.perkhub.Screens.Home.Model.Home.MiniApp
 import app.perkhub.Screens.Home.Model.LootProduct.Data
@@ -119,6 +121,13 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
                             Banner1Func(it.banner1)
                         }
 
+                        if (it.category_list.size <1){
+                            _binding!!.Activecategorylayout.visibility = View.GONE
+                        }else{
+                            _binding!!.Activecategorylayout.visibility = View.VISIBLE
+                            setActivatecategoryLayout(it.category_list)
+                        }
+
                     }
                 }
             }
@@ -128,6 +137,22 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
 
             }
         })
+    }
+
+    private fun setActivatecategoryLayout(categoryList: java.util.ArrayList<CategoryX>) {
+
+        var mAdapter = CategoryActiveAdapter<CategoryX>(object : RecyclerClickListener{
+            override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
+
+            }
+        })
+
+        _binding!!.ActiveCategoryList.apply {
+            layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
+            adapter = mAdapter
+        }
+
+        mAdapter.addAllItem(categoryList)
     }
 
     private fun setMainCategoryLayout(categories: ArrayList<Category>) {
