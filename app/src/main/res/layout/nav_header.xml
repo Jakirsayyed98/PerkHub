@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/BG_color"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/dp15">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="@dimen/dp75"
+        android:layout_height="@dimen/dp75"
+        android:layout_margin="@dimen/dp15"
+        app:cardCornerRadius="@dimen/dp75">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/Profilename"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp15"
+        android:layout_marginTop="@dimen/dp5"
+        android:text="Name"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp20"
+        android:textStyle="bold" />
+
+
+    <TextView
+        android:id="@+id/email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp15"
+        android:layout_marginTop="@dimen/dp5"
+        android:text="Email"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp14"
+        android:textStyle="normal" />
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/dp30"
+        android:background="@color/underline"/>
+
+</LinearLayout>

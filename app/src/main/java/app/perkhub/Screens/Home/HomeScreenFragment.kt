@@ -1,6 +1,5 @@
 package app.perkhub.Screens.Home
 
-import android.R
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
@@ -9,8 +8,11 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
@@ -18,6 +20,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import app.perkhub.ContainerActivity
+import app.perkhub.R
+
 import app.perkhub.Screens.Home.Adapter.BannerViewPagerAdapter
 import app.perkhub.Screens.Home.Adapter.CategoryActiveAdapter
 import app.perkhub.Screens.Home.Adapter.CategoryAdapter
@@ -37,6 +41,7 @@ import app.perkhub.Screens.Home.Model.LootProduct.LootProductRes
 import app.perkhub.Screens.Home.Model.MiniAppByCategory.MiniAppbyCategory
 import app.perkhub.Utils.BaseFragment
 import app.perkhub.Utils.RecyclerClickListener
+import app.perkhub.Utils.USERDATA
 import app.perkhub.Utils.openCustomTab
 import app.perkhub.Utils.toast
 import app.perkhub.api.ApiListener
@@ -51,6 +56,7 @@ import kotlinx.coroutines.async
 class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
 
     private val handler = Handler(Looper.getMainLooper())
+    lateinit var toggle : ActionBarDrawerToggle
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,6 +69,9 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentHomeScreenBinding.inflate(layoutInflater, container, false)
+
+        menuset()
+
         _binding!!.progressbar.visibility = View.VISIBLE
         _binding!!.mainlayout.visibility = View.GONE
         clickEvenets()
@@ -81,6 +90,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         updateFirebaseToken()
         return _binding?.root
     }
+
 
     private fun clickEvenets() {
         with(_binding!!){
@@ -357,6 +367,66 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
                 }
             })
         })
+    }
+
+
+    private fun menuset() {
+
+        toggle = ActionBarDrawerToggle(requireActivity(),_binding!!.drawerlayout, R.string.open,R.string.close)
+        _binding!!.drawerlayout.addDrawerListener(toggle)
+        toggle.syncState()
+        val name = _binding!!.navView.findViewById<TextView>(R.id.Profilename)
+        val email = _binding!!.navView.findViewById<TextView>(R.id.email)
+//        name.text = getSharedpref().getUser(USERDATA).data.get(0).name.toString()
+//        email.text = getSharedpref().getUser(USERDATA).data.get(0).email.toString()
+        _binding!!.profile.setOnClickListener {
+
+        }
+        _binding!!.navView.setNavigationItemSelectedListener {
+            when(it.itemId){
+                R.id.home-> {
+                    requireContext().toast("Home")
+                }
+                R.id.transation-> {
+                    requireContext().toast("Transaction")
+                }
+                R.id.wallet->{
+                    requireContext().toast("Wallet")
+                }
+                R.id.share-> {
+                    requireContext().toast("share")
+                }
+                R.id.rateus-> {
+                    requireContext().toast("rateus")
+                }
+                R.id.PrivacyPolicy->{
+                    requireContext().toast("PrivacyPolicy")
+                }
+
+                R.id.aboutus-> {
+                    requireContext().toast("aboutus")
+                }
+                R.id.contactus-> {
+                    requireContext().toast("contactus")
+                }
+                R.id.LogOut->{
+                    requireContext().toast("LogOut")
+                }
+
+
+
+            }
+            true
+        }
+
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return super.onOptionsItemSelected(item)
+        if (toggle.onOptionsItemSelected(item)){
+            return  true
+        }
     }
 
     companion object {
