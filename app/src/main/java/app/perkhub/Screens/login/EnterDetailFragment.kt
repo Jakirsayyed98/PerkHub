@@ -72,6 +72,7 @@ class EnterDetailFragment : BaseFragment<FragmentEnterDetailBinding>() {
                 dissmissProgress()
                 getSharedpref().saveBool(LOGIN, true)
                 getSharedpref().saveUser(USERDATA, t!!)
+
                 ContainerActivity.OpenContainer(requireContext(), "HomeScreenFragment", null)
                 activity?.finish()
             }

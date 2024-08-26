@@ -37,3 +37,4 @@ fun Context.Share(name:String,url:String){
     shareData.putExtra(Intent.EXTRA_TEXT, dataToShare)
     startActivity(Intent.createChooser(shareData, "Share Via"))
 }
+

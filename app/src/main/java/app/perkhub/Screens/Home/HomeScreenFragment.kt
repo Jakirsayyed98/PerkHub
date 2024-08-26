@@ -1,6 +1,8 @@
 package app.perkhub.Screens.Home
 
 import android.app.Activity
+import android.app.Dialog
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -13,6 +15,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.widget.AppCompatButton
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
@@ -375,12 +378,13 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         toggle = ActionBarDrawerToggle(requireActivity(),_binding!!.drawerlayout, R.string.open,R.string.close)
         _binding!!.drawerlayout.addDrawerListener(toggle)
         toggle.syncState()
-        val name = _binding!!.navView.findViewById<TextView>(R.id.Profilename)
-        val email = _binding!!.navView.findViewById<TextView>(R.id.email)
-//        name.text = getSharedpref().getUser(USERDATA).data.get(0).name.toString()
-//        email.text = getSharedpref().getUser(USERDATA).data.get(0).email.toString()
+        val name = _binding!!.navView.getHeaderView(0).findViewById<TextView>(R.id.Profilename)
+        val email = _binding!!.navView.getHeaderView(0).findViewById<TextView>(R.id.email)
+//        val email = _binding!!.navView.findViewById<TextView>(R.id.email)
+        name.text = getSharedpref().getUser(USERDATA).data[0].name.toString()
+        email.text = getSharedpref().getUser(USERDATA).data.get(0).email.toString()
         _binding!!.profile.setOnClickListener {
-
+            _binding!!.drawerlayout.open()
         }
         _binding!!.navView.setNavigationItemSelectedListener {
             when(it.itemId){
@@ -394,10 +398,10 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
                     requireContext().toast("Wallet")
                 }
                 R.id.share-> {
-                    requireContext().toast("share")
+                    requireContext().toast("Share")
                 }
                 R.id.rateus-> {
-                    requireContext().toast("rateus")
+                    requireContext().toast("Rateus")
                 }
                 R.id.PrivacyPolicy->{
                     requireContext().toast("PrivacyPolicy")
@@ -410,7 +414,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
                     requireContext().toast("contactus")
                 }
                 R.id.LogOut->{
-                    requireContext().toast("LogOut")
+                    requireContext().OpenDialogForLogOut()
                 }
 
 
@@ -427,6 +431,27 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         if (toggle.onOptionsItemSelected(item)){
             return  true
         }
+    }
+
+    fun Context.OpenDialogForLogOut(){
+
+        val dialog = Dialog(this)
+        dialog.setContentView(R.layout.logout_dialog_layout)
+        val cancel = dialog.findViewById<AppCompatButton>(R.id.cancel)
+        val leave = dialog.findViewById<AppCompatButton>(R.id.leave)
+        dialog.setCancelable(true)
+        cancel.setOnClickListener {
+            dialog.cancel()
+            _binding!!.drawerlayout.close()
+            requireContext().toast("Dont want to exit")
+        }
+        leave.setOnClickListener {
+            dialog.cancel()
+            _binding!!.drawerlayout.close()
+            requireContext().toast("Exit Successfully")
+        }
+
+        dialog.show()
     }
 
     companion object {
