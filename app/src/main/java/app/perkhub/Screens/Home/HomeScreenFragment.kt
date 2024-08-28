@@ -389,10 +389,11 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         _binding!!.navView.setNavigationItemSelectedListener {
             when(it.itemId){
                 R.id.home-> {
-                    requireContext().toast("Home")
+                    requireActivity().onBackPressedDispatcher.onBackPressed()
                 }
                 R.id.transation-> {
                     requireContext().toast("Transaction")
+                    ContainerActivity.OpenContainer(requireContext(),"TransactionHistoryFragment","")
                 }
                 R.id.wallet->{
                     requireContext().toast("Wallet")
@@ -416,9 +417,6 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
                 R.id.LogOut->{
                     requireContext().OpenDialogForLogOut()
                 }
-
-
-
             }
             true
         }
@@ -443,7 +441,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         cancel.setOnClickListener {
             dialog.cancel()
             _binding!!.drawerlayout.close()
-            requireContext().toast("Dont want to exit")
+            requireContext().toast("Don't want to exit")
         }
         leave.setOnClickListener {
             dialog.cancel()

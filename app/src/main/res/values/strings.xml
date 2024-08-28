@@ -20,4 +20,7 @@
     <string name="open">Open</string>
     <string name="close">Close</string>
     <string name="logout">Logout</string>
+    <string name="txn_id"><b>Txn ID : </b>%s</string>
+    <string name="sale_amount">Sale Amount</string>
+    <string name="commission_amount">Commission Amount</string>
 </resources>
