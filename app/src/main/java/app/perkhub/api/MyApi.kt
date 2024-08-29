@@ -4,6 +4,7 @@ import app.perkhub.Screens.Home.Model.Games.GamesRes
 import app.perkhub.Screens.Home.Model.Home.HomeRes
 import app.perkhub.Screens.Home.Model.LootProduct.LootProductRes
 import app.perkhub.Screens.Home.Model.MiniAppByCategory.MiniAppbyCategory
+import app.perkhub.Screens.Home.Model.TransactionModel.TransactionDataRes
 import app.perkhub.Screens.login.models.LoginRes
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -90,6 +91,12 @@ interface MyApi {
     suspend fun getAllGames(
         @Query("user_id") user_id:String
     ):Response<GamesRes>
+
+    //searchMiniApps
+    @POST("getTxnList")
+    suspend fun getAllTransaction(
+        @Query("user_id") user_id:String
+    ):Response<TransactionDataRes>
 
 
 
