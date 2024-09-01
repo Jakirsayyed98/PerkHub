@@ -8,6 +8,8 @@ import app.perkhub.R
 import app.perkhub.Screens.Home.Model.TransactionModel.Data
 import app.perkhub.Utils.BaseRecyclerView
 import app.perkhub.Utils.RecyclerClickListener
+import app.perkhub.Utils.onlyDatewithMonth
+import app.perkhub.Utils.setSuffixAmount
 import app.perkhub.databinding.TransactionLayoutBinding
 import com.bumptech.glide.Glide
 
@@ -17,23 +19,25 @@ class TransactionLayoutAdapter<S>(val clickListener: RecyclerClickListener):Base
         fun setData(s: S) {
             if (s is Data){
 
-                binding.TxnDate.text = s.transaction_date
+                binding.TxnDate.text = onlyDatewithMonth( s.created_at)
                 if (s.status=="0"){
-                    binding.statusView.setBackgroundColor(ContextCompat.getColor(itemView.context,R.color.orange))
+                    binding.statusText.setBackgroundColor(ContextCompat.getColor(itemView.context,R.color.orange))
                     binding.statusText.text = "Pending"
                 }else if (s.status =="1"){
-                    binding.statusView.setBackgroundColor(ContextCompat.getColor(itemView.context,R.color.green))
+                    binding.statusText.setBackgroundColor(ContextCompat.getColor(itemView.context,R.color.green))
                     binding.statusText.text = "Verified"
                 }else{
-                    binding.statusView.setBackgroundColor(ContextCompat.getColor(itemView.context,R.color.red))
+                    binding.statusText.setBackgroundColor(ContextCompat.getColor(itemView.context,R.color.red))
                     binding.statusText.text = "Rejected"
                 }
                 Glide.with(itemView.context).load(s.miniApp[0].icon).centerCrop().into(binding.storeIcon)
                 binding.storeName.text = s.miniApp[0].name
                 binding.TxnID.text = itemView.context.getString(R.string.txn_id,s.transaction_id)
-                binding.SaleAmount.text = itemView.context.getString(R.string.sale_amount,s.sale_amount)
-                binding.Commision.text = itemView.context.getString(R.string.commission_amount,s.user_commission)
-
+                binding.SaleAmount.text = itemView.context.getString(R.string.sale_amount,setSuffixAmount(s.sale_amount))
+                binding.Commision.text = itemView.context.getString(R.string.commission_amount,setSuffixAmount(s.user_commission))
+                binding.root.setOnClickListener {
+                    clickListener.RecyclerClickListener(0,"transaction",s)
+                }
             }
         }
     }

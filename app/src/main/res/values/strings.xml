@@ -22,5 +22,5 @@
     <string name="logout">Logout</string>
     <string name="txn_id"><b>Txn ID : </b>%s</string>
     <string name="sale_amount"><b>Sale Amount : </b>%s</string>
-    <string name="commission_amount"><b>Commission Amount : </b>%s</string>
+    <string name="commission_amount"><b>CB Amount : </b>%s</string>
 </resources>

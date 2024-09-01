@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
+import app.perkhub.ContainerActivity
 import app.perkhub.R
 import app.perkhub.Screens.Home.Adapter.TransactionLayoutAdapter
 import app.perkhub.Screens.Home.Model.TransactionModel.Data
@@ -49,9 +50,12 @@ class TransactionHistoryFragment : BaseFragment<FragmentTransactionHistoryBindin
     }
 
     private fun setData(data: List<Data>) {
+
         val mAdapter = TransactionLayoutAdapter<Data>(object :RecyclerClickListener{
             override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
-
+                if (data is Data){
+                    ContainerActivity.OpenContainer(requireContext(),"TransactionDetailFragment",data)
+                }
             }
         })
 
