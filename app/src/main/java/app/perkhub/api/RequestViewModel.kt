@@ -150,6 +150,15 @@ class RequestViewModel : ViewModel() {
         }
     }
 
+    fun getUserDetail(user_id: String,listner: ApiListener<LoginRes>){
+        viewModelScope.launch(SetErrorhandler()) {
+            withContext(kotlin.coroutines.coroutineContext){
+                MyApi().getUserDetail(user_id).body()?.let {
+                    listner.onResponse(it)
+                }
+            }
+        }
+    }
 
 }
 

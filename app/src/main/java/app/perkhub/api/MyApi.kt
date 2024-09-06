@@ -99,10 +99,17 @@ interface MyApi {
     ):Response<TransactionDataRes>
 
 
+    //searchMiniApps
+    @POST("getUserDetails")
+    suspend fun getUserDetail(
+        @Query("user_id") user_id:String
+    ):Response<LoginRes>
+
+
 
     companion object{
       operator  fun invoke():MyApi{
-            var BaseURl = "http://perkhub.in/perkAdmin/api/"
+            var BaseURl = "https://perkhub.in/perkAdmin/api/"
             val httploggingInterceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
 
             val client = OkHttpClient.Builder().addInterceptor(httploggingInterceptor).build()

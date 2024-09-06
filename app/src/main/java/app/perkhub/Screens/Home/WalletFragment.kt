@@ -1,0 +1,66 @@
+package app.perkhub.Screens.Home
+
+import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import app.perkhub.R
+import app.perkhub.Screens.login.models.Data
+import app.perkhub.Screens.login.models.LoginRes
+import app.perkhub.Utils.BaseFragment
+import app.perkhub.Utils.setSuffixAmount
+import app.perkhub.api.ApiListener
+import app.perkhub.databinding.FragmentWalletBinding
+
+
+class WalletFragment : BaseFragment<FragmentWalletBinding>() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        _binding = FragmentWalletBinding.inflate(layoutInflater,container,false)
+        _binding!!.toolbar.backbtn.setOnClickListener {
+            requireActivity().onBackPressedDispatcher?.onBackPressed()
+        }
+
+        _binding!!.toolbar.name.text = "Wallet"
+
+        getUserDetail()
+
+        return _binding?.root
+    }
+
+    private fun getUserDetail() {
+            viewModel.getUserDetail(getUserID()!!,object : ApiListener<LoginRes>{
+                override fun onSuccess(t: LoginRes?, mess: String) {
+                    t.let {
+                        if (t!!.errorCode.equals("0")){
+                            setUserData(t.data[0])
+                        }
+                    }
+                }
+            })
+    }
+
+    private fun setUserData(data: Data) {
+        _binding!!.available.text = setSuffixAmount(data.verified)
+        _binding!!.rejected.text = setSuffixAmount(data.rejected)
+        _binding!!.pending.text = setSuffixAmount(data.pending)
+    }
+
+    companion object {
+        @JvmStatic
+        fun newInstance() =
+            WalletFragment().apply {
+
+            }
+    }
+}

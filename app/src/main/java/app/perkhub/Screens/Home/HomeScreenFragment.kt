@@ -389,7 +389,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         _binding!!.navView.setNavigationItemSelectedListener {
             when(it.itemId){
                 R.id.home-> {
-                    requireActivity().onBackPressedDispatcher.onBackPressed()
+                    _binding!!.drawerlayout.close()
                 }
                 R.id.transation-> {
                     requireContext().toast("Transaction")
