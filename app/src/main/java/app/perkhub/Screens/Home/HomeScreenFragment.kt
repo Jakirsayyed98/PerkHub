@@ -394,9 +394,10 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
                 R.id.transation-> {
                     requireContext().toast("Transaction")
                     ContainerActivity.OpenContainer(requireContext(),"TransactionHistoryFragment","")
+
                 }
                 R.id.wallet->{
-                    requireContext().toast("Wallet")
+                    ContainerActivity.OpenContainer(requireContext(),"WalletFragment","")
                 }
                 R.id.share-> {
                     requireContext().toast("Share")

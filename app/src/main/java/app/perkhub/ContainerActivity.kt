@@ -18,6 +18,7 @@ import app.perkhub.Screens.Home.SelectedCategoryFragment
 import app.perkhub.Screens.Home.StoreDetailFragment
 import app.perkhub.Screens.Home.TransactionDetailFragment
 import app.perkhub.Screens.Home.TransactionHistoryFragment
+import app.perkhub.Screens.Home.WalletFragment
 import app.perkhub.Utils.BaseActivity
 import app.perkhub.Utils.CONTAINER_TYPE_KEY
 import app.perkhub.Utils.DATA
@@ -103,6 +104,10 @@ class ContainerActivity : BaseActivity<ActivityContainerBinding>() {
             }
             "TransactionDetailFragment"->{
                 addFragment(TransactionDetailFragment.newInstance())
+            }
+
+            "WalletFragment"->{
+                addFragment(WalletFragment.newInstance())
             }
         }
     }
