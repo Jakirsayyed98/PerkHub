@@ -5,6 +5,7 @@ import app.perkhub.Screens.Home.Model.Home.HomeRes
 import app.perkhub.Screens.Home.Model.LootProduct.LootProductRes
 import app.perkhub.Screens.Home.Model.MiniAppByCategory.MiniAppbyCategory
 import app.perkhub.Screens.Home.Model.TransactionModel.TransactionDataRes
+import app.perkhub.Screens.Home.Model.Withdrawal.withdrawalRes
 import app.perkhub.Screens.login.models.LoginRes
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -60,50 +61,58 @@ interface MyApi {
     ):Response<LootProductRes>
 
    //MiniAppByCategory
+   @FormUrlEncoded
     @POST("getMiniAppByCategory")
     suspend fun getMiniAppByCategory(
-        @Query("user_id") user_id:String,
-        @Query("category_id") category_id:String
+        @Field("user_id") user_id:String,
+        @Field("category_id") category_id:String
     ):Response<MiniAppbyCategory>
 //searchMiniApps
+@FormUrlEncoded
     @POST("searchMiniApps")
     suspend fun searchminiApps(
-        @Query("user_id") user_id:String,
-        @Query("miniapp_name") miniapp_name:String
+        @Field("user_id") user_id:String,
+        @Field("miniapp_name") miniapp_name:String
     ):Response<MiniAppbyCategory>
 
-    //searchMiniApps
+    @FormUrlEncoded
     @POST("updateNotificationToken")
     suspend fun updateNotification(
-        @Query("user_id") user_id:String,
-        @Query("token") token:String
+        @Field("user_id") user_id:String,
+        @Field("token") token:String
     ):Response<MiniAppbyCategory>
 
-    //searchMiniApps
+    @FormUrlEncoded
     @POST("genrateSubID")
     suspend fun generateUrl(
-        @Query("user_id") user_id:String,
-        @Query("miniapp_id") miniapp_id:String
+        @Field("user_id") user_id:String,
+        @Field("miniapp_id") miniapp_id:String
     ):Response<MiniAppbyCategory>
 
-    //searchMiniApps
+    @FormUrlEncoded
     @POST("getAllGames")
     suspend fun getAllGames(
-        @Query("user_id") user_id:String
+        @Field("user_id") user_id:String
     ):Response<GamesRes>
 
-    //searchMiniApps
+    @FormUrlEncoded
     @POST("getTxnList")
     suspend fun getAllTransaction(
-        @Query("user_id") user_id:String
+        @Field("user_id") user_id:String
     ):Response<TransactionDataRes>
 
 
-    //searchMiniApps
+    @FormUrlEncoded
     @POST("getUserDetails")
     suspend fun getUserDetail(
-        @Query("user_id") user_id:String
+        @Field("user_id") user_id:String
     ):Response<LoginRes>
+
+    @FormUrlEncoded
+    @POST("withdrawalTxnList")
+    suspend fun getWithdrawalTxn(
+        @Field("user_id") user_id:String
+    ):Response<withdrawalRes>
 
 
 

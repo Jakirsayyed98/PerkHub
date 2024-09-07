@@ -7,6 +7,7 @@ import app.perkhub.Screens.Home.Model.Home.HomeRes
 import app.perkhub.Screens.Home.Model.LootProduct.LootProductRes
 import app.perkhub.Screens.Home.Model.MiniAppByCategory.MiniAppbyCategory
 import app.perkhub.Screens.Home.Model.TransactionModel.TransactionDataRes
+import app.perkhub.Screens.Home.Model.Withdrawal.withdrawalRes
 import app.perkhub.Screens.login.models.LoginRes
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -159,6 +160,17 @@ class RequestViewModel : ViewModel() {
             }
         }
     }
+
+    fun getWithdrawalTxn(user_id: String,listner: ApiListener<withdrawalRes>){
+        viewModelScope.launch(SetErrorhandler()) {
+            withContext(kotlin.coroutines.coroutineContext){
+                MyApi().getWithdrawalTxn(user_id).body()?.let {
+                    listner.onResponse(it)
+                }
+            }
+        }
+    }
+
 
 }
 

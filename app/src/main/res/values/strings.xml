@@ -23,4 +23,8 @@
     <string name="txn_id"><b>Txn ID : </b>%s</string>
     <string name="sale_amount"><b>Sale Amount : </b>%s</string>
     <string name="commission_amount"><b>CB Amount : </b>%s</string>
+    <string name="withdrawal_history">Withdrawal History</string>
+    <string name="withdrawal_amount"><b>Withdrawal Amount :-</b> %s</string>
+    <string name="withdrawal_request_of_200">Withdrawal request of %s</string>
+    <string name="reject_reason"><b>Reject Reason :- </b>%s</string>
 </resources>
