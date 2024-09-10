@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
+import app.perkhub.ContainerActivity
 import app.perkhub.R
 import app.perkhub.Screens.Home.Adapter.WalletWithdrawalAdapter
 import app.perkhub.Screens.Home.Model.Withdrawal.withdrawalRes
@@ -36,6 +37,10 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>() {
         }
 
         _binding!!.toolbar.name.text = "Wallet"
+
+        _binding!!.withdraw.setOnClickListener {
+            ContainerActivity.OpenContainer(requireContext(),"WidthdrawFlowFragment","")
+        }
 
         getUserDetail()
         getWithdrawalTransaction()

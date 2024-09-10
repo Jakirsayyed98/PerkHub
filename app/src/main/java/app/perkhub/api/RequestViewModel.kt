@@ -170,6 +170,15 @@ class RequestViewModel : ViewModel() {
             }
         }
     }
+ fun ReqForWithdrawal(user_id: String,VPA_Id: String,requested_withdrawal_amt: String,listner: ApiListener<withdrawalRes>){
+        viewModelScope.launch(SetErrorhandler()) {
+            withContext(kotlin.coroutines.coroutineContext){
+                MyApi().ReqForWithdrawal(user_id,VPA_Id,requested_withdrawal_amt).body()?.let {
+                    listner.onResponse(it)
+                }
+            }
+        }
+    }
 
 
 }

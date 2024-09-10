@@ -109,6 +109,15 @@ interface MyApi {
     ):Response<LoginRes>
 
     @FormUrlEncoded
+    @POST("requestwithdrawal")
+    suspend fun ReqForWithdrawal(
+        @Field("user_id") user_id:String,
+        @Field("VPA_Id") VPA_Id:String,
+        @Field("requested_withdrawal_amt") requested_withdrawal_amt:String
+    ):Response<withdrawalRes>
+
+
+    @FormUrlEncoded
     @POST("withdrawalTxnList")
     suspend fun getWithdrawalTxn(
         @Field("user_id") user_id:String

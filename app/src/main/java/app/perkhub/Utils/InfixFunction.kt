@@ -71,3 +71,30 @@ fun onlyDatewithMonth(date: String?): String? {
 //    return date
 }
 
+fun isValidUpiId(upiId: String): Boolean {
+    val validUpiHandles = setOf(
+        "apl", "yapl", "rapl",
+        "abfspay",
+        "okaxis", "okhdfcbank", "okicici", "oksbi",
+        "icici", "idfcbank", "jupiteraxis", "goaxb",
+        "ikwik", "naviaxis", "niyoicici", "ybl", "ibl", "axl",
+        "pingpay", "shriramhdfcbank", "sliceaxis", "tapicici",
+        "timecosmos", "freoicici", "superyes", "seyes",
+        "bpunity", "kphdfc", "paytm", "ptyes", "ptaxis", "pthdfc", "ptsbi",
+        "yesfam", "yespop", "abcdicici", "waicici", "waaxis", "wahdfcbank", "wasbi"
+    )
+
+    val regex = "^[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+$"
+    if (!upiId.matches(Regex(regex))) {
+        return false
+    }
+
+    val upiIdParts = upiId.split('@')
+    if (upiIdParts.size != 2) {
+        return false
+    }
+
+    val domainPart = upiIdParts[1]
+    return domainPart in validUpiHandles
+}
+

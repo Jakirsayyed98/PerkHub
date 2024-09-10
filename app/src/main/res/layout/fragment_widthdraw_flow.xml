@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Screens.Home.WidthdrawFlowFragment">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar_layout" />
+
+    <TextView
+        android:id="@+id/dis"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp25"
+        android:text="Please enter the amount you would\nlike to withdraw."
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp16"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/numberlayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"
+        android:layout_marginStart="@dimen/dp15"
+        android:layout_marginTop="@dimen/dp10"
+        android:layout_marginEnd="@dimen/dp15"
+        android:hint="Please enter the amount you would like to withdraw."
+        android:textAlignment="center"
+        android:textColorHint="@color/grey"
+        app:boxStrokeColor="@color/black"
+        app:hintEnabled="false"
+        app:hintTextColor="@color/black"
+        >
+
+        <EditText
+            android:id="@+id/amount"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp50"
+            android:imeOptions="actionDone"
+            android:background="@drawable/border_5dp"
+            android:inputType="number"
+            android:maxLength="5"
+            android:textAlignment="center" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp25"
+        android:text="Please enter the VPA or UPI ID where\nyou'd like to receive your funds."
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp16"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"
+        android:layout_marginStart="@dimen/dp15"
+        android:layout_marginTop="@dimen/dp10"
+        android:layout_marginEnd="@dimen/dp15"
+        android:hint="Enter Amount"
+        android:textAlignment="center"
+        android:textColorHint="@color/grey"
+        app:boxStrokeColor="@color/black"
+        app:hintEnabled="false"
+        app:hintTextColor="@color/black">
+
+        <EditText
+            android:id="@+id/vpa"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp50"
+            android:imeOptions="actionDone"
+            android:background="@drawable/border_5dp"
+            android:inputType="text"
+            android:textAlignment="center" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+
+
+    <RelativeLayout
+        android:id="@+id/sendOTP"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp50"
+        android:layout_marginStart="@dimen/dp75"
+        android:layout_marginTop="@dimen/dp30"
+        android:layout_marginEnd="@dimen/dp75"
+        android:layout_marginBottom="@dimen/dp20"
+        android:background="@drawable/selected_button_layout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/numberlayout">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="Withdraw"
+            android:textColor="@color/btn_text"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+</LinearLayout>

@@ -60,6 +60,7 @@ dependencies {
     implementation(libs.androidx.glide)
     implementation(libs.androidx.browser)
     implementation(libs.firebase.messaging)
+    implementation(libs.androidx.lottieVersion)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

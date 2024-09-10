@@ -19,6 +19,7 @@ import app.perkhub.Screens.Home.StoreDetailFragment
 import app.perkhub.Screens.Home.TransactionDetailFragment
 import app.perkhub.Screens.Home.TransactionHistoryFragment
 import app.perkhub.Screens.Home.WalletFragment
+import app.perkhub.Screens.Home.WidthdrawFlowFragment
 import app.perkhub.Utils.BaseActivity
 import app.perkhub.Utils.CONTAINER_TYPE_KEY
 import app.perkhub.Utils.DATA
@@ -108,6 +109,9 @@ class ContainerActivity : BaseActivity<ActivityContainerBinding>() {
 
             "WalletFragment"->{
                 addFragment(WalletFragment.newInstance())
+            }
+            "WidthdrawFlowFragment"->{
+                addFragment(WidthdrawFlowFragment.newInstance())
             }
         }
     }
