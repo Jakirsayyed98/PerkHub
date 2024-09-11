@@ -73,7 +73,7 @@
                         android:id="@+id/storeIcon"
                         android:layout_width="@dimen/dp45"
                         android:layout_height="@dimen/dp45"
-                        android:layout_margin="@dimen/dp10"/>
+                        android:layout_margin="@dimen/dp10" />
                 </androidx.cardview.widget.CardView>
 
                 <TextView
@@ -101,10 +101,21 @@
                 android:text="@string/withdrawal_amount"
                 android:textColor="@color/black" />
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/vpa"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/amt"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:text="@string/vpa"
+                android:textColor="@color/black" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/vpa"
                 android:orientation="horizontal">
 
                 <TextView

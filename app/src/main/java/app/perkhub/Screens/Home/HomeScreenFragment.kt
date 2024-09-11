@@ -42,10 +42,15 @@ import app.perkhub.Screens.Home.Model.Home.MiniApp
 import app.perkhub.Screens.Home.Model.LootProduct.Data
 import app.perkhub.Screens.Home.Model.LootProduct.LootProductRes
 import app.perkhub.Screens.Home.Model.MiniAppByCategory.MiniAppbyCategory
+import app.perkhub.Utils.ABOUTUS
 import app.perkhub.Utils.BaseFragment
+import app.perkhub.Utils.CONTACTUS
+import app.perkhub.Utils.PRIVACYPOLICY
 import app.perkhub.Utils.RecyclerClickListener
 import app.perkhub.Utils.USERDATA
 import app.perkhub.Utils.openCustomTab
+import app.perkhub.Utils.rateUsApp
+import app.perkhub.Utils.shareAppLink
 import app.perkhub.Utils.toast
 import app.perkhub.api.ApiListener
 import app.perkhub.databinding.FragmentHomeScreenBinding
@@ -400,20 +405,21 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
                     ContainerActivity.OpenContainer(requireContext(),"WalletFragment","")
                 }
                 R.id.share-> {
-                    requireContext().toast("Share")
+                    requireContext().shareAppLink()
                 }
+
                 R.id.rateus-> {
-                    requireContext().toast("Rateus")
+                    requireContext().rateUsApp()
                 }
                 R.id.PrivacyPolicy->{
-                    requireContext().toast("PrivacyPolicy")
+                    requireContext().openCustomTab(PRIVACYPOLICY)
                 }
 
                 R.id.aboutus-> {
-                    requireContext().toast("aboutus")
+                    requireContext().openCustomTab(ABOUTUS)
                 }
                 R.id.contactus-> {
-                    requireContext().toast("contactus")
+                    requireContext().openCustomTab(CONTACTUS)
                 }
                 R.id.LogOut->{
                     requireContext().OpenDialogForLogOut()

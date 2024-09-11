@@ -28,7 +28,7 @@ class StatusDialogFragment : DialogFragment() {
 
         var animatedView : LottieAnimationView = view.findViewById(R.id.animationView)
 
-            arguments?.getString(DATA)?.let { text ->
+        arguments?.getString(DATA)?.let { text ->
                 if (text.equals(SUCCESS)){
                     animatedView.setAnimation(R.raw.success)
                 }else{

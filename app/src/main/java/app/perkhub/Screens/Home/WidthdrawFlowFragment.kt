@@ -88,9 +88,9 @@ class WidthdrawFlowFragment : BaseFragment<FragmentWidthdrawFlowBinding>() {
         _binding!!.sendOTP.setOnClickListener {
             if (_binding!!.sendOTP.isSelected){
                 if (isValidUpiId(_binding!!.vpa.text.toString())){
-//                    if (_binding!!.amount.text.toString().toDouble()<=userdata!!.data[0].verified.toDouble()){
+                    if (_binding!!.amount.text.toString().toDouble()<=userdata!!.data[0].verified.toDouble()){
                         SendForWithdrawal()
-//                    }
+                    }
                 }
             }
         }

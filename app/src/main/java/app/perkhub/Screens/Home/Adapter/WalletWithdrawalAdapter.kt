@@ -40,6 +40,7 @@ class WalletWithdrawalAdapter<S>(val clickListener: RecyclerClickListener): Base
                 binding.amt.text = itemView.context.getString(R.string.withdrawal_amount,
                     setSuffixAmount(s.requested_withdrawal_amt)
                 )
+                binding.vpa.text = itemView.context.getString(R.string.vpa, s.VPA_Id)
 
 
                 binding.root.setOnClickListener {

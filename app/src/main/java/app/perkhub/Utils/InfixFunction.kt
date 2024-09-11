@@ -44,16 +44,6 @@ fun Context.Share(name:String,url:String){
     startActivity(Intent.createChooser(shareData, "Share Via"))
 }
 
-fun Context.rateApp() {
-    val uri: Uri = Uri.parse("https://play.google.com/store/apps/details?id=" + this?.packageName.toString() + "")
-    val myAppLinkToMarket = Intent(Intent.ACTION_VIEW, uri)
-    try {
-        startActivity(myAppLinkToMarket)
-    } catch (e: ActivityNotFoundException) {
-        this?.toast("Unable to find market app")
-    }
-}
-
 fun onlyDatewithMonth(date: String?): String? {
 //    try {
 
@@ -97,4 +87,32 @@ fun isValidUpiId(upiId: String): Boolean {
     val domainPart = upiIdParts[1]
     return domainPart in validUpiHandles
 }
+
+fun Context.shareAppLink() {
+    val appUrl = "https://play.google.com/store/apps/details?id="+applicationContext.packageName // Replace with your actual Play Store URL
+    val shareMessage = """
+        Discover PerkHub – Your gateway to exclusive perks, rewards, and deals! 🌟
+        Download now: $appUrl
+    """.trimIndent()
+
+    val intent = Intent(Intent.ACTION_SEND)
+    intent.type = "text/plain"
+    intent.putExtra(Intent.EXTRA_TEXT, shareMessage)
+
+    startActivity(Intent.createChooser(intent, "Share PerkHub via"))
+}
+
+fun Context.rateUsApp() {
+    val appPackageName = applicationContext.packageName
+    try {
+        // Try to open the Play Store app directly
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$appPackageName"))
+        startActivity(intent)
+    } catch (e: android.content.ActivityNotFoundException) {
+        // Fallback if Play Store app is not available, open in browser
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$appPackageName"))
+        startActivity(intent)
+    }
+}
+
 

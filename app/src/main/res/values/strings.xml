@@ -27,4 +27,5 @@
     <string name="withdrawal_amount"><b>Withdrawal Amount :-</b> %s</string>
     <string name="withdrawal_request_of_200">Withdrawal request of %s</string>
     <string name="reject_reason"><b>Reject Reason :- </b>%s</string>
+    <string name="vpa"><b>VPA : </b>%s</string>
 </resources>
