@@ -71,6 +71,7 @@
 
                     <ImageView
                         android:id="@+id/storeIcon"
+                        app:tint="@color/black"
                         android:layout_width="@dimen/dp45"
                         android:layout_height="@dimen/dp45"
                         android:layout_margin="@dimen/dp10" />

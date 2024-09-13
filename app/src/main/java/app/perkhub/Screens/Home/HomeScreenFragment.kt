@@ -14,6 +14,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.AppCompatButton
 import androidx.browser.customtabs.CustomTabsIntent
@@ -66,6 +67,11 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
 
     private val handler = Handler(Looper.getMainLooper())
     lateinit var toggle : ActionBarDrawerToggle
+
+    private var backPressedTime: Long = 0
+    private val doubleBackPressDuration = 3000L  // 2 seconds
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -463,6 +469,16 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         }
 
         dialog.show()
+    }
+
+
+    fun onBackPressed() {
+        if (backPressedTime + doubleBackPressDuration > System.currentTimeMillis()) {
+            activity?.finish()  // Exit the activity (and the app)
+        } else {
+            requireContext().toast("Press back again to exit")
+        }
+        backPressedTime = System.currentTimeMillis()
     }
 
     companion object {

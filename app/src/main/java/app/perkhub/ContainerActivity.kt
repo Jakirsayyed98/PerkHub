@@ -123,4 +123,14 @@ class ContainerActivity : BaseActivity<ActivityContainerBinding>() {
     private fun addFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction().replace(R.id.container,fragment).commit()
     }
+
+    override fun onBackPressed() {
+        val fragment = supportFragmentManager.findFragmentById(R.id.container)
+        if (fragment is HomeScreenFragment) {
+            fragment.onBackPressed()  // Notify the fragment of the back press
+        } else {
+            super.onBackPressed()  // Otherwise, use the default behavior
+        }
+    }
+
 }
