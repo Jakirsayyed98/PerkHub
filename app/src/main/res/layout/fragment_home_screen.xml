@@ -48,6 +48,7 @@
                     android:textStyle="bold" />
 
                 <ImageView
+                    android:id="@+id/notification"
                     android:layout_width="@dimen/dp35"
                     android:layout_height="@dimen/dp35"
                     android:src="@drawable/notifications"

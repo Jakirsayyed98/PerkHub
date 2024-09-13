@@ -14,6 +14,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import app.perkhub.Screens.Home.HomeScreenFragment
+import app.perkhub.Screens.Home.NotificationListFragment
 import app.perkhub.Screens.Home.SelectedCategoryFragment
 import app.perkhub.Screens.Home.StoreDetailFragment
 import app.perkhub.Screens.Home.TransactionDetailFragment
@@ -112,6 +113,9 @@ class ContainerActivity : BaseActivity<ActivityContainerBinding>() {
             }
             "WidthdrawFlowFragment"->{
                 addFragment(WidthdrawFlowFragment.newInstance())
+            }
+            "NotificationListFragment"->{
+                addFragment(NotificationListFragment.newInstance())
             }
         }
     }

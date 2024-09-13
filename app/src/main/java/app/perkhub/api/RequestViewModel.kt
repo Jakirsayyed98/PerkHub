@@ -6,6 +6,7 @@ import app.perkhub.Screens.Home.Model.Games.GamesRes
 import app.perkhub.Screens.Home.Model.Home.HomeRes
 import app.perkhub.Screens.Home.Model.LootProduct.LootProductRes
 import app.perkhub.Screens.Home.Model.MiniAppByCategory.MiniAppbyCategory
+import app.perkhub.Screens.Home.Model.Notification.NotificationListRes
 import app.perkhub.Screens.Home.Model.TransactionModel.TransactionDataRes
 import app.perkhub.Screens.Home.Model.Withdrawal.withdrawalRes
 import app.perkhub.Screens.login.models.LoginRes
@@ -174,6 +175,16 @@ class RequestViewModel : ViewModel() {
         viewModelScope.launch(SetErrorhandler()) {
             withContext(kotlin.coroutines.coroutineContext){
                 MyApi().ReqForWithdrawal(user_id,VPA_Id,requested_withdrawal_amt).body()?.let {
+                    listner.onResponse(it)
+                }
+            }
+        }
+    }
+
+fun getNotificationList(user_id: String,listner: ApiListener<NotificationListRes>){
+        viewModelScope.launch(SetErrorhandler()) {
+            withContext(kotlin.coroutines.coroutineContext){
+                MyApi().getNotificationList(user_id).body()?.let {
                     listner.onResponse(it)
                 }
             }

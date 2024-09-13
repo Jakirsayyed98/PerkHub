@@ -4,6 +4,7 @@ import app.perkhub.Screens.Home.Model.Games.GamesRes
 import app.perkhub.Screens.Home.Model.Home.HomeRes
 import app.perkhub.Screens.Home.Model.LootProduct.LootProductRes
 import app.perkhub.Screens.Home.Model.MiniAppByCategory.MiniAppbyCategory
+import app.perkhub.Screens.Home.Model.Notification.NotificationListRes
 import app.perkhub.Screens.Home.Model.TransactionModel.TransactionDataRes
 import app.perkhub.Screens.Home.Model.Withdrawal.withdrawalRes
 import app.perkhub.Screens.login.models.LoginRes
@@ -122,6 +123,14 @@ interface MyApi {
     suspend fun getWithdrawalTxn(
         @Field("user_id") user_id:String
     ):Response<withdrawalRes>
+
+
+
+    @FormUrlEncoded
+    @POST("getNotificationList")
+    suspend fun getNotificationList(
+        @Field("user_id") user_id:String
+    ):Response<NotificationListRes>
 
 
 

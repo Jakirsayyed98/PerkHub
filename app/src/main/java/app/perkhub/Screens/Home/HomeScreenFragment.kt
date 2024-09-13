@@ -59,6 +59,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 
 
 class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
@@ -84,18 +85,21 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         _binding!!.mainlayout.visibility = View.GONE
         clickEvenets()
 
-        GlobalScope.async {
+        GlobalScope.launch {
             getHomeData()
         }
-        GlobalScope.async {
+        GlobalScope.launch {
             getLootProduct()
         }
 
-        GlobalScope.async {
+        GlobalScope.launch {
             getGamesData()
         }
 
-        updateFirebaseToken()
+        GlobalScope.launch {
+            updateFirebaseToken()
+        }
+
         return _binding?.root
     }
 
@@ -105,7 +109,9 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
             search.setOnClickListener {
                 ContainerActivity.OpenContainerType2(requireContext(),"SelectedCategoryFragment","Search",null)
             }
-
+            notification.setOnClickListener {
+                ContainerActivity.OpenContainer(requireContext(),"NotificationListFragment",null)
+            }
         }
     }
 
