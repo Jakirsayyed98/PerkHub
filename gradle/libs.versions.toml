@@ -38,6 +38,7 @@ androidx-glide = { group = "com.github.bumptech.glide", name = "glide", version.
 androidx-browser = { group = "androidx.browser", name = "browser", version.ref = "browser" }
 
 
+
 androidx-tools = {group = "com.android.tools.build", name = "gradle" , version.ref = "tool" }
 androidx-lifecycle-viewmodel-android = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-android", version.ref = "lifecycleViewmodelAndroid" }
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuth" }

@@ -1,5 +1,6 @@
 package app.perkhub.api
 
+import android.content.Context
 import app.perkhub.Screens.Home.Model.Games.GamesRes
 import app.perkhub.Screens.Home.Model.Home.HomeRes
 import app.perkhub.Screens.Home.Model.LootProduct.LootProductRes
@@ -8,15 +9,20 @@ import app.perkhub.Screens.Home.Model.Notification.NotificationListRes
 import app.perkhub.Screens.Home.Model.TransactionModel.TransactionDataRes
 import app.perkhub.Screens.Home.Model.Withdrawal.withdrawalRes
 import app.perkhub.Screens.login.models.LoginRes
+import app.perkhub.Screens.login.models.SendOtpReq
+import app.perkhub.Screens.login.models.VerifyOtpReq
 import okhttp3.OkHttpClient
+import okhttp3.RequestBody
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Query
 
@@ -24,17 +30,20 @@ interface MyApi {
 
     //Login APIs
 
-    @FormUrlEncoded
+
     @POST("sendOTP")
     suspend fun sendOtp(
-      @Field("number")  number:String
-    ):Response<LoginRes>
+        @Body body: SendOtpReq
+    ):Response<BaseRes>
 
-    @FormUrlEncoded
     @POST("verifyOTP")
     suspend fun verifyOTP(
-        @Field("number")  number:String,
-        @Field("otp")  otp:String
+        @Body body: VerifyOtpReq
+    ):Response<BaseRes>
+
+
+    @GET("getUserDetail")
+    suspend fun getUserDetail(
     ):Response<LoginRes>
 
   @FormUrlEncoded
@@ -103,11 +112,6 @@ interface MyApi {
     ):Response<TransactionDataRes>
 
 
-    @FormUrlEncoded
-    @POST("getUserDetails")
-    suspend fun getUserDetail(
-        @Field("user_id") user_id:String
-    ):Response<LoginRes>
 
     @FormUrlEncoded
     @POST("requestwithdrawal")
@@ -135,11 +139,12 @@ interface MyApi {
 
 
     companion object{
-      operator  fun invoke():MyApi{
-            var BaseURl = "https://perkhub.in/perkAdmin/api/"
+      operator  fun invoke(context : Context):MyApi{
+            var BaseURl = "https://66b5-103-235-0-32.ngrok-free.app/api/"
             val httploggingInterceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
-
-            val client = OkHttpClient.Builder().addInterceptor(httploggingInterceptor).build()
+            val client = OkHttpClient.Builder()
+                .addInterceptor(AuthInterceptor(context))
+                .addInterceptor(httploggingInterceptor).build()
 
             val retrofit = Retrofit.Builder().baseUrl(BaseURl).addConverterFactory(GsonConverterFactory.create()).client(client).build()
 

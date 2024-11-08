@@ -1,5 +1,6 @@
 package app.perkhub.api
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.perkhub.Screens.Home.Model.Games.GamesRes
@@ -10,6 +11,8 @@ import app.perkhub.Screens.Home.Model.Notification.NotificationListRes
 import app.perkhub.Screens.Home.Model.TransactionModel.TransactionDataRes
 import app.perkhub.Screens.Home.Model.Withdrawal.withdrawalRes
 import app.perkhub.Screens.login.models.LoginRes
+import app.perkhub.Screens.login.models.SendOtpReq
+import app.perkhub.Screens.login.models.VerifyOtpReq
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.coroutineContext
@@ -17,23 +20,20 @@ import kotlin.coroutines.coroutineContext
 
 class RequestViewModel : ViewModel() {
 
-    fun SendOTP(number: String, listner: ApiListener<LoginRes>) {
+    fun SendOTP(sendOTP: SendOtpReq, context: Context, listner: ApiListener<BaseRes>) {
         viewModelScope.launch(SetErrorhandler()) {
             withContext(coroutineContext) {
-                MyApi().sendOtp(number).body()?.let { it ->
-                    println()
-                    println(it)
-                    println()
+                MyApi(context).sendOtp(sendOTP).body()?.let { it ->
                     listner.onResponse(it)
                 }
             }
         }
     }
 
-    fun VerifyOTP(number: String, OTP: String, listner: ApiListener<LoginRes>) {
+    fun VerifyOTP(req: VerifyOtpReq,  context: Context,listner: ApiListener<BaseRes>) {
         viewModelScope.launch(SetErrorhandler()) {
             withContext(coroutineContext) {
-                MyApi().verifyOTP(number, OTP).body()?.let { it ->
+                MyApi(context).verifyOTP(req).body()?.let { it ->
                     listner.onResponse(it)
                 }
             }
@@ -46,11 +46,12 @@ class RequestViewModel : ViewModel() {
         email: String,
         dob: String,
         gender: String,
+        context: Context,
         listner: ApiListener<LoginRes>
     ) {
         viewModelScope.launch(SetErrorhandler()) {
             withContext(coroutineContext) {
-                MyApi().SaveDetail(name, number, email, gender, dob).body()?.let { it ->
+                MyApi(context).SaveDetail(name, number, email, gender, dob).body()?.let { it ->
                     listner.onResponse(it)
                 }
             }
@@ -59,11 +60,11 @@ class RequestViewModel : ViewModel() {
 
 
     fun getHomeData(
-        user_id: String, listner: ApiListener<HomeRes>
+        user_id: String, context: Context, listner: ApiListener<HomeRes>
     ) {
         viewModelScope.launch(SetErrorhandler()) {
             withContext(coroutineContext) {
-                MyApi().getHomePage(user_id).body()?.let { it ->
+                MyApi(context).getHomePage(user_id).body()?.let { it ->
                     listner.onResponse(it)
                 }
             }
@@ -72,11 +73,11 @@ class RequestViewModel : ViewModel() {
 
 
     fun getLootProduct(
-        user_id: String, page: String, listner: ApiListener<LootProductRes>
+        user_id: String, page: String, context: Context, listner: ApiListener<LootProductRes>
     ) {
         viewModelScope.launch(SetErrorhandler()) {
             withContext(coroutineContext) {
-                MyApi().getLootProduct(user_id, page).body()?.let { it ->
+                MyApi(context).getLootProduct(user_id, page).body()?.let { it ->
                     listner.onResponse(it)
                 }
             }
@@ -84,11 +85,11 @@ class RequestViewModel : ViewModel() {
     }
 
     fun getMiniAppByCategory(
-        user_id: String, category_id: String, listner: ApiListener<MiniAppbyCategory>
+        user_id: String, category_id: String, context: Context, listner: ApiListener<MiniAppbyCategory>
     ) {
         viewModelScope.launch(SetErrorhandler()) {
             withContext(kotlin.coroutines.coroutineContext) {
-                MyApi().getMiniAppByCategory(user_id, category_id).body()?.let { it ->
+                MyApi(context).getMiniAppByCategory(user_id, category_id).body()?.let { it ->
                     listner.onResponse(it)
                 }
             }
@@ -96,11 +97,11 @@ class RequestViewModel : ViewModel() {
     }
 
     fun searchminiApps(
-        user_id: String, miniapp_name: String, listner: ApiListener<MiniAppbyCategory>
+        user_id: String, miniapp_name: String, context: Context, listner: ApiListener<MiniAppbyCategory>
     ) {
         viewModelScope.launch(SetErrorhandler()) {
             withContext(kotlin.coroutines.coroutineContext) {
-                MyApi().searchminiApps(user_id, miniapp_name).body()?.let { it ->
+                MyApi(context).searchminiApps(user_id, miniapp_name).body()?.let { it ->
                     listner.onResponse(it)
                 }
             }
@@ -108,11 +109,11 @@ class RequestViewModel : ViewModel() {
     }
 
     fun generateUrl(
-        user_id: String, miniapp_id: String, listner: ApiListener<MiniAppbyCategory>
+        user_id: String, miniapp_id: String, context: Context, listner: ApiListener<MiniAppbyCategory>
     ) {
         viewModelScope.launch(SetErrorhandler()) {
             withContext(kotlin.coroutines.coroutineContext) {
-                MyApi().generateUrl(user_id, miniapp_id).body()?.let { it ->
+                MyApi(context).generateUrl(user_id, miniapp_id).body()?.let { it ->
                     listner.onResponse(it)
                 }
             }
@@ -120,11 +121,11 @@ class RequestViewModel : ViewModel() {
     }
 
     fun updateNotification(
-        user_id: String, token: String, listner: ApiListener<MiniAppbyCategory>
+        user_id: String, token: String, context: Context, listner: ApiListener<MiniAppbyCategory>
     ) {
         viewModelScope.launch(SetErrorhandler()) {
             withContext(kotlin.coroutines.coroutineContext) {
-                MyApi().updateNotification(user_id, token).body()?.let { it ->
+                MyApi(context).updateNotification(user_id, token).body()?.let { it ->
                     listner.onResponse(it)
                 }
             }
@@ -132,59 +133,59 @@ class RequestViewModel : ViewModel() {
     }
 
 
-    fun getAllGames(user_id: String,listner: ApiListener<GamesRes>){
+    fun getAllGames(user_id: String, context: Context,listner: ApiListener<GamesRes>){
         viewModelScope.launch(SetErrorhandler()) {
             withContext(kotlin.coroutines.coroutineContext){
-                MyApi().getAllGames(user_id).body()?.let {
+                MyApi(context).getAllGames(user_id).body()?.let {
                     listner.onResponse(it)
                 }
             }
         }
     }
 
-    fun getAllTransaction(user_id: String,listner: ApiListener<TransactionDataRes>){
+    fun getAllTransaction(user_id: String, context: Context,listner: ApiListener<TransactionDataRes>){
         viewModelScope.launch(SetErrorhandler()) {
             withContext(kotlin.coroutines.coroutineContext){
-                MyApi().getAllTransaction(user_id).body()?.let {
+                MyApi(context).getAllTransaction(user_id).body()?.let {
                     listner.onResponse(it)
                 }
             }
         }
     }
 
-    fun getUserDetail(user_id: String,listner: ApiListener<LoginRes>){
+    fun getUserDetail( context: Context,listner: ApiListener<LoginRes>){
         viewModelScope.launch(SetErrorhandler()) {
             withContext(kotlin.coroutines.coroutineContext){
-                MyApi().getUserDetail(user_id).body()?.let {
+                MyApi(context).getUserDetail().body()?.let {
                     listner.onResponse(it)
                 }
             }
         }
     }
 
-    fun getWithdrawalTxn(user_id: String,listner: ApiListener<withdrawalRes>){
+    fun getWithdrawalTxn(user_id: String, context: Context,listner: ApiListener<withdrawalRes>){
         viewModelScope.launch(SetErrorhandler()) {
             withContext(kotlin.coroutines.coroutineContext){
-                MyApi().getWithdrawalTxn(user_id).body()?.let {
+                MyApi(context).getWithdrawalTxn(user_id).body()?.let {
                     listner.onResponse(it)
                 }
             }
         }
     }
- fun ReqForWithdrawal(user_id: String,VPA_Id: String,requested_withdrawal_amt: String,listner: ApiListener<withdrawalRes>){
+ fun ReqForWithdrawal(user_id: String,VPA_Id: String,requested_withdrawal_amt: String, context: Context,listner: ApiListener<withdrawalRes>){
         viewModelScope.launch(SetErrorhandler()) {
             withContext(kotlin.coroutines.coroutineContext){
-                MyApi().ReqForWithdrawal(user_id,VPA_Id,requested_withdrawal_amt).body()?.let {
+                MyApi(context).ReqForWithdrawal(user_id,VPA_Id,requested_withdrawal_amt).body()?.let {
                     listner.onResponse(it)
                 }
             }
         }
     }
 
-fun getNotificationList(user_id: String,listner: ApiListener<NotificationListRes>){
+fun getNotificationList(user_id: String, context: Context,listner: ApiListener<NotificationListRes>){
         viewModelScope.launch(SetErrorhandler()) {
             withContext(kotlin.coroutines.coroutineContext){
-                MyApi().getNotificationList(user_id).body()?.let {
+                MyApi(context).getNotificationList(user_id).body()?.let {
                     listner.onResponse(it)
                 }
             }

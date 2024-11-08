@@ -40,7 +40,7 @@ class TransactionHistoryFragment : BaseFragment<FragmentTransactionHistoryBindin
     }
 
     private fun getTransactionData() {
-        viewModel.getAllTransaction(getUserID()!!,object : ApiListener<TransactionDataRes>{
+        viewModel.getAllTransaction(getUserID()!!,requireContext(),object : ApiListener<TransactionDataRes>{
             override fun onSuccess(t: TransactionDataRes?, mess: String) {
                 if (t!!.errorCode.equals("0")){
                     setData(t.data)

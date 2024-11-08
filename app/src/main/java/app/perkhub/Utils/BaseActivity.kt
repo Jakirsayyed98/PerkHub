@@ -22,4 +22,9 @@ abstract class BaseActivity<T : ViewBinding> : AppCompatActivity() {
         return AppSharedPefrence.getInstance(this)
     }
 
+    fun getToken(): String {
+        return "Bearer " + getSharedpref().getString(TOKEN)
+    }
+
+
 }

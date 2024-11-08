@@ -18,7 +18,12 @@ import app.perkhub.Utils.toast
 import app.perkhub.api.ApiListener
 import app.perkhub.databinding.FragmentEnterMobileNBinding
 import app.perkhub.Screens.login.models.LoginRes
+import app.perkhub.Screens.login.models.SendOtpReq
+import app.perkhub.Screens.login.models.VerifyOtpReq
+import app.perkhub.Utils.TOKEN
 import app.perkhub.Utils.USERDATA
+import app.perkhub.api.BaseRes
+import app.perkhub.api.tokens.TokenManager
 import java.util.Timer
 import java.util.TimerTask
 
@@ -68,19 +73,19 @@ class EnterMobileNFragment : BaseFragment<FragmentEnterMobileNBinding>() {
                 _binding!!.sendOTP.isSelected = false
             }
         }
-
         _binding!!.sendOTP.setOnClickListener {
             if (_binding!!.sendOTP.isSelected) {
                 showProgress()
+                var request: SendOtpReq = SendOtpReq("")
+                request.Number = _binding!!.mobilenumber.text.toString()
 
                 _binding!!.mobilenumberlayout.visibility = View.GONE
                 _binding!!.OTPlayout.visibility = View.VISIBLE
-                viewModel.SendOTP(_binding!!.mobilenumber.text.toString(),
-                    object : ApiListener<LoginRes> {
-                        override fun onSuccess(t: LoginRes?, mess: String) {
 
+                viewModel.SendOTP(request,requireContext(),
+                    object : ApiListener<BaseRes> {
+                        override fun onSuccess(t: BaseRes?, mess: String) {
                             dissmissProgress()
-                            requireContext().toast(t!!.data.get(0).otp)
                             countDownStart()
                         }
 
@@ -105,36 +110,22 @@ class EnterMobileNFragment : BaseFragment<FragmentEnterMobileNBinding>() {
         _binding!!.verifyOTP.setOnClickListener {
             if (_binding!!.verifyOTP.isSelected) {
                 showProgress()
+
+                var request: VerifyOtpReq = VerifyOtpReq("","")
+                request.Number = _binding!!.mobilenumber.text.toString()
+                request.Otp = _binding!!.OTP.text.toString()
                 viewModel.VerifyOTP(
-                    _binding!!.mobilenumber.text.toString(),
-                    _binding!!.OTP.text.toString(),
-                    object : ApiListener<LoginRes> {
-                        override fun onSuccess(t: LoginRes?, mess: String) {
+                    request,requireContext(),
+                    object : ApiListener<BaseRes> {
+                        override fun onSuccess(t: BaseRes?, mess: String) {
 
                             dissmissProgress()
-                            requireContext().toast(t!!.errorMsg)
-                            getSharedpref().saveString(
-                                NUMBER,
-                                _binding!!.mobilenumber.text.toString()
-                            )
+                            requireContext().toast(t!!.Message)
 
-                            if (t!!.data[0].name.isNullOrEmpty()) {
-                                ContainerActivity.OpenContainer(
-                                    requireContext(),
-                                    "EnterDetailFragment",
-                                    null
-                                )
-                                activity?.finish()
-                            } else {
-                                getSharedpref().saveBool(LOGIN, true)
-                                getSharedpref().saveUser(USERDATA, t)
-                                ContainerActivity.OpenContainer(
-                                    requireContext(),
-                                    "HomeScreenFragment",
-                                    null
-                                )
-                                activity?.finish()
-                            }
+                            TokenManager.saveToken(requireContext(),t!!.Data.Token)
+
+                            getUserDetail()
+
                         }
 
                         override fun onError(mess: String) {
@@ -152,6 +143,33 @@ class EnterMobileNFragment : BaseFragment<FragmentEnterMobileNBinding>() {
                 countDownStart()
             }
         }
+
+
+    }
+
+    private fun getUserDetail() {
+
+        viewModel.getUserDetail(requireContext(),object : ApiListener<LoginRes>{
+            override fun onSuccess(t: LoginRes?, mess: String) {
+                if (t!!.data.name.isNullOrEmpty()) {
+                    ContainerActivity.OpenContainer(
+                        requireContext(),
+                        "EnterDetailFragment",
+                        null
+                    )
+                    activity?.finish()
+                } else {
+                    getSharedpref().saveBool(LOGIN, true)
+                    getSharedpref().saveUser(USERDATA, t)
+                    ContainerActivity.OpenContainer(
+                        requireContext(),
+                        "HomeScreenFragment",
+                        null
+                    )
+                    activity?.finish()
+                }
+            }
+        })
 
 
     }

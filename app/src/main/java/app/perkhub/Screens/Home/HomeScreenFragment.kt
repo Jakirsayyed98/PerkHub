@@ -122,7 +122,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
     }
 
     private fun getHomeData() {
-        viewModel.getHomeData(getUserID()!!, object : ApiListener<HomeRes> {
+        viewModel.getHomeData(getUserID()!!,requireContext(), object : ApiListener<HomeRes> {
             override fun onSuccess(t: HomeRes?, mess: String) {
                 if (t!!.errorCode.equals("0")) {
                     t.data.get(0).let {
@@ -312,7 +312,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
 
 
     fun getLootProduct() {
-        viewModel.getLootProduct(getUserID()!!, "1", object : ApiListener<LootProductRes> {
+        viewModel.getLootProduct(getUserID()!!, "1",requireContext(), object : ApiListener<LootProductRes> {
             override fun onSuccess(t: LootProductRes?, mess: String) {
                 if (t!!.data.isNotEmpty()) {
                     setLootProductLayout(t.data)
@@ -343,7 +343,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
 
 
     private fun getGamesData() {
-        viewModel.getAllGames(getUserID()!!,object : ApiListener<GamesRes>{
+        viewModel.getAllGames(getUserID()!!,requireContext(),object : ApiListener<GamesRes>{
             override fun onSuccess(t: GamesRes?, mess: String) {
                 if (t!!.errorCode == "0"){
                     setPopularGamesLayout(t!!.data)
@@ -381,7 +381,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
             // Token ID :-  d8F1TQ_rQCqJ_kY9ELyd4M:APA91bH_yeiKZdAaVYSjnNhe3tDrzX4nwZal-FSzSD0d4uASMpq191G-m8ObnH9Tj8tNiw4wQ6dEQANIlSkKiffGU9KyOzeWndoGe4MAC_I-QmJsS0aBGsdO5BwqBTd-FU1mgtAljE8k
             // Get new FCM registration token
             val token = task.result
-            viewModel.updateNotification(getUserID()!!, token, object : ApiListener<MiniAppbyCategory> {
+            viewModel.updateNotification(getUserID()!!, token,requireContext(), object : ApiListener<MiniAppbyCategory> {
                 override fun onSuccess(t: MiniAppbyCategory?, mess: String) {
 
                 }
@@ -398,8 +398,8 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         val name = _binding!!.navView.getHeaderView(0).findViewById<TextView>(R.id.Profilename)
         val email = _binding!!.navView.getHeaderView(0).findViewById<TextView>(R.id.email)
 //        val email = _binding!!.navView.findViewById<TextView>(R.id.email)
-        name.text = getSharedpref().getUser(USERDATA).data[0].name.toString()
-        email.text = getSharedpref().getUser(USERDATA).data.get(0).email.toString()
+        name.text = getSharedpref().getUser(USERDATA).data.name.toString()
+        email.text = getSharedpref().getUser(USERDATA).data.email.toString()
         _binding!!.profile.setOnClickListener {
             _binding!!.drawerlayout.open()
         }

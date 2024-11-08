@@ -47,7 +47,7 @@ class WidthdrawFlowFragment : BaseFragment<FragmentWidthdrawFlowBinding>() {
     }
 
     private fun getUserDetails() {
-        viewModel.getUserDetail(getUserID()!!,object : ApiListener<LoginRes>{
+        viewModel.getUserDetail(requireContext(),object : ApiListener<LoginRes>{
             override fun onSuccess(t: LoginRes?, mess: String) {
                 t!!.let {
                     if (it.errorCode.equals("0")){
@@ -88,7 +88,7 @@ class WidthdrawFlowFragment : BaseFragment<FragmentWidthdrawFlowBinding>() {
         _binding!!.sendOTP.setOnClickListener {
             if (_binding!!.sendOTP.isSelected){
                 if (isValidUpiId(_binding!!.vpa.text.toString())){
-                    if (_binding!!.amount.text.toString().toDouble()<=userdata!!.data[0].verified.toDouble()){
+                    if (_binding!!.amount.text.toString().toDouble()<=userdata!!.data.verified.toDouble()){
                         SendForWithdrawal()
                     }
                 }
@@ -98,7 +98,7 @@ class WidthdrawFlowFragment : BaseFragment<FragmentWidthdrawFlowBinding>() {
     }
 
     private fun SendForWithdrawal() {
-        viewModel.ReqForWithdrawal(getUserID()!!,_binding!!.vpa.text.toString(),_binding!!.amount.text.toString(),object : ApiListener<withdrawalRes>{
+        viewModel.ReqForWithdrawal(getUserID()!!,_binding!!.vpa.text.toString(),_binding!!.amount.text.toString(),requireContext(),object : ApiListener<withdrawalRes>{
             override fun onSuccess(t: withdrawalRes?, mess: String) {
                 t!!.let {
                     if (it.errorCode.equals("0") && it.data.size>=0){

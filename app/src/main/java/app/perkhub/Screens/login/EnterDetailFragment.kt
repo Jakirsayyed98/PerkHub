@@ -67,7 +67,7 @@ class EnterDetailFragment : BaseFragment<FragmentEnterDetailBinding>() {
         var number = getSharedpref().getString(NUMBER)!!
         showProgress()
 
-        viewModel.SaveDetail(name, number, email, dob, gender1, object : ApiListener<LoginRes> {
+        viewModel.SaveDetail(name, number, email, dob, gender1,requireContext(), object : ApiListener<LoginRes> {
             override fun onSuccess(t: LoginRes?, mess: String) {
                 dissmissProgress()
                 getSharedpref().saveBool(LOGIN, true)

@@ -40,7 +40,12 @@ abstract class BaseFragment<T:ViewBinding> : Fragment() {
     }
 
     fun getUserID():String?{
-        return getSharedpref().getUser(USERDATA).data[0].id.toString()
+        return getSharedpref().getUser(USERDATA).data.user_id.toString()
+    }
+
+
+    fun getToken(): String {
+        return "Bearer " + getSharedpref().getString(TOKEN)
     }
 
 }

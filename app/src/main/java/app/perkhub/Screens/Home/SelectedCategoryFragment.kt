@@ -115,6 +115,7 @@ class SelectedCategoryFragment : BaseFragment<FragmentSelectedCategoryBinding>()
         viewModel.searchminiApps(
             getUserID()!!,
             name,
+            requireContext(),
             object : ApiListener<MiniAppbyCategory> {
                 override fun onSuccess(t: MiniAppbyCategory?, mess: String) {
                     t!!.let {
@@ -129,6 +130,7 @@ class SelectedCategoryFragment : BaseFragment<FragmentSelectedCategoryBinding>()
         viewModel.getMiniAppByCategory(
             getUserID()!!,
             id.toString(),
+            requireContext(),
             object : ApiListener<MiniAppbyCategory> {
                 override fun onSuccess(t: MiniAppbyCategory?, mess: String) {
                     t!!.let {
