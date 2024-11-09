@@ -13,6 +13,7 @@ import app.perkhub.Utils.toast
 import app.perkhub.api.ApiListener
 import app.perkhub.databinding.FragmentEnterDetailBinding
 import app.perkhub.Screens.login.models.LoginRes
+import app.perkhub.Screens.login.models.SaveUserDetail
 import app.perkhub.Utils.LOGIN
 import app.perkhub.Utils.USERDATA
 import java.text.SimpleDateFormat
@@ -64,10 +65,10 @@ class EnterDetailFragment : BaseFragment<FragmentEnterDetailBinding>() {
         var email = _binding!!.emailid.text.toString()
         var dob = _binding!!.DOB.text.toString()
         var gender1 = gender
-        var number = getSharedpref().getString(NUMBER)!!
+//        var number =    getSharedpref().getString(NUMBER)!!
         showProgress()
-
-        viewModel.SaveDetail(name, number, email, dob, gender1,requireContext(), object : ApiListener<LoginRes> {
+        var request : SaveUserDetail = SaveUserDetail(name,email,gender1,dob)
+        viewModel.SaveDetail(request,requireContext(), object : ApiListener<LoginRes> {
             override fun onSuccess(t: LoginRes?, mess: String) {
                 dissmissProgress()
                 getSharedpref().saveBool(LOGIN, true)

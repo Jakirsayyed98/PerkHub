@@ -126,7 +126,7 @@ class SelectedCategoryFragment : BaseFragment<FragmentSelectedCategoryBinding>()
 
     }
 
-    private fun getListOfMiniApps(id: Int) {
+    private fun getListOfMiniApps(id: String) {
         viewModel.getMiniAppByCategory(
             getUserID()!!,
             id.toString(),

@@ -5,7 +5,7 @@ data class Category(
     val description: String,
     val heading: String,
     val homePageVis: String,
-    val id: Int,
+    val id: String,
     val image: String,
     val name: String,
     val status: String,

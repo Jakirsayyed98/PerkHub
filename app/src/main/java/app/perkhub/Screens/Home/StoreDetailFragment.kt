@@ -57,7 +57,7 @@ class StoreDetailFragment : BaseFragment<FragmentStoreDetailBinding>() {
         return _binding?.root
     }
 
-    private fun GetUrl(id: Int, type: String) {
+    private fun GetUrl(id: String, type: String) {
         viewModel.generateUrl(getUserID()!!,id.toString(),requireContext(),object : ApiListener<MiniAppbyCategory>{
             override fun onSuccess(t: MiniAppbyCategory?, mess: String) {
 

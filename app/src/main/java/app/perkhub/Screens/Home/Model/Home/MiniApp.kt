@@ -11,7 +11,7 @@ data class MiniApp(
     val description: String,
     val howitswork: String,
     val icon: String,
-    val id: Int,
+    val id: String,
     val label: String,
     val logo: String,
     val macro_publisher: String,

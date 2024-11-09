@@ -9,6 +9,7 @@ import app.perkhub.Screens.Home.Model.Notification.NotificationListRes
 import app.perkhub.Screens.Home.Model.TransactionModel.TransactionDataRes
 import app.perkhub.Screens.Home.Model.Withdrawal.withdrawalRes
 import app.perkhub.Screens.login.models.LoginRes
+import app.perkhub.Screens.login.models.SaveUserDetail
 import app.perkhub.Screens.login.models.SendOtpReq
 import app.perkhub.Screens.login.models.VerifyOtpReq
 import okhttp3.OkHttpClient
@@ -46,27 +47,20 @@ interface MyApi {
     suspend fun getUserDetail(
     ):Response<LoginRes>
 
-  @FormUrlEncoded
+
     @POST("savedetail")
     suspend fun SaveDetail(
-        @Field("name")  name:String,
-        @Field("number")  number:String,
-        @Field("email")  email:String,
-        @Field("gender")  gender:String,
-        @Field("dob")  dob:String
+        @Body body: SaveUserDetail
     ):Response<LoginRes>
 
     //Home
-    @FormUrlEncoded
-    @POST("getHomePage")
+    @GET("getHomePage")
     suspend fun getHomePage(
-        @Field("user_id") user_id:String
     ):Response<HomeRes>
 
     //Loot Products
     @POST("getAllLootoffers")
     suspend fun getLootProduct(
-        @Query("user_id") user_id:String,
         @Query("page") page:String
     ):Response<LootProductRes>
 
@@ -85,10 +79,8 @@ interface MyApi {
         @Field("miniapp_name") miniapp_name:String
     ):Response<MiniAppbyCategory>
 
-    @FormUrlEncoded
     @POST("updateNotificationToken")
     suspend fun updateNotification(
-        @Field("user_id") user_id:String,
         @Field("token") token:String
     ):Response<MiniAppbyCategory>
 
@@ -99,10 +91,10 @@ interface MyApi {
         @Field("miniapp_id") miniapp_id:String
     ):Response<MiniAppbyCategory>
 
-    @FormUrlEncoded
+
     @POST("getAllGames")
     suspend fun getAllGames(
-        @Field("user_id") user_id:String
+
     ):Response<GamesRes>
 
     @FormUrlEncoded
@@ -140,7 +132,7 @@ interface MyApi {
 
     companion object{
       operator  fun invoke(context : Context):MyApi{
-            var BaseURl = "https://66b5-103-235-0-32.ngrok-free.app/api/"
+            var BaseURl = "https://1afb-103-235-0-32.ngrok-free.app/api/"
             val httploggingInterceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
             val client = OkHttpClient.Builder()
                 .addInterceptor(AuthInterceptor(context))

@@ -11,6 +11,7 @@ import app.perkhub.Screens.Home.Model.Notification.NotificationListRes
 import app.perkhub.Screens.Home.Model.TransactionModel.TransactionDataRes
 import app.perkhub.Screens.Home.Model.Withdrawal.withdrawalRes
 import app.perkhub.Screens.login.models.LoginRes
+import app.perkhub.Screens.login.models.SaveUserDetail
 import app.perkhub.Screens.login.models.SendOtpReq
 import app.perkhub.Screens.login.models.VerifyOtpReq
 import kotlinx.coroutines.launch
@@ -41,17 +42,13 @@ class RequestViewModel : ViewModel() {
     }
 
     fun SaveDetail(
-        name: String,
-        number: String,
-        email: String,
-        dob: String,
-        gender: String,
+        request : SaveUserDetail,
         context: Context,
         listner: ApiListener<LoginRes>
     ) {
         viewModelScope.launch(SetErrorhandler()) {
             withContext(coroutineContext) {
-                MyApi(context).SaveDetail(name, number, email, gender, dob).body()?.let { it ->
+                MyApi(context).SaveDetail(request).body()?.let { it ->
                     listner.onResponse(it)
                 }
             }
@@ -60,11 +57,11 @@ class RequestViewModel : ViewModel() {
 
 
     fun getHomeData(
-        user_id: String, context: Context, listner: ApiListener<HomeRes>
+         context: Context, listner: ApiListener<HomeRes>
     ) {
         viewModelScope.launch(SetErrorhandler()) {
             withContext(coroutineContext) {
-                MyApi(context).getHomePage(user_id).body()?.let { it ->
+                MyApi(context).getHomePage().body()?.let { it ->
                     listner.onResponse(it)
                 }
             }
@@ -73,11 +70,11 @@ class RequestViewModel : ViewModel() {
 
 
     fun getLootProduct(
-        user_id: String, page: String, context: Context, listner: ApiListener<LootProductRes>
+        page: String, context: Context, listner: ApiListener<LootProductRes>
     ) {
         viewModelScope.launch(SetErrorhandler()) {
             withContext(coroutineContext) {
-                MyApi(context).getLootProduct(user_id, page).body()?.let { it ->
+                MyApi(context).getLootProduct( page).body()?.let { it ->
                     listner.onResponse(it)
                 }
             }
@@ -121,11 +118,11 @@ class RequestViewModel : ViewModel() {
     }
 
     fun updateNotification(
-        user_id: String, token: String, context: Context, listner: ApiListener<MiniAppbyCategory>
+        token: String, context: Context, listner: ApiListener<MiniAppbyCategory>
     ) {
         viewModelScope.launch(SetErrorhandler()) {
             withContext(kotlin.coroutines.coroutineContext) {
-                MyApi(context).updateNotification(user_id, token).body()?.let { it ->
+                MyApi(context).updateNotification( token).body()?.let { it ->
                     listner.onResponse(it)
                 }
             }
@@ -133,10 +130,10 @@ class RequestViewModel : ViewModel() {
     }
 
 
-    fun getAllGames(user_id: String, context: Context,listner: ApiListener<GamesRes>){
+    fun getAllGames(context: Context,listner: ApiListener<GamesRes>){
         viewModelScope.launch(SetErrorhandler()) {
             withContext(kotlin.coroutines.coroutineContext){
-                MyApi(context).getAllGames(user_id).body()?.let {
+                MyApi(context).getAllGames().body()?.let {
                     listner.onResponse(it)
                 }
             }
