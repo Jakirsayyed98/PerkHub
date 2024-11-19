@@ -8,6 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import app.perkhub.R
+import app.perkhub.Screens.Home.Model.GenerateUrl.GenerateSubId
+import app.perkhub.Screens.Home.Model.GenerateUrl.GenerateSubIdRes
 import app.perkhub.Screens.Home.Model.Home.MiniApp
 import app.perkhub.Screens.Home.Model.MiniAppByCategory.MiniAppbyCategory
 import app.perkhub.Utils.BaseFragment
@@ -47,10 +49,10 @@ class StoreDetailFragment : BaseFragment<FragmentStoreDetailBinding>() {
         _binding!!.working.text = Html.fromHtml(data.howitswork, Html.FROM_HTML_MODE_COMPACT)
 
         _binding!!.Share.setOnClickListener {
-            GetUrl(data.id,"Share")
+            GetUrl(data.name,"Share")
         }
         _binding!!.Shop.setOnClickListener {
-            GetUrl(data.id,"Shop")
+            GetUrl(data.name,"Shop")
         }
 
 
@@ -58,18 +60,18 @@ class StoreDetailFragment : BaseFragment<FragmentStoreDetailBinding>() {
     }
 
     private fun GetUrl(id: String, type: String) {
-        viewModel.generateUrl(getUserID()!!,id.toString(),requireContext(),object : ApiListener<MiniAppbyCategory>{
-            override fun onSuccess(t: MiniAppbyCategory?, mess: String) {
+        var request = GenerateSubId(id)
+        viewModel.generateUrl(request,requireContext(),object : ApiListener<GenerateSubIdRes>{
+            override fun onSuccess(t: GenerateSubIdRes?, mess: String) {
 
                 t!!.let {
-                    if (it.errorCode=="0" && it.data.size>0){
+                    if (it.status==200){
                         if (type.equals("Share")){
                             t!!.data.get(0).let {
-                                requireContext().Share(it.name,it.url)
+                                requireContext().Share(id,t.data)
                             }
-
                         }else{
-                            requireContext().openCustomTab(t!!.data.get(0).url)
+                            requireContext().openCustomTab(t!!.data)
                         }
                     }
                 }

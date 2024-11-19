@@ -13,6 +13,8 @@ import app.perkhub.Screens.Home.Adapter.CategoryAdapter
 import app.perkhub.Screens.Home.Adapter.MiniAppCategoryAdapter
 import app.perkhub.Screens.Home.Model.Home.Category
 import app.perkhub.Screens.Home.Model.Home.MiniApp
+import app.perkhub.Screens.Home.Model.MiniAppByCategory.MiniAppByCategoryReq
+import app.perkhub.Screens.Home.Model.MiniAppByCategory.MiniAppSearchReq
 import app.perkhub.Screens.Home.Model.MiniAppByCategory.MiniAppbyCategory
 import app.perkhub.Utils.BaseFragment
 import app.perkhub.Utils.CONTAINER_TYPE_KEY1
@@ -112,9 +114,9 @@ class SelectedCategoryFragment : BaseFragment<FragmentSelectedCategoryBinding>()
 
 
     private fun SearchMiniApps(name: String) {
+        val req = MiniAppSearchReq(name)
         viewModel.searchminiApps(
-            getUserID()!!,
-            name,
+            req,
             requireContext(),
             object : ApiListener<MiniAppbyCategory> {
                 override fun onSuccess(t: MiniAppbyCategory?, mess: String) {
@@ -127,9 +129,9 @@ class SelectedCategoryFragment : BaseFragment<FragmentSelectedCategoryBinding>()
     }
 
     private fun getListOfMiniApps(id: String) {
+        val req = MiniAppByCategoryReq(id)
         viewModel.getMiniAppByCategory(
-            getUserID()!!,
-            id.toString(),
+            req,
             requireContext(),
             object : ApiListener<MiniAppbyCategory> {
                 override fun onSuccess(t: MiniAppbyCategory?, mess: String) {

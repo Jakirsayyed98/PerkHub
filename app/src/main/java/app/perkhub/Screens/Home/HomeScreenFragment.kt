@@ -230,7 +230,6 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
 
     private fun setTrendingStores(trending: java.util.ArrayList<MiniApp>) {
         trending.shuffled()
-        Log.d("PopularCountTre",trending.size.toString())
         var mAdapter = TrendingStoresAdapter<MiniApp>(object : RecyclerClickListener {
             override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
                 if (data is MiniApp){
@@ -345,8 +344,8 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
     private fun getGamesData() {
         viewModel.getAllGames(requireContext(),object : ApiListener<GamesRes>{
             override fun onSuccess(t: GamesRes?, mess: String) {
-                if (t!!.errorCode == "0"){
-                    setPopularGamesLayout(t!!.data)
+                if (t!!.status == 200){
+                    setPopularGamesLayout(t.data)
                 }
             }
 
@@ -369,7 +368,8 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
             layoutManager = GridLayoutManager(requireContext(),3,GridLayoutManager.HORIZONTAL,false)
             adapter = mAdapter
         }
-        mAdapter.addAllItem(if (data.size>24) data.subList(0,24) else data)
+
+        mAdapter.addAllItem(if (data!!.size>24) data.subList(0,24) else data)
     }
 
 
@@ -398,8 +398,8 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         val name = _binding!!.navView.getHeaderView(0).findViewById<TextView>(R.id.Profilename)
         val email = _binding!!.navView.getHeaderView(0).findViewById<TextView>(R.id.email)
 //        val email = _binding!!.navView.findViewById<TextView>(R.id.email)
-//        name.text = getSharedpref().getUser(USERDATA).data.name.toString()
-//        email.text = getSharedpref().getUser(USERDATA).data.email.toString()
+        name.text = getSharedpref().getUser(USERDATA).data.name.toString()
+        email.text = getSharedpref().getUser(USERDATA).data.email.toString()
         _binding!!.profile.setOnClickListener {
             _binding!!.drawerlayout.open()
         }

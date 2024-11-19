@@ -4,8 +4,12 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.perkhub.Screens.Home.Model.Games.GamesRes
+import app.perkhub.Screens.Home.Model.GenerateUrl.GenerateSubId
+import app.perkhub.Screens.Home.Model.GenerateUrl.GenerateSubIdRes
 import app.perkhub.Screens.Home.Model.Home.HomeRes
 import app.perkhub.Screens.Home.Model.LootProduct.LootProductRes
+import app.perkhub.Screens.Home.Model.MiniAppByCategory.MiniAppByCategoryReq
+import app.perkhub.Screens.Home.Model.MiniAppByCategory.MiniAppSearchReq
 import app.perkhub.Screens.Home.Model.MiniAppByCategory.MiniAppbyCategory
 import app.perkhub.Screens.Home.Model.Notification.NotificationListRes
 import app.perkhub.Screens.Home.Model.TransactionModel.TransactionDataRes
@@ -82,11 +86,11 @@ class RequestViewModel : ViewModel() {
     }
 
     fun getMiniAppByCategory(
-        user_id: String, category_id: String, context: Context, listner: ApiListener<MiniAppbyCategory>
+        req: MiniAppByCategoryReq, context: Context, listner: ApiListener<MiniAppbyCategory>
     ) {
         viewModelScope.launch(SetErrorhandler()) {
             withContext(kotlin.coroutines.coroutineContext) {
-                MyApi(context).getMiniAppByCategory(user_id, category_id).body()?.let { it ->
+                MyApi(context).getMiniAppByCategory(req).body()?.let { it ->
                     listner.onResponse(it)
                 }
             }
@@ -94,11 +98,11 @@ class RequestViewModel : ViewModel() {
     }
 
     fun searchminiApps(
-        user_id: String, miniapp_name: String, context: Context, listner: ApiListener<MiniAppbyCategory>
+        req: MiniAppSearchReq, context: Context, listner: ApiListener<MiniAppbyCategory>
     ) {
         viewModelScope.launch(SetErrorhandler()) {
             withContext(kotlin.coroutines.coroutineContext) {
-                MyApi(context).searchminiApps(user_id, miniapp_name).body()?.let { it ->
+                MyApi(context).searchminiApps(req).body()?.let { it ->
                     listner.onResponse(it)
                 }
             }
@@ -106,11 +110,11 @@ class RequestViewModel : ViewModel() {
     }
 
     fun generateUrl(
-        user_id: String, miniapp_id: String, context: Context, listner: ApiListener<MiniAppbyCategory>
+        request : GenerateSubId, context: Context, listner: ApiListener<GenerateSubIdRes>
     ) {
         viewModelScope.launch(SetErrorhandler()) {
             withContext(kotlin.coroutines.coroutineContext) {
-                MyApi(context).generateUrl(user_id, miniapp_id).body()?.let { it ->
+                MyApi(context).generateUrl(request).body()?.let { it ->
                     listner.onResponse(it)
                 }
             }

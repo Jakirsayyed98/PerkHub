@@ -3,6 +3,7 @@ package app.perkhub.Utils
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
+import android.util.Log
 import app.perkhub.Screens.login.models.LoginRes
 import com.google.gson.Gson
 
@@ -47,6 +48,7 @@ class AppSharedPefrence {
 
     fun getUser(USERDATA :String): LoginRes {
         val response= prefrence.getString(USERDATA,null)
+        Log.d("TESTDATA",response.toString())
         var user = Gson().fromJson<LoginRes?>(response,LoginRes::class.java)
         return user
     }
