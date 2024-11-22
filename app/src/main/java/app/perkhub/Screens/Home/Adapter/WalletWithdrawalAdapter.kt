@@ -33,12 +33,12 @@ class WalletWithdrawalAdapter<S>(val clickListener: RecyclerClickListener): Base
                     binding.statusText.setBackgroundColor(ContextCompat.getColor(itemView.context, R.color.red))
                     binding.statusText.text = "Rejected"
                     binding.rejectortxn.visibility = View.VISIBLE
-                    binding.rejectortxn.text = itemView.context.getString(R.string.reject_reason, s.message)
+                    binding.rejectortxn.text = itemView.context.getString(R.string.reject_reason, s.reason)
                 }
                 Glide.with(itemView.context).load(R.drawable.baseline_account_balance_wallet_24).centerCrop().into(binding.storeIcon)
-                binding.title.text = itemView.context.getString(R.string.withdrawal_request_of_200, setSuffixAmount(s.requested_withdrawal_amt))
+                binding.title.text = itemView.context.getString(R.string.withdrawal_request_of_200, setSuffixAmount(s.requested_amt))
                 binding.amt.text = itemView.context.getString(R.string.withdrawal_amount,
-                    setSuffixAmount(s.requested_withdrawal_amt)
+                    setSuffixAmount(s.requested_amt)
                 )
                 binding.vpa.text = itemView.context.getString(R.string.vpa, s.VPA_Id)
 

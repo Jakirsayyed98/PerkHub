@@ -45,20 +45,12 @@ fun Context.Share(name:String,url:String){
 }
 
 fun onlyDatewithMonth(date: String?): String? {
-//    try {
+    val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSXXX", Locale.ENGLISH)
+    val parsedDate = inputFormat.parse(date)
 
-        if (date.isNullOrEmpty().not())
-//            SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH).parse(date)?.let {
-//                return SimpleDateFormat("dd MMM, yyyy", Locale.ENGLISH).format(it)
-
-                SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH).parse(date)?.let {
-                return SimpleDateFormat("dd MMM, yyyy", Locale.ENGLISH).format(it)
-            }
-    return ""
-//    } catch (e: Exception) {
-//        e.printStackTrace()
-//    }
-//    return date
+    // Now format the parsed date into the desired format.
+    val outputFormat = SimpleDateFormat("dd MMM, yyyy", Locale.ENGLISH)
+    return parsedDate?.let { outputFormat.format(it) }
 }
 
 fun isValidUpiId(upiId: String): Boolean {

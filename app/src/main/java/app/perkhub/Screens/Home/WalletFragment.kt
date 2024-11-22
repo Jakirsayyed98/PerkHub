@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import app.perkhub.ContainerActivity
 import app.perkhub.R
 import app.perkhub.Screens.Home.Adapter.WalletWithdrawalAdapter
+import app.perkhub.Screens.Home.Model.TransactionModel.TransactionDataRes
 import app.perkhub.Screens.Home.Model.Withdrawal.withdrawalRes
 import app.perkhub.Screens.login.models.Data
 import app.perkhub.Screens.login.models.LoginRes
@@ -48,10 +49,10 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>() {
     }
 
     private fun getWithdrawalTransaction() {
-        viewModel.getWithdrawalTxn(getUserID()!!,requireContext(),object : ApiListener<withdrawalRes>{
+        viewModel.getWithdrawalTxn(requireContext(),object : ApiListener<withdrawalRes>{
             override fun onSuccess(t: withdrawalRes?, mess: String) {
                 t!!.let {
-                    if (it.errorCode.equals("0")){
+                    if (it.status==200){
                         if (it.data.size>0){
                             setLayout(it.data)
                         }
@@ -78,21 +79,22 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>() {
     }
 
     private fun getUserDetail() {
-            viewModel.getUserDetail(requireContext(),object : ApiListener<LoginRes>{
-                override fun onSuccess(t: LoginRes?, mess: String) {
+            viewModel.getAllTransaction(requireContext(),object : ApiListener<TransactionDataRes>{
+                override fun onSuccess(t: TransactionDataRes?, mess: String) {
                     t.let {
-                        if (t!!.errorCode.equals("0")){
-                            setUserData(t.data)
+                        if (t!!.status==200){
+                            setUserData(t)
                         }
                     }
                 }
             })
     }
 
-    private fun setUserData(data: Data) {
-        _binding!!.available.text = setSuffixAmount(data.verified)
-//        _binding!!.rejected.text = setSuffixAmount(data.rejected)
-//        _binding!!.pending.text = setSuffixAmount(data.pending)
+    private fun setUserData(data: TransactionDataRes) {
+        val avail = data.verified.toDouble() - data.withdrawal.toDouble()
+        _binding!!.available.text = setSuffixAmount(avail.toString())
+        _binding!!.rejected.text = setSuffixAmount(data.rejected)
+        _binding!!.pending.text = setSuffixAmount(data.pending)
     }
 
     companion object {

@@ -43,8 +43,11 @@ class TransactionDetailFragment : BaseFragment<FragmentTransactionDetailBinding>
 
 
     private fun setData(data: Data?) {
-        _binding!!.storename.text = data!!.miniApp[0].name
-        Glide.with(requireContext()).load(data.miniApp[0].logo).into(_binding!!.logo)
+        if (data!!.miniApp!=null){
+            _binding!!.storename.text = data!!.miniapp_name
+            Glide.with(requireContext()).load(data.miniApp?.get(0)!!.logo).into(_binding!!.logo)
+        }
+
         _binding!!.transactiondate.text = onlyDatewithMonth(data.created_at)
         _binding!!.transactionAmt.text = setSuffixAmount(data.sale_amount)
         _binding!!.commision.text = setSuffixAmount(data.user_commission)

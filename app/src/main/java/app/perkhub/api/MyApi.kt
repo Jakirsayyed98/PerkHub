@@ -94,10 +94,8 @@ interface MyApi {
     suspend fun getAllGames(
     ):Response<GamesRes>
 
-    @FormUrlEncoded
-    @POST("getTxnList")
+    @GET("getTxnList")
     suspend fun getAllTransaction(
-        @Field("user_id") user_id:String
     ):Response<TransactionDataRes>
 
 
@@ -111,10 +109,8 @@ interface MyApi {
     ):Response<withdrawalRes>
 
 
-    @FormUrlEncoded
-    @POST("withdrawalTxnList")
+    @GET("withdrawal/txnList")
     suspend fun getWithdrawalTxn(
-        @Field("user_id") user_id:String
     ):Response<withdrawalRes>
 
 
@@ -129,7 +125,7 @@ interface MyApi {
 
     companion object{
       operator  fun invoke(context : Context):MyApi{
-            var BaseURl = " https://61b2-103-235-0-19.ngrok-free.app/api/"
+            var BaseURl = "https://0fa4-103-235-0-19.ngrok-free.app/api/"
             val httploggingInterceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
             val client = OkHttpClient.Builder()
                 .addInterceptor(AuthInterceptor(context))

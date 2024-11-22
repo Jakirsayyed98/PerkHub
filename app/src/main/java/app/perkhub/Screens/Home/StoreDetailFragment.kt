@@ -59,8 +59,8 @@ class StoreDetailFragment : BaseFragment<FragmentStoreDetailBinding>() {
         return _binding?.root
     }
 
-    private fun GetUrl(id: String, type: String) {
-        var request = GenerateSubId(id)
+    private fun GetUrl(name: String, type: String) {
+        var request = GenerateSubId(name)
         viewModel.generateUrl(request,requireContext(),object : ApiListener<GenerateSubIdRes>{
             override fun onSuccess(t: GenerateSubIdRes?, mess: String) {
 
@@ -68,7 +68,7 @@ class StoreDetailFragment : BaseFragment<FragmentStoreDetailBinding>() {
                     if (it.status==200){
                         if (type.equals("Share")){
                             t!!.data.get(0).let {
-                                requireContext().Share(id,t.data)
+                                requireContext().Share(name,t.data)
                             }
                         }else{
                             requireContext().openCustomTab(t!!.data)

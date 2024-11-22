@@ -1,7 +1,12 @@
 package app.perkhub.Screens.Home.Model.TransactionModel
 
 data class TransactionDataRes(
-    val `data`: List<Data>,
-    val errorCode: String,
-    val errorMsg: String
+    val data: ArrayList<Data>,
+    val message: String,
+    val pending: String,
+    val rejected: String,
+    val status: Int,
+    val verified: String,
+    val withdrawal: String,
+
 )

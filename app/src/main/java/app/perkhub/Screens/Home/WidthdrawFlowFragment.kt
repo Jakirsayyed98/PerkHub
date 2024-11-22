@@ -101,7 +101,7 @@ class WidthdrawFlowFragment : BaseFragment<FragmentWidthdrawFlowBinding>() {
         viewModel.ReqForWithdrawal(getUserID()!!,_binding!!.vpa.text.toString(),_binding!!.amount.text.toString(),requireContext(),object : ApiListener<withdrawalRes>{
             override fun onSuccess(t: withdrawalRes?, mess: String) {
                 t!!.let {
-                    if (it.errorCode.equals("0") && it.data.size>=0){
+                    if (it.status==200 && it.data.size>=0){
                         ShowSuccessDialog(SUCCESS)
                     }else{
                         ShowSuccessDialog(FAILED)

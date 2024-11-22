@@ -144,10 +144,10 @@ class RequestViewModel : ViewModel() {
         }
     }
 
-    fun getAllTransaction(user_id: String, context: Context,listner: ApiListener<TransactionDataRes>){
+    fun getAllTransaction(context: Context,listner: ApiListener<TransactionDataRes>){
         viewModelScope.launch(SetErrorhandler()) {
             withContext(kotlin.coroutines.coroutineContext){
-                MyApi(context).getAllTransaction(user_id).body()?.let {
+                MyApi(context).getAllTransaction().body()?.let {
                     listner.onResponse(it)
                 }
             }
@@ -164,10 +164,10 @@ class RequestViewModel : ViewModel() {
         }
     }
 
-    fun getWithdrawalTxn(user_id: String, context: Context,listner: ApiListener<withdrawalRes>){
+    fun getWithdrawalTxn(context: Context,listner: ApiListener<withdrawalRes>){
         viewModelScope.launch(SetErrorhandler()) {
             withContext(kotlin.coroutines.coroutineContext){
-                MyApi(context).getWithdrawalTxn(user_id).body()?.let {
+                MyApi(context).getWithdrawalTxn().body()?.let {
                     listner.onResponse(it)
                 }
             }

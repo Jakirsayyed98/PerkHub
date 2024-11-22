@@ -1,6 +1,7 @@
 package app.perkhub.Screens.Home
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -40,9 +41,9 @@ class TransactionHistoryFragment : BaseFragment<FragmentTransactionHistoryBindin
     }
 
     private fun getTransactionData() {
-        viewModel.getAllTransaction(getUserID()!!,requireContext(),object : ApiListener<TransactionDataRes>{
+        viewModel.getAllTransaction(requireContext(),object : ApiListener<TransactionDataRes>{
             override fun onSuccess(t: TransactionDataRes?, mess: String) {
-                if (t!!.errorCode.equals("0")){
+                if (t!!.status==200){
                     setData(t.data)
                 }
             }

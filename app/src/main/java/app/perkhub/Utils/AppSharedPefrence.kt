@@ -48,7 +48,6 @@ class AppSharedPefrence {
 
     fun getUser(USERDATA :String): LoginRes {
         val response= prefrence.getString(USERDATA,null)
-        Log.d("TESTDATA",response.toString())
         var user = Gson().fromJson<LoginRes?>(response,LoginRes::class.java)
         return user
     }
