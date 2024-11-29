@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.perkhub.ContainerActivity
 import app.perkhub.R
@@ -39,9 +40,7 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>() {
 
         _binding!!.toolbar.name.text = "Wallet"
 
-        _binding!!.withdraw.setOnClickListener {
-            ContainerActivity.OpenContainer(requireContext(),"WidthdrawFlowFragment","")
-        }
+
 
         getUserDetail()
         getWithdrawalTransaction()
@@ -71,7 +70,7 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>() {
         })
 
         _binding!!.withdrawalhistory.apply {
-            layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
+            layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,true)
             adapter = mAdapter
         }
 
@@ -91,10 +90,17 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>() {
     }
 
     private fun setUserData(data: TransactionDataRes) {
-        val avail = data.verified.toDouble() - data.withdrawal.toDouble()
+        val avail = data.verified.toDouble()// - data.withdrawal.toDouble()
         _binding!!.available.text = setSuffixAmount(avail.toString())
         _binding!!.rejected.text = setSuffixAmount(data.rejected)
         _binding!!.pending.text = setSuffixAmount(data.pending)
+        _binding!!.withdraw.setOnClickListener {
+            if (avail>=100){
+                ContainerActivity.OpenContainer(requireContext(),"WidthdrawFlowFragment","")
+            }else{
+                Toast.makeText(requireContext(),"Available Amount should not be less then ₹100",Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     companion object {

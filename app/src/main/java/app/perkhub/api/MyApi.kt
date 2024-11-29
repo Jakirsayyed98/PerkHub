@@ -11,6 +11,7 @@ import app.perkhub.Screens.Home.Model.MiniAppByCategory.MiniAppSearchReq
 import app.perkhub.Screens.Home.Model.MiniAppByCategory.MiniAppbyCategory
 import app.perkhub.Screens.Home.Model.Notification.NotificationListRes
 import app.perkhub.Screens.Home.Model.TransactionModel.TransactionDataRes
+import app.perkhub.Screens.Home.Model.Withdrawal.WithdrawalReq
 import app.perkhub.Screens.Home.Model.Withdrawal.withdrawalRes
 import app.perkhub.Screens.login.models.LoginRes
 import app.perkhub.Screens.login.models.SaveUserDetail
@@ -98,14 +99,9 @@ interface MyApi {
     suspend fun getAllTransaction(
     ):Response<TransactionDataRes>
 
-
-
-    @FormUrlEncoded
-    @POST("requestwithdrawal")
+    @POST("withdrawal/request")
     suspend fun ReqForWithdrawal(
-        @Field("user_id") user_id:String,
-        @Field("VPA_Id") VPA_Id:String,
-        @Field("requested_withdrawal_amt") requested_withdrawal_amt:String
+        @Body body: WithdrawalReq
     ):Response<withdrawalRes>
 
 
@@ -125,7 +121,8 @@ interface MyApi {
 
     companion object{
       operator  fun invoke(context : Context):MyApi{
-            var BaseURl = "https://0fa4-103-235-0-19.ngrok-free.app/api/"
+          val BaseUrl = "https://e945-103-235-0-19.ngrok-free.app"
+            var BaseURl = "$BaseUrl/api/"
             val httploggingInterceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
             val client = OkHttpClient.Builder()
                 .addInterceptor(AuthInterceptor(context))

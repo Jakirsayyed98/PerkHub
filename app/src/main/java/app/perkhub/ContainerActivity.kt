@@ -1,15 +1,9 @@
 package app.perkhub
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
-import android.view.View
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
@@ -20,7 +14,7 @@ import app.perkhub.Screens.Home.StoreDetailFragment
 import app.perkhub.Screens.Home.TransactionDetailFragment
 import app.perkhub.Screens.Home.TransactionHistoryFragment
 import app.perkhub.Screens.Home.WalletFragment
-import app.perkhub.Screens.Home.WidthdrawFlowFragment
+import app.perkhub.Screens.Home.WithdrawalFlowFragment
 import app.perkhub.Utils.BaseActivity
 import app.perkhub.Utils.CONTAINER_TYPE_KEY
 import app.perkhub.Utils.DATA
@@ -112,7 +106,7 @@ class ContainerActivity : BaseActivity<ActivityContainerBinding>() {
                 addFragment(WalletFragment.newInstance())
             }
             "WidthdrawFlowFragment"->{
-                addFragment(WidthdrawFlowFragment.newInstance())
+                addFragment(WithdrawalFlowFragment.newInstance())
             }
             "NotificationListFragment"->{
                 addFragment(NotificationListFragment.newInstance())

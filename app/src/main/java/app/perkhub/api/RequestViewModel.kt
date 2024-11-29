@@ -13,6 +13,7 @@ import app.perkhub.Screens.Home.Model.MiniAppByCategory.MiniAppSearchReq
 import app.perkhub.Screens.Home.Model.MiniAppByCategory.MiniAppbyCategory
 import app.perkhub.Screens.Home.Model.Notification.NotificationListRes
 import app.perkhub.Screens.Home.Model.TransactionModel.TransactionDataRes
+import app.perkhub.Screens.Home.Model.Withdrawal.WithdrawalReq
 import app.perkhub.Screens.Home.Model.Withdrawal.withdrawalRes
 import app.perkhub.Screens.login.models.LoginRes
 import app.perkhub.Screens.login.models.SaveUserDetail
@@ -173,10 +174,10 @@ class RequestViewModel : ViewModel() {
             }
         }
     }
- fun ReqForWithdrawal(user_id: String,VPA_Id: String,requested_withdrawal_amt: String, context: Context,listner: ApiListener<withdrawalRes>){
+ fun ReqForWithdrawal(req: WithdrawalReq, context: Context,listner: ApiListener<withdrawalRes>){
         viewModelScope.launch(SetErrorhandler()) {
             withContext(kotlin.coroutines.coroutineContext){
-                MyApi(context).ReqForWithdrawal(user_id,VPA_Id,requested_withdrawal_amt).body()?.let {
+                MyApi(context).ReqForWithdrawal(req).body()?.let {
                     listner.onResponse(it)
                 }
             }

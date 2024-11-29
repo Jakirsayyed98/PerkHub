@@ -5,3 +5,9 @@ data class withdrawalRes(
     val message: String,
     val status: Int
 )
+
+
+data class WithdrawalReq(
+    val upi_id: String,
+    val request_amt:String
+)

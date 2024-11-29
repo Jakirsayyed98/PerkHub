@@ -5,7 +5,7 @@ data class Data(
     val requested_amt: String,
     val user_id: String,
     val reason: String,
-    val VPA_Id: String,
+    val vpa_id: String,
     val status: String,
     val txn_id: String,
     val txn_time: String,
