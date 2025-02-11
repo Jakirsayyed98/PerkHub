@@ -398,8 +398,8 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         val name = _binding!!.navView.getHeaderView(0).findViewById<TextView>(R.id.Profilename)
         val email = _binding!!.navView.getHeaderView(0).findViewById<TextView>(R.id.email)
 //        val email = _binding!!.navView.findViewById<TextView>(R.id.email)
-        name.text = getSharedpref().getUser(USERDATA).data.name.toString()
-        email.text = getSharedpref().getUser(USERDATA).data.email.toString()
+//        name.text = getSharedpref().getUser(USERDATA).data.name.toString()
+//        email.text = getSharedpref().getUser(USERDATA).data.email.toString()
         _binding!!.profile.setOnClickListener {
             _binding!!.drawerlayout.open()
         }

@@ -121,7 +121,7 @@ interface MyApi {
 
     companion object{
       operator  fun invoke(context : Context):MyApi{
-          val BaseUrl = "https://e945-103-235-0-19.ngrok-free.app"
+          val BaseUrl = "https://blessed-pretty-mammal.ngrok-free.app"
             var BaseURl = "$BaseUrl/api/"
             val httploggingInterceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
             val client = OkHttpClient.Builder()
