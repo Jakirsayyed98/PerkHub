@@ -8,6 +8,6 @@ data class Category(
     val id: String,
     val image: String,
     val name: String,
-    val status: String,
+    val status: Boolean,
     val updated_at: String
 )

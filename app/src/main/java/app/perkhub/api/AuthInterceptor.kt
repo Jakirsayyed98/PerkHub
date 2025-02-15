@@ -21,7 +21,7 @@ class AuthInterceptor(
 
         // Get the token from TokenManager (SharedPreferences, etc.)
         var token = TokenManager.getToken(context)
-
+        print(token)
         // Add token to the request headers
         request = request.newBuilder()
             .addHeader("Authorization", "Bearer $token") // Ensure 'Bearer' prefix is correct
@@ -65,6 +65,7 @@ class AuthInterceptor(
             val response = MyApi(context).getAuthorization(request)
             if (response.isSuccessful) {
                 response.body()
+
             } else {
                 Log.e("AuthInterceptor", "Token refresh failed: ${response.message()}")
                 null

@@ -1,6 +1,7 @@
 package app.perkhub.Screens.Home.Adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
@@ -23,14 +24,18 @@ class CategoryActiveAdapter<S>(val clickListener: RecyclerClickListener) : BaseR
             if (s is CategoryX){
                 context = itemView.context
                 binding.name.text = s.name
-                setMiniApp(binding,s.data)
+                Log.d("CheckOnly Data",s.toString())
+                if(s.data.size>1){
+                    setMiniApp(binding,s.data)
+                }
+
             }
         }
     }
 
 
 
-    private fun setMiniApp(binding: ActiveCategoryLayoutBinding,data: List<MiniApp>) {
+    private fun setMiniApp(binding: ActiveCategoryLayoutBinding,data: ArrayList<MiniApp>) {
         val mAdapter = TrendingStoresAdapter<MiniApp>(object : RecyclerClickListener{
             override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
 
@@ -44,7 +49,7 @@ class CategoryActiveAdapter<S>(val clickListener: RecyclerClickListener) : BaseR
                 GridLayoutManager(context, 2, LinearLayoutManager.HORIZONTAL, false)
             adapter = mAdapter
         }
-        data.shuffled()
+//        data.shuffled()
         mAdapter.addAllItem(if (data.size <= 16) data else data.subList(0, 16))
     }
 

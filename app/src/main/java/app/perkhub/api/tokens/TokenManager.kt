@@ -23,7 +23,7 @@ object TokenManager {
     // Retrieve the token
     fun getToken(context: Context): String? {
         val sharedPreferences = getSharedPreferences(context)
-        return  "Bearer " + sharedPreferences.getString(TOKEN_KEY, null)
+        return  /*"Bearer " +*/ sharedPreferences.getString(TOKEN_KEY, null)
     }
 
     fun getMobileNumberForToken(context: Context): String? {

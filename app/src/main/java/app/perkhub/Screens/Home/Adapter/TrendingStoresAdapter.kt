@@ -18,7 +18,7 @@ class TrendingStoresAdapter<S>(val cliklistner : RecyclerClickListener): BaseRec
                 with(binding){
 
                     Glide.with(itemView.context).load(s.icon).circleCrop().into(icon)
-                    rupee.visibility =if (s.cb_active=="1")  View.VISIBLE else View.GONE
+                    rupee.visibility =if (s.cbActive)  View.VISIBLE else View.GONE
                     storename.text = s.name
                     binding.root.setOnClickListener {
                         cliklistner.RecyclerClickListener(0,s.url,s)

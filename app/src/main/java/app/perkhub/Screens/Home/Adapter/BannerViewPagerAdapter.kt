@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
-import app.perkhub.Screens.Home.Model.Home.Banner1
 import app.perkhub.Utils.RecyclerClickListener
 import com.bumptech.glide.Glide
 

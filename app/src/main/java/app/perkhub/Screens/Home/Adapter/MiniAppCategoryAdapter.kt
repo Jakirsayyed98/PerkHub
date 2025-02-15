@@ -18,7 +18,7 @@ class MiniAppCategoryAdapter<S>(val clickListener: RecyclerClickListener):BaseRe
             if ( s is MiniApp){
                 Glide.with(itemView.context).load(s.icon).circleCrop().into(binding.icon)
                 binding.name.text = s.name
-                binding.cb.text = s.cb_percentage
+                binding.cb.text = s.cbPercentage
                 binding.root.setOnClickListener {
                     clickListener.RecyclerClickListener(0,s.url,s)
                 }

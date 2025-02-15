@@ -35,7 +35,7 @@ import app.perkhub.Screens.Home.Adapter.PopularStoresAdapter
 import app.perkhub.Screens.Home.Adapter.SliderModelMain
 import app.perkhub.Screens.Home.Adapter.TrendingStoresAdapter
 import app.perkhub.Screens.Home.Model.Games.GamesRes
-import app.perkhub.Screens.Home.Model.Home.Banner1
+import app.perkhub.Screens.Home.Model.Home.Banner
 import app.perkhub.Screens.Home.Model.Home.Category
 import app.perkhub.Screens.Home.Model.Home.CategoryX
 import app.perkhub.Screens.Home.Model.Home.HomeRes
@@ -125,7 +125,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         viewModel.getHomeData(requireContext(), object : ApiListener<HomeRes> {
             override fun onSuccess(t: HomeRes?, mess: String) {
                 if (t!!.status.equals(200)) {
-                    t.data.get(0).let {
+                    t.data.let {
                         _binding!!.progressbar.visibility = View.GONE
                         _binding!!.mainlayout.visibility = View.VISIBLE
                         setMainCategoryLayout(it.categories)
@@ -137,13 +137,6 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
                             setPopularStore(it.popular)
                         }
 
-                        if (it.trending.size < 1) {
-                            _binding!!.trendingStorelayout.visibility = View.GONE
-                        } else {
-                            _binding!!.trendingStorelayout.visibility = View.VISIBLE
-                            setTrendingStores(it.trending)
-                        }
-
                         if (it.banner1.size < 1) {
                             _binding!!.banner1layout.visibility = View.GONE
                         } else {
@@ -151,13 +144,19 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
                             Banner1Func(it.banner1)
                         }
 
-                        if (it.category_list.size <1){
+                        if (it.categoryList.size <1){
                             _binding!!.Activecategorylayout.visibility = View.GONE
                         }else{
                             _binding!!.Activecategorylayout.visibility = View.VISIBLE
-                            setActivatecategoryLayout(it.category_list)
+                            setActivatecategoryLayout(it.categoryList)
                         }
 
+                        if ( it.trending.size < 1) {
+                            _binding!!.trendingStorelayout.visibility = View.GONE
+                        } else {
+                            _binding!!.trendingStorelayout.visibility = View.VISIBLE
+                            setTrendingStores(it.trending)
+                        }
                     }
                 }
             }
@@ -251,8 +250,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
     }
 
 
-    private fun Banner1Func(banners: java.util.ArrayList<Banner1>) {
-
+    private fun Banner1Func(banners: java.util.ArrayList<Banner>) {
         if (banners.isNullOrEmpty()) {
             _binding!!.banner1layout.visibility = View.GONE
 
