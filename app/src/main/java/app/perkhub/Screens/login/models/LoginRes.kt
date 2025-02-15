@@ -14,6 +14,11 @@ data class SendOtpReq(
     var Number: String
 )
 
+data class GetToken(
+    @SerializedName("number")
+    var Number: String
+)
+
 
 data class VerifyOtpReq(
     @SerializedName("number")

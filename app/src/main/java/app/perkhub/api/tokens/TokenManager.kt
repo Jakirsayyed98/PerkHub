@@ -2,6 +2,8 @@ package app.perkhub.api.tokens
 
 import android.content.Context
 import android.content.SharedPreferences
+import app.perkhub.Utils.AppSharedPefrence
+import app.perkhub.Utils.USERDATA
 
 object TokenManager {
 
@@ -22,6 +24,11 @@ object TokenManager {
     fun getToken(context: Context): String? {
         val sharedPreferences = getSharedPreferences(context)
         return  "Bearer " + sharedPreferences.getString(TOKEN_KEY, null)
+    }
+
+    fun getMobileNumberForToken(context: Context): String? {
+        val number = AppSharedPefrence.getInstance(context).getUser(USERDATA).data.number
+        return number
     }
 
     // Remove token (e.g., for logout)

@@ -13,6 +13,7 @@ import app.perkhub.Screens.Home.Model.Notification.NotificationListRes
 import app.perkhub.Screens.Home.Model.TransactionModel.TransactionDataRes
 import app.perkhub.Screens.Home.Model.Withdrawal.WithdrawalReq
 import app.perkhub.Screens.Home.Model.Withdrawal.withdrawalRes
+import app.perkhub.Screens.login.models.GetToken
 import app.perkhub.Screens.login.models.LoginRes
 import app.perkhub.Screens.login.models.SaveUserDetail
 import app.perkhub.Screens.login.models.SendOtpReq
@@ -47,6 +48,10 @@ interface MyApi {
         @Body body: VerifyOtpReq
     ):Response<BaseRes>
 
+    @POST("authorization")
+    suspend fun getAuthorization(
+        @Body body: GetToken
+    ):Response<BaseRes>
 
     @GET("getUserDetail")
     suspend fun getUserDetail(

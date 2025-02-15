@@ -15,6 +15,7 @@ import app.perkhub.Screens.Home.Model.Notification.NotificationListRes
 import app.perkhub.Screens.Home.Model.TransactionModel.TransactionDataRes
 import app.perkhub.Screens.Home.Model.Withdrawal.WithdrawalReq
 import app.perkhub.Screens.Home.Model.Withdrawal.withdrawalRes
+import app.perkhub.Screens.login.models.GetToken
 import app.perkhub.Screens.login.models.LoginRes
 import app.perkhub.Screens.login.models.SaveUserDetail
 import app.perkhub.Screens.login.models.SendOtpReq
@@ -30,6 +31,16 @@ class RequestViewModel : ViewModel() {
         viewModelScope.launch(SetErrorhandler()) {
             withContext(coroutineContext) {
                 MyApi(context).sendOtp(sendOTP).body()?.let { it ->
+                    listner.onResponse(it)
+                }
+            }
+        }
+    }
+
+    fun GetAuthorizationToken(getToken: GetToken, context: Context, listner: ApiListener<BaseRes>) {
+        viewModelScope.launch(SetErrorhandler()) {
+            withContext(coroutineContext) {
+                MyApi(context).getAuthorization(getToken).body()?.let { it ->
                     listner.onResponse(it)
                 }
             }
