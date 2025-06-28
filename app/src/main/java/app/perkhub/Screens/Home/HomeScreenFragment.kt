@@ -4,6 +4,8 @@ import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
@@ -59,7 +61,6 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 
@@ -90,14 +91,14 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         _binding!!.progressbar.visibility = View.VISIBLE
         _binding!!.mainlayout.visibility = View.GONE
         clickEvenets()
-
+        Toast.makeText(requireContext(),"Home API call function",Toast.LENGTH_LONG).show()
         GlobalScope.launch {
             getHomeData()
         }
-        GlobalScope.launch {
-            getLootProduct()
-        }
-
+//        GlobalScope.launch {
+//            getLootProduct()
+//        }
+//
         GlobalScope.launch {
             getGamesData()
         }
@@ -124,8 +125,10 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
     private fun getHomeData() {
         viewModel.getHomeData(requireContext(), object : ApiListener<HomeRes> {
             override fun onSuccess(t: HomeRes?, mess: String) {
-                if (t!!.status.equals(200)) {
-                    t.data.let {
+                Toast.makeText(requireContext(),"Home API call",Toast.LENGTH_LONG).show()
+                if (t!!.errorCode.equals("0")) {
+
+                    t.data[0].let {
                         _binding!!.progressbar.visibility = View.GONE
                         _binding!!.mainlayout.visibility = View.VISIBLE
                         setMainCategoryLayout(it.categories)
@@ -163,7 +166,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
 
             override fun onError(mess: String) {
                 super.onError(mess)
-
+                Toast.makeText(requireContext(),"Home API call error"+mess,Toast.LENGTH_LONG).show()
             }
         })
     }
@@ -340,7 +343,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
 
 
     private fun getGamesData() {
-        viewModel.getAllGames(requireContext(),object : ApiListener<GamesRes>{
+        viewModel.getPopularGames(requireContext(),object : ApiListener<GamesRes>{
             override fun onSuccess(t: GamesRes?, mess: String) {
                 if (t!!.status == 200){
                     setPopularGamesLayout(t.data)
@@ -372,6 +375,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
 
 
     private fun updateFirebaseToken() {
+        Log.d("@@@@@@","Success Update Token started")
         FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
             if (!task.isSuccessful) {
                 return@OnCompleteListener
@@ -381,7 +385,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
             val token = task.result
             viewModel.updateNotification(token,requireContext(), object : ApiListener<MiniAppbyCategory> {
                 override fun onSuccess(t: MiniAppbyCategory?, mess: String) {
-
+                    requireContext().toast("Success Update Token")
                 }
             })
         })
@@ -396,8 +400,8 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         val name = _binding!!.navView.getHeaderView(0).findViewById<TextView>(R.id.Profilename)
         val email = _binding!!.navView.getHeaderView(0).findViewById<TextView>(R.id.email)
 //        val email = _binding!!.navView.findViewById<TextView>(R.id.email)
-        name.text = getSharedpref().getUser(USERDATA).data.name.toString()
-        email.text = getSharedpref().getUser(USERDATA).data.email.toString()
+        name.text = getSharedpref().getUser(USERDATA).data[0].name.toString()
+        email.text = getSharedpref().getUser(USERDATA).data[0].email.toString()
         _binding!!.profile.setOnClickListener {
             _binding!!.drawerlayout.open()
         }
@@ -442,16 +446,18 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
 
     @Deprecated("Deprecated in Java")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return super.onOptionsItemSelected(item)
         if (toggle.onOptionsItemSelected(item)){
             return  true
         }
+        return super.onOptionsItemSelected(item)
+
     }
 
     fun Context.OpenDialogForLogOut(){
 
         val dialog = Dialog(this)
         dialog.setContentView(R.layout.logout_dialog_layout)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         val cancel = dialog.findViewById<AppCompatButton>(R.id.cancel)
         val leave = dialog.findViewById<AppCompatButton>(R.id.leave)
         dialog.setCancelable(true)

@@ -1,7 +1,9 @@
 package app.perkhub.Screens.Home.Model.Home
 
 data class HomeRes(
-    val data: Data,
-    val status: Int,
-    val message: String
+    val data: ArrayList<Data>,
+
+    val errorMsg: String,
+    val errorCode: String,
+    val status: Int
 )

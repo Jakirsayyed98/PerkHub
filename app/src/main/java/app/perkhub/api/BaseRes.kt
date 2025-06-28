@@ -3,14 +3,17 @@ package app.perkhub.api
 import com.google.gson.annotations.SerializedName
 
 data class BaseRes(
-    @SerializedName("message")
+    @SerializedName("errorMsg")
     val Message: String,
+
+    @SerializedName("errorCode")
+    val ErrorCode: String,
 
     @SerializedName("status")
     val Status: String,
 
     @SerializedName("data")
-    val Data: Data
+    val Data: String
 )
 
 data class Data(

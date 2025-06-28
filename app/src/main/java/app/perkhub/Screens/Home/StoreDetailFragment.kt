@@ -44,9 +44,9 @@ class StoreDetailFragment : BaseFragment<FragmentStoreDetailBinding>() {
         _binding!!.AboutTitle.text = getString(R.string.about_s,data.name)
         Glide.with(requireContext()).load(data.logo).into(_binding!!.logo)
         _binding!!.AboutStore.text = data.about
-        _binding!!.terms.text = Html.fromHtml(data.cashbackTerms, Html.FROM_HTML_MODE_COMPACT)
-        _binding!!.Cashbackrates.text = Html.fromHtml(data.cashbackRates, Html.FROM_HTML_MODE_COMPACT)
-        _binding!!.working.text = Html.fromHtml(data.howitsWork, Html.FROM_HTML_MODE_COMPACT)
+        _binding!!.terms.text = Html.fromHtml(data.cashbackTerms, Html.FROM_HTML_MODE_LEGACY)
+        _binding!!.Cashbackrates.text = Html.fromHtml(if (!data.cashbackRates.isNullOrEmpty()) data.cashbackRates else "" , Html.FROM_HTML_MODE_LEGACY)
+        _binding!!.working.text = Html.fromHtml(data.howitsWork, Html.FROM_HTML_MODE_LEGACY)
 
         _binding!!.Share.setOnClickListener {
             GetUrl(data.name,"Share")

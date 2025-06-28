@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 import retrofit2.http.Field
 
 data class LoginRes(
-    val data: Data,
+    val data: ArrayList<Data>,
     val errorCode: String,
     val errorMsg: String
 )

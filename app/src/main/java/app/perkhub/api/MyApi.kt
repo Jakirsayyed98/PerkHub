@@ -10,6 +10,7 @@ import app.perkhub.Screens.Home.Model.MiniAppByCategory.MiniAppByCategoryReq
 import app.perkhub.Screens.Home.Model.MiniAppByCategory.MiniAppSearchReq
 import app.perkhub.Screens.Home.Model.MiniAppByCategory.MiniAppbyCategory
 import app.perkhub.Screens.Home.Model.Notification.NotificationListRes
+import app.perkhub.Screens.Home.Model.Notification.TokenReq
 import app.perkhub.Screens.Home.Model.TransactionModel.TransactionDataRes
 import app.perkhub.Screens.Home.Model.Withdrawal.WithdrawalReq
 import app.perkhub.Screens.Home.Model.Withdrawal.withdrawalRes
@@ -32,6 +33,7 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Query
+import java.util.concurrent.TimeUnit
 
 interface MyApi {
 
@@ -87,10 +89,10 @@ interface MyApi {
 
     @POST("updateNotificationToken")
     suspend fun updateNotification(
-        @Field("token") token:String
+        @Body body: TokenReq
     ):Response<MiniAppbyCategory>
 
-    @POST("genrateSubID")
+    @POST("generate-sub-id")
     suspend fun generateUrl(
         @Body body: GenerateSubId
     ):Response<GenerateSubIdRes>
@@ -98,6 +100,11 @@ interface MyApi {
 
     @GET("getAllGames")
     suspend fun getAllGames(
+    ):Response<GamesRes>
+
+
+    @GET("get-popular-games")
+    suspend fun getPopularGames(
     ):Response<GamesRes>
 
     @GET("getTxnList")
@@ -115,21 +122,21 @@ interface MyApi {
     ):Response<withdrawalRes>
 
 
-
-    @FormUrlEncoded
-    @POST("getNotificationList")
+    @GET("getNotificationList")
     suspend fun getNotificationList(
-        @Field("user_id") user_id:String
     ):Response<NotificationListRes>
 
 
 
     companion object{
       operator  fun invoke(context : Context):MyApi{
-          val BaseUrl = "https://blessed-pretty-mammal.ngrok-free.app"
-            var BaseURl = "$BaseUrl/api/"
+          val BaseUrl = "https://blessed-pretty-mammal.ngrok-free.app/api/"
+            var BaseURl = "$BaseUrl"
             val httploggingInterceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
             val client = OkHttpClient.Builder()
+                .connectTimeout(30, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
+                .writeTimeout(30, TimeUnit.SECONDS)
                 .addInterceptor(AuthInterceptor(context))
                 .addInterceptor(httploggingInterceptor).build()
 

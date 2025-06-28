@@ -119,12 +119,16 @@ class EnterMobileNFragment : BaseFragment<FragmentEnterMobileNBinding>() {
                     object : ApiListener<BaseRes> {
                         override fun onSuccess(t: BaseRes?, mess: String) {
 
-                            dissmissProgress()
-                            requireContext().toast(t!!.Message)
+                            if (t!!.ErrorCode == "00"){
+                                dissmissProgress()
+                                requireContext().toast(t!!.Message)
+                                TokenManager.saveToken(requireContext(),t!!.Data)
 
-                            TokenManager.saveToken(requireContext(),t!!.Data.Token)
-
-                            getUserDetail()
+                                getUserDetail()
+                            }else{
+                                dissmissProgress()
+                                requireContext().toast(mess)
+                            }
 
                         }
 
@@ -151,7 +155,7 @@ class EnterMobileNFragment : BaseFragment<FragmentEnterMobileNBinding>() {
 
         viewModel.getUserDetail(requireContext(),object : ApiListener<LoginRes>{
             override fun onSuccess(t: LoginRes?, mess: String) {
-                if (t!!.data.name.isNullOrEmpty()) {
+                if (t!!.data[0].name.isNullOrEmpty()) {
                     ContainerActivity.OpenContainer(
                         requireContext(),
                         "EnterDetailFragment",

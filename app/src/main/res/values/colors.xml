@@ -13,9 +13,11 @@
     <color name="green">#56C35B</color>
     <color name="red">#F44336</color>
     <color name="orange">#F2840F</color>
+    <color name="red_700">#D32F2F</color>
 
 
-<!--    // const BG_color = Color(0xFFF7F5F7);-->
+
+    <!--    // const BG_color = Color(0xFFF7F5F7);-->
 <!--    // const BG_color1 = Color(0xD3F1F1F1);-->
 <!--    const correct_color = Color(0xFF32AB58);-->
 <!--    const VERIFIED_COLOR = Color(0xFF32AB58);-->

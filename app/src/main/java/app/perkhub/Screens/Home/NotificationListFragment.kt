@@ -39,7 +39,7 @@ class NotificationListFragment : BaseFragment<FragmentNotificationListBinding>()
     }
 
     private fun getNotificationList() {
-        viewModel.getNotificationList(getUserID()!!,requireContext(),object : ApiListener<NotificationListRes>{
+        viewModel.getNotificationList(requireContext(),object : ApiListener<NotificationListRes>{
             override fun onSuccess(t: NotificationListRes?, mess: String) {
                 t!!.let {
                     setData(it)

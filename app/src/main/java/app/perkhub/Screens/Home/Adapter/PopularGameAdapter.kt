@@ -15,14 +15,25 @@ class PopularGameAdapter<S>(val clickListener: RecyclerClickListener): BaseRecyc
     inner class Holder(val binding: HomeGamesLayoutBinding):RecyclerView.ViewHolder(binding.root){
         fun setData(s:S){
             if (s is Data){
-                binding.name.text = s.name
-                Glide.with(itemView.context).load(s.assets.square).into(binding.icon)
+                binding.tvGameName.text = s.name
+                binding.tvPlays.text = "${formatPlays(s.gamePlays)} plays"
+                Glide.with(itemView.context).load(s.assets.cover).into(binding.imgCover)
                 binding.root.setOnClickListener {
                     clickListener.RecyclerClickListener(0,"",s)
                 }
             }
         }
     }
+
+    fun formatPlays(count: String): String {
+        val n = count.toLongOrNull() ?: 0
+        return when {
+            n >= 1_000_000 -> "${n / 1_000_000}M"
+            n >= 1_000 -> "${n / 1_000}K"
+            else -> "$n"
+        }
+    }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         return Holder(HomeGamesLayoutBinding.inflate(LayoutInflater.from(parent.context),parent,false))

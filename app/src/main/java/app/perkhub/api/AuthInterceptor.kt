@@ -41,12 +41,12 @@ class AuthInterceptor(
                     // If token refresh is successful, retry the request with the new token
                     if (newToken != null) {
                         // Save the new token (e.g., in TokenManager)
-                        TokenManager.saveToken(context, newToken.Data.Token)
+                        TokenManager.saveToken(context, newToken.Data)
 
                         // Retry the original request with the new token
                         request = request.newBuilder()
                             .removeHeader("Authorization")
-                            .addHeader("Authorization", "Bearer ${newToken.Data.Token}")
+                            .addHeader("Authorization", "Bearer ${newToken.Data}")
                             .build()
 
                         response = chain.proceed(request)

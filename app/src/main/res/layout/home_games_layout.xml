@@ -1,47 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="@dimen/dp130"
-    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="@dimen/dp10"
-    android:layout_marginStart="@dimen/dp5"
-    android:layout_marginEnd="@dimen/dp5"
-    android:layout_marginTop="@dimen/dp10"
-    android:layout_marginBottom="@dimen/dp10"
-    app:cardElevation="@dimen/dp5"
-    android:orientation="vertical">
+    android:layout_width="160dp"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="6dp"
+    android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="115dp"
-        app:cardCornerRadius="@dimen/dp10"
-        android:layout_gravity="center"
-        app:cardElevation="3dp">
-
-        <ImageView
-            android:id="@+id/icon"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="-5dp"/>
-    </androidx.cardview.widget.CardView>
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:minHeight="140dp">
 
-    <TextView
-        android:id="@+id/name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dp5"
-        android:layout_marginEnd="@dimen/dp5"
-        android:layout_marginTop="@dimen/dp10"
-        android:layout_marginBottom="@dimen/dp15"
-        android:maxLines="1"
-        android:text="Games"
-        android:textAlignment="center"
-        android:textColor="@color/black"
-        android:textSize="@dimen/sp16"
-        android:textStyle="normal" />
+            <ImageView
+                android:id="@+id/img_cover"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:contentDescription="Game Cover" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/gradient_overlay_bottom" />
+
+            <TextView
+                android:id="@+id/tv_game_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:padding="8dp"
+                android:text="Fancy Diver"
+                android:textColor="@android:color/white"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:maxLines="1"
+                android:ellipsize="end" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="8dp"
+            android:layout_marginTop="4dp">
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/fire"
+                android:layout_marginEnd="4dp" />
+
+            <TextView
+                android:id="@+id/tv_plays"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1.2M plays"
+                android:textSize="12sp"
+                android:textColor="@color/grey" />
+        </LinearLayout>
     </LinearLayout>
+
 </androidx.cardview.widget.CardView>

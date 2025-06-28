@@ -12,6 +12,7 @@ import app.perkhub.Screens.Home.Model.MiniAppByCategory.MiniAppByCategoryReq
 import app.perkhub.Screens.Home.Model.MiniAppByCategory.MiniAppSearchReq
 import app.perkhub.Screens.Home.Model.MiniAppByCategory.MiniAppbyCategory
 import app.perkhub.Screens.Home.Model.Notification.NotificationListRes
+import app.perkhub.Screens.Home.Model.Notification.TokenReq
 import app.perkhub.Screens.Home.Model.TransactionModel.TransactionDataRes
 import app.perkhub.Screens.Home.Model.Withdrawal.WithdrawalReq
 import app.perkhub.Screens.Home.Model.Withdrawal.withdrawalRes
@@ -136,6 +137,7 @@ class RequestViewModel : ViewModel() {
     fun updateNotification(
         token: String, context: Context, listner: ApiListener<MiniAppbyCategory>
     ) {
+        val token = TokenReq(token)
         viewModelScope.launch(SetErrorhandler()) {
             withContext(kotlin.coroutines.coroutineContext) {
                 MyApi(context).updateNotification( token).body()?.let { it ->
@@ -150,6 +152,16 @@ class RequestViewModel : ViewModel() {
         viewModelScope.launch(SetErrorhandler()) {
             withContext(kotlin.coroutines.coroutineContext){
                 MyApi(context).getAllGames().body()?.let {
+                    listner.onResponse(it)
+                }
+            }
+        }
+    }
+
+    fun getPopularGames(context: Context,listner: ApiListener<GamesRes>){
+        viewModelScope.launch(SetErrorhandler()) {
+            withContext(kotlin.coroutines.coroutineContext){
+                MyApi(context).getPopularGames().body()?.let {
                     listner.onResponse(it)
                 }
             }
@@ -195,10 +207,10 @@ class RequestViewModel : ViewModel() {
         }
     }
 
-fun getNotificationList(user_id: String, context: Context,listner: ApiListener<NotificationListRes>){
+fun getNotificationList( context: Context,listner: ApiListener<NotificationListRes>){
         viewModelScope.launch(SetErrorhandler()) {
             withContext(kotlin.coroutines.coroutineContext){
-                MyApi(context).getNotificationList(user_id).body()?.let {
+                MyApi(context).getNotificationList().body()?.let {
                     listner.onResponse(it)
                 }
             }

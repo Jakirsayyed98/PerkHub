@@ -1,70 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="6dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="4dp"
+    android:background="@color/white">
 
-    <androidx.cardview.widget.CardView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_90dp"
-        app:cardCornerRadius="@dimen/dp10"
-        app:cardElevation="@dimen/dp5"
-        android:layout_margin="@dimen/dp10">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/coinin" />
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:orientation="vertical"
+            android:layout_weight="1">
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="@dimen/dp55"
-                android:layout_height="@dimen/dp55"
-                android:layout_margin="@dimen/dp10"
-                android:gravity="center_vertical"
-                app:cardCornerRadius="@dimen/dp65">
+            <TextView
+                android:id="@+id/notificationMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Coin Credited"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:textColor="@color/black" />
 
-                <ImageView
-                    android:id="@+id/icon"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/notifications"
-                    android:layout_margin="@dimen/dp5"/>
-            </androidx.cardview.widget.CardView>
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="₹500 has been credited to your account"
+                android:textSize="14sp"
+                android:textColor="@color/grey"
+                android:layout_marginTop="4dp"/>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="@dimen/dp10"
-                android:gravity="center_vertical"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:maxLines="2"
-                    android:text="@string/appbar_scrolling_view_behavior"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/sp16"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/date"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:layout_marginTop="10dp"
-                    android:maxLines="1"
-                    android:text="@string/appbar_scrolling_view_behavior"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/sp12" />
-            </LinearLayout>
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Just now"
+                android:textSize="12sp"
+                android:textColor="@color/grey"
+                android:layout_marginTop="4dp"/>
 
         </LinearLayout>
-    </androidx.cardview.widget.CardView>
+    </LinearLayout>
 
-</LinearLayout>
+</androidx.cardview.widget.CardView>
