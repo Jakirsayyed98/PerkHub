@@ -3,49 +3,60 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
     android:orientation="vertical"
-    android:paddingTop="@dimen/dp15">
+    android:background="@color/white"
+    android:paddingTop="@dimen/dp20"
+    android:paddingBottom="@dimen/dp10">
 
+    <!-- Profile Image -->
     <androidx.cardview.widget.CardView
-        android:layout_width="@dimen/dp75"
-        android:layout_height="@dimen/dp75"
-        android:layout_margin="@dimen/dp15"
-        app:cardCornerRadius="@dimen/dp75">
+        android:layout_width="@dimen/dp85"
+        android:layout_height="@dimen/dp85"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/dp10"
+        app:cardCornerRadius="@dimen/dp42"
+        app:cardElevation="4dp">
+
         <ImageView
+            android:id="@+id/profileImage"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            />
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_placeholder" />
     </androidx.cardview.widget.CardView>
 
+    <!-- Name -->
     <TextView
         android:id="@+id/Profilename"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dp15"
-        android:layout_marginTop="@dimen/dp5"
-        android:text="Name"
+        android:layout_marginStart="@dimen/dp20"
+        android:layout_marginEnd="@dimen/dp20"
+        android:gravity="center"
+        android:text="Your Name"
         android:textColor="@color/black"
         android:textSize="@dimen/sp20"
         android:textStyle="bold" />
 
-
+    <!-- Email -->
     <TextView
         android:id="@+id/email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dp15"
+        android:layout_marginStart="@dimen/dp20"
+        android:layout_marginEnd="@dimen/dp20"
         android:layout_marginTop="@dimen/dp5"
-        android:text="Email"
-        android:textColor="@color/black"
-        android:textSize="@dimen/sp14"
-        android:textStyle="normal" />
+        android:gravity="center"
+        android:text="your.email@example.com"
+        android:textColor="@color/grey"
+        android:textSize="@dimen/sp14" />
 
-
+    <!-- Divider -->
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="@dimen/dp30"
-        android:background="@color/underline"/>
+        android:layout_marginTop="@dimen/dp25"
+        android:layout_marginHorizontal="@dimen/dp15"
+        android:background="@color/underline" />
 
 </LinearLayout>

@@ -95,10 +95,10 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         GlobalScope.launch {
             getHomeData()
         }
-//        GlobalScope.launch {
-//            getLootProduct()
-//        }
-//
+        GlobalScope.launch {
+            getLootProduct()
+        }
+
         GlobalScope.launch {
             getGamesData()
         }
@@ -375,7 +375,6 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
 
 
     private fun updateFirebaseToken() {
-        Log.d("@@@@@@","Success Update Token started")
         FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
             if (!task.isSuccessful) {
                 return@OnCompleteListener
@@ -410,7 +409,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
                 R.id.home-> {
                     _binding!!.drawerlayout.close()
                 }
-                R.id.transation-> {
+                R.id.transaction-> {
                     requireContext().toast("Transaction")
                     ContainerActivity.OpenContainer(requireContext(),"TransactionHistoryFragment","")
 
@@ -422,20 +421,20 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
                     requireContext().shareAppLink()
                 }
 
-                R.id.rateus-> {
+                R.id.rate_us-> {
                     requireContext().rateUsApp()
                 }
-                R.id.PrivacyPolicy->{
+                R.id.privacy_policy->{
                     requireContext().openCustomTab(PRIVACYPOLICY)
                 }
 
-                R.id.aboutus-> {
+                R.id.about_us-> {
                     requireContext().openCustomTab(ABOUTUS)
                 }
-                R.id.contactus-> {
+                R.id.contact_us-> {
                     requireContext().openCustomTab(CONTACTUS)
                 }
-                R.id.LogOut->{
+                R.id.logout->{
                     requireContext().OpenDialogForLogOut()
                 }
             }

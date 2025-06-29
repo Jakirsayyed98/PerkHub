@@ -11,11 +11,13 @@
     <dimen name="dp7">7dp</dimen>
     <dimen name="dp8">8dp</dimen>
     <dimen name="dp12">12dp</dimen>
+    <dimen name="dp42">42dp</dimen>
     <dimen name="dp400">400dp</dimen>
     <dimen name="dp100">100dp</dimen>
     <dimen name="dp130">130dp</dimen>
     <dimen name="dp200">200dp</dimen>
     <dimen name="dp300">300dp</dimen>
+    <dimen name="dp85">85dp</dimen>
     <dimen name="dpminus50">-50dp</dimen>
     <dimen name="sp50">50sp</dimen>
     <dimen name="dp50">50dp</dimen>
