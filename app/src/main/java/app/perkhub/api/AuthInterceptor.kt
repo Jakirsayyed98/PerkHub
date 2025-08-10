@@ -21,7 +21,7 @@ class AuthInterceptor(
 
         // Get the token from TokenManager (SharedPreferences, etc.)
         var token = TokenManager.getToken(context)
-        print(token)
+        print("\n\n"+token+"\n\n")
         // Add token to the request headers
         request = request.newBuilder()
             .addHeader("Authorization", "Bearer $token") // Ensure 'Bearer' prefix is correct

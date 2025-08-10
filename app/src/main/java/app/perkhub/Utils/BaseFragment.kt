@@ -46,7 +46,7 @@ abstract class BaseFragment<T:ViewBinding> : Fragment() {
     }
 
     fun getUserID():String?{
-        return getSharedpref().getUser(USERDATA).data[0].user_id.toString()
+        return ""//getSharedpref().getUser(USERDATA).data.user_id.toString()
     }
 
 

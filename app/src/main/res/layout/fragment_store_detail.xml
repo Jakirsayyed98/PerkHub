@@ -16,33 +16,37 @@
 
     <!-- Scrollable Content -->
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/toolbar"
-        android:layout_above="@+id/buttonLayout"
+        android:layout_above="@id/buttonLayout"
         android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingHorizontal="@dimen/dp15"
-            android:paddingBottom="@dimen/dp20">
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingBottom="20dp">
 
             <!-- Store Logo -->
             <androidx.cardview.widget.CardView
-                android:layout_width="@dimen/dp150"
-                android:layout_height="@dimen/dp75"
+                android:layout_width="150dp"
+                android:layout_height="75dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="@dimen/dp30"
-                android:layout_marginBottom="@dimen/dp15"
-                app:cardCornerRadius="@dimen/dp10"
-                app:cardElevation="@dimen/dp5">
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="15dp"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="5dp">
 
                 <ImageView
                     android:id="@+id/logo"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:scaleType="fitCenter"
+                    tools:src="@drawable/loginicon" />
             </androidx.cardview.widget.CardView>
 
             <!-- About Store -->
@@ -52,79 +56,101 @@
                 android:layout_height="wrap_content"
                 android:text="@string/about_s"
                 android:textColor="@color/black"
-                android:textSize="@dimen/sp18"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/AboutStore"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp5"
-                android:text="About %s"
+                android:layout_marginTop="5dp"
                 android:lineSpacingExtra="2dp"
                 android:textColor="@color/black"
-                android:textSize="@dimen/sp14" />
+                android:textSize="14sp"
+                tools:text="This is a sample about store content." />
+
+            <!-- About Store -->
+            <TextView
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Description"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:layout_marginTop="20dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:lineSpacingExtra="2dp"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                tools:text="This is a sample about store content." />
 
             <!-- Terms and Conditions -->
             <TextView
                 android:id="@+id/TermsTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp20"
+                android:layout_marginTop="20dp"
                 android:text="Terms and Conditions"
                 android:textColor="@color/black"
-                android:textSize="@dimen/sp18"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/terms"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp5"
-                android:text="About %s"
+                android:layout_marginTop="5dp"
                 android:lineSpacingExtra="2dp"
                 android:textColor="@color/black"
-                android:textSize="@dimen/sp14" />
+                android:textSize="14sp"
+                tools:text="Sample terms and conditions go here." />
+
 
             <!-- Cashback Rates -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp20"
+                android:layout_marginTop="20dp"
                 android:text="Cashback Rates"
                 android:textColor="@color/black"
-                android:textSize="@dimen/sp18"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/Cashbackrates"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp5"
-                android:text="About %s"
+                android:layout_marginTop="5dp"
                 android:lineSpacingExtra="2dp"
                 android:textColor="@color/black"
-                android:textSize="@dimen/sp14" />
+                android:textSize="14sp"
+                tools:text="Get up to 10% cashback on purchases." />
 
             <!-- How It Works -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp20"
+                android:layout_marginTop="20dp"
                 android:text="How It Works"
                 android:textColor="@color/black"
-                android:textSize="@dimen/sp18"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/working"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp5"
-                android:text="About %s"
+                android:layout_marginTop="5dp"
                 android:lineSpacingExtra="2dp"
                 android:textColor="@color/black"
-                android:textSize="@dimen/sp14" />
+                android:textSize="14sp"
+                tools:text="You shop, we track, you earn!" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
@@ -136,7 +162,7 @@
         android:layout_alignParentBottom="true"
         android:orientation="horizontal"
         android:paddingVertical="10dp"
-        android:paddingHorizontal="@dimen/dp10"
+        android:paddingHorizontal="10dp"
         android:background="@color/white"
         android:elevation="4dp">
 
@@ -151,7 +177,7 @@
             android:textStyle="bold"
             android:textSize="16sp"
             android:textAllCaps="false"
-            android:layout_marginEnd="5dp"/>
+            android:layout_marginEnd="5dp" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/Shop"
@@ -164,7 +190,7 @@
             android:textStyle="bold"
             android:textSize="16sp"
             android:textAllCaps="false"
-            android:layout_marginStart="5dp"/>
+            android:layout_marginStart="5dp" />
     </LinearLayout>
 
 </RelativeLayout>

@@ -43,9 +43,10 @@ class StoreDetailFragment : BaseFragment<FragmentStoreDetailBinding>() {
         _binding!!.toolbar.name.text = data.name
         _binding!!.AboutTitle.text = getString(R.string.about_s,data.name)
         Glide.with(requireContext()).load(data.logo).into(_binding!!.logo)
-        _binding!!.AboutStore.text = data.about
-        _binding!!.terms.text = Html.fromHtml(data.cashbackTerms, Html.FROM_HTML_MODE_LEGACY)
-        _binding!!.Cashbackrates.text = Html.fromHtml(if (!data.cashbackRates.isNullOrEmpty()) data.cashbackRates else "" , Html.FROM_HTML_MODE_LEGACY)
+        _binding!!.AboutStore.text = Html.fromHtml(data.about!!, Html.FROM_HTML_MODE_LEGACY)
+//        _binding!!.Cashbackrates.text = Html.fromHtml(if (!data.cashbackRates.isNullOrEmpty()) data.cashbackRates else "" , Html.FROM_HTML_MODE_LEGACY)
+        _binding!!.terms.text = Html.fromHtml(data.cashbackTerms!!, Html.FROM_HTML_MODE_LEGACY)
+        _binding!!.description.text = Html.fromHtml(data.description!!, Html.FROM_HTML_MODE_LEGACY)
         _binding!!.working.text = Html.fromHtml(data.howitsWork, Html.FROM_HTML_MODE_LEGACY)
 
         _binding!!.Share.setOnClickListener {

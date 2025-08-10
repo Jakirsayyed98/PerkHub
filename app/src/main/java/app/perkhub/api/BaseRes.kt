@@ -10,7 +10,7 @@ data class BaseRes(
     val ErrorCode: String,
 
     @SerializedName("status")
-    val Status: String,
+    val Status: Any,
 
     @SerializedName("data")
     val Data: String
@@ -18,5 +18,7 @@ data class BaseRes(
 
 data class Data(
     @SerializedName("token")
-    val Token: String
+    val Token: String,
+    @SerializedName("is_new_user")
+    val IsNewUser: String,
 )

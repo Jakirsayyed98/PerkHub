@@ -3,6 +3,7 @@ package app.perkhub.api
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import app.perkhub.Screens.Home.Model.Auth.VerifyOTP
 import app.perkhub.Screens.Home.Model.Games.GamesRes
 import app.perkhub.Screens.Home.Model.GenerateUrl.GenerateSubId
 import app.perkhub.Screens.Home.Model.GenerateUrl.GenerateSubIdRes
@@ -48,7 +49,7 @@ class RequestViewModel : ViewModel() {
         }
     }
 
-    fun VerifyOTP(req: VerifyOtpReq,  context: Context,listner: ApiListener<BaseRes>) {
+    fun VerifyOTP(req: VerifyOtpReq,  context: Context,listner: ApiListener<VerifyOTP>) {
         viewModelScope.launch(SetErrorhandler()) {
             withContext(coroutineContext) {
                 MyApi(context).verifyOTP(req).body()?.let { it ->

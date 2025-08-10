@@ -1,8 +1,7 @@
 package app.perkhub.Screens.login
 
+import android.annotation.SuppressLint
 import android.os.Bundle
-import android.os.CountDownTimer
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,17 +9,14 @@ import androidx.activity.addCallback
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import app.perkhub.ContainerActivity
-import app.perkhub.R
+import app.perkhub.Screens.Home.Model.Auth.VerifyOTP
 import app.perkhub.Utils.BaseFragment
 import app.perkhub.Utils.LOGIN
-import app.perkhub.Utils.NUMBER
 import app.perkhub.Utils.toast
 import app.perkhub.api.ApiListener
 import app.perkhub.databinding.FragmentEnterMobileNBinding
-import app.perkhub.Screens.login.models.LoginRes
 import app.perkhub.Screens.login.models.SendOtpReq
 import app.perkhub.Screens.login.models.VerifyOtpReq
-import app.perkhub.Utils.TOKEN
 import app.perkhub.Utils.USERDATA
 import app.perkhub.api.BaseRes
 import app.perkhub.api.tokens.TokenManager
@@ -100,7 +96,7 @@ class EnterMobileNFragment : BaseFragment<FragmentEnterMobileNBinding>() {
         }
 
         _binding!!.OTP.addTextChangedListener {
-            if (_binding!!.OTP.length() == 5) {
+            if (_binding!!.OTP.length() == 6) {
                 _binding!!.verifyOTP.isSelected = true
             } else {
                 _binding!!.verifyOTP.isSelected = false
@@ -116,15 +112,15 @@ class EnterMobileNFragment : BaseFragment<FragmentEnterMobileNBinding>() {
                 request.Otp = _binding!!.OTP.text.toString()
                 viewModel.VerifyOTP(
                     request,requireContext(),
-                    object : ApiListener<BaseRes> {
-                        override fun onSuccess(t: BaseRes?, mess: String) {
+                    object : ApiListener<VerifyOTP> {
+                        override fun onSuccess(t: VerifyOTP?, mess: String) {
 
-                            if (t!!.ErrorCode == "00"){
+                            if (t!!.errorCode == "00"){
                                 dissmissProgress()
-                                requireContext().toast(t!!.Message)
-                                TokenManager.saveToken(requireContext(),t!!.Data)
+                                requireContext().toast(t.errorMsg)
+                                TokenManager.saveToken(requireContext(), t.data!!.token!!)
 
-                                getUserDetail()
+                                SetRedirectionToDetail(t.data.isNewUser)
                             }else{
                                 dissmissProgress()
                                 requireContext().toast(mess)
@@ -151,47 +147,43 @@ class EnterMobileNFragment : BaseFragment<FragmentEnterMobileNBinding>() {
 
     }
 
-    private fun getUserDetail() {
-
-        viewModel.getUserDetail(requireContext(),object : ApiListener<LoginRes>{
-            override fun onSuccess(t: LoginRes?, mess: String) {
-                if (t!!.data[0].name.isNullOrEmpty()) {
-                    ContainerActivity.OpenContainer(
-                        requireContext(),
-                        "EnterDetailFragment",
-                        null
-                    )
-                    activity?.finish()
-                } else {
-                    getSharedpref().saveBool(LOGIN, true)
-                    getSharedpref().saveUser(USERDATA, t)
-                    ContainerActivity.OpenContainer(
-                        requireContext(),
-                        "HomeScreenFragment",
-                        null
-                    )
-                    activity?.finish()
-                }
-            }
-        })
-
-
+    private fun SetRedirectionToDetail(isNewUser :Boolean) {
+        timer.cancel()
+        if (isNewUser) {
+            ContainerActivity.OpenContainer(
+                requireContext(),
+                "EnterDetailFragment",
+                null
+            )
+            activity?.finish()
+        } else {
+            getSharedpref().saveBool(LOGIN, true)
+//            getSharedpref().saveUser(USERDATA, t)
+            ContainerActivity.OpenContainer(
+                requireContext(),
+                "HomeScreenFragment",
+                null
+            )
+            activity?.finish()
+        }
     }
 
     private fun countDownStart() {
 
         timer.schedule(object : TimerTask() {
+            @SuppressLint("DefaultLocale")
             override fun run() {
                 if (timeLeft > 0) {
                     val minutes = timeLeft / 60
                     val seconds = timeLeft % 60
-                    println(String.format("%02d:%02d", minutes, seconds))
 
-//                        _binding!!.timerCount.text = String.format("%02d:%02d", minutes, seconds)
+                    val formattedTime = String.format("%02d:%02d", minutes, seconds)
+                    requireActivity().runOnUiThread {
+                        _binding?.timerCount?.text = formattedTime
+                    }
 
                     timeLeft--
                 } else {
-                    println("Time's up!")
                     timer.cancel()
                     _binding!!.timerCount.setText("Resend")
                 }

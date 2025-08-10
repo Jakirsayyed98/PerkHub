@@ -15,14 +15,21 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="@dimen/dp10"
         app:cardCornerRadius="@dimen/dp42"
+        app:cardBackgroundColor="@color/blue"
         app:cardElevation="4dp">
 
-        <ImageView
-            android:id="@+id/profileImage"
+        <!-- Name -->
+        <TextView
+            android:id="@+id/ProfilenameShort"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_placeholder" />
+            android:layout_marginStart="@dimen/dp20"
+            android:layout_marginEnd="@dimen/dp20"
+            android:gravity="center"
+            android:text="A"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp55"
+            android:textStyle="bold" />
     </androidx.cardview.widget.CardView>
 
     <!-- Name -->

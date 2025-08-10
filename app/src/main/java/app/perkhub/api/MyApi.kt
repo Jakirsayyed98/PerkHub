@@ -1,6 +1,7 @@
 package app.perkhub.api
 
 import android.content.Context
+import app.perkhub.Screens.Home.Model.Auth.VerifyOTP
 import app.perkhub.Screens.Home.Model.Games.GamesRes
 import app.perkhub.Screens.Home.Model.GenerateUrl.GenerateSubId
 import app.perkhub.Screens.Home.Model.GenerateUrl.GenerateSubIdRes
@@ -40,15 +41,15 @@ interface MyApi {
     //Login APIs
 
 
-    @POST("sendOTP")
+    @POST("auth/send-otp")
     suspend fun sendOtp(
         @Body body: SendOtpReq
     ):Response<BaseRes>
 
-    @POST("verifyOTP")
+    @POST("auth/verify-otp")
     suspend fun verifyOTP(
         @Body body: VerifyOtpReq
-    ):Response<BaseRes>
+    ):Response<VerifyOTP>
 
     @POST("authorization")
     suspend fun getAuthorization(
@@ -60,7 +61,7 @@ interface MyApi {
     ):Response<LoginRes>
 
 
-    @POST("savedetail")
+    @POST("user/update-info")
     suspend fun SaveDetail(
         @Body body: SaveUserDetail
     ):Response<LoginRes>
@@ -107,17 +108,17 @@ interface MyApi {
     suspend fun getPopularGames(
     ):Response<GamesRes>
 
-    @GET("getTxnList")
+    @GET("miniapp/transactions")
     suspend fun getAllTransaction(
     ):Response<TransactionDataRes>
 
-    @POST("withdrawal/request")
+    @POST("withdrawals/request")
     suspend fun ReqForWithdrawal(
         @Body body: WithdrawalReq
     ):Response<withdrawalRes>
 
 
-    @GET("withdrawal/txnList")
+    @GET("withdrawals/transactions")
     suspend fun getWithdrawalTxn(
     ):Response<withdrawalRes>
 

@@ -71,11 +71,13 @@ class EnterDetailFragment : BaseFragment<FragmentEnterDetailBinding>() {
         viewModel.SaveDetail(request,requireContext(), object : ApiListener<LoginRes> {
             override fun onSuccess(t: LoginRes?, mess: String) {
                 dissmissProgress()
-                getSharedpref().saveBool(LOGIN, true)
-                getSharedpref().saveUser(USERDATA, t!!)
-
-                ContainerActivity.OpenContainer(requireContext(), "HomeScreenFragment", null)
-                activity?.finish()
+                requireContext().toast(t!!.errorMsg)
+                if (t.errorCode=="00"){
+                    getSharedpref().saveBool(LOGIN, true)
+                    getSharedpref().saveUser(USERDATA, t!!)
+                    ContainerActivity.OpenContainer(requireContext(), "HomeScreenFragment", null)
+                    activity?.finish()
+                }
             }
 
             override fun onError(mess: String) {

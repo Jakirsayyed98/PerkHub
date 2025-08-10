@@ -4,13 +4,13 @@ import com.google.gson.annotations.SerializedName
 import retrofit2.http.Field
 
 data class LoginRes(
-    val data: ArrayList<Data>,
+    val data: Data,
     val errorCode: String,
     val errorMsg: String
 )
 
 data class SendOtpReq(
-    @SerializedName("number")
+    @SerializedName("mobile")
     var Number: String
 )
 
@@ -21,7 +21,7 @@ data class GetToken(
 
 
 data class VerifyOtpReq(
-    @SerializedName("number")
+    @SerializedName("mobile")
     var Number: String,
     @SerializedName("otp")
     var Otp: String
