@@ -38,9 +38,7 @@ import java.util.concurrent.TimeUnit
 
 interface MyApi {
 
-    //Login APIs
-
-
+    //Login APIs Start
     @POST("auth/send-otp")
     suspend fun sendOtp(
         @Body body: SendOtpReq
@@ -65,9 +63,12 @@ interface MyApi {
     suspend fun SaveDetail(
         @Body body: SaveUserDetail
     ):Response<LoginRes>
+    //Login APIs End
+
+
 
     //Home
-    @GET("getHomePage")
+    @GET("homepage-data")
     suspend fun getHomePage(
     ):Response<HomeRes>
 
@@ -78,7 +79,7 @@ interface MyApi {
     ):Response<LootProductRes>
 
    //MiniAppByCategory
-    @POST("getMiniAppByCategory")
+    @POST("stores/by-category")
     suspend fun getMiniAppByCategory(
        @Body body:MiniAppByCategoryReq
     ):Response<MiniAppbyCategory>

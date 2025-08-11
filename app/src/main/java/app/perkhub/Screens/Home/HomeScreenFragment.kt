@@ -95,17 +95,17 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         GlobalScope.launch {
             getHomeData()
         }
-        GlobalScope.launch {
-            getLootProduct()
-        }
-
-        GlobalScope.launch {
-            getGamesData()
-        }
-
-        GlobalScope.launch {
-            updateFirebaseToken()
-        }
+//        GlobalScope.launch {
+//            getLootProduct()
+//        }
+//
+//        GlobalScope.launch {
+//            getGamesData()
+//        }
+//
+//        GlobalScope.launch {
+//            updateFirebaseToken()
+//        }
 
         return _binding?.root
     }
@@ -126,11 +126,13 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         viewModel.getHomeData(requireContext(), object : ApiListener<HomeRes> {
             override fun onSuccess(t: HomeRes?, mess: String) {
                 Toast.makeText(requireContext(),"Home API call",Toast.LENGTH_LONG).show()
-                if (t!!.errorCode.equals("0")) {
-
-                    t.data[0].let {
-                        _binding!!.progressbar.visibility = View.GONE
-                        _binding!!.mainlayout.visibility = View.VISIBLE
+                Toast.makeText(requireContext(),t!!.data.popular[0].name,Toast.LENGTH_SHORT).show()
+                if (t!!.errorCode.equals("00")) {
+                    Log.d("TestCategorynew0",t.data.toString())
+                    t.data.let { it->
+                        Log.d("TestCategorynew",it.toString())
+//                        _binding!!.progressbar.visibility = View.GONE
+//                        _binding!!.mainlayout.visibility = View.VISIBLE
                         setMainCategoryLayout(it.categories)
 
                         if (it.popular.size < 1) {
@@ -140,19 +142,19 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
                             setPopularStore(it.popular)
                         }
 
-                        if (it.banner1.size < 1) {
-                            _binding!!.banner1layout.visibility = View.GONE
-                        } else {
-                            _binding!!.banner1layout.visibility = View.VISIBLE
-                            Banner1Func(it.banner1)
-                        }
+//                        if (it.banner1.size < 1) {
+//                            _binding!!.banner1layout.visibility = View.GONE
+//                        } else {
+//                            _binding!!.banner1layout.visibility = View.VISIBLE
+//                            Banner1Func(it.banner1)
+//                        }
 
-                        if (it.categoryList.size <1){
-                            _binding!!.Activecategorylayout.visibility = View.GONE
-                        }else{
-                            _binding!!.Activecategorylayout.visibility = View.VISIBLE
-                            setActivatecategoryLayout(it.categoryList)
-                        }
+//                        if (it.categoryList.size <1){
+//                            _binding!!.Activecategorylayout.visibility = View.GONE
+//                        }else{
+//                            _binding!!.Activecategorylayout.visibility = View.VISIBLE
+//                            setActivatecategoryLayout(it.categoryList)
+//                        }
 
                         if ( it.trending.size < 1) {
                             _binding!!.trendingStorelayout.visibility = View.GONE
@@ -171,7 +173,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         })
     }
 
-    private fun setActivatecategoryLayout(categoryList: java.util.ArrayList<CategoryX>) {
+    private fun setActivatecategoryLayout(categoryList: List<CategoryX>) {
 
         var mAdapter = CategoryActiveAdapter<CategoryX>(object : RecyclerClickListener{
             override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
@@ -187,7 +189,8 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         mAdapter.addAllItem(categoryList)
     }
 
-    private fun setMainCategoryLayout(categories: ArrayList<Category>) {
+    private fun setMainCategoryLayout(categories:List<Category>) {
+        Log.d("TestCategory",categories.toString())
         val mAdapter = CategoryAdapter<Category>(object : RecyclerClickListener {
             override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
                 if (data is Category){
@@ -207,7 +210,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         }
     }
 
-    private fun setPopularStore(popular: java.util.ArrayList<MiniApp>) {
+    private fun setPopularStore(popular: List<MiniApp>) {
         popular.shuffled()
         val mAdapter = PopularStoresAdapter<MiniApp>(object : RecyclerClickListener {
             override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
@@ -230,7 +233,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         }
     }
 
-    private fun setTrendingStores(trending: java.util.ArrayList<MiniApp>) {
+    private fun setTrendingStores(trending: List<MiniApp>) {
         trending.shuffled()
         var mAdapter = TrendingStoresAdapter<MiniApp>(object : RecyclerClickListener {
             override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
@@ -253,7 +256,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
     }
 
 
-    private fun Banner1Func(banners: java.util.ArrayList<Banner>) {
+    private fun Banner1Func(banners: List<Banner>) {
         if (banners.isNullOrEmpty()) {
             _binding!!.banner1layout.visibility = View.GONE
 
@@ -262,21 +265,21 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
 
         }
 
-        val imageList = java.util.ArrayList<SliderModelMain>()
+//        val imageList = List<SliderModelMain>()
         //   bannerlist4 = bannerList4
 
         for (x in banners) {
             if (x.image.isNullOrEmpty().not()){
-                imageList.add(SliderModelMain(x.image,"",x.url,x.id))
+//                imageList.add(SliderModelMain(x.image,"",x.url,x.id))
             }
         }
 
 
-        _binding!!.bannerKocMarket.adapter = BannerViewPagerAdapter(imageList, _binding!!.bannerKocMarket, object : RecyclerClickListener {
-            override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
-                requireContext().openCustomTab(type)
-            }
-        })
+//        _binding!!.bannerKocMarket.adapter = BannerViewPagerAdapter(imageList, _binding!!.bannerKocMarket, object : RecyclerClickListener {
+//            override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
+//                requireContext().openCustomTab(type)
+//            }
+//        })
 
         _binding!!.bannerKocMarket.clipToPadding = false
         _binding!!.bannerKocMarket.clipChildren = false
@@ -357,7 +360,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         })
     }
 
-    private fun setPopularGamesLayout(data: java.util.ArrayList<app.perkhub.Screens.Home.Model.Games.Data>) {
+    private fun setPopularGamesLayout(data: List<app.perkhub.Screens.Home.Model.Games.Data>) {
         val mAdapter = PopularGameAdapter<app.perkhub.Screens.Home.Model.Games.Data>(object : RecyclerClickListener{
             override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
                 if (data is app.perkhub.Screens.Home.Model.Games.Data){
