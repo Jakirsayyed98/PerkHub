@@ -17,10 +17,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.AppCompatButton
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
+import androidx.core.view.setPadding
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -88,10 +94,10 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
 
         menuset()
 
-        _binding!!.progressbar.visibility = View.VISIBLE
-        _binding!!.mainlayout.visibility = View.GONE
+//        _binding!!.progressbar.visibility = View.VISIBLE
+//        _binding!!.mainlayout.visibility = View.GONE
         clickEvenets()
-        Toast.makeText(requireContext(),"Home API call function",Toast.LENGTH_LONG).show()
+
         GlobalScope.launch {
             getHomeData()
         }
@@ -110,12 +116,42 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         return _binding?.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        applySafeAreaInsets()
+    }
+
+    private fun applySafeAreaInsets() {
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+
+            // Apply top inset to toolbar (so it won’t overlap status bar)
+            binding.toolbar.setPadding(
+                binding.toolbar.paddingLeft,
+                systemBars.top,
+                binding.toolbar.paddingRight,
+                binding.toolbar.paddingBottom
+            )
+
+            // Apply bottom inset to recycler or main scrollable container
+            binding.mainlayout.setPadding(
+                binding.mainlayout.paddingLeft,
+                binding.mainlayout.paddingTop,
+                binding.mainlayout.paddingRight,
+                systemBars.bottom
+            )
+
+            // You do NOT pad the whole root drawerLayout, only the children
+            insets
+        }
+    }
+
 
     private fun clickEvenets() {
         with(_binding!!){
-            search.setOnClickListener {
-                ContainerActivity.OpenContainerType2(requireContext(),"SelectedCategoryFragment","Search",null)
-            }
+//            search.setOnClickListener {
+//                ContainerActivity.OpenContainerType2(requireContext(),"SelectedCategoryFragment","Search",null)
+//            }
             notification.setOnClickListener {
                 ContainerActivity.OpenContainer(requireContext(),"NotificationListFragment",null)
             }
@@ -123,16 +159,15 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
     }
 
     private fun getHomeData() {
+
         viewModel.getHomeData(requireContext(), object : ApiListener<HomeRes> {
             override fun onSuccess(t: HomeRes?, mess: String) {
-                Toast.makeText(requireContext(),"Home API call",Toast.LENGTH_LONG).show()
-                Toast.makeText(requireContext(),t!!.data.popular[0].name,Toast.LENGTH_SHORT).show()
                 if (t!!.errorCode.equals("00")) {
                     Log.d("TestCategorynew0",t.data.toString())
                     t.data.let { it->
                         Log.d("TestCategorynew",it.toString())
-//                        _binding!!.progressbar.visibility = View.GONE
-//                        _binding!!.mainlayout.visibility = View.VISIBLE
+                        _binding!!.progressbar.visibility = View.GONE
+                        _binding!!.mainlayout.visibility = View.VISIBLE
                         setMainCategoryLayout(it.categories)
 
                         if (it.popular.size < 1) {
@@ -142,12 +177,12 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
                             setPopularStore(it.popular)
                         }
 
-//                        if (it.banner1.size < 1) {
-//                            _binding!!.banner1layout.visibility = View.GONE
-//                        } else {
-//                            _binding!!.banner1layout.visibility = View.VISIBLE
-//                            Banner1Func(it.banner1)
-//                        }
+                        if (it.banner1!!.size < 1) {
+                            _binding!!.banner1layout.visibility = View.GONE
+                        } else {
+                            _binding!!.banner1layout.visibility = View.VISIBLE
+                            Banner1Func(it.banner1!!)
+                        }
 
 //                        if (it.categoryList.size <1){
 //                            _binding!!.Activecategorylayout.visibility = View.GONE
@@ -190,7 +225,6 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
     }
 
     private fun setMainCategoryLayout(categories:List<Category>) {
-        Log.d("TestCategory",categories.toString())
         val mAdapter = CategoryAdapter<Category>(object : RecyclerClickListener {
             override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
                 if (data is Category){
@@ -255,63 +289,106 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         }
     }
 
-
-    private fun Banner1Func(banners: List<Banner>) {
-        if (banners.isNullOrEmpty()) {
-            _binding!!.banner1layout.visibility = View.GONE
-
-        } else {
-            _binding!!.banner1layout.visibility = View.VISIBLE
-
-        }
-
+//
+//    private fun Banner1Func(banners: List<Banner>) {
+//        if (banners.isNullOrEmpty()) {
+//            _binding!!.banner1layout.visibility = View.GONE
+//
+//        } else {
+//            _binding!!.banner1layout.visibility = View.VISIBLE
+//
+//        }
+//
 //        val imageList = List<SliderModelMain>()
-        //   bannerlist4 = bannerList4
-
-        for (x in banners) {
-            if (x.image.isNullOrEmpty().not()){
+//           bannerlist4 = bannerList4
+//
+//        for (x in banners) {
+//            if (x.image.isNullOrEmpty().not()){
 //                imageList.add(SliderModelMain(x.image,"",x.url,x.id))
-            }
-        }
-
-
+//            }
+//        }
+//
+//
 //        _binding!!.bannerKocMarket.adapter = BannerViewPagerAdapter(imageList, _binding!!.bannerKocMarket, object : RecyclerClickListener {
 //            override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
 //                requireContext().openCustomTab(type)
 //            }
 //        })
+//
+//        _binding!!.bannerKocMarket.clipToPadding = false
+//        _binding!!.bannerKocMarket.clipChildren = false
+//        _binding!!.bannerKocMarket.offscreenPageLimit = 3
+//        _binding!!.bannerKocMarket.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
+//        _binding!!.bannerKocMarket.setPadding(20, 0, 20, 0)
+//
+//        //Handler Start
+//
+//        Handler(Looper.getMainLooper()).apply {
+//            val runnable = object : Runnable {
+//                override fun run() {
+//                    kotlin.runCatching {
+//                        var i = _binding!!.bannerKocMarket.currentItem
+//
+//                        if (i == banners.size - 1) {
+//                            i = -1//0
+//                            _binding!!.bannerKocMarket.currentItem = i
+//                        }
+//                        i++
+//                        _binding!!.bannerKocMarket.setCurrentItem(i, true)
+//                        postDelayed(this, 3000)
+//                    }
+//                }
+//            }
+//            postDelayed(runnable, 3000)
+//        }
+//
+//
+//        TabLayoutMediator(_binding!!.tabDots, _binding!!.bannerKocMarket,false) { _,_ -> }.attach()
+//    }
 
-        _binding!!.bannerKocMarket.clipToPadding = false
-        _binding!!.bannerKocMarket.clipChildren = false
-        _binding!!.bannerKocMarket.offscreenPageLimit = 3
-        _binding!!.bannerKocMarket.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
-        _binding!!.bannerKocMarket.setPadding(20, 0, 20, 0)
+    private fun Banner1Func(banners: List<Banner>?) {
+        if (banners.isNullOrEmpty()) {
+            _binding!!.banner1layout.visibility = View.GONE
+            return
+        }
+        _binding!!.banner1layout.visibility = View.VISIBLE
 
-        //Handler Start
+        val imageList = banners.filter { !it.image.isNullOrEmpty() }
+            .map { SliderModelMain(it.image, "", it.url, it.id.toString()) }
 
-        Handler(Looper.getMainLooper()).apply {
-            val runnable = object : Runnable {
-                override fun run() {
-                    kotlin.runCatching {
-                        var i = _binding!!.bannerKocMarket.currentItem
-
-                        if (i == banners.size - 1) {
-                            i = -1//0
-                            _binding!!.bannerKocMarket.currentItem = i
-                        }
-                        i++
-                        _binding!!.bannerKocMarket.setCurrentItem(i, true)
-                        postDelayed(this, 3000)
-                    }
+        _binding!!.bannerKocMarket.adapter = BannerViewPagerAdapter(
+            imageList,
+            _binding!!.bannerKocMarket,
+            object : RecyclerClickListener {
+                override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
+                    requireContext().openCustomTab(type)
                 }
             }
-            postDelayed(runnable, 3000)
+        )
+
+        _binding!!.bannerKocMarket.apply {
+            clipToPadding = false
+            clipChildren = false
+            offscreenPageLimit = 3
+            setPadding(1, 0, 1, 0)
+            getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
         }
 
+        // Auto-slide using handler
+        val handler = Handler(Looper.getMainLooper())
+        val runnable = object : Runnable {
+            override fun run() {
+                val current = _binding!!.bannerKocMarket.currentItem
+                val next = if (current == imageList.size - 1) 0 else current + 1
+                _binding!!.bannerKocMarket.setCurrentItem(next, true)
+                handler.postDelayed(this, 3000) // 3s interval
+            }
+        }
+        handler.postDelayed(runnable, 3000)
 
-        TabLayoutMediator(_binding!!.tabDots, _binding!!.bannerKocMarket,false) { _,_ -> }.attach()
+        // Tab indicators
+        TabLayoutMediator(_binding!!.tabDots, _binding!!.bannerKocMarket) { _, _ -> }.attach()
     }
-
 
 
     fun getLootProduct() {

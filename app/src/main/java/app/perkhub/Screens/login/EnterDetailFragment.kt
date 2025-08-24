@@ -23,7 +23,7 @@ import java.util.Locale
 
 class EnterDetailFragment : BaseFragment<FragmentEnterDetailBinding>() {
 
-    var gender = "0"
+    var gender = "male"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -97,7 +97,7 @@ class EnterDetailFragment : BaseFragment<FragmentEnterDetailBinding>() {
                 cal.set(Calendar.MONTH, monthOfYear)
                 cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
 
-                val myFormat = "dd/MM/yyyy" // mention the format you need
+                val myFormat = "dd-MM-yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
 
                 _binding!!.DOB.text = sdf.format(cal.time)
@@ -137,17 +137,17 @@ class EnterDetailFragment : BaseFragment<FragmentEnterDetailBinding>() {
         if (_binding!!.male.isPressed()) {
             _binding!!.male.setEnabled(false)
 
-            gender = "0"
+            gender = "male"
         } else if (_binding!!.female.isPressed()) {
             _binding!!.female.setEnabled(false)
 
-            gender = "1"
+            gender = "female"
         } else if (_binding!!.other.isPressed()) {
             _binding!!.other.setEnabled(false)
 
-            gender = "2"
+            gender = "other"
         } else {
-            gender = "0"
+            gender = "male"
         }
 
 

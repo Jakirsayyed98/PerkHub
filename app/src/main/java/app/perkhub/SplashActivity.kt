@@ -36,7 +36,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
 
 
 
-        this.toast(getSharedpref().getBoolen(LOGIN).toString())
+//        this.toast(getSharedpref().getBoolen(LOGIN).toString())
 
         val timer = object: CountDownTimer(2000, 1000) {
             override fun onTick(millisUntilFinished: Long) {

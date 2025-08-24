@@ -21,8 +21,8 @@
             android:id="@+id/icon"
             android:layout_width="@dimen/dp50"
             android:layout_height="@dimen/dp50"
-            android:scaleType="centerCrop"
-            app:shapeAppearanceOverlay="@style/RoundedCornerImage" />
+            android:scaleType="centerCrop"/>
+<!--            app:shapeAppearanceOverlay="@style/RoundedCornerImage" />-->
 
         <LinearLayout
             android:layout_width="0dp"

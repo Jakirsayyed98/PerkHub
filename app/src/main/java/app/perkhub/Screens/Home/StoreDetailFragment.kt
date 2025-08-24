@@ -50,10 +50,10 @@ class StoreDetailFragment : BaseFragment<FragmentStoreDetailBinding>() {
         _binding!!.working.text = Html.fromHtml(data.howitsWork, Html.FROM_HTML_MODE_LEGACY)
 
         _binding!!.Share.setOnClickListener {
-            GetUrl(data.name,"Share")
+            GetUrl(data.id.toString(),"Share")
         }
         _binding!!.Shop.setOnClickListener {
-            GetUrl(data.name,"Shop")
+            GetUrl(data.id.toString(),"Shop")
         }
 
 

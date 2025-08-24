@@ -28,4 +28,5 @@
     <string name="withdrawal_request_of_200">Withdrawal request of %s</string>
     <string name="reject_reason"><b>Reject Reason :- </b>%s</string>
     <string name="vpa"><b>VPA : </b>%s</string>
+    <string name="enter_the_6_digit_code_sent_to">Enter the 6-digit code sent to \n <b>%s</b></string>
 </resources>

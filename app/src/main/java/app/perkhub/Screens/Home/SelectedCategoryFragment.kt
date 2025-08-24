@@ -51,7 +51,7 @@ class SelectedCategoryFragment : BaseFragment<FragmentSelectedCategoryBinding>()
                 val data = Gson().fromJson<Category>(value, Category::class.java)
                 _binding!!.toolbar.name.text = data.name
                 _binding!!.searchLayout.visibility = View.GONE
-                getListOfMiniApps(data.id)
+                getListOfMiniApps(data.id.toString())
             }
             "Categorires"->{
                 _binding!!.toolbar.name.text = "All Categories"
@@ -130,6 +130,7 @@ class SelectedCategoryFragment : BaseFragment<FragmentSelectedCategoryBinding>()
 
     private fun getListOfMiniApps(id: String) {
         val req = MiniAppByCategoryReq(id)
+        System.out.println(req)
         viewModel.getMiniAppByCategory(
             req,
             requireContext(),

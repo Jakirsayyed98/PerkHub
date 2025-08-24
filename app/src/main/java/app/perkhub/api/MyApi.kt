@@ -39,12 +39,12 @@ import java.util.concurrent.TimeUnit
 interface MyApi {
 
     //Login APIs Start
-    @POST("auth/send-otp")
+    @POST("auth/send-otp")// used
     suspend fun sendOtp(
         @Body body: SendOtpReq
     ):Response<BaseRes>
 
-    @POST("auth/verify-otp")
+    @POST("auth/verify-otp") //used
     suspend fun verifyOTP(
         @Body body: VerifyOtpReq
     ):Response<VerifyOTP>
@@ -59,7 +59,7 @@ interface MyApi {
     ):Response<LoginRes>
 
 
-    @POST("user/update-info")
+    @POST("user/update-info")//used
     suspend fun SaveDetail(
         @Body body: SaveUserDetail
     ):Response<LoginRes>
@@ -72,17 +72,31 @@ interface MyApi {
     suspend fun getHomePage(
     ):Response<HomeRes>
 
+    //MiniAppByCategory
+    @POST("stores/by-category")
+    suspend fun getMiniAppByCategory(
+        @Body body:MiniAppByCategoryReq
+    ):Response<MiniAppbyCategory>
+
+    @POST("store/generate-sub-id")
+    suspend fun generateUrl(
+        @Body body: GenerateSubId
+    ):Response<GenerateSubIdRes>
+
+
+
+
+
+
+
+
     //Loot Products
     @POST("getAllLootoffers")
     suspend fun getLootProduct(
         @Query("page") page:String
     ):Response<LootProductRes>
 
-   //MiniAppByCategory
-    @POST("stores/by-category")
-    suspend fun getMiniAppByCategory(
-       @Body body:MiniAppByCategoryReq
-    ):Response<MiniAppbyCategory>
+
 //searchMiniApps
     @POST("searchMiniApps")
     suspend fun searchminiApps(
@@ -94,10 +108,7 @@ interface MyApi {
         @Body body: TokenReq
     ):Response<MiniAppbyCategory>
 
-    @POST("generate-sub-id")
-    suspend fun generateUrl(
-        @Body body: GenerateSubId
-    ):Response<GenerateSubIdRes>
+
 
 
     @GET("getAllGames")
@@ -132,6 +143,7 @@ interface MyApi {
 
     companion object{
       operator  fun invoke(context : Context):MyApi{
+//          val BaseUrl = "https://api.perkhub.in/api/"
           val BaseUrl = "https://blessed-pretty-mammal.ngrok-free.app/api/"
             var BaseURl = "$BaseUrl"
             val httploggingInterceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)

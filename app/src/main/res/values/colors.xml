@@ -6,6 +6,7 @@
     <color name="main">#5550BC</color>
     <color name="blue">#1F10C3</color>
     <color name="grey">#595959</color>
+    <color name="light_grey">#D6595959</color>
     <color name="underline">#9B9B9B</color>
     <color name="BG_color">#F7F5F7</color>
     <color name="btn_text">#fff</color>
@@ -14,6 +15,7 @@
     <color name="red">#F44336</color>
     <color name="orange">#F2840F</color>
     <color name="red_700">#D32F2F</color>
+    <color name="transparent_bg">#7CFFFFFF</color>
 
 
 

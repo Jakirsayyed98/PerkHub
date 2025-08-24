@@ -4,65 +4,111 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/login_bg"
     tools:context=".Screens.login.EnterMobileNFragment">
 
 
+
     <ImageView
-        android:layout_width="@dimen/dp180"
-        android:layout_height="@dimen/dp180"
-        android:layout_marginTop="@dimen/dp40"
-        android:src="@drawable/loginicon"
+        android:id="@+id/icon"
+        android:layout_width="@dimen/dp65"
+        android:layout_height="@dimen/dp65"
+        android:layout_marginTop="@dimen/dp130"
+        android:src="@drawable/perkhub_icon"
+        android:padding="@dimen/dp15"
+        android:background="@drawable/icon_bg"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 
+    <TextView
+        android:id="@+id/welcometxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/icon"
+        android:text="Welcome to PerkHub"
+        android:textColor="@color/white"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:layout_marginTop="@dimen/dp20"/>
+
+
+    <TextView
+        android:id="@+id/dis2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/welcometxt"
+        android:text="Start earning cashback today!"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textAlignment="center"
+        android:layout_marginTop="@dimen/dp5"/>
+
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp30"
-        android:layout_marginTop="@dimen/dp50"
         android:layout_marginEnd="@dimen/dp30"
         app:cardCornerRadius="@dimen/dp10"
-        app:cardElevation="@dimen/dp10"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:cardElevation="@dimen/dp20"
+        android:layout_marginTop="@dimen/dp30"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/dis2">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/mobilenumberlayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            android:padding="@dimen/dp15">
+
+
+            <ImageView
+                android:id="@+id/icon_mob"
+                android:layout_width="@dimen/dp50"
+                android:layout_height="@dimen/dp50"
+                android:layout_marginTop="@dimen/dp10"
+                android:src="@drawable/mobile_icon"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
 
             <TextView
                 android:id="@+id/title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp35"
-                android:text="@string/login_register"
+                android:layout_marginTop="@dimen/dp20"
+                android:text="Enter Mobile Number"
                 android:textAlignment="center"
-                android:textColor="@color/main"
-                android:textSize="@dimen/sp20"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp24"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/icon_mob"
+                 />
 
             <TextView
                 android:id="@+id/dis"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp5"
-                android:text="@string/login_registerdis"
+                android:text="We'll send you a verification code"
                 android:textAlignment="center"
-                android:textColor="@color/black"
+                android:textColor="@color/grey"
                 android:textSize="@dimen/sp14"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/title" />
 
 
+            <!-- Custom background with border -->
+            <requestFocus />
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/numberlayout"
                 android:layout_width="match_parent"
@@ -70,7 +116,8 @@
                 android:layout_marginStart="@dimen/dp15"
                 android:layout_marginTop="@dimen/dp20"
                 android:layout_marginEnd="@dimen/dp15"
-                android:hint="@string/enter_mobile_number"
+                app:prefixTextColor="@color/black"
+                android:hint="Mobile Number"
                 android:textColorHint="@color/grey"
                 app:boxStrokeColor="@color/black"
                 app:hintTextColor="@color/black"
@@ -88,25 +135,26 @@
             </com.google.android.material.textfield.TextInputLayout>
 
 
+
+
             <RelativeLayout
                 android:id="@+id/sendOTP"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp50"
-                android:layout_marginStart="@dimen/dp75"
+                android:layout_height="@dimen/dp30"
                 android:layout_marginTop="@dimen/dp30"
-                android:layout_marginEnd="@dimen/dp75"
                 android:layout_marginBottom="@dimen/dp20"
                 android:background="@drawable/selected_button_layout"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/numberlayout">
 
                 <TextView
+                    android:id="@+id/sendOtpText"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:text="Send OTP"
                     android:textColor="@color/white"
-                    android:textStyle="bold" />
+                    android:textSize="@dimen/sp14" />
 
             </RelativeLayout>
 
@@ -116,31 +164,44 @@
             android:id="@+id/OTPlayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:padding="@dimen/dp15"
             android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/icon_mob2"
+                android:layout_width="@dimen/dp50"
+                android:layout_height="@dimen/dp50"
+                android:layout_marginTop="@dimen/dp10"
+                android:src="@drawable/otp_icon"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
 
             <TextView
                 android:id="@+id/title1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp35"
-                android:text="Verification"
+                android:layout_marginTop="@dimen/dp20"
+                android:text="Verify Phone"
                 android:textAlignment="center"
-                android:textColor="@color/main"
-                android:textSize="@dimen/sp20"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp24"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/icon_mob2"/>
 
             <TextView
                 android:id="@+id/dis1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp5"
-                android:text="Enter the OTP send to your mobile number"
+                android:text="@string/enter_the_6_digit_code_sent_to"
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="@dimen/sp14"
+                android:lineSpacingExtra="@dimen/dp5"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/title1" />
@@ -149,11 +210,12 @@
                 android:id="@+id/otplayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dp25"
-                android:layout_marginTop="@dimen/dp25"
-                android:layout_marginEnd="@dimen/dp25"
+                android:layout_marginStart="@dimen/dp15"
+                android:layout_marginTop="@dimen/dp20"
+                android:layout_marginEnd="@dimen/dp15"
                 android:textAlignment="center"
-                android:textColorHint="@color/grey"
+                android:hint="Verification Code"
+                android:textColorHint="@color/black"
                 app:boxStrokeColor="@color/black"
                 app:hintTextColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -164,7 +226,6 @@
                     android:id="@+id/OTP"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Enter OTP"
                     android:imeOptions="actionDone"
                     android:inputType="number"
                     android:maxLength="6"
@@ -172,33 +233,16 @@
                     android:textSize="@dimen/sp20" />
 
             </com.google.android.material.textfield.TextInputLayout>
-
-            <TextView
-                android:id="@+id/timerCount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/dp20"
-                android:layout_marginBottom="@dimen/dp10"
-                android:gravity="center"
-                android:padding="5dp"
-                android:text="Resend"
-                android:textColor="@color/main"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@id/verifyOTP"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/otplayout" />
-
+            <!-- Custom background with border -->
+            <requestFocus />
 
             <RelativeLayout
                 android:id="@+id/verifyOTP"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp50"
-                android:layout_marginStart="@dimen/dp15"
+                android:layout_height="@dimen/dp30"
                 android:layout_marginTop="@dimen/dp30"
-                android:layout_marginEnd="@dimen/dp15"
                 android:layout_marginBottom="@dimen/dp20"
                 android:background="@drawable/selected_button_layout"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/otplayout">
 
                 <TextView
@@ -207,9 +251,25 @@
                     android:gravity="center"
                     android:text="Verify OTP"
                     android:textColor="@color/white"
-                    android:textStyle="bold" />
+                    android:textSize="@dimen/sp14" />
 
             </RelativeLayout>
+
+            <TextView
+                android:id="@+id/timerCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dp10"
+                android:layout_marginTop="@dimen/dp10"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="Resend OTP"
+                android:textColor="@color/grey"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/verifyOTP" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
