@@ -39,12 +39,12 @@ import java.util.concurrent.TimeUnit
 interface MyApi {
 
     //Login APIs Start
-    @POST("auth/send-otp")// used
+    @POST("sendOTP")// used
     suspend fun sendOtp(
         @Body body: SendOtpReq
     ):Response<BaseRes>
 
-    @POST("auth/verify-otp") //used
+    @POST("verifyOTP") //used
     suspend fun verifyOTP(
         @Body body: VerifyOtpReq
     ):Response<VerifyOTP>
@@ -59,16 +59,16 @@ interface MyApi {
     ):Response<LoginRes>
 
 
-    @POST("user/update-info")//used
+    @POST("savedetail")//used
     suspend fun SaveDetail(
         @Body body: SaveUserDetail
-    ):Response<LoginRes>
+    ):Response<BaseRes>
     //Login APIs End
 
 
 
     //Home
-    @GET("homepage-data")
+    @GET("getHomePage")
     suspend fun getHomePage(
     ):Response<HomeRes>
 

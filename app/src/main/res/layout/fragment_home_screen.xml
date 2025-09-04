@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:openDrawer="start"
+    tools:openDrawer="left"
     tools:context=".Screens.Home.HomeScreenFragment">
 
     <LinearLayout
@@ -385,7 +385,7 @@
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_gravity="end"
+        android:layout_gravity="start"
         app:headerLayout="@layout/nav_header"
         app:menu="@menu/menu"
         android:fitsSystemWindows="true" />

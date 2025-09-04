@@ -10,7 +10,7 @@ data class LoginRes(
 )
 
 data class SendOtpReq(
-    @SerializedName("mobile")
+    @SerializedName("number")
     var Number: String
 )
 
@@ -21,7 +21,7 @@ data class GetToken(
 
 
 data class VerifyOtpReq(
-    @SerializedName("mobile")
+    @SerializedName("number")
     var Number: String,
     @SerializedName("otp")
     var Otp: String

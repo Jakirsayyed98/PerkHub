@@ -41,7 +41,7 @@ class AuthInterceptor(
                     // If token refresh is successful, retry the request with the new token
                     if (newToken != null) {
                         // Save the new token (e.g., in TokenManager)
-                        TokenManager.saveToken(context, newToken.Data)
+                        TokenManager.saveToken(context, newToken.Data.Token)
 
                         // Retry the original request with the new token
                         request = request.newBuilder()

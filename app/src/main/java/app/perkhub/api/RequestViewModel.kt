@@ -62,7 +62,7 @@ class RequestViewModel : ViewModel() {
     fun SaveDetail(
         request : SaveUserDetail,
         context: Context,
-        listner: ApiListener<LoginRes>
+        listner: ApiListener<BaseRes>
     ) {
         viewModelScope.launch(SetErrorhandler()) {
             withContext(coroutineContext) {

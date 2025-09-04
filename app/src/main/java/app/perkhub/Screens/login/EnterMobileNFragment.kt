@@ -11,6 +11,8 @@ import androidx.core.widget.addTextChangedListener
 import app.perkhub.ContainerActivity
 import app.perkhub.R
 import app.perkhub.Screens.Home.Model.Auth.VerifyOTP
+import app.perkhub.Screens.login.models.GetToken
+import app.perkhub.Screens.login.models.LoginRes
 import app.perkhub.Utils.BaseFragment
 import app.perkhub.Utils.LOGIN
 import app.perkhub.Utils.toast
@@ -18,6 +20,7 @@ import app.perkhub.api.ApiListener
 import app.perkhub.databinding.FragmentEnterMobileNBinding
 import app.perkhub.Screens.login.models.SendOtpReq
 import app.perkhub.Screens.login.models.VerifyOtpReq
+import app.perkhub.Utils.TOKEN
 import app.perkhub.Utils.USERDATA
 import app.perkhub.api.BaseRes
 import app.perkhub.api.tokens.TokenManager
@@ -97,15 +100,11 @@ class EnterMobileNFragment : BaseFragment<FragmentEnterMobileNBinding>() {
                     object : ApiListener<VerifyOTP> {
                         override fun onSuccess(t: VerifyOTP?, mess: String) {
 
-                            if (t!!.errorCode == "00"){
+
                                 dissmissProgress()
-                                TokenManager.saveToken(requireContext(), t.data!!.token!!)
-                                print("MyTocken:- "+TokenManager.getToken(requireContext()))
-                                SetRedirectionToDetail(t.data.isNewUser)
-                            }else{
-                                dissmissProgress()
-                                requireContext().toast(mess)
-                            }
+
+                                SetRedirectionToDetail()
+
 
                         }
 
@@ -159,25 +158,47 @@ class EnterMobileNFragment : BaseFragment<FragmentEnterMobileNBinding>() {
 
     }
 
-    private fun SetRedirectionToDetail(isNewUser :Boolean) {
+    private fun SetRedirectionToDetail() {
+        var request: GetToken = GetToken("")
+        request.Number = _binding!!.mobilenumber.text.toString()
+        viewModel.GetAuthorizationToken(request,requireContext(),object :ApiListener<BaseRes>{
+            override fun onSuccess(t: BaseRes?, mess: String) {
+                TokenManager.saveToken(requireContext(), t!!.Data.Token)
+                getSharedpref().saveString(TOKEN,t.Data.Token)
+            }
+
+            override fun onError(mess: String) {
+                super.onError(mess)
+                requireContext().toast(mess)
+            }
+        })
         timer.cancel()
-        if (isNewUser) {
-            ContainerActivity.OpenContainer(
-                requireContext(),
-                "EnterDetailFragment",
-                null
-            )
-            activity?.finish()
-        } else {
-            getSharedpref().saveBool(LOGIN, true)
-//            getSharedpref().saveUser(USERDATA, t)
-            ContainerActivity.OpenContainer(
-                requireContext(),
-                "HomeScreenFragment",
-                null
-            )
-            activity?.finish()
-        }
+        viewModel.getUserDetail(requireContext(),object :ApiListener<LoginRes>{
+            override fun onSuccess(t: LoginRes?, mess: String) {
+                if (t!!.data.name!=""){
+                    getSharedpref().saveBool(LOGIN, true)
+                    ContainerActivity.OpenContainer(
+                        requireContext(),
+                        "HomeScreenFragment",
+                        null
+                    )
+                    activity?.finish()
+                }else{
+                    ContainerActivity.OpenContainer(
+                        requireContext(),
+                        "EnterDetailFragment",
+                        null
+                    )
+                    activity?.finish()
+                }
+                getSharedpref().saveUser(USERDATA,t!!)
+            }
+
+            override fun onError(mess: String) {
+                super.onError(mess)
+                requireContext().toast(mess)
+            }
+        })
     }
 
     private fun countDownStart() {

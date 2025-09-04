@@ -13,15 +13,15 @@ data class Data(
     @SerializedName("banner3")
     val banner3: List<Banner>?,
 
-    @SerializedName("store_categories")
+    @SerializedName("categories")
     val categories: List<Category>,
 
-    @SerializedName("popular_stores")
+    @SerializedName("popular")
     val popular: List<MiniApp>,
 
-    @SerializedName("top_cashback_providers")
+    @SerializedName("top_cashback")
     val topCashback: List<MiniApp>,
 
-    @SerializedName("trending_stores")
+    @SerializedName("trending")
     val trending: List<MiniApp>
 )

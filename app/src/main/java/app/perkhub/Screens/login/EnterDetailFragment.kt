@@ -16,6 +16,7 @@ import app.perkhub.Screens.login.models.LoginRes
 import app.perkhub.Screens.login.models.SaveUserDetail
 import app.perkhub.Utils.LOGIN
 import app.perkhub.Utils.USERDATA
+import app.perkhub.api.BaseRes
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -68,16 +69,15 @@ class EnterDetailFragment : BaseFragment<FragmentEnterDetailBinding>() {
 //        var number =    getSharedpref().getString(NUMBER)!!
         showProgress()
         var request : SaveUserDetail = SaveUserDetail(name,email,gender1,dob)
-        viewModel.SaveDetail(request,requireContext(), object : ApiListener<LoginRes> {
-            override fun onSuccess(t: LoginRes?, mess: String) {
+        viewModel.SaveDetail(request,requireContext(), object : ApiListener<BaseRes> {
+            override fun onSuccess(t: BaseRes?, mess: String) {
                 dissmissProgress()
-                requireContext().toast(t!!.errorMsg)
-                if (t.errorCode=="00"){
+                requireContext().toast(t!!.Message)
                     getSharedpref().saveBool(LOGIN, true)
-                    getSharedpref().saveUser(USERDATA, t!!)
+//                    getSharedpref().saveUser(USERDATA, t!!)
                     ContainerActivity.OpenContainer(requireContext(), "HomeScreenFragment", null)
                     activity?.finish()
-                }
+
             }
 
             override fun onError(mess: String) {

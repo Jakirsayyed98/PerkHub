@@ -11,6 +11,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -22,6 +23,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.AppCompatButton
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
+import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
@@ -112,6 +114,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
 //        GlobalScope.launch {
 //            updateFirebaseToken()
 //        }
+//        binding.drawerlayout.openDrawer(GravityCompat.START)
 
         return _binding?.root
     }
@@ -162,8 +165,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
 
         viewModel.getHomeData(requireContext(), object : ApiListener<HomeRes> {
             override fun onSuccess(t: HomeRes?, mess: String) {
-                if (t!!.errorCode.equals("00")) {
-                    Log.d("TestCategorynew0",t.data.toString())
+                    Log.d("TestCategorynew0",t!!.data.toString())
                     t.data.let { it->
                         Log.d("TestCategorynew",it.toString())
                         _binding!!.progressbar.visibility = View.GONE
@@ -198,7 +200,6 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
                             setTrendingStores(it.trending)
                         }
                     }
-                }
             }
 
             override fun onError(mess: String) {

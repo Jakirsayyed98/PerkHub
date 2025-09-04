@@ -24,7 +24,7 @@ class PopularStoresAdapter<S>(val clickListener: RecyclerClickListener):BaseRecy
                     cbtext.text =if (s.cbPercentage?.isNotBlank() == true) {
                         "Up to ${s.cbPercentage}% Cashback"
                     } else {
-                        s.label ?: ""
+                        ""
                     }
                     root.setOnClickListener {
                         clickListener.RecyclerClickListener(position,s.name,s)

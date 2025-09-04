@@ -3,7 +3,7 @@ package app.perkhub.api
 import com.google.gson.annotations.SerializedName
 
 data class BaseRes(
-    @SerializedName("errorMsg")
+    @SerializedName("message")
     val Message: String,
 
     @SerializedName("errorCode")
@@ -13,7 +13,7 @@ data class BaseRes(
     val Status: Any,
 
     @SerializedName("data")
-    val Data: String
+    val Data: Data
 )
 
 data class Data(

@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class Category(
     @SerializedName("id")
-    val id: Int,
+    val id: String,
 
     @SerializedName("name")
     val name: String,
@@ -13,13 +13,13 @@ data class Category(
     val description: String?,
 
     @SerializedName("status")
-    val status: Int,   // ✅ must be Int (since API gives 1 or 0)
+    val status: Boolean,   // ✅ must be Int (since API gives 1 or 0)
 
     @SerializedName("image")
     val image: String,
 
     @SerializedName("homepage_visible")
-    val homepageVisible: String,
+    val homepageVisible: Boolean,
 
     @SerializedName("created_at")
     val createdAt: String,

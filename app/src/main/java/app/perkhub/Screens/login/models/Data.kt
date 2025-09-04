@@ -1,14 +1,15 @@
 package app.perkhub.Screens.login.models
 
 data class Data(
-    val id: Int,
-    val uuid: String,
-    val created_at: String,
-    val dob: String,
-    val email: String,
-    val gender: String,
+    val user_id: String,
     val name: String,
-    val mobile: String,
+    val email: String,
+    val number: String,
+    val gender: String,
+    val dob: String,
+    val fcm_token: String,
+    val verified:Boolean,
+    val blocked:Boolean,
     val updated_at: String,
     val status: String,
 )
