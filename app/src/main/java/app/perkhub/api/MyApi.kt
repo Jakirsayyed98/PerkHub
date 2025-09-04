@@ -73,7 +73,7 @@ interface MyApi {
     ):Response<HomeRes>
 
     //MiniAppByCategory
-    @POST("stores/by-category")
+    @POST("getStoresByCategory")
     suspend fun getMiniAppByCategory(
         @Body body:MiniAppByCategoryReq
     ):Response<MiniAppbyCategory>
