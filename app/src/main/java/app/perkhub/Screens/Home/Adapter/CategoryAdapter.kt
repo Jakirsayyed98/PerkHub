@@ -19,7 +19,7 @@ class CategoryAdapter<S>(val clickList: RecyclerClickListener):BaseRecyclerView<
             if (s is Category){
                 Glide.with(itemView.context).load(s.image) .placeholder(R.drawable.ic_placeholder)
                     .into(binding.image)
-//                binding.title.text = s.name
+                binding.title.text = s.name
                 binding.root.setOnClickListener {
                     clickList.RecyclerClickListener(0,"",s)
                 }

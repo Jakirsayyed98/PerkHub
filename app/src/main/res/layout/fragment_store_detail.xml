@@ -7,19 +7,23 @@
     tools:context=".Screens.Home.StoreDetailFragment">
 
     <!-- Toolbar -->
+    <LinearLayout
+        android:id="@+id/toolbar2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <include
         android:id="@+id/toolbar"
         layout="@layout/toolbar_layout"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_alignParentTop="true" />
-
+    </LinearLayout>
     <!-- Scrollable Content -->
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/toolbar"
+        android:layout_below="@id/toolbar2"
         android:layout_above="@id/buttonLayout"
         android:fillViewport="true">
 

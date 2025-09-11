@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import app.perkhub.R
 import app.perkhub.Screens.Home.Model.GenerateUrl.GenerateSubId
 import app.perkhub.Screens.Home.Model.GenerateUrl.GenerateSubIdRes
@@ -39,10 +41,11 @@ class StoreDetailFragment : BaseFragment<FragmentStoreDetailBinding>() {
         _binding!!.toolbar.backbtn.setOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
+        applySafeAreaInsets()
         var data = Gson().fromJson<MiniApp>(requireActivity().intent.getStringExtra(DATA),MiniApp::class.java)
         _binding!!.toolbar.name.text = data.name
         _binding!!.AboutTitle.text = getString(R.string.about_s,data.name)
-        Glide.with(requireContext()).load(data.logo).into(_binding!!.logo)
+        Glide.with(requireContext()).load(data.icon).into(_binding!!.logo)
         _binding!!.AboutStore.text = Html.fromHtml(data.about!!, Html.FROM_HTML_MODE_LEGACY)
 //        _binding!!.Cashbackrates.text = Html.fromHtml(if (!data.cashbackRates.isNullOrEmpty()) data.cashbackRates else "" , Html.FROM_HTML_MODE_LEGACY)
 //        _binding!!.terms.text = Html.fromHtml(data.cashbackTerms!!, Html.FROM_HTML_MODE_LEGACY)
@@ -50,10 +53,10 @@ class StoreDetailFragment : BaseFragment<FragmentStoreDetailBinding>() {
 //        _binding!!.working.text = Html.fromHtml(data.howitsWork, Html.FROM_HTML_MODE_LEGACY)
 
         _binding!!.Share.setOnClickListener {
-            GetUrl(data.id.toString(),"Share")
+            GetUrl(data.name.toString(),"Share")
         }
         _binding!!.Shop.setOnClickListener {
-            GetUrl(data.id.toString(),"Shop")
+            GetUrl(data.name.toString(),"Shop")
         }
 
 
@@ -82,6 +85,34 @@ class StoreDetailFragment : BaseFragment<FragmentStoreDetailBinding>() {
 
 
     }
+
+    private fun applySafeAreaInsets() {
+        ViewCompat.setOnApplyWindowInsetsListener(_binding!!.root) { _, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+
+            // Apply top inset to toolbar (so it won’t overlap status bar)
+
+            binding.toolbar2.setPadding(
+                binding.toolbar2.paddingLeft,
+                systemBars.top,
+                binding.toolbar2.paddingRight,
+                binding.toolbar2.paddingBottom
+            )
+
+            // Apply bottom inset to recycler or main scrollable container
+            binding.buttonLayout.setPadding(
+                binding.buttonLayout.paddingLeft,
+                binding.buttonLayout.paddingTop,
+                binding.buttonLayout.paddingRight,
+                systemBars.bottom
+            )
+
+            // You do NOT pad the whole root drawerLayout, only the children
+            insets
+        }
+    }
+
+
 
     companion object {
         @JvmStatic

@@ -5,6 +5,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -43,6 +45,8 @@ class SelectedCategoryFragment : BaseFragment<FragmentSelectedCategoryBinding>()
         _binding!!.toolbar.backbtn.setOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
+
+        applySafeAreaInsets()
 
         val type1 = requireActivity().intent.getStringExtra(CONTAINER_TYPE_KEY1)
         when(type1){
@@ -90,10 +94,39 @@ class SelectedCategoryFragment : BaseFragment<FragmentSelectedCategoryBinding>()
         }
 
         _binding!!.search.addTextChangedListener {
-            SearchMiniApps(it.toString())
+            if (it!!.length>=3){
+                SearchMiniApps(it.toString())
+            }
         }
         return _binding?.root
     }
+
+    private fun applySafeAreaInsets() {
+        ViewCompat.setOnApplyWindowInsetsListener(_binding!!.root) { _, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+
+            // Apply top inset to toolbar (so it won’t overlap status bar)
+
+            binding.toolbar2.setPadding(
+                binding.toolbar2.paddingLeft,
+                systemBars.top,
+                binding.toolbar2.paddingRight,
+                binding.toolbar2.paddingBottom
+            )
+
+            // Apply bottom inset to recycler or main scrollable container
+            binding.listOfStores.setPadding(
+                binding.listOfStores.paddingLeft,
+                binding.listOfStores.paddingTop,
+                binding.listOfStores.paddingRight,
+                systemBars.bottom
+            )
+
+            // You do NOT pad the whole root drawerLayout, only the children
+            insets
+        }
+    }
+
 
     private fun setMainCategoryLayout(categories: ArrayList<Category>) {
         val mAdapter = CategoryAdapter<Category>(object : RecyclerClickListener {

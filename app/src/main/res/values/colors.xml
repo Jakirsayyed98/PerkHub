@@ -8,6 +8,7 @@
     <color name="grey">#595959</color>
     <color name="light_grey">#D6595959</color>
     <color name="underline">#9B9B9B</color>
+    <color name="verylight_grey">#F3F4F6</color>
     <color name="BG_color">#F7F5F7</color>
     <color name="btn_text">#fff</color>
     <color name="main_color">#5550BC</color>

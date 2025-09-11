@@ -2,6 +2,7 @@ package app.perkhub.Screens.Home.Adapter
 
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import app.perkhub.R
@@ -22,9 +23,14 @@ class PopularStoresAdapter<S>(val clickListener: RecyclerClickListener):BaseRecy
                     Glide.with(itemView.context).load(s.icon ?: s.logo).centerCrop().placeholder(R.drawable.ic_placeholder).into(logo)
                     name.text = s.name
                     cbtext.text =if (s.cbPercentage?.isNotBlank() == true) {
-                        "Up to ${s.cbPercentage}% Cashback"
+                        "Up to ${s.cbPercentage} Cashback"
                     } else {
                         ""
+                    }
+                    if (s.cbPercentage?.isNotBlank() == true) {
+                        cbtext1.text =s.cbPercentage
+                    } else {
+                        cbtext1.visibility = View.GONE
                     }
                     root.setOnClickListener {
                         clickListener.RecyclerClickListener(position,s.name,s)

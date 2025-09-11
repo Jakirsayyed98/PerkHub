@@ -1,42 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="85dp"
-    android:layout_margin="4dp"
-    app:cardCornerRadius="10dp"
-    app:cardElevation="3dp"
-    app:cardUseCompatPadding="false"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/dp5"
+    android:layout_margin="@dimen/dp5"
+    android:orientation="vertical"
     android:foreground="?attr/selectableItemBackground">
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+<!--   <androidx.cardview.widget.CardView-->
+<!--       android:layout_width="wrap_content"-->
+<!--       android:layout_height="wrap_content"-->
+<!--       android:layout_margin="@dimen/dp10"-->
+<!--       app:cardCornerRadius="12dp"-->
+<!--       app:cardElevation="4dp">-->
 
-        <!-- Main Image -->
+        <!-- Category Image -->
         <ImageView
             android:id="@+id/image"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            android:contentDescription="Category Image"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
             android:background="@drawable/image_rounded_clip" />
-
-        <!-- Optional Overlay Text (if needed) -->
-        <!--
+<!--   </androidx.cardview.widget.CardView>-->
+        <!-- Category Title with Gradient -->
         <TextView
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:background="@drawable/bg_gradient_bottom"
-            android:text="Fashion"
-            android:textColor="@android:color/white"
-            android:padding="6dp"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:text="Category and water sully"
+            android:textColor="@android:color/black"
             android:textSize="12sp"
-            android:textStyle="bold"
-            android:gravity="center"/>
-        -->
-    </FrameLayout>
+            />
 
-</androidx.cardview.widget.CardView>
+</LinearLayout>
