@@ -19,6 +19,11 @@ class TrendingStoresAdapter<S>(val cliklistner : RecyclerClickListener): BaseRec
 
                     Glide.with(itemView.context).load(s.icon).circleCrop().into(icon)
 //                    rupee.visibility =if (s.cbActive)  View.VISIBLE else View.GONE
+//                    if (s.cbActive){
+//                        cashbackText.visibility= View.VISIBLE
+//                    }else{
+//                        cashbackText.visibility= View.INVISIBLE
+//                    }
                     storename.text = s.name
                     cashbackText.text = "Upto "+s.cbPercentage+" cashback"
                     binding.root.setOnClickListener {

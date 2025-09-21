@@ -2,6 +2,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="@dimen/dp120"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="@dimen/dp8"
     android:backgroundTint="@android:color/white"
     android:elevation="@dimen/dp6"
@@ -17,14 +18,18 @@
         android:padding="@dimen/dp10">
 
         <!-- Store Icon inside Circle -->
+<androidx.cardview.widget.CardView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="@dimen/dp35"
+    android:layout_margin="8dp">
         <ImageView
             android:id="@+id/icon"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:scaleType="centerCrop"
-            android:padding="@dimen/dp8"
             android:src="@drawable/ic_placeholder" />
-
+</androidx.cardview.widget.CardView>
         <!-- Store Name -->
         <TextView
             android:id="@+id/storename"
@@ -48,7 +53,6 @@
             android:text="Up to 20% Cashback"
             android:textColor="@color/main"
             android:textSize="@dimen/sp12"
-            android:textStyle="bold"
             android:gravity="center" />
 
     </LinearLayout>
@@ -64,6 +68,7 @@
         android:paddingEnd="@dimen/dp8"
         android:paddingTop="@dimen/dp2"
         android:paddingBottom="@dimen/dp2"
+        android:layout_margin="@dimen/dp10"
         android:text="Hot"
         android:textColor="@android:color/white"
         android:textSize="@dimen/sp10"

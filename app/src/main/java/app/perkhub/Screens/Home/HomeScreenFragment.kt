@@ -296,7 +296,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
 
     private fun setTrendingStores1(trending: List<MiniApp>) {
         trending.shuffled()
-        val mAdapter = TrendingStoresAdapter<MiniApp>(object : RecyclerClickListener {
+        val mAdapter = TrendingStoresAdapter1<MiniApp>(object : RecyclerClickListener {
             override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
                 if (data is MiniApp) {
                     ContainerActivity.OpenContainerType2(

@@ -105,7 +105,7 @@ class EnterMobileNFragment : BaseFragment<FragmentEnterMobileNBinding>() {
 
                                 SetRedirectionToDetail()
 
-
+                            timer.cancel()
                         }
 
                         override fun onError(mess: String) {
@@ -165,6 +165,32 @@ class EnterMobileNFragment : BaseFragment<FragmentEnterMobileNBinding>() {
             override fun onSuccess(t: BaseRes?, mess: String) {
                 TokenManager.saveToken(requireContext(), t!!.Data.Token)
                 getSharedpref().saveString(TOKEN,t.Data.Token)
+                viewModel.getUserDetail(requireContext(),object :ApiListener<LoginRes>{
+                    override fun onSuccess(t: LoginRes?, mess: String) {
+                        if (t!!.data.name!=""){
+                            getSharedpref().saveBool(LOGIN, true)
+                            ContainerActivity.OpenContainer(
+                                requireContext(),
+                                "HomeScreenFragment",
+                                null
+                            )
+                            activity?.finish()
+                        }else{
+                            ContainerActivity.OpenContainer(
+                                requireContext(),
+                                "EnterDetailFragment",
+                                null
+                            )
+                            activity?.finish()
+                        }
+                        getSharedpref().saveUser(USERDATA,t!!)
+                    }
+
+                    override fun onError(mess: String) {
+                        super.onError(mess)
+                        requireContext().toast(mess)
+                    }
+                })
             }
 
             override fun onError(mess: String) {
@@ -172,33 +198,8 @@ class EnterMobileNFragment : BaseFragment<FragmentEnterMobileNBinding>() {
                 requireContext().toast(mess)
             }
         })
-        timer.cancel()
-        viewModel.getUserDetail(requireContext(),object :ApiListener<LoginRes>{
-            override fun onSuccess(t: LoginRes?, mess: String) {
-                if (t!!.data.name!=""){
-                    getSharedpref().saveBool(LOGIN, true)
-                    ContainerActivity.OpenContainer(
-                        requireContext(),
-                        "HomeScreenFragment",
-                        null
-                    )
-                    activity?.finish()
-                }else{
-                    ContainerActivity.OpenContainer(
-                        requireContext(),
-                        "EnterDetailFragment",
-                        null
-                    )
-                    activity?.finish()
-                }
-                getSharedpref().saveUser(USERDATA,t!!)
-            }
 
-            override fun onError(mess: String) {
-                super.onError(mess)
-                requireContext().toast(mess)
-            }
-        })
+
     }
 
     private fun countDownStart() {

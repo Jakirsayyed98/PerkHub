@@ -11,8 +11,7 @@
     <string name="enter_your_detail_for">Enter your detail for Better Experience</string>
     <string name="search_by_store_name">\tSearch by Store name</string>
     <string name="about_s">About %s</string>
-    <string name="share_earn"><![CDATA[Share & Earn]]></string>
-    <string name="shop_earn"><![CDATA[Shop & Earn]]></string>
+
     <string name="privacy_policy"><![CDATA[Privacy & Policy]]></string>
     <string name="contact_us">Contact us</string>
     <string name="about_us">About us</string>
@@ -29,4 +28,19 @@
     <string name="reject_reason"><b>Reject Reason :- </b>%s</string>
     <string name="vpa"><b>VPA : </b>%s</string>
     <string name="enter_the_6_digit_code_sent_to">Enter the 6-digit code sent to \n <b>%s</b></string>
+
+    <string name="about_store">About Store</string>
+    <string name="description">Description</string>
+    <string name="terms_conditions">Terms &amp; Conditions</string>
+    <string name="cashback_rates">Cashback Rates</string>
+    <string name="how_it_works">How It Works</string>
+
+    <!-- Button Text -->
+    <string name="share_earn">Share &amp; Earn</string>
+    <string name="shop_earn">Shop &amp; Earn</string>
+
+    <!-- Content Descriptions -->
+    <string name="store_logo_description">Store logo</string>
+
+    <!-- Backwards compatibility -->
 </resources>

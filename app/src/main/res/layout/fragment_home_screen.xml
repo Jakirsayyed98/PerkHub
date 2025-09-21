@@ -141,7 +141,7 @@
                     layout="@layout/section_trending_stores"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp20"/>
+                    android:layout_marginTop="@dimen/dp10"/>
 
                 <RelativeLayout
                     android:id="@+id/banner2layout"

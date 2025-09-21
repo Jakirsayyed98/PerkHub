@@ -138,7 +138,6 @@ interface MyApi {
       operator  fun invoke(context : Context):MyApi{
 //          val BaseUrl = "https://api.perkhub.in/api/"
           val BaseUrl = "https://blessed-pretty-mammal.ngrok-free.app/api/"
-//          val BaseUrl = "http://3.7.77.135:4215/api/"
             var BaseURl = "$BaseUrl"
             val httploggingInterceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
             val client = OkHttpClient.Builder()

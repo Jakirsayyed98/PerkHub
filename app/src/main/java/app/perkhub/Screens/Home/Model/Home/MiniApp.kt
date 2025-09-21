@@ -7,6 +7,7 @@ data class MiniApp(
     @SerializedName( "miniapp_category_id") val miniappCategoryId: String,
     @SerializedName( "name") val name: String,
     @SerializedName( "icon") val icon: String?,
+    @SerializedName( "banner") val banner: String?,
     @SerializedName( "logo") val logo: String?,
     @SerializedName( "description") val description: String?,
     @SerializedName( "about") val about: String?,

@@ -20,5 +20,34 @@
 <!--        <item name="android:windowTranslucentNavigation">true</item>-->
 <!--    </style>-->
 
+    <!-- Section Header Style -->
+    <style name="SectionHeaderStyle">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/primary_text</item>
+<!--        <item name="android:fontFamily">@font/roboto_medium</item>-->
+        <item name="android:letterSpacing">0.01</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:drawableTint">@color/primary_text</item>
+    </style>
+
+    <!-- Content Text Style -->
+    <style name="ContentTextStyle">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/secondary_text</item>
+<!--        <item name="android:fontFamily">@font/roboto_regular</item>-->
+        <item name="android:lineSpacingExtra">4dp</item>
+        <item name="android:letterSpacing">0.005</item>
+        <item name="android:justificationMode">inter_word</item>
+    </style>
+
+    <!-- Button Base Style -->
+    <style name="AppButtonStyle" parent="Widget.Material3.Button">
+        <item name="android:textAllCaps">false</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:letterSpacing">0.01</item>
+        <item name="android:elevation">4dp</item>
+        <item name="android:stateListAnimator">@animator/button_state_list_animator</item>
+    </style>
 </resources>
 
