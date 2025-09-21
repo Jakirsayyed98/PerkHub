@@ -1,53 +1,47 @@
 package app.perkhub.Screens.Home.Adapter
 
-import app.perkhub.R
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager.widget.PagerAdapter
-import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
+import app.perkhub.R
 import app.perkhub.Utils.RecyclerClickListener
 import com.bumptech.glide.Glide
 
+class BannerViewPagerAdapter(
+    private val sliderItems: List<SliderModelMain>,
+    private val viewPager: ViewPager2,
+    private val clickListener: RecyclerClickListener
+) : RecyclerView.Adapter<BannerViewPagerAdapter.SliderViewHolder>() {
 
-class BannerViewPagerAdapter(sliderItem: MutableList<SliderModelMain>, viewPager: ViewPager2, var clickListener: RecyclerClickListener):
-    RecyclerView.Adapter<BannerViewPagerAdapter.SliderViewHolder>(){
-    lateinit var context: Context
-    val SliderItemlist:List<SliderModelMain>
-    val ViewPager2: ViewPager2
+    class SliderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val sliderImage: ImageView = itemView.findViewById(R.id.bannerItem)
 
+        fun bind(item: SliderModelMain, clickListener: RecyclerClickListener, position: Int) {
+            Glide.with(itemView.context)
+                .load(item.image)
+                .centerCrop() // ensures image fills properly
+//                .placeholder(R.drawable.placeholder_banner) // add fallback
+//                .error(R.drawable.placeholder_banner)
+                .into(sliderImage)
 
-    init {
-        this.SliderItemlist=sliderItem
-        this.ViewPager2=viewPager
-    }
-
-    class SliderViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
-        val sliderItem: ImageView =itemView.findViewById(R.id.bannerItem)
-
-        fun SliderData(SliderImageItem: SliderModelMain){
-            kotlin.runCatching {
-                Glide.with(itemView.context).load(SliderImageItem.image).centerCrop().into(sliderItem)
+            sliderImage.setOnClickListener {
+                clickListener.RecyclerClickListener(position, item.url ?: "", item.id)
             }
-
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SliderViewHolder {
-        return SliderViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.banners_layout,parent,false))
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.banners_layout, parent, false)
+        return SliderViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: SliderViewHolder, position: Int) {
-        holder.SliderData(SliderItemlist[position])
-        holder.sliderItem.setOnClickListener {
-            clickListener.RecyclerClickListener(0, SliderItemlist[position].url.toString(), "AppCategory")
-        }
+        holder.bind(sliderItems[position], clickListener, position)
     }
-    override fun getItemCount(): Int {
-        return SliderItemlist.size
-    }
+
+    override fun getItemCount(): Int = sliderItems.size
 }

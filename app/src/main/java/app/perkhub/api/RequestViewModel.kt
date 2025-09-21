@@ -3,6 +3,7 @@ package app.perkhub.api
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import app.perkhub.Screens.Home.Model.Auth.VerifyOTP
 import app.perkhub.Screens.Home.Model.Games.GamesRes
 import app.perkhub.Screens.Home.Model.GenerateUrl.GenerateSubId
 import app.perkhub.Screens.Home.Model.GenerateUrl.GenerateSubIdRes
@@ -12,6 +13,7 @@ import app.perkhub.Screens.Home.Model.MiniAppByCategory.MiniAppByCategoryReq
 import app.perkhub.Screens.Home.Model.MiniAppByCategory.MiniAppSearchReq
 import app.perkhub.Screens.Home.Model.MiniAppByCategory.MiniAppbyCategory
 import app.perkhub.Screens.Home.Model.Notification.NotificationListRes
+import app.perkhub.Screens.Home.Model.Notification.TokenReq
 import app.perkhub.Screens.Home.Model.TransactionModel.TransactionDataRes
 import app.perkhub.Screens.Home.Model.Withdrawal.WithdrawalReq
 import app.perkhub.Screens.Home.Model.Withdrawal.withdrawalRes
@@ -47,7 +49,7 @@ class RequestViewModel : ViewModel() {
         }
     }
 
-    fun VerifyOTP(req: VerifyOtpReq,  context: Context,listner: ApiListener<BaseRes>) {
+    fun VerifyOTP(req: VerifyOtpReq,  context: Context,listner: ApiListener<VerifyOTP>) {
         viewModelScope.launch(SetErrorhandler()) {
             withContext(coroutineContext) {
                 MyApi(context).verifyOTP(req).body()?.let { it ->
@@ -60,7 +62,7 @@ class RequestViewModel : ViewModel() {
     fun SaveDetail(
         request : SaveUserDetail,
         context: Context,
-        listner: ApiListener<LoginRes>
+        listner: ApiListener<BaseRes>
     ) {
         viewModelScope.launch(SetErrorhandler()) {
             withContext(coroutineContext) {
@@ -136,6 +138,7 @@ class RequestViewModel : ViewModel() {
     fun updateNotification(
         token: String, context: Context, listner: ApiListener<MiniAppbyCategory>
     ) {
+        val token = TokenReq(token)
         viewModelScope.launch(SetErrorhandler()) {
             withContext(kotlin.coroutines.coroutineContext) {
                 MyApi(context).updateNotification( token).body()?.let { it ->
@@ -150,6 +153,16 @@ class RequestViewModel : ViewModel() {
         viewModelScope.launch(SetErrorhandler()) {
             withContext(kotlin.coroutines.coroutineContext){
                 MyApi(context).getAllGames().body()?.let {
+                    listner.onResponse(it)
+                }
+            }
+        }
+    }
+
+    fun getPopularGames(context: Context,listner: ApiListener<GamesRes>){
+        viewModelScope.launch(SetErrorhandler()) {
+            withContext(kotlin.coroutines.coroutineContext){
+                MyApi(context).getPopularGames().body()?.let {
                     listner.onResponse(it)
                 }
             }
@@ -195,10 +208,10 @@ class RequestViewModel : ViewModel() {
         }
     }
 
-fun getNotificationList(user_id: String, context: Context,listner: ApiListener<NotificationListRes>){
+fun getNotificationList( context: Context,listner: ApiListener<NotificationListRes>){
         viewModelScope.launch(SetErrorhandler()) {
             withContext(kotlin.coroutines.coroutineContext){
-                MyApi(context).getNotificationList(user_id).body()?.let {
+                MyApi(context).getNotificationList().body()?.let {
                     listner.onResponse(it)
                 }
             }

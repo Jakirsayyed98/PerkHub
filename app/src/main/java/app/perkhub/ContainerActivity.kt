@@ -2,10 +2,17 @@ package app.perkhub
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
+import android.view.View
 import androidx.activity.enableEdgeToEdge
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
+import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import app.perkhub.Screens.Home.HomeScreenFragment
 import app.perkhub.Screens.Home.NotificationListFragment
@@ -63,14 +70,24 @@ class ContainerActivity : BaseActivity<ActivityContainerBinding>() {
         super.onCreate(savedInstanceState)
         binding = ActivityContainerBinding.inflate(layoutInflater)
         enableEdgeToEdge()
-        setContentView(binding.root)
-//        statusBarColor(R.color.main)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.container)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+//        window.statusBarColor = Color.TRANSPARENT
+        WindowInsetsControllerCompat(window, window.decorView).apply {
+            isAppearanceLightStatusBars = true
         }
 
+        setContentView(binding.root)
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+//            view.updatePadding(
+//                left = systemBars.left,
+//                top = systemBars.top,
+//                right = systemBars.right,
+//                bottom = systemBars.bottom
+//            )
+            insets
+        }
         val type = intent.getStringExtra(CONTAINER_TYPE_KEY)
         PassScreen(type)
     }

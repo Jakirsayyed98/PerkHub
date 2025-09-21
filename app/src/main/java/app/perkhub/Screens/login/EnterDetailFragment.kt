@@ -16,6 +16,7 @@ import app.perkhub.Screens.login.models.LoginRes
 import app.perkhub.Screens.login.models.SaveUserDetail
 import app.perkhub.Utils.LOGIN
 import app.perkhub.Utils.USERDATA
+import app.perkhub.api.BaseRes
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -23,7 +24,7 @@ import java.util.Locale
 
 class EnterDetailFragment : BaseFragment<FragmentEnterDetailBinding>() {
 
-    var gender = "0"
+    var gender = "male"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,14 +69,15 @@ class EnterDetailFragment : BaseFragment<FragmentEnterDetailBinding>() {
 //        var number =    getSharedpref().getString(NUMBER)!!
         showProgress()
         var request : SaveUserDetail = SaveUserDetail(name,email,gender1,dob)
-        viewModel.SaveDetail(request,requireContext(), object : ApiListener<LoginRes> {
-            override fun onSuccess(t: LoginRes?, mess: String) {
+        viewModel.SaveDetail(request,requireContext(), object : ApiListener<BaseRes> {
+            override fun onSuccess(t: BaseRes?, mess: String) {
                 dissmissProgress()
-                getSharedpref().saveBool(LOGIN, true)
-                getSharedpref().saveUser(USERDATA, t!!)
+                requireContext().toast(t!!.Message)
+                    getSharedpref().saveBool(LOGIN, true)
+//                    getSharedpref().saveUser(USERDATA, t!!)
+                    ContainerActivity.OpenContainer(requireContext(), "HomeScreenFragment", null)
+                    activity?.finish()
 
-                ContainerActivity.OpenContainer(requireContext(), "HomeScreenFragment", null)
-                activity?.finish()
             }
 
             override fun onError(mess: String) {
@@ -95,7 +97,7 @@ class EnterDetailFragment : BaseFragment<FragmentEnterDetailBinding>() {
                 cal.set(Calendar.MONTH, monthOfYear)
                 cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
 
-                val myFormat = "dd/MM/yyyy" // mention the format you need
+                val myFormat = "dd-MM-yyyy" // mention the format you need
                 val sdf = SimpleDateFormat(myFormat, Locale.US)
 
                 _binding!!.DOB.text = sdf.format(cal.time)
@@ -135,17 +137,17 @@ class EnterDetailFragment : BaseFragment<FragmentEnterDetailBinding>() {
         if (_binding!!.male.isPressed()) {
             _binding!!.male.setEnabled(false)
 
-            gender = "0"
+            gender = "male"
         } else if (_binding!!.female.isPressed()) {
             _binding!!.female.setEnabled(false)
 
-            gender = "1"
+            gender = "female"
         } else if (_binding!!.other.isPressed()) {
             _binding!!.other.setEnabled(false)
 
-            gender = "2"
+            gender = "other"
         } else {
-            gender = "0"
+            gender = "male"
         }
 
 

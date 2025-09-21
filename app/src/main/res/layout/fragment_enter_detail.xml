@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/login_bg"
     tools:context=".Screens.login.EnterDetailFragment">
 
     <LinearLayout
@@ -13,19 +14,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-
-            <ImageView
-                android:id="@+id/icon"
-                android:layout_width="@dimen/dp150"
-                android:layout_height="@dimen/dp150"
-                android:layout_marginTop="@dimen/dp40"
-                android:src="@drawable/loginicon"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
+            android:layout_height="match_parent"
+            android:layout_marginTop="110dp">
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
@@ -33,13 +23,13 @@
                 android:layout_marginStart="@dimen/dp30"
                 android:layout_marginTop="@dimen/dp10"
                 android:layout_marginEnd="@dimen/dp30"
-                app:cardCornerRadius="@dimen/dp15"
-                app:cardElevation="@dimen/dp10"
+                app:cardCornerRadius="@dimen/dp10"
+                app:cardElevation="@dimen/dp20"
                 android:layout_marginBottom="@dimen/dp150"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/icon">
+                app:layout_constraintStart_toStartOf="parent">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/mobilenumberlayout"
@@ -50,11 +40,11 @@
                         android:id="@+id/title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dp35"
                         android:text="@string/please_enter_your_detail"
+                        android:layout_marginTop="@dimen/dp20"
                         android:textAlignment="center"
-                        android:textColor="@color/main"
-                        android:textSize="@dimen/sp20"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/sp24"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -67,20 +57,21 @@
                         android:layout_marginTop="@dimen/dp5"
                         android:text="@string/enter_your_detail_for"
                         android:textAlignment="center"
-                        android:textColor="@color/black"
+                        android:textColor="@color/grey"
                         android:textSize="@dimen/sp14"
+                        android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/title" />
-
-
                     <TextView
                         android:id="@+id/nametitle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dp20"
-                        android:layout_marginTop="@dimen/dp10"
+                        android:layout_marginTop="@dimen/dp20"
                         android:text="Enter your Name"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/sp16"
                         android:textColor="@color/black"
                         app:layout_constraintTop_toBottomOf="@id/dis" />
 
@@ -105,6 +96,7 @@
                             android:layout_height="match_parent"
                             android:background="@color/white"
                             android:gravity="center_vertical"
+                            android:textSize="@dimen/sp14"
                             android:imeOptions="actionNext" />
 
                     </LinearLayout>
@@ -114,9 +106,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dp20"
-                        android:layout_marginTop="@dimen/dp15"
+                        android:layout_marginTop="@dimen/dp20"
                         android:text="Enter your Email Id"
                         android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/sp16"
                         app:layout_constraintTop_toBottomOf="@id/namelayout" />
 
                     <LinearLayout
@@ -140,6 +134,7 @@
                             android:layout_height="match_parent"
                             android:gravity="center_vertical"
                             android:background="@color/white"
+                            android:textSize="@dimen/sp14"
                             android:imeOptions="actionNext" />
 
                     </LinearLayout>
@@ -149,9 +144,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dp20"
-                        android:layout_marginTop="@dimen/dp15"
+                        android:layout_marginTop="@dimen/dp20"
                         android:text="Select your Date of Birth"
                         android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/sp16"
                         app:layout_constraintTop_toBottomOf="@id/emaillayout" />
 
                     <LinearLayout
@@ -174,6 +171,7 @@
                             android:layout_height="match_parent"
                             android:gravity="center_vertical"
                             android:paddingStart="@dimen/dp15"
+                            android:textSize="@dimen/sp14"
                             android:text="Select your Date of Birth"
                             android:textColor="@color/black" />
 
@@ -193,8 +191,9 @@
                             android:layout_marginTop="@dimen/dp5"
                             android:paddingStart="@dimen/sp25"
                             android:text="Gender"
+                            android:textStyle="bold"
+                            android:textSize="@dimen/sp16"
                             android:textColor="@color/black"
-                            android:textSize="@dimen/sp15"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/title" />
@@ -206,8 +205,10 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/dp30"
                             android:layout_marginEnd="@dimen/dp30"
+                            android:layout_marginTop="@dimen/dp10"
                             android:buttonTint="@color/main"
                             android:checked="true"
+                            android:textSize="@dimen/sp14"
                             android:text="Male" />
 
 
@@ -218,6 +219,7 @@
                             android:layout_marginStart="@dimen/dp30"
                             android:layout_marginEnd="@dimen/dp30"
                             android:buttonTint="@color/main"
+                            android:textSize="@dimen/sp14"
                             android:text="Female" />
 
                         <RadioButton
@@ -227,6 +229,7 @@
                             android:layout_marginStart="@dimen/dp30"
                             android:layout_marginEnd="@dimen/dp30"
                             android:buttonTint="@color/main"
+                            android:textSize="@dimen/sp14"
                             android:text="Other" />
 
 
@@ -236,11 +239,11 @@
                     <RelativeLayout
                         android:id="@+id/detail"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/dp50"
-                        android:layout_marginStart="@dimen/dp75"
-                        android:layout_marginTop="@dimen/dp10"
-                        android:layout_marginEnd="@dimen/dp75"
+                        android:layout_height="@dimen/dp30"
+                        android:layout_marginTop="@dimen/dp30"
                         android:layout_marginBottom="@dimen/dp20"
+                        android:layout_marginStart="@dimen/dp15"
+                        android:layout_marginEnd="@dimen/dp15"
                         android:background="@drawable/selected_button_layout"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/gender">

@@ -1,21 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
     <color name="StaticWhite">#FFF</color>
-    <color name="white">#FFFFFFFF</color>
     <color name="main">#5550BC</color>
     <color name="blue">#1F10C3</color>
     <color name="grey">#595959</color>
+    <color name="light_grey">#D6595959</color>
     <color name="underline">#9B9B9B</color>
+    <color name="verylight_grey">#F3F4F6</color>
     <color name="BG_color">#F7F5F7</color>
-    <color name="btn_text">#fff</color>
     <color name="main_color">#5550BC</color>
-    <color name="green">#56C35B</color>
     <color name="red">#F44336</color>
     <color name="orange">#F2840F</color>
+    <color name="red_700">#D32F2F</color>
+    <color name="transparent_bg">#7CFFFFFF</color>
 
 
-<!--    // const BG_color = Color(0xFFF7F5F7);-->
+
+    <!-- Primary Colors -->
+<!--    <color name="main">#1976D2</color>-->
+    <color name="green">#4CAF50</color>
+
+    <!-- Background Colors -->
+    <color name="background_light">#FAFAFA</color>
+    <color name="white">#FFFFFF</color>
+    <color name="card_background">#FFFFFF</color>
+
+    <!-- Text Colors -->
+    <color name="primary_text">#212121</color>
+    <color name="secondary_text">#757575</color>
+    <color name="btn_text">#FFFFFF</color>
+
+    <!-- Accent Colors -->
+    <color name="accent_light">#E8F5E8</color>
+    <color name="accent_dark">#2E7D32</color>
+
+    <!-- Utility Colors -->
+    <color name="black">#000000</color>
+    <color name="white_alpha_20">#33FFFFFF</color>
+    <color name="divider">#E0E0E0</color>
+
+
+    <!--    // const BG_color = Color(0xFFF7F5F7);-->
 <!--    // const BG_color1 = Color(0xD3F1F1F1);-->
 <!--    const correct_color = Color(0xFF32AB58);-->
 <!--    const VERIFIED_COLOR = Color(0xFF32AB58);-->

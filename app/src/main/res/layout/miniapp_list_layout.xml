@@ -3,27 +3,31 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="@dimen/dp5"
-    android:layout_margin="@dimen/dp5">
+    android:layout_margin="@dimen/dp5"
+    app:cardCornerRadius="@dimen/dp8"
+    app:cardElevation="4dp"
+    android:foreground="?attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:gravity="center_vertical"
         android:padding="@dimen/dp10">
 
-
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/icon"
-            android:layout_width="@dimen/dp45"
-            android:layout_height="@dimen/dp45"
-            android:layout_gravity="center_vertical" />
+            android:layout_width="@dimen/dp50"
+            android:layout_height="@dimen/dp50"
+            android:scaleType="centerCrop"/>
+<!--            app:shapeAppearanceOverlay="@style/RoundedCornerImage" />-->
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="@dimen/dp10"
+            android:layout_marginStart="@dimen/dp12"
             android:layout_weight="1"
             android:orientation="vertical">
 
@@ -31,21 +35,22 @@
                 android:id="@+id/name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLines="1"
                 android:text="The Label Life"
                 android:textColor="@color/black"
                 android:textSize="@dimen/sp16"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:maxLines="1"
+                android:ellipsize="end" />
 
             <TextView
                 android:id="@+id/cb"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="The Label Life"
+                android:text="Flat 50% Cashback"
                 android:textColor="@color/grey"
-                android:textSize="@dimen/sp12" />
-
+                android:textSize="@dimen/sp13"
+                android:maxLines="1"
+                android:ellipsize="end" />
         </LinearLayout>
 
     </LinearLayout>

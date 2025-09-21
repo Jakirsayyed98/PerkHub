@@ -1,42 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="@dimen/dp90"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/dp120"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/dp5"
-    android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="@dimen/dp8"
+    android:backgroundTint="@android:color/white"
+    android:elevation="@dimen/dp6"
+    android:radius="16dp"
+    android:clickable="true"
+    android:focusable="true">
 
-
-    <ImageView
-        android:id="@+id/icon"
-        android:layout_width="@dimen/dp65"
-        android:layout_height="@dimen/dp65"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/dp15" />
-
-    <ImageView
-        android:id="@+id/rupee"
-        android:layout_width="@dimen/dp20"
-        android:layout_height="@dimen/dp20"
-        android:layout_marginStart="@dimen/dp10"
-        android:layout_marginTop="@dimen/dp10"
-        android:background="@drawable/rupees_icon"
-
-        />
-
-
-    <TextView
-        android:id="@+id/storename"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/icon"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/dp5"
-        android:layout_marginBottom="@dimen/dp5"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:text="Store"
-        android:textColor="@color/black"
-        android:textSize="@dimen/sp12"
-        android:textAlignment="center" />
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:padding="@dimen/dp10">
 
-</RelativeLayout>
+        <!-- Store Icon inside Circle -->
+<androidx.cardview.widget.CardView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="@dimen/dp35"
+    android:layout_margin="8dp">
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_placeholder" />
+</androidx.cardview.widget.CardView>
+        <!-- Store Name -->
+        <TextView
+            android:id="@+id/storename"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp8"
+            android:text="Amazon"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp14"
+            android:textStyle="bold"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:gravity="center" />
+
+        <!-- Cashback / Offer Text -->
+        <TextView
+            android:id="@+id/cashbackText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp4"
+            android:text="Up to 20% Cashback"
+            android:textColor="@color/main"
+            android:textSize="@dimen/sp12"
+            android:gravity="center" />
+
+    </LinearLayout>
+
+    <!-- Cashback Badge Ribbon (Top-Right Corner) -->
+    <TextView
+        android:id="@+id/cashbackBadge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|end"
+        android:background="@drawable/bg_ribbon"
+        android:paddingStart="@dimen/dp8"
+        android:paddingEnd="@dimen/dp8"
+        android:paddingTop="@dimen/dp2"
+        android:paddingBottom="@dimen/dp2"
+        android:layout_margin="@dimen/dp10"
+        android:text="Hot"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/sp10"
+        android:textStyle="bold"/>
+</androidx.cardview.widget.CardView>

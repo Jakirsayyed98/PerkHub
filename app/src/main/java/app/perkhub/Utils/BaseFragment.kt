@@ -1,7 +1,9 @@
 package app.perkhub.Utils
 
 import android.app.Dialog
+import android.os.Build
 import android.os.Bundle
+import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -22,6 +24,10 @@ abstract class BaseFragment<T:ViewBinding> : Fragment() {
         viewModel =ViewModelProvider(this).get(RequestViewModel::class.java)
         progress = Dialog(requireContext())
         progress.setContentView(R.layout.progress_dialog)
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            val decor = requireActivity().window.decorView
+//            decor.systemUiVisibility = decor.systemUiVisibility or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+//        }
     }
 
 //    fun statusBarColor(color : Int){
@@ -40,7 +46,7 @@ abstract class BaseFragment<T:ViewBinding> : Fragment() {
     }
 
     fun getUserID():String?{
-        return getSharedpref().getUser(USERDATA).data.user_id.toString()
+        return ""//getSharedpref().getUser(USERDATA).data.user_id.toString()
     }
 
 

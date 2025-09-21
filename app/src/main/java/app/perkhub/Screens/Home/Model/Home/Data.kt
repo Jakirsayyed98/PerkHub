@@ -4,21 +4,24 @@ import com.google.gson.annotations.SerializedName
 
 
 data class Data(
-    val banner1: ArrayList<Banner>,
-    val banner2: Any?,
-    val banner3: Any?,
-    val banner4: Any?,
-    val banner5: Any?,
-    val banner6: Any?,
-    val banner7: Any?,
-    val banner8: Any?,
-    val banner9: Any?,
-    val banner10: Any?,
-    val categories: ArrayList<Category>,
-    val popular: ArrayList<MiniApp>,
+    @SerializedName("banner1")
+    val banner1: List<Banner>?,
+
+    @SerializedName("banner2")
+    val banner2: List<Banner>?,
+
+    @SerializedName("banner3")
+    val banner3: List<Banner>?,
+
+    @SerializedName("categories")
+    val categories: List<Category>,
+
+    @SerializedName("popular")
+    val popular: List<MiniApp>,
+
     @SerializedName("top_cashback")
-    val topCashback: ArrayList<MiniApp>,
-    val trending: ArrayList<MiniApp>,
-    @SerializedName("category_list")
-    val categoryList: ArrayList<CategoryX>
+    val topCashback: List<MiniApp>,
+
+    @SerializedName("trending")
+    val trending: List<MiniApp>
 )

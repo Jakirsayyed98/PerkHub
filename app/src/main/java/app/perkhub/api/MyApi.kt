@@ -1,6 +1,7 @@
 package app.perkhub.api
 
 import android.content.Context
+import app.perkhub.Screens.Home.Model.Auth.VerifyOTP
 import app.perkhub.Screens.Home.Model.Games.GamesRes
 import app.perkhub.Screens.Home.Model.GenerateUrl.GenerateSubId
 import app.perkhub.Screens.Home.Model.GenerateUrl.GenerateSubIdRes
@@ -10,6 +11,7 @@ import app.perkhub.Screens.Home.Model.MiniAppByCategory.MiniAppByCategoryReq
 import app.perkhub.Screens.Home.Model.MiniAppByCategory.MiniAppSearchReq
 import app.perkhub.Screens.Home.Model.MiniAppByCategory.MiniAppbyCategory
 import app.perkhub.Screens.Home.Model.Notification.NotificationListRes
+import app.perkhub.Screens.Home.Model.Notification.TokenReq
 import app.perkhub.Screens.Home.Model.TransactionModel.TransactionDataRes
 import app.perkhub.Screens.Home.Model.Withdrawal.WithdrawalReq
 import app.perkhub.Screens.Home.Model.Withdrawal.withdrawalRes
@@ -32,21 +34,20 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Query
+import java.util.concurrent.TimeUnit
 
 interface MyApi {
 
-    //Login APIs
-
-
-    @POST("sendOTP")
+    //Login APIs Start
+    @POST("sendOTP")// used
     suspend fun sendOtp(
         @Body body: SendOtpReq
     ):Response<BaseRes>
 
-    @POST("verifyOTP")
+    @POST("verifyOTP") //used
     suspend fun verifyOTP(
         @Body body: VerifyOtpReq
-    ):Response<BaseRes>
+    ):Response<VerifyOTP>
 
     @POST("authorization")
     suspend fun getAuthorization(
@@ -58,15 +59,29 @@ interface MyApi {
     ):Response<LoginRes>
 
 
-    @POST("savedetail")
+    @POST("savedetail")//used
     suspend fun SaveDetail(
         @Body body: SaveUserDetail
-    ):Response<LoginRes>
+    ):Response<BaseRes>
+    //Login APIs End
+
+
 
     //Home
     @GET("getHomePage")
     suspend fun getHomePage(
     ):Response<HomeRes>
+
+    //MiniAppByCategory
+    @POST("getStoresByCategory")
+    suspend fun getMiniAppByCategory(
+        @Body body:MiniAppByCategoryReq
+    ):Response<MiniAppbyCategory>
+
+    @POST("genrateSubID")
+    suspend fun generateUrl(
+        @Body body: GenerateSubId
+    ):Response<GenerateSubIdRes>
 
     //Loot Products
     @POST("getAllLootoffers")
@@ -74,11 +89,7 @@ interface MyApi {
         @Query("page") page:String
     ):Response<LootProductRes>
 
-   //MiniAppByCategory
-    @POST("getMiniAppByCategory")
-    suspend fun getMiniAppByCategory(
-       @Body body:MiniAppByCategoryReq
-    ):Response<MiniAppbyCategory>
+
 //searchMiniApps
     @POST("searchMiniApps")
     suspend fun searchminiApps(
@@ -87,49 +98,52 @@ interface MyApi {
 
     @POST("updateNotificationToken")
     suspend fun updateNotification(
-        @Field("token") token:String
+        @Body body: TokenReq
     ):Response<MiniAppbyCategory>
 
-    @POST("genrateSubID")
-    suspend fun generateUrl(
-        @Body body: GenerateSubId
-    ):Response<GenerateSubIdRes>
+
 
 
     @GET("getAllGames")
     suspend fun getAllGames(
     ):Response<GamesRes>
 
-    @GET("getTxnList")
+
+    @GET("get-popular-games")
+    suspend fun getPopularGames(
+    ):Response<GamesRes>
+
+    @GET("miniapp/transactions")
     suspend fun getAllTransaction(
     ):Response<TransactionDataRes>
 
-    @POST("withdrawal/request")
+    @POST("withdrawals/request")
     suspend fun ReqForWithdrawal(
         @Body body: WithdrawalReq
     ):Response<withdrawalRes>
 
 
-    @GET("withdrawal/txnList")
+    @GET("withdrawals/transactions")
     suspend fun getWithdrawalTxn(
     ):Response<withdrawalRes>
 
 
-
-    @FormUrlEncoded
-    @POST("getNotificationList")
+    @GET("getNotificationList")
     suspend fun getNotificationList(
-        @Field("user_id") user_id:String
     ):Response<NotificationListRes>
 
 
 
     companion object{
       operator  fun invoke(context : Context):MyApi{
-          val BaseUrl = "https://blessed-pretty-mammal.ngrok-free.app"
-            var BaseURl = "$BaseUrl/api/"
+//          val BaseUrl = "https://api.perkhub.in/api/"
+          val BaseUrl = "https://blessed-pretty-mammal.ngrok-free.app/api/"
+            var BaseURl = "$BaseUrl"
             val httploggingInterceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
             val client = OkHttpClient.Builder()
+                .connectTimeout(30, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
+                .writeTimeout(30, TimeUnit.SECONDS)
                 .addInterceptor(AuthInterceptor(context))
                 .addInterceptor(httploggingInterceptor).build()
 

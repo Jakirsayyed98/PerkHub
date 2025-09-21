@@ -10,11 +10,6 @@ data class Banner(
     val bannerCategoryId: String,
     val image: String,
     val url: String,
-
-    @SerializedName("start_date")
-    val startDate: String,
-    @SerializedName("end_date")
-    val endDate: String,
     val status: Boolean,
     val createdAt: String,
     val updatedAt: String

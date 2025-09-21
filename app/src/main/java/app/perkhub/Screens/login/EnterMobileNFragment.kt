@@ -1,8 +1,7 @@
 package app.perkhub.Screens.login
 
+import android.annotation.SuppressLint
 import android.os.Bundle
-import android.os.CountDownTimer
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,13 +10,14 @@ import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import app.perkhub.ContainerActivity
 import app.perkhub.R
+import app.perkhub.Screens.Home.Model.Auth.VerifyOTP
+import app.perkhub.Screens.login.models.GetToken
+import app.perkhub.Screens.login.models.LoginRes
 import app.perkhub.Utils.BaseFragment
 import app.perkhub.Utils.LOGIN
-import app.perkhub.Utils.NUMBER
 import app.perkhub.Utils.toast
 import app.perkhub.api.ApiListener
 import app.perkhub.databinding.FragmentEnterMobileNBinding
-import app.perkhub.Screens.login.models.LoginRes
 import app.perkhub.Screens.login.models.SendOtpReq
 import app.perkhub.Screens.login.models.VerifyOtpReq
 import app.perkhub.Utils.TOKEN
@@ -33,8 +33,8 @@ class EnterMobileNFragment : BaseFragment<FragmentEnterMobileNBinding>() {
     val countdownTimeInSeconds = 120
     var timeLeft = countdownTimeInSeconds
     var countMinute = countdownTimeInSeconds / 60
-    val timer = Timer()
-
+    var timer = Timer()
+    var resend = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -75,32 +75,13 @@ class EnterMobileNFragment : BaseFragment<FragmentEnterMobileNBinding>() {
         }
         _binding!!.sendOTP.setOnClickListener {
             if (_binding!!.sendOTP.isSelected) {
-                showProgress()
-                var request: SendOtpReq = SendOtpReq("")
-                request.Number = _binding!!.mobilenumber.text.toString()
-
-                _binding!!.mobilenumberlayout.visibility = View.GONE
-                _binding!!.OTPlayout.visibility = View.VISIBLE
-
-                viewModel.SendOTP(request,requireContext(),
-                    object : ApiListener<BaseRes> {
-                        override fun onSuccess(t: BaseRes?, mess: String) {
-                            dissmissProgress()
-                            countDownStart()
-                        }
-
-                        override fun onError(mess: String) {
-                            super.onError(mess)
-                            dissmissProgress()
-                            requireContext().toast(mess)
-                        }
-                    })
-
+//                showProgress()
+                sendOTPAPICall()
             }
         }
 
         _binding!!.OTP.addTextChangedListener {
-            if (_binding!!.OTP.length() == 5) {
+            if (_binding!!.OTP.length() == 6) {
                 _binding!!.verifyOTP.isSelected = true
             } else {
                 _binding!!.verifyOTP.isSelected = false
@@ -116,16 +97,15 @@ class EnterMobileNFragment : BaseFragment<FragmentEnterMobileNBinding>() {
                 request.Otp = _binding!!.OTP.text.toString()
                 viewModel.VerifyOTP(
                     request,requireContext(),
-                    object : ApiListener<BaseRes> {
-                        override fun onSuccess(t: BaseRes?, mess: String) {
+                    object : ApiListener<VerifyOTP> {
+                        override fun onSuccess(t: VerifyOTP?, mess: String) {
 
-                            dissmissProgress()
-                            requireContext().toast(t!!.Message)
 
-                            TokenManager.saveToken(requireContext(),t!!.Data.Token)
+                                dissmissProgress()
 
-                            getUserDetail()
+                                SetRedirectionToDetail()
 
+                            timer.cancel()
                         }
 
                         override fun onError(mess: String) {
@@ -139,35 +119,83 @@ class EnterMobileNFragment : BaseFragment<FragmentEnterMobileNBinding>() {
         }
 
         _binding!!.timerCount.setOnClickListener {
-            if (_binding!!.timerCount.text == "Resend") {
-                countDownStart()
+            if (resend) {
+                resend = false
+                timer.cancel()
+                sendOTPAPICall()
             }
         }
 
 
     }
 
-    private fun getUserDetail() {
+    fun sendOTPAPICall(){
+        _binding!!.sendOTP.isSelected = false
+        _binding!!.sendOtpText.text = "Sending..."
+        var request: SendOtpReq = SendOtpReq("")
+        request.Number = _binding!!.mobilenumber.text.toString()
+        val numberText = "+91 "+_binding!!.mobilenumber.text.toString()
 
-        viewModel.getUserDetail(requireContext(),object : ApiListener<LoginRes>{
-            override fun onSuccess(t: LoginRes?, mess: String) {
-                if (t!!.data.name.isNullOrEmpty()) {
-                    ContainerActivity.OpenContainer(
-                        requireContext(),
-                        "EnterDetailFragment",
-                        null
-                    )
-                    activity?.finish()
-                } else {
-                    getSharedpref().saveBool(LOGIN, true)
-                    getSharedpref().saveUser(USERDATA, t)
-                    ContainerActivity.OpenContainer(
-                        requireContext(),
-                        "HomeScreenFragment",
-                        null
-                    )
-                    activity?.finish()
+        _binding!!.dis1.text = getString(R.string.enter_the_6_digit_code_sent_to, numberText)
+
+
+        viewModel.SendOTP(request,requireContext(),
+            object : ApiListener<BaseRes> {
+                override fun onSuccess(t: BaseRes?, mess: String) {
+                    _binding!!.mobilenumberlayout.visibility = View.GONE
+                    _binding!!.OTPlayout.visibility = View.VISIBLE
+
+//                            dissmissProgress()
+                    countDownStart()
                 }
+
+                override fun onError(mess: String) {
+                    super.onError(mess)
+                    dissmissProgress()
+                    requireContext().toast(mess)
+                }
+            })
+
+    }
+
+    private fun SetRedirectionToDetail() {
+        var request: GetToken = GetToken("")
+        request.Number = _binding!!.mobilenumber.text.toString()
+        viewModel.GetAuthorizationToken(request,requireContext(),object :ApiListener<BaseRes>{
+            override fun onSuccess(t: BaseRes?, mess: String) {
+                TokenManager.saveToken(requireContext(), t!!.Data.Token)
+                getSharedpref().saveString(TOKEN,t.Data.Token)
+                viewModel.getUserDetail(requireContext(),object :ApiListener<LoginRes>{
+                    override fun onSuccess(t: LoginRes?, mess: String) {
+                        if (t!!.data.name!=""){
+                            getSharedpref().saveBool(LOGIN, true)
+                            ContainerActivity.OpenContainer(
+                                requireContext(),
+                                "HomeScreenFragment",
+                                null
+                            )
+                            activity?.finish()
+                        }else{
+                            ContainerActivity.OpenContainer(
+                                requireContext(),
+                                "EnterDetailFragment",
+                                null
+                            )
+                            activity?.finish()
+                        }
+                        getSharedpref().saveUser(USERDATA,t!!)
+                    }
+
+                    override fun onError(mess: String) {
+                        super.onError(mess)
+                        requireContext().toast(mess)
+                    }
+                })
+            }
+
+            override fun onError(mess: String) {
+                super.onError(mess)
+                requireContext().toast(mess)
             }
         })
 
@@ -175,21 +203,27 @@ class EnterMobileNFragment : BaseFragment<FragmentEnterMobileNBinding>() {
     }
 
     private fun countDownStart() {
-
+        // cancel old one if running
+        timer = Timer()
         timer.schedule(object : TimerTask() {
+            @SuppressLint("DefaultLocale")
             override fun run() {
                 if (timeLeft > 0) {
                     val minutes = timeLeft / 60
                     val seconds = timeLeft % 60
-                    println(String.format("%02d:%02d", minutes, seconds))
 
-//                        _binding!!.timerCount.text = String.format("%02d:%02d", minutes, seconds)
+                    val formattedTime = String.format("%02d:%02d", minutes, seconds)
+                    requireActivity().runOnUiThread {
+                        _binding?.timerCount?.text ="Resend OTP in "+ formattedTime
+                    }
 
                     timeLeft--
                 } else {
-                    println("Time's up!")
                     timer.cancel()
-                    _binding!!.timerCount.setText("Resend")
+                    requireActivity().runOnUiThread {
+                        _binding?.timerCount?.text ="Resend OTP"
+                        resend = true
+                    }
                 }
             }
 
