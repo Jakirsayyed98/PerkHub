@@ -9,24 +9,20 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import app.perkhub.ContainerActivity
 import app.perkhub.Screens.Home.Model.Home.Category
-import app.perkhub.Screens.Home.Model.Home.CategoryX
 import app.perkhub.Screens.Home.Model.Home.MiniApp
 import app.perkhub.Utils.BaseRecyclerView
 import app.perkhub.Utils.RecyclerClickListener
 import app.perkhub.databinding.ActiveCategoryLayoutBinding
-import app.perkhub.databinding.HomeGamesLayoutBinding
-import com.bumptech.glide.Glide
 
 class CategoryActiveAdapter<S>(val clickListener: RecyclerClickListener) : BaseRecyclerView<S,CategoryActiveAdapter<S>.Holder>() {
     var context: Context? = null
     inner class Holder(val binding: ActiveCategoryLayoutBinding) : RecyclerView.ViewHolder(binding.root){
         fun setData(s: S){
-            if (s is CategoryX){
+            if (s is Category){
                 context = itemView.context
-                binding.name.text = s.name
-                Log.d("CheckOnly Data",s.toString())
-                if(s.data.size>1){
-                    setMiniApp(binding,s.data)
+                binding.name.text = s.description
+                if(s.miniapps.size>1){
+                    setMiniApp(binding,s.miniapps)
                 }
 
             }
@@ -35,8 +31,9 @@ class CategoryActiveAdapter<S>(val clickListener: RecyclerClickListener) : BaseR
 
 
 
-    private fun setMiniApp(binding: ActiveCategoryLayoutBinding,data: ArrayList<MiniApp>) {
-        val mAdapter = TrendingStoresAdapter<MiniApp>(object : RecyclerClickListener{
+    private fun setMiniApp(binding: ActiveCategoryLayoutBinding,data: List<MiniApp>) {
+        data.shuffled()
+        val mAdapter = TrendingStoresAdapter2<MiniApp>(object : RecyclerClickListener{
             override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
 
                 if (data is MiniApp){
@@ -44,11 +41,21 @@ class CategoryActiveAdapter<S>(val clickListener: RecyclerClickListener) : BaseR
                 }
             }
         })
-        binding.popularstore.apply {
-            layoutManager =
-                GridLayoutManager(context, 2, LinearLayoutManager.HORIZONTAL, false)
-            adapter = mAdapter
+
+        if (data.size<=3){
+            binding.popularstore.apply {
+                layoutManager =
+                    LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                adapter = mAdapter
+            }
+        }else{
+            binding.popularstore.apply {
+                layoutManager =
+                    GridLayoutManager(context, 2, LinearLayoutManager.HORIZONTAL, false)
+                adapter = mAdapter
+            }
         }
+
 //        data.shuffled()
         mAdapter.addAllItem(if (data.size <= 16) data else data.subList(0, 16))
     }

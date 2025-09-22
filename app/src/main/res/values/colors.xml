@@ -12,6 +12,7 @@
     <color name="red">#F44336</color>
     <color name="orange">#F2840F</color>
     <color name="red_700">#D32F2F</color>
+    <color name="red_100">#F8A2A2</color>
     <color name="transparent_bg">#7CFFFFFF</color>
 
 
@@ -19,6 +20,21 @@
     <!-- Primary Colors -->
 <!--    <color name="main">#1976D2</color>-->
     <color name="green">#4CAF50</color>
+    <color name="cashback_bg">#DEFBE7</color>
+    <color name="cashback_text">#257146</color>
+    <color name="point1bg">#F3E7FB</color>
+    <color name="point3bg">#FEEED4</color>
+    <color name="point4bg">#DBFCE7</color>
+    <color name="protipbg">#EFF6FF</color>
+    <color name="sharebg">#F8F7FD</color>
+    <color name="pointbg">#FEFBE8</color>
+    <color name="pointtitle">#8F672B</color>
+    <color name="sharetextsection">#5F3380</color>
+    <color name="point1">#9559CA</color>
+    <color name="point3">#B36F3E</color>
+    <color name="point4">#2C8E51</color>
+    <color name="protiptext">#344F9E</color>
+    <color name="pointtext">#84652E</color>
 
     <!-- Background Colors -->
     <color name="background_light">#FAFAFA</color>

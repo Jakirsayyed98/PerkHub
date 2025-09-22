@@ -1,5 +1,6 @@
 package app.perkhub.Screens.Home
 
+import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
 import android.text.Html
@@ -31,6 +32,7 @@ class StoreDetailFragment : BaseFragment<FragmentStoreDetailBinding>() {
         super.onCreate(savedInstanceState)
     }
 
+    @SuppressLint("ResourceAsColor")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -38,25 +40,37 @@ class StoreDetailFragment : BaseFragment<FragmentStoreDetailBinding>() {
         // Inflate the layout for this fragment
         _binding = FragmentStoreDetailBinding.inflate(layoutInflater,container,false)
 
-        _binding!!.toolbar.backbtn.setOnClickListener {
+        _binding!!.backbtn.setOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
         applySafeAreaInsets()
         var data = Gson().fromJson<MiniApp>(requireActivity().intent.getStringExtra(DATA),MiniApp::class.java)
-        _binding!!.toolbar.name.text = data.name
-        _binding!!.AboutTitle.text = getString(R.string.about_s,data.name)
-        Glide.with(requireContext()).load(data.logo).into(_binding!!.logo)
-        _binding!!.AboutStore.text = Html.fromHtml(data.about!!, Html.FROM_HTML_MODE_LEGACY)
-        _binding!!.Cashbackrates.text = Html.fromHtml(if (!data.cbPercentage.isNullOrEmpty()) data.cbPercentage else "" , Html.FROM_HTML_MODE_LEGACY)
-        _binding!!.terms.text = Html.fromHtml(data.cashback_terms!!, Html.FROM_HTML_MODE_LEGACY)
-        _binding!!.description.text = Html.fromHtml(data.description!!, Html.FROM_HTML_MODE_LEGACY)
-        _binding!!.working.text = "Same content need to design for All"
-//        _binding!!.working.text = Html.fromHtml(data.how, Html.FROM_HTML_MODE_LEGACY)
+        if (data.cbActive){
+            _binding!!.cashbackactiveSection.visibility = View.VISIBLE
+        }else{
+            _binding!!.cashbackactiveSection.visibility = View.GONE
+        }
+        _binding!!.storename.text = data.name
+        _binding!!.link.setText(data.url)
+        _binding!!.storenameterm.text = getString(R.string.complete_your_purchase,data.name)
+        _binding!!.point1.text = getString(R.string.we_ll_redirect_you_to,data.name)
+        _binding!!.shareearntitle.text = getString(R.string.generate_your_unique_referral_link,data.name)
+        Glide.with(requireContext()).load(data.icon).into(_binding!!.icon)
 
-        _binding!!.Share.setOnClickListener {
+        _binding!!.cashbacktext.text = Html.fromHtml(if (!data.cbPercentage.isNullOrEmpty()) "upto "+data.cbPercentage+" Cashback" else "" , Html.FROM_HTML_MODE_LEGACY)
+
+        if (!data.cbActive){
+            _binding!!.cashbackactiveSection.visibility = View.GONE
+            _binding!!.cashbacktext.text =  "Cashback is not active"
+//            _binding!!.cashbacktext.setTextColor(R.color.red)
+//            _binding!!.cashbacktext.setBackgroundColor(R.color.red_100)
+
+        }
+
+        _binding!!.share.setOnClickListener {
             GetUrl(data.name.toString(),"Share")
         }
-        _binding!!.Shop.setOnClickListener {
+        _binding!!.shop.setOnClickListener {
             GetUrl(data.name.toString(),"Shop")
         }
 
@@ -93,20 +107,20 @@ class StoreDetailFragment : BaseFragment<FragmentStoreDetailBinding>() {
 
             // Apply top inset to toolbar (so it won’t overlap status bar)
 
-            binding.toolbar2.setPadding(
-                binding.toolbar2.paddingLeft,
+            binding.mainlayout.setPadding(
+                binding.mainlayout.paddingLeft,
                 systemBars.top,
-                binding.toolbar2.paddingRight,
-                binding.toolbar2.paddingBottom
+                binding.mainlayout.paddingRight,
+                binding.mainlayout.paddingBottom
             )
 
             // Apply bottom inset to recycler or main scrollable container
-            binding.buttonLayout.setPadding(
-                binding.buttonLayout.paddingLeft,
-                binding.buttonLayout.paddingTop,
-                binding.buttonLayout.paddingRight,
-                systemBars.bottom
-            )
+//            binding.buttonLayout.setPadding(
+//                binding.buttonLayout.paddingLeft,
+//                binding.buttonLayout.paddingTop,
+//                binding.buttonLayout.paddingRight,
+//                systemBars.bottom
+//            )
 
             // You do NOT pad the whole root drawerLayout, only the children
             insets

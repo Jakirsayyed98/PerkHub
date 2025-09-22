@@ -41,6 +41,14 @@
 
     <!-- Content Descriptions -->
     <string name="store_logo_description">Store logo</string>
+    <string name="click_shop_now">Click \"Shop Now\"</string>
+    <string name="complete_your_purchase">Complete your purchase on %s website as you normally would.</string>
+    <string name="pro_tip_keep_your_browser"><b>Pro Tip:</b> Keep your browser\'s cookies enable and complete your purchase in the same session for successful cashback tracking.</string>
+    <string name="share_earn_more"><![CDATA[Share & Earn More]]></string>
+    <string name="generate_your_unique_referral_link">Generate your unique referral link and earn cashback when your friends shop at %s!</string>
+    <string name="notes"><b>•</b> Cashback is calculated on the purchase amount excluding taxes and shipping\n\n<b>•</b> Using external coupon codes may affect cashback tracking
+        \n\n<b>•</b> Cashback may be reduced or cancelled if items are returned\n\n<b>•</b> Some product categories may be excluded from cashback</string>
+    <string name="we_ll_redirect_you_to">We\'ll redirect you to %s via our perkhub link to track your purchase.</string>
 
     <!-- Backwards compatibility -->
 </resources>

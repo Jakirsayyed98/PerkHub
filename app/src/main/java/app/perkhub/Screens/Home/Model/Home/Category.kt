@@ -25,5 +25,8 @@ data class Category(
     val createdAt: String,
 
     @SerializedName("updated_at")
-    val updatedAt: String
+    val updatedAt: String,
+
+    @SerializedName("data")
+    val miniapps: List<MiniApp>,
 )

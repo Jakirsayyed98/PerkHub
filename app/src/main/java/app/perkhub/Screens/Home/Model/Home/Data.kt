@@ -23,5 +23,8 @@ data class Data(
     val topCashback: List<MiniApp>,
 
     @SerializedName("trending")
-    val trending: List<MiniApp>
+    val trending: List<MiniApp>,
+
+    @SerializedName("category_list")
+    val category_list: List<Category>
 )

@@ -155,6 +155,10 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
 //                    binding.trendingStorelayout.visibility = View.VISIBLE
                     setTrendingStores(data.trending)
                 }
+
+                if (!data.category_list.isEmpty()){
+                    setActiveHomeCateory(data.category_list)
+                }
             }
 
             override fun onError(mess: String) {
@@ -165,6 +169,28 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
                 ).show()
             }
         })
+    }
+
+    private fun setActiveHomeCateory(categoryList: List<Category>) {
+        val mAdapter = CategoryActiveAdapter<Category>(object : RecyclerClickListener {
+            override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
+//                if (data is Category) {
+//                    ContainerActivity.OpenContainerType2(
+//                        requireContext(),
+//                        "SelectedCategoryFragment",
+//                        "CategoryMiniApp",
+//                        data
+//                    )
+//                }
+            }
+        })
+
+        binding.sectionActiveCategories.recyclerActiveCategories.apply {
+            layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL,false)
+            adapter = mAdapter
+        }
+
+        mAdapter.addAllItem(categoryList)
     }
 
     private fun getLootProduct() {
