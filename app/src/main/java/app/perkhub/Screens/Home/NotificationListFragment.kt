@@ -1,73 +1,83 @@
 package app.perkhub.Screens.Home
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import app.perkhub.R
 import app.perkhub.Screens.Home.Adapter.NotificationAdapter
 import app.perkhub.Screens.Home.Model.Notification.Data
 import app.perkhub.Screens.Home.Model.Notification.NotificationListRes
 import app.perkhub.Utils.BaseFragment
 import app.perkhub.Utils.RecyclerClickListener
+import app.perkhub.Utils.toast
 import app.perkhub.api.ApiListener
 import app.perkhub.databinding.FragmentNotificationListBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class NotificationListFragment : BaseFragment<FragmentNotificationListBinding>() {
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
+    private val notificationAdapter by lazy {
+        NotificationAdapter<Data>(object : RecyclerClickListener {
+            override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
+                // Handle notification click if needed
+            }
+        })
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        _binding = FragmentNotificationListBinding.inflate(layoutInflater,container,false)
+    ): View {
+        _binding = FragmentNotificationListBinding.inflate(inflater, container, false)
 
-        _binding!!.toolbar.name.text = "Notification List"
-        _binding!!.toolbar.backbtn.setOnClickListener {
+        binding.toolbar.name.text = "Notification List"
+        binding.toolbar.backbtn.setOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
-        getNotificationList()
-        return _binding?.root
+
+        setupRecyclerView()
+        fetchNotificationList()
+
+        return binding.root
     }
 
-    private fun getNotificationList() {
-        viewModel.getNotificationList(requireContext(),object : ApiListener<NotificationListRes>{
-            override fun onSuccess(t: NotificationListRes?, mess: String) {
-                t!!.let {
-                    setData(it)
-                }
-            }
-        })
-    }
-
-    private fun setData(it: NotificationListRes) {
-        val mAdapter = NotificationAdapter<Data>(object : RecyclerClickListener{
-            override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
-
-            }
-        })
-
-        _binding!!.notificationlist.apply {
-            layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
-            adapter = mAdapter
+    private fun setupRecyclerView() {
+        binding.notificationlist.apply {
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            adapter = notificationAdapter
         }
-        mAdapter.addAllItem(it.data)
+    }
+
+    private fun fetchNotificationList() {
+        lifecycleScope.launch(Dispatchers.IO) {
+            viewModel.getNotificationList(requireContext(), object : ApiListener<NotificationListRes> {
+                override fun onSuccess(t: NotificationListRes?, mess: String) {
+                    t?.data?.let { data ->
+                        lifecycleScope.launch(Dispatchers.Main) {
+                            setData(data)
+                        }
+                    }
+                }
+
+                override fun onError(mess: String) {
+                    lifecycleScope.launch(Dispatchers.Main) {
+                        requireContext().toast("Failed to fetch notifications: $mess")
+                    }
+                }
+            })
+        }
+    }
+
+    private fun setData(data: List<Data>) {
+        notificationAdapter.clear()
+        notificationAdapter.addAllItem(data)
     }
 
     companion object {
-
         @JvmStatic
-        fun newInstance() =
-            NotificationListFragment().apply {
-
-            }
+        fun newInstance() = NotificationListFragment()
     }
 }

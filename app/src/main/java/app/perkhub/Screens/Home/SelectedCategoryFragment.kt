@@ -1,13 +1,14 @@
 package app.perkhub.Screens.Home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.perkhub.ContainerActivity
@@ -23,185 +24,208 @@ import app.perkhub.Utils.CONTAINER_TYPE_KEY1
 import app.perkhub.Utils.DATA
 import app.perkhub.Utils.RecyclerClickListener
 import app.perkhub.Utils.openCustomTab
+import app.perkhub.Utils.toast
 import app.perkhub.api.ApiListener
 import app.perkhub.databinding.FragmentSelectedCategoryBinding
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-
+import kotlinx.coroutines.*
 
 class SelectedCategoryFragment : BaseFragment<FragmentSelectedCategoryBinding>() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    private val gson by lazy { Gson() }
 
+    // Single adapters for production efficiency
+    private val categoryAdapter by lazy {
+        CategoryAdapter<Category>(object : RecyclerClickListener {
+            override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
+                if (data is Category) {
+                    ContainerActivity.OpenContainerType2(
+                        requireContext(),
+                        "SelectedCategoryFragment",
+                        "CategoryMiniApp",
+                        data
+                    )
+                }
+            }
+        })
     }
+
+    private val miniAppAdapter by lazy {
+        MiniAppCategoryAdapter<MiniApp>(object : RecyclerClickListener {
+            override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
+                if (data is MiniApp) {
+                    ContainerActivity.OpenContainerType2(
+                        requireContext(),
+                        "StoreDetailFragment",
+                        data.name,
+                        data
+                    )
+                }
+            }
+        })
+    }
+
+    private var searchJob: Job? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        _binding = FragmentSelectedCategoryBinding.inflate(layoutInflater, container, false)
-        _binding!!.toolbar.backbtn.setOnClickListener {
+    ): View {
+        _binding = FragmentSelectedCategoryBinding.inflate(inflater, container, false)
+
+        binding.toolbar.backbtn.setOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
+        setupRecyclerViews()
         applySafeAreaInsets()
+        setupInitialView()
+        setupSearchListener()
 
-        val type1 = requireActivity().intent.getStringExtra(CONTAINER_TYPE_KEY1)
-        when(type1){
-            "CategoryMiniApp"->{
-                val value = requireActivity().intent.getStringExtra(DATA)
-                val data = Gson().fromJson<Category>(value, Category::class.java)
-                _binding!!.toolbar.name.text = data.name
-                _binding!!.searchLayout.visibility = View.GONE
-                getListOfMiniApps(data.id.toString())
-            }
-            "Categorires"->{
-                _binding!!.toolbar.name.text = "All Categories"
-                _binding!!.searchLayout.visibility = View.GONE
-                val value = requireActivity().intent.getStringExtra(DATA)
-                val gson = Gson()
-                val categoryListType = object : TypeToken<ArrayList<Category?>?>() {}.type
-                val categories: ArrayList<Category> = gson.fromJson(value, categoryListType)
-                setMainCategoryLayout(categories)
+        return binding.root
+    }
 
-            }
-            "Popular"->{
-                _binding!!.toolbar.name.text = "Popular Stores"
-                _binding!!.searchLayout.visibility = View.GONE
-                val value = requireActivity().intent.getStringExtra(DATA)
-                val gson = Gson()
-                val popularType = object : TypeToken<ArrayList<MiniApp?>?>() {}.type
-                val Popular: ArrayList<MiniApp> = gson.fromJson(value, popularType)
-                setLayout(Popular)
-            }
-            "Trending"->{
-                _binding!!.toolbar.name.text = "Trending Stores"
-                _binding!!.searchLayout.visibility = View.GONE
-                val value = requireActivity().intent.getStringExtra(DATA)
-                val gson = Gson()
-                val TrendingType = object : TypeToken<ArrayList<MiniApp?>?>() {}.type
-                val Trending: ArrayList<MiniApp> = gson.fromJson(value, TrendingType)
-                setLayout(Trending)
-            }
-
-            "Search"->{
-                _binding!!.searchLayout.visibility = View.VISIBLE
-                _binding!!.toolbar.name.text = "Search"
-            }
-
+    private fun setupRecyclerViews() {
+        binding.listOfStores.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = miniAppAdapter
         }
-
-        _binding!!.search.addTextChangedListener {
-            if (it!!.length>=3){
-                SearchMiniApps(it.toString())
-            }
-        }
-        return _binding?.root
     }
 
     private fun applySafeAreaInsets() {
-        ViewCompat.setOnApplyWindowInsetsListener(_binding!!.root) { _, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-
-            // Apply top inset to toolbar (so it won’t overlap status bar)
-
-            binding.toolbar2.setPadding(
-                binding.toolbar2.paddingLeft,
-                systemBars.top,
-                binding.toolbar2.paddingRight,
-                binding.toolbar2.paddingBottom
-            )
-
-            // Apply bottom inset to recycler or main scrollable container
-            binding.listOfStores.setPadding(
-                binding.listOfStores.paddingLeft,
-                binding.listOfStores.paddingTop,
-                binding.listOfStores.paddingRight,
-                systemBars.bottom
-            )
-
-            // You do NOT pad the whole root drawerLayout, only the children
+            binding.toolbar2.updatePadding(top = systemBars.top)
+            binding.listOfStores.updatePadding(bottom = systemBars.bottom)
             insets
         }
     }
 
+    private fun setupInitialView() {
+        val type1 = requireActivity().intent.getStringExtra(CONTAINER_TYPE_KEY1)
+        val value = requireActivity().intent.getStringExtra(DATA)
 
-    private fun setMainCategoryLayout(categories: ArrayList<Category>) {
-        val mAdapter = CategoryAdapter<Category>(object : RecyclerClickListener {
-            override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
-                if (data is Category){
-                    ContainerActivity.OpenContainerType2(requireContext(),"SelectedCategoryFragment","CategoryMiniApp",data)
+        when (type1) {
+            "CategoryMiniApp" -> {
+                try {
+                    val category = gson.fromJson(value, Category::class.java)
+                    binding.toolbar.name.text = category?.name ?: ""
+                    binding.searchLayout.visibility = View.GONE
+                    category?.id?.toString()?.let { getListOfMiniApps(it) }
+                } catch (e: Exception) {
+                    binding.toolbar.name.text = "Category"
                 }
             }
-
-        })
-        _binding!!.listOfStores.apply {
-            layoutManager = GridLayoutManager(requireContext(), 4)
-            adapter = mAdapter
+            "Categorires" -> {
+                binding.toolbar.name.text = "All Categories"
+                binding.searchLayout.visibility = View.GONE
+                try {
+                    val categories = gson.fromJson<List<Category>>(
+                        value,
+                        object : TypeToken<List<Category>>() {}.type
+                    )
+                    setMainCategoryLayout(ArrayList(categories))
+                } catch (e: Exception) {
+                    // Handle parsing error
+                }
+            }
+            "Popular" -> {
+                binding.toolbar.name.text = "Popular Stores"
+                binding.searchLayout.visibility = View.GONE
+                try {
+                    val popular = gson.fromJson<List<MiniApp>>(
+                        value,
+                        object : TypeToken<List<MiniApp>>() {}.type
+                    )
+                    setLayout(popular)
+                } catch (e: Exception) { }
+            }
+            "Trending" -> {
+                binding.toolbar.name.text = "Trending Stores"
+                binding.searchLayout.visibility = View.GONE
+                try {
+                    val trending = gson.fromJson<List<MiniApp>>(
+                        value,
+                        object : TypeToken<List<MiniApp>>() {}.type
+                    )
+                    setLayout(trending)
+                } catch (e: Exception) { }
+            }
+            "Search" -> {
+                binding.toolbar.name.text = "Search"
+                binding.searchLayout.visibility = View.VISIBLE
+            }
         }
-        mAdapter.addAllItem(categories)
-
     }
 
+    private fun setupSearchListener() {
+        binding.search.addTextChangedListener { text ->
+            searchJob?.cancel()
+            val query = text.toString()
+            if (query.length >= 3) {
+                searchJob = lifecycleScope.launch {
+                    delay(300) // debounce
+                    searchMiniApps(query)
+                }
+            }
+        }
+    }
 
-    private fun SearchMiniApps(name: String) {
-        val req = MiniAppSearchReq(name)
-        viewModel.searchminiApps(
-            req,
-            requireContext(),
-            object : ApiListener<MiniAppbyCategory> {
+    private fun setMainCategoryLayout(categories: ArrayList<Category>) {
+        binding.listOfStores.apply {
+            layoutManager = GridLayoutManager(requireContext(), 4)
+            adapter = categoryAdapter
+        }
+        categoryAdapter.clear()
+        categoryAdapter.addAllItem(categories)
+    }
+
+    private fun getListOfMiniApps(categoryId: String) {
+        val req = MiniAppByCategoryReq(categoryId)
+        lifecycleScope.launch(Dispatchers.IO) {
+            viewModel.getMiniAppByCategory(req, requireContext(), object : ApiListener<MiniAppbyCategory> {
                 override fun onSuccess(t: MiniAppbyCategory?, mess: String) {
-                    t!!.let {
-                        setLayout(it.data)
+                    t?.data?.let { data ->
+                        lifecycleScope.launch(Dispatchers.Main) { setLayout(data) }
+                    }
+                }
+
+                override fun onError(mess: String) {
+                    lifecycleScope.launch(Dispatchers.Main) {
+                        requireContext().toast("Failed to load mini apps: $mess")
                     }
                 }
             })
-
+        }
     }
 
-    private fun getListOfMiniApps(id: String) {
-        val req = MiniAppByCategoryReq(id)
-        System.out.println(req)
-        viewModel.getMiniAppByCategory(
-            req,
-            requireContext(),
-            object : ApiListener<MiniAppbyCategory> {
+    private fun searchMiniApps(query: String) {
+        val req = MiniAppSearchReq(query)
+        lifecycleScope.launch(Dispatchers.IO) {
+            viewModel.searchMiniApps(req, requireContext(), object : ApiListener<MiniAppbyCategory> {
                 override fun onSuccess(t: MiniAppbyCategory?, mess: String) {
-                    t!!.let {
-                        setLayout(it.data)
+                    t?.data?.let { data ->
+                        lifecycleScope.launch(Dispatchers.Main) { setLayout(data) }
+                    }
+                }
+
+                override fun onError(mess: String) {
+                    lifecycleScope.launch(Dispatchers.Main) {
+                        requireContext().toast("Search failed: $mess")
                     }
                 }
             })
-
+        }
     }
 
     private fun setLayout(data: List<MiniApp>) {
-        var mAdapter = MiniAppCategoryAdapter<MiniApp>(object : RecyclerClickListener {
-            override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
-                if (data is MiniApp){
-                    ContainerActivity.OpenContainerType2(requireContext(),"StoreDetailFragment",data.name,data)
-                }
-
-            }
-        })
-        _binding!!.listOfStores.apply {
-            layoutManager =
-                LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-            adapter = mAdapter
-        }
-        mAdapter.clear()
-        mAdapter.notifyDataSetChanged()
-        mAdapter.addAllItem(data)
+        miniAppAdapter.clear()
+        miniAppAdapter.addAllItem(data)
     }
 
     companion object {
-
         @JvmStatic
-        fun newInstance() =
-            SelectedCategoryFragment().apply {
-
-            }
+        fun newInstance() = SelectedCategoryFragment()
     }
 }

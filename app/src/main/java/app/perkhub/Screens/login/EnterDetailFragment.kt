@@ -6,159 +6,130 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.lifecycleScope
 import app.perkhub.ContainerActivity
 import app.perkhub.Utils.BaseFragment
-import app.perkhub.Utils.NUMBER
+import app.perkhub.Utils.LOGIN
+import app.perkhub.Utils.USERDATA
 import app.perkhub.Utils.toast
 import app.perkhub.api.ApiListener
+import app.perkhub.api.BaseRes
 import app.perkhub.databinding.FragmentEnterDetailBinding
 import app.perkhub.Screens.login.models.LoginRes
 import app.perkhub.Screens.login.models.SaveUserDetail
-import app.perkhub.Utils.LOGIN
-import app.perkhub.Utils.USERDATA
-import app.perkhub.api.BaseRes
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
-
 class EnterDetailFragment : BaseFragment<FragmentEnterDetailBinding>() {
 
-    var gender = "male"
+    private var gender = "male"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        _binding = FragmentEnterDetailBinding.inflate(layoutInflater, container, false)
+    ): View {
+        _binding = FragmentEnterDetailBinding.inflate(inflater, container, false)
 
-        FormHandel()
-        clickEvent()
+        setupForm()
+        setupClickListeners()
 
-        return _binding?.root
+        return binding.root
     }
 
-    private fun clickEvent() {
-        _binding!!.detail.setOnClickListener {
-            if (_binding!!.detail.isSelected == true) {
-                if (_binding!!.name.text.toString().isEmpty()) {
-                    _binding!!.name.setError("Please Enter name")
-                } else if (_binding!!.emailid.text.toString().isEmpty()) {
-                    _binding!!.emailid.setError("Please Enter Email id ")
-                } else if ( _binding!!.emailid.text.toString().endsWith("@gmail.com").not()) {
-                    _binding!!.emailid.error = "Please Enter valid Email Id "
-                } else {
-                    saveAllDetail()
-                }
+    private fun setupClickListeners() {
+        binding.detail.setOnClickListener {
+            if (binding.detail.isSelected) {
+                val name = binding.name.text.toString()
+                val email = binding.emailid.text.toString()
 
+                when {
+                    name.isEmpty() -> binding.name.error = "Please Enter name"
+                    email.isEmpty() -> binding.emailid.error = "Please Enter Email id"
+                    !email.endsWith("@gmail.com") -> binding.emailid.error = "Please Enter valid Email Id"
+                    else -> saveUserDetails()
+                }
             }
         }
     }
 
-    private fun saveAllDetail() {
-        var name = _binding!!.name.text.toString()
-        var email = _binding!!.emailid.text.toString()
-        var dob = _binding!!.DOB.text.toString()
-        var gender1 = gender
-//        var number =    getSharedpref().getString(NUMBER)!!
+    private fun saveUserDetails() {
+        val name = binding.name.text.toString()
+        val email = binding.emailid.text.toString()
+        val dob = binding.DOB.text.toString()
+        val genderSelected = gender
+
         showProgress()
-        var request : SaveUserDetail = SaveUserDetail(name,email,gender1,dob)
-        viewModel.SaveDetail(request,requireContext(), object : ApiListener<BaseRes> {
+        val request = SaveUserDetail(name, email, genderSelected, dob)
+
+        viewModel.saveDetail(request, requireContext(), object : ApiListener<BaseRes> {
             override fun onSuccess(t: BaseRes?, mess: String) {
-                dissmissProgress()
-                requireContext().toast(t!!.Message)
+                lifecycleScope.launch(Dispatchers.Main) {
+                    dissmissProgress()
+                    t?.Message?.let { requireContext().toast(it) }
+
                     getSharedpref().saveBool(LOGIN, true)
 //                    getSharedpref().saveUser(USERDATA, t!!)
                     ContainerActivity.OpenContainer(requireContext(), "HomeScreenFragment", null)
                     activity?.finish()
-
+                }
             }
 
             override fun onError(mess: String) {
-                super.onError(mess)
-                dissmissProgress()
-                requireContext().toast(mess)
+                lifecycleScope.launch(Dispatchers.Main) {
+                    dissmissProgress()
+                    requireContext().toast(mess)
+                }
             }
         })
     }
 
+    private fun setupForm() {
+        val cal = Calendar.getInstance()
+        val dateSetListener = DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
+            cal.set(Calendar.YEAR, year)
+            cal.set(Calendar.MONTH, monthOfYear)
+            cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+            val sdf = SimpleDateFormat("dd-MM-yyyy", Locale.US)
+            binding.DOB.text = sdf.format(cal.time)
+        }
 
-    private fun FormHandel() {
-        var cal = Calendar.getInstance()
-        val dateSetListener =
-            DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                cal.set(Calendar.YEAR, year)
-                cal.set(Calendar.MONTH, monthOfYear)
-                cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-
-                val myFormat = "dd-MM-yyyy" // mention the format you need
-                val sdf = SimpleDateFormat(myFormat, Locale.US)
-
-                _binding!!.DOB.text = sdf.format(cal.time)
-//            DOB.text = sdf.format(cal.time)
-
-            }
-
-        with(_binding!!) {
-
-            emailid.addTextChangedListener {
-                if (it!!.length >= 15 && it.endsWith("@gmail.com")) {
-                } else {
-                    _binding!!.emailid.error = "Please Enter valid Email id "
-                }
-            }
-
-            DOB.setOnClickListener {
-                _binding!!.detail.isSelected = true
-                DatePickerDialog(
-                    requireActivity(), dateSetListener,
-                    cal.get(Calendar.YEAR),
-                    cal.get(Calendar.MONTH),
-                    cal.get(Calendar.DAY_OF_MONTH)
-                ).show()
-
-            }
-            gender.setOnClickListener {
-                onGenderButtonClicked(it)
+        binding.emailid.addTextChangedListener {
+            if (it != null && (it.length < 15 || !it.endsWith("@gmail.com"))) {
+                binding.emailid.error = "Please Enter valid Email id"
             }
         }
 
+        binding.DOB.setOnClickListener {
+            binding.detail.isSelected = true
+            DatePickerDialog(
+                requireActivity(),
+                dateSetListener,
+                cal.get(Calendar.YEAR),
+                cal.get(Calendar.MONTH),
+                cal.get(Calendar.DAY_OF_MONTH)
+            ).show()
+        }
 
+        binding.gender.setOnClickListener { onGenderSelected(it) }
     }
 
-
-    fun onGenderButtonClicked(view: View?) {
-        if (_binding!!.male.isPressed()) {
-            _binding!!.male.setEnabled(false)
-
-            gender = "male"
-        } else if (_binding!!.female.isPressed()) {
-            _binding!!.female.setEnabled(false)
-
-            gender = "female"
-        } else if (_binding!!.other.isPressed()) {
-            _binding!!.other.setEnabled(false)
-
-            gender = "other"
-        } else {
-            gender = "male"
+    private fun onGenderSelected(view: View) {
+        when (view.id) {
+            binding.male.id -> gender = "male"
+            binding.female.id -> gender = "female"
+            binding.other.id -> gender = "other"
         }
-
-
     }
 
     companion object {
-
         @JvmStatic
-        fun newInstance() =
-            EnterDetailFragment().apply {
-
-            }
+        fun newInstance() = EnterDetailFragment()
     }
 }

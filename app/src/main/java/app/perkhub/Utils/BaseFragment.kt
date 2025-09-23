@@ -9,7 +9,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewbinding.ViewBinding
 import app.perkhub.R
+import app.perkhub.api.MyApi
 import app.perkhub.api.RequestViewModel
+import app.perkhub.room.HomeDatabase
+import app.perkhub.room.HomeRepository
+import app.perkhub.room.RequestViewModelFactory
 
 abstract class BaseFragment<T:ViewBinding> : Fragment() {
 
@@ -21,7 +25,14 @@ abstract class BaseFragment<T:ViewBinding> : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel =ViewModelProvider(this).get(RequestViewModel::class.java)
+        val api = MyApi(requireContext())
+        val db = HomeDatabase.getInstance(requireContext())
+        val repository = HomeRepository(api, db.homeCacheDao())
+
+        val factory = RequestViewModelFactory(repository) { ctx -> MyApi(ctx) }
+        viewModel = ViewModelProvider(requireActivity(), factory)[RequestViewModel::class.java]
+
+//        viewModel =ViewModelProvider(this).get(RequestViewModel::class.java)
         progress = Dialog(requireContext())
         progress.setContentView(R.layout.progress_dialog)
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

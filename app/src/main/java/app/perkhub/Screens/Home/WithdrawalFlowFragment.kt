@@ -108,7 +108,7 @@ class WithdrawalFlowFragment : BaseFragment<FragmentWithdrawalFlowBinding>() {
             upi_id = _binding!!.vpa.text.toString()
         )
 
-        viewModel.ReqForWithdrawal(request,requireContext(),object : ApiListener<withdrawalRes>{
+        viewModel.reqForWithdrawal(request,requireContext(),object : ApiListener<withdrawalRes>{
             override fun onSuccess(t: withdrawalRes?, mess: String) {
                 t!!.let {
                     if (it.status==200){

@@ -1,6 +1,7 @@
 package app.perkhub.api
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.perkhub.Screens.Home.Model.Auth.VerifyOTP
@@ -22,202 +23,127 @@ import app.perkhub.Screens.login.models.LoginRes
 import app.perkhub.Screens.login.models.SaveUserDetail
 import app.perkhub.Screens.login.models.SendOtpReq
 import app.perkhub.Screens.login.models.VerifyOtpReq
+import app.perkhub.room.HomeRepository
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import kotlin.coroutines.coroutineContext
 
-
-class RequestViewModel : ViewModel() {
-
-    fun SendOTP(sendOTP: SendOtpReq, context: Context, listner: ApiListener<BaseRes>) {
-        viewModelScope.launch(SetErrorhandler()) {
-            withContext(coroutineContext) {
-                MyApi(context).sendOtp(sendOTP).body()?.let { it ->
-                    listner.onResponse(it)
-                }
-            }
-        }
+fun CoroutineScope.launchSafe(
+    dispatcher: CoroutineDispatcher = Dispatchers.IO,
+    onError: (Throwable) -> Unit = {},
+    block: suspend CoroutineScope.() -> Unit
+) {
+    val handler = CoroutineExceptionHandler { _, exception ->
+        onError(exception)
     }
-
-    fun GetAuthorizationToken(getToken: GetToken, context: Context, listner: ApiListener<BaseRes>) {
-        viewModelScope.launch(SetErrorhandler()) {
-            withContext(coroutineContext) {
-                MyApi(context).getAuthorization(getToken).body()?.let { it ->
-                    listner.onResponse(it)
-                }
-            }
-        }
+    this.launch(context = dispatcher + handler) {
+        block()
     }
+}
 
-    fun VerifyOTP(req: VerifyOtpReq,  context: Context,listner: ApiListener<VerifyOTP>) {
-        viewModelScope.launch(SetErrorhandler()) {
-            withContext(coroutineContext) {
-                MyApi(context).verifyOTP(req).body()?.let { it ->
-                    listner.onResponse(it)
-                }
-            }
-        }
-    }
+class RequestViewModel(
+    private val repository: HomeRepository,
+    private val apiProvider: (Context) -> MyApi
+) : ViewModel() {
 
-    fun SaveDetail(
-        request : SaveUserDetail,
-        context: Context,
-        listner: ApiListener<BaseRes>
+    private fun <T> launchApi(
+        block: suspend () -> T?,
+        listener: ApiListener<T>
     ) {
-        viewModelScope.launch(SetErrorhandler()) {
-            withContext(coroutineContext) {
-                MyApi(context).SaveDetail(request).body()?.let { it ->
-                    listner.onResponse(it)
-                }
-            }
+        viewModelScope.launchSafe(onError = {
+            Log.e("RequestViewModel", "API call failed", it)
+            listener.onError(it.message ?: "Unknown error")
+        }) {
+            val response = block()
+            if (response != null) listener.onResponse(response)
+            else listener.onError("Empty response")
+        }
+    }
+
+    // --- Home API with caching ---
+    fun getHomeData(listener: ApiListener<HomeRes>) {
+        viewModelScope.launchSafe(onError = {
+            listener.onError(it.message ?: "Unknown error")
+        }) {
+            val data = repository.getHomeData() // Repository handles cache + API
+            listener.onResponse(data!!)
         }
     }
 
 
-    fun getHomeData(
-         context: Context, listner: ApiListener<HomeRes>
-    ) {
-        viewModelScope.launch(SetErrorhandler()) {
-            withContext(coroutineContext) {
-                MyApi(context).getHomePage().body()?.let { it ->
-                    listner.onResponse(it)
-                }
-            }
-        }
+    // --- Other APIs ---
+    fun sendOTP(req: SendOtpReq, context: Context, listener: ApiListener<BaseRes>) {
+        launchApi({ apiProvider(context).sendOtp(req).body() }, listener)
     }
 
+    fun getAuthorizationToken(req: GetToken, context: Context, listener: ApiListener<BaseRes>) {
+        launchApi({ apiProvider(context).getAuthorization(req).body() }, listener)
+    }
 
-    fun getLootProduct(
-        page: String, context: Context, listner: ApiListener<LootProductRes>
-    ) {
-        viewModelScope.launch(SetErrorhandler()) {
-            withContext(coroutineContext) {
-                MyApi(context).getLootProduct( page).body()?.let { it ->
-                    listner.onResponse(it)
-                }
-            }
-        }
+    fun verifyOTP(req: VerifyOtpReq, context: Context, listener: ApiListener<VerifyOTP>) {
+        launchApi({ apiProvider(context).verifyOTP(req).body() }, listener)
+    }
+
+    fun saveDetail(req: SaveUserDetail, context: Context, listener: ApiListener<BaseRes>) {
+        launchApi({ apiProvider(context).SaveDetail(req).body() }, listener)
+    }
+
+    fun getLootProduct(page: String, context: Context, listener: ApiListener<LootProductRes>) {
+        launchApi({ apiProvider(context).getLootProduct(page).body() }, listener)
     }
 
     fun getMiniAppByCategory(
-        req: MiniAppByCategoryReq, context: Context, listner: ApiListener<MiniAppbyCategory>
+        req: MiniAppByCategoryReq,
+        context: Context,
+        listener: ApiListener<MiniAppbyCategory>
     ) {
-        viewModelScope.launch(SetErrorhandler()) {
-            withContext(kotlin.coroutines.coroutineContext) {
-                MyApi(context).getMiniAppByCategory(req).body()?.let { it ->
-                    listner.onResponse(it)
-                }
-            }
-        }
+        launchApi({ apiProvider(context).getMiniAppByCategory(req).body() }, listener)
     }
 
-    fun searchminiApps(
-        req: MiniAppSearchReq, context: Context, listner: ApiListener<MiniAppbyCategory>
+    fun searchMiniApps(
+        req: MiniAppSearchReq,
+        context: Context,
+        listener: ApiListener<MiniAppbyCategory>
     ) {
-        viewModelScope.launch(SetErrorhandler()) {
-            withContext(kotlin.coroutines.coroutineContext) {
-                MyApi(context).searchminiApps(req).body()?.let { it ->
-                    listner.onResponse(it)
-                }
-            }
-        }
+        launchApi({ apiProvider(context).searchminiApps(req).body() }, listener)
     }
 
-    fun generateUrl(
-        request : GenerateSubId, context: Context, listner: ApiListener<GenerateSubIdRes>
-    ) {
-        viewModelScope.launch(SetErrorhandler()) {
-            withContext(kotlin.coroutines.coroutineContext) {
-                MyApi(context).generateUrl(request).body()?.let { it ->
-                    listner.onResponse(it)
-                }
-            }
-        }
+    fun generateUrl(req: GenerateSubId, context: Context, listener: ApiListener<GenerateSubIdRes>) {
+        launchApi({ apiProvider(context).generateUrl(req).body() }, listener)
     }
 
-    fun updateNotification(
-        token: String, context: Context, listner: ApiListener<MiniAppbyCategory>
-    ) {
-        val token = TokenReq(token)
-        viewModelScope.launch(SetErrorhandler()) {
-            withContext(kotlin.coroutines.coroutineContext) {
-                MyApi(context).updateNotification( token).body()?.let { it ->
-                    listner.onResponse(it)
-                }
-            }
-        }
+    fun updateNotification(token: String, context: Context, listener: ApiListener<MiniAppbyCategory>) {
+        launchApi({ apiProvider(context).updateNotification(TokenReq(token)).body() }, listener)
     }
 
-
-    fun getAllGames(context: Context,listner: ApiListener<GamesRes>){
-        viewModelScope.launch(SetErrorhandler()) {
-            withContext(kotlin.coroutines.coroutineContext){
-                MyApi(context).getAllGames().body()?.let {
-                    listner.onResponse(it)
-                }
-            }
-        }
+    fun getAllGames(context: Context, listener: ApiListener<GamesRes>) {
+        launchApi({ apiProvider(context).getAllGames().body() }, listener)
     }
 
-    fun getPopularGames(context: Context,listner: ApiListener<GamesRes>){
-        viewModelScope.launch(SetErrorhandler()) {
-            withContext(kotlin.coroutines.coroutineContext){
-                MyApi(context).getPopularGames().body()?.let {
-                    listner.onResponse(it)
-                }
-            }
-        }
+    fun getPopularGames(context: Context, listener: ApiListener<GamesRes>) {
+        launchApi({ apiProvider(context).getPopularGames().body() }, listener)
     }
 
-    fun getAllTransaction(context: Context,listner: ApiListener<TransactionDataRes>){
-        viewModelScope.launch(SetErrorhandler()) {
-            withContext(kotlin.coroutines.coroutineContext){
-                MyApi(context).getAllTransaction().body()?.let {
-                    listner.onResponse(it)
-                }
-            }
-        }
+    fun getAllTransaction(context: Context, listener: ApiListener<TransactionDataRes>) {
+        launchApi({ apiProvider(context).getAllTransaction().body() }, listener)
     }
 
-    fun getUserDetail( context: Context,listner: ApiListener<LoginRes>){
-        viewModelScope.launch(SetErrorhandler()) {
-            withContext(kotlin.coroutines.coroutineContext){
-                MyApi(context).getUserDetail().body()?.let {
-                    listner.onResponse(it)
-                }
-            }
-        }
+    fun getUserDetail(context: Context, listener: ApiListener<LoginRes>) {
+        launchApi({ apiProvider(context).getUserDetail().body() }, listener)
     }
 
-    fun getWithdrawalTxn(context: Context,listner: ApiListener<withdrawalRes>){
-        viewModelScope.launch(SetErrorhandler()) {
-            withContext(kotlin.coroutines.coroutineContext){
-                MyApi(context).getWithdrawalTxn().body()?.let {
-                    listner.onResponse(it)
-                }
-            }
-        }
-    }
- fun ReqForWithdrawal(req: WithdrawalReq, context: Context,listner: ApiListener<withdrawalRes>){
-        viewModelScope.launch(SetErrorhandler()) {
-            withContext(kotlin.coroutines.coroutineContext){
-                MyApi(context).ReqForWithdrawal(req).body()?.let {
-                    listner.onResponse(it)
-                }
-            }
-        }
+    fun getWithdrawalTxn(context: Context, listener: ApiListener<withdrawalRes>) {
+        launchApi({ apiProvider(context).getWithdrawalTxn().body() }, listener)
     }
 
-fun getNotificationList( context: Context,listner: ApiListener<NotificationListRes>){
-        viewModelScope.launch(SetErrorhandler()) {
-            withContext(kotlin.coroutines.coroutineContext){
-                MyApi(context).getNotificationList().body()?.let {
-                    listner.onResponse(it)
-                }
-            }
-        }
+    fun reqForWithdrawal(req: WithdrawalReq, context: Context, listener: ApiListener<withdrawalRes>) {
+        launchApi({ apiProvider(context).ReqForWithdrawal(req).body() }, listener)
     }
 
-
+    fun getNotificationList(context: Context, listener: ApiListener<NotificationListRes>) {
+        launchApi({ apiProvider(context).getNotificationList().body() }, listener)
+    }
 }
-

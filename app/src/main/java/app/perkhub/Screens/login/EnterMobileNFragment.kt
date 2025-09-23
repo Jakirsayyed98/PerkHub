@@ -1,6 +1,5 @@
 package app.perkhub.Screens.login
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,237 +7,206 @@ import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.lifecycleScope
 import app.perkhub.ContainerActivity
 import app.perkhub.R
 import app.perkhub.Screens.Home.Model.Auth.VerifyOTP
 import app.perkhub.Screens.login.models.GetToken
 import app.perkhub.Screens.login.models.LoginRes
-import app.perkhub.Utils.BaseFragment
-import app.perkhub.Utils.LOGIN
-import app.perkhub.Utils.toast
-import app.perkhub.api.ApiListener
-import app.perkhub.databinding.FragmentEnterMobileNBinding
 import app.perkhub.Screens.login.models.SendOtpReq
 import app.perkhub.Screens.login.models.VerifyOtpReq
+import app.perkhub.Utils.BaseFragment
+import app.perkhub.Utils.LOGIN
 import app.perkhub.Utils.TOKEN
 import app.perkhub.Utils.USERDATA
+import app.perkhub.Utils.toast
+import app.perkhub.api.ApiListener
 import app.perkhub.api.BaseRes
 import app.perkhub.api.tokens.TokenManager
-import java.util.Timer
-import java.util.TimerTask
-
+import app.perkhub.databinding.FragmentEnterMobileNBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class EnterMobileNFragment : BaseFragment<FragmentEnterMobileNBinding>() {
 
-    val countdownTimeInSeconds = 120
-    var timeLeft = countdownTimeInSeconds
-    var countMinute = countdownTimeInSeconds / 60
-    var timer = Timer()
-    var resend = false
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-
-        }
-    }
+    private val countdownTimeInSeconds = 120
+    private var timeLeft = countdownTimeInSeconds
+    private var resend = false
+    private var countdownJob: Job? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        _binding = FragmentEnterMobileNBinding.inflate(layoutInflater, container, false)
+    ): View {
+        _binding = FragmentEnterMobileNBinding.inflate(inflater, container, false)
 
-        clickEvent()
+        setupClickListeners()
+        handleBackPress()
 
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-            if (_binding!!.OTPlayout.isVisible) {
-                _binding!!.mobilenumberlayout.visibility = View.VISIBLE
-                _binding!!.OTPlayout.visibility = View.GONE
-                timer.cancel()
-            } else {
-                timer.cancel()
-                requireActivity().supportFragmentManager.popBackStack() // Handle parent fragment stack
-            }
-        }
-
-        return _binding?.root
+        return binding.root
     }
 
-    private fun clickEvent() {
-        _binding!!.mobilenumber.addTextChangedListener {
-            if (it!!.length == 10) {
-                _binding!!.sendOTP.isSelected = true
-            } else {
-                _binding!!.sendOTP.isSelected = false
-            }
-        }
-        _binding!!.sendOTP.setOnClickListener {
-            if (_binding!!.sendOTP.isSelected) {
-//                showProgress()
-                sendOTPAPICall()
-            }
+    private fun setupClickListeners() {
+        binding.mobilenumber.addTextChangedListener {
+            binding.sendOTP.isSelected = it?.length == 10
         }
 
-        _binding!!.OTP.addTextChangedListener {
-            if (_binding!!.OTP.length() == 6) {
-                _binding!!.verifyOTP.isSelected = true
-            } else {
-                _binding!!.verifyOTP.isSelected = false
-            }
+        binding.sendOTP.setOnClickListener {
+            if (binding.sendOTP.isSelected) sendOTPAPICall()
         }
 
-        _binding!!.verifyOTP.setOnClickListener {
-            if (_binding!!.verifyOTP.isSelected) {
-                showProgress()
-
-                var request: VerifyOtpReq = VerifyOtpReq("","")
-                request.Number = _binding!!.mobilenumber.text.toString()
-                request.Otp = _binding!!.OTP.text.toString()
-                viewModel.VerifyOTP(
-                    request,requireContext(),
-                    object : ApiListener<VerifyOTP> {
-                        override fun onSuccess(t: VerifyOTP?, mess: String) {
-
-
-                                dissmissProgress()
-
-                                SetRedirectionToDetail()
-
-                            timer.cancel()
-                        }
-
-                        override fun onError(mess: String) {
-                            super.onError(mess)
-                            dissmissProgress()
-                            requireContext().toast(mess)
-                        }
-
-                    })
-            }
+        binding.OTP.addTextChangedListener {
+            binding.verifyOTP.isSelected = it?.length == 6
         }
 
-        _binding!!.timerCount.setOnClickListener {
+        binding.verifyOTP.setOnClickListener {
+            if (binding.verifyOTP.isSelected) verifyOTP()
+        }
+
+        binding.timerCount.setOnClickListener {
             if (resend) {
                 resend = false
-                timer.cancel()
+                startCountdown()
                 sendOTPAPICall()
             }
         }
-
-
     }
 
-    fun sendOTPAPICall(){
-        _binding!!.sendOTP.isSelected = false
-        _binding!!.sendOtpText.text = "Sending..."
-        var request: SendOtpReq = SendOtpReq("")
-        request.Number = _binding!!.mobilenumber.text.toString()
-        val numberText = "+91 "+_binding!!.mobilenumber.text.toString()
-
-        _binding!!.dis1.text = getString(R.string.enter_the_6_digit_code_sent_to, numberText)
-
-
-        viewModel.SendOTP(request,requireContext(),
-            object : ApiListener<BaseRes> {
-                override fun onSuccess(t: BaseRes?, mess: String) {
-                    _binding!!.mobilenumberlayout.visibility = View.GONE
-                    _binding!!.OTPlayout.visibility = View.VISIBLE
-
-//                            dissmissProgress()
-                    countDownStart()
-                }
-
-                override fun onError(mess: String) {
-                    super.onError(mess)
-                    dissmissProgress()
-                    requireContext().toast(mess)
-                }
-            })
-
+    private fun handleBackPress() {
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            if (binding.OTPlayout.isVisible) {
+                binding.mobilenumberlayout.visibility = View.VISIBLE
+                binding.OTPlayout.visibility = View.GONE
+                countdownJob?.cancel()
+            } else {
+                countdownJob?.cancel()
+                requireActivity().supportFragmentManager.popBackStack()
+            }
+        }
     }
 
-    private fun SetRedirectionToDetail() {
-        var request: GetToken = GetToken("")
-        request.Number = _binding!!.mobilenumber.text.toString()
-        viewModel.GetAuthorizationToken(request,requireContext(),object :ApiListener<BaseRes>{
+    private fun sendOTPAPICall() {
+        binding.sendOTP.isSelected = false
+        binding.sendOtpText.text = "Sending..."
+        val request = SendOtpReq(binding.mobilenumber.text.toString())
+        val numberText = "+91 ${binding.mobilenumber.text}"
+
+        binding.dis1.text = getString(R.string.enter_the_6_digit_code_sent_to, numberText)
+
+        viewModel.sendOTP(request, requireContext(), object : ApiListener<BaseRes> {
             override fun onSuccess(t: BaseRes?, mess: String) {
-                TokenManager.saveToken(requireContext(), t!!.Data.Token)
-                getSharedpref().saveString(TOKEN,t.Data.Token)
-                viewModel.getUserDetail(requireContext(),object :ApiListener<LoginRes>{
-                    override fun onSuccess(t: LoginRes?, mess: String) {
-                        if (t!!.data.name!=""){
-                            getSharedpref().saveBool(LOGIN, true)
-                            ContainerActivity.OpenContainer(
-                                requireContext(),
-                                "HomeScreenFragment",
-                                null
-                            )
-                            activity?.finish()
-                        }else{
-                            ContainerActivity.OpenContainer(
-                                requireContext(),
-                                "EnterDetailFragment",
-                                null
-                            )
-                            activity?.finish()
-                        }
-                        getSharedpref().saveUser(USERDATA,t!!)
-                    }
-
-                    override fun onError(mess: String) {
-                        super.onError(mess)
-                        requireContext().toast(mess)
-                    }
-                })
+                lifecycleScope.launch(Dispatchers.Main) {
+                    binding.mobilenumberlayout.visibility = View.GONE
+                    binding.OTPlayout.visibility = View.VISIBLE
+                    startCountdown()
+                }
             }
 
             override fun onError(mess: String) {
-                super.onError(mess)
-                requireContext().toast(mess)
+                lifecycleScope.launch(Dispatchers.Main) {
+                    requireContext().toast(mess)
+                }
             }
         })
-
-
     }
 
-    private fun countDownStart() {
-        // cancel old one if running
-        timer = Timer()
-        timer.schedule(object : TimerTask() {
-            @SuppressLint("DefaultLocale")
-            override fun run() {
-                if (timeLeft > 0) {
-                    val minutes = timeLeft / 60
-                    val seconds = timeLeft % 60
+    private fun verifyOTP() {
+        showProgress()
+        val request = VerifyOtpReq(
+            Number = binding.mobilenumber.text.toString(),
+            Otp = binding.OTP.text.toString()
+        )
 
-                    val formattedTime = String.format("%02d:%02d", minutes, seconds)
-                    requireActivity().runOnUiThread {
-                        _binding?.timerCount?.text ="Resend OTP in "+ formattedTime
-                    }
+        viewModel.verifyOTP(request, requireContext(), object : ApiListener<VerifyOTP> {
+            override fun onSuccess(t: VerifyOTP?, mess: String) {
+                lifecycleScope.launch(Dispatchers.Main) {
+                    dissmissProgress()
+                    countdownJob?.cancel()
+                    redirectAfterVerification()
+                }
+            }
 
-                    timeLeft--
-                } else {
-                    timer.cancel()
-                    requireActivity().runOnUiThread {
-                        _binding?.timerCount?.text ="Resend OTP"
-                        resend = true
+            override fun onError(mess: String) {
+                lifecycleScope.launch(Dispatchers.Main) {
+                    dissmissProgress()
+                    requireContext().toast(mess)
+                }
+            }
+        })
+    }
+
+    private fun redirectAfterVerification() {
+        val request = GetToken(binding.mobilenumber.text.toString())
+        viewModel.getAuthorizationToken(request, requireContext(), object : ApiListener<BaseRes> {
+            override fun onSuccess(t: BaseRes?, mess: String) {
+                lifecycleScope.launch(Dispatchers.Main) {
+                    t?.Data?.Token?.let { token ->
+                        TokenManager.saveToken(requireContext(), token)
+                        getSharedpref().saveString(TOKEN, token)
+                        fetchUserDetails()
                     }
                 }
             }
 
-        }, 0, 1000) // Run every 1 second
+            override fun onError(mess: String) {
+                lifecycleScope.launch(Dispatchers.Main) {
+                    requireContext().toast(mess)
+                }
+            }
+        })
     }
 
+    private fun fetchUserDetails() {
+        viewModel.getUserDetail(requireContext(), object : ApiListener<LoginRes> {
+            override fun onSuccess(t: LoginRes?, mess: String) {
+                lifecycleScope.launch(Dispatchers.Main) {
+                    t?.let {
+                        getSharedpref().saveUser(USERDATA, it)
+                        if (it.data.name.isNotEmpty()) {
+                            getSharedpref().saveBool(LOGIN, true)
+                            ContainerActivity.OpenContainer(requireContext(), "HomeScreenFragment", null)
+                        } else {
+                            ContainerActivity.OpenContainer(requireContext(), "EnterDetailFragment", null)
+                        }
+                        activity?.finish()
+                    }
+                }
+            }
+
+            override fun onError(mess: String) {
+                lifecycleScope.launch(Dispatchers.Main) {
+                    requireContext().toast(mess)
+                }
+            }
+        })
+    }
+
+    private fun startCountdown() {
+        countdownJob?.cancel()
+        timeLeft = countdownTimeInSeconds
+
+        countdownJob = lifecycleScope.launch(Dispatchers.Main) {
+            while (timeLeft > 0) {
+                val minutes = timeLeft / 60
+                val seconds = timeLeft % 60
+                binding.timerCount.text = "Resend OTP in %02d:%02d".format(minutes, seconds)
+                delay(1000)
+                timeLeft--
+            }
+            binding.timerCount.text = "Resend OTP"
+            resend = true
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        countdownJob?.cancel()
+    }
 
     companion object {
-
         @JvmStatic
-        fun newInstance() =
-            EnterMobileNFragment().apply {
-                arguments = Bundle().apply {
-
-                }
-            }
+        fun newInstance() = EnterMobileNFragment()
     }
 }

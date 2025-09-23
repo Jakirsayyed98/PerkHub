@@ -7,8 +7,8 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.*
-import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -18,23 +18,24 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.Orientation
 import app.perkhub.ContainerActivity
 import app.perkhub.R
 import app.perkhub.Screens.Home.Adapter.*
 import app.perkhub.Screens.Home.Model.Games.GamesRes
 import app.perkhub.Screens.Home.Model.Home.*
-import app.perkhub.Screens.Home.Model.LootProduct.Data
-import app.perkhub.Screens.Home.Model.LootProduct.LootProductRes
 import app.perkhub.Screens.Home.Model.MiniAppByCategory.MiniAppbyCategory
 import app.perkhub.Utils.*
 import app.perkhub.api.ApiListener
+import app.perkhub.api.MyApi
 import app.perkhub.databinding.FragmentHomeScreenBinding
-import com.bumptech.glide.Glide
-import com.google.android.material.tabs.TabLayoutMediator
+import app.perkhub.room.HomeDatabase
+import app.perkhub.room.HomeRepository
+import app.perkhub.room.HomeViewModel
+import app.perkhub.room.RequestViewModelFactory
 import com.google.firebase.messaging.FirebaseMessaging
-import com.google.gson.Gson
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import androidx.lifecycle.ViewModelProvider
 
 class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
 
@@ -44,9 +45,6 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
     private val bannerHandler = Handler(Looper.getMainLooper())
     private var bannerRunnable: Runnable? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,24 +53,20 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         _binding = FragmentHomeScreenBinding.inflate(inflater, container, false)
         binding.progressbar.visibility = View.VISIBLE
         binding.mainlayout.visibility = View.GONE
+
         setupMenu()
         setupClickEvents()
+        applySafeAreaInsets()
 
-        viewLifecycleOwner.lifecycleScope.launch { getHomeData() }
-        // Uncomment when needed
-        // viewLifecycleOwner.lifecycleScope.launch { getLootProduct() }
-         viewLifecycleOwner.lifecycleScope.launch { getGamesData() }
-        // viewLifecycleOwner.lifecycleScope.launch { updateFirebaseToken() }
-
-
+        // Fetch data
+        lifecycleScope.launch { fetchHomeData() }       // HomeViewModel
+        lifecycleScope.launch { fetchGamesData() }      // requestViewModel
+        lifecycleScope.launch { updateFirebaseToken() } // requestViewModel
 
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        applySafeAreaInsets()
-    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -81,131 +75,61 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
     }
 
     // ---------------- SAFE AREA ---------------- //
-
     private fun applySafeAreaInsets() {
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-
             binding.toolbar.updatePadding(top = systemBars.top)
             binding.navView.updatePadding(top = systemBars.top)
             binding.mainlayout.updatePadding(bottom = systemBars.bottom)
-
             insets
         }
     }
 
     // ---------------- CLICK EVENTS ---------------- //
-
     private fun setupClickEvents() = with(binding) {
         search.setOnClickListener {
-            ContainerActivity.OpenContainerType2(
-                requireContext(),
-                "SelectedCategoryFragment",
-                "Search",
-                null
-            )
+            ContainerActivity.OpenContainerType2(requireContext(), "SelectedCategoryFragment", "Search", null)
         }
         notification.setOnClickListener {
-            ContainerActivity.OpenContainer(
-                requireContext(),
-                "NotificationListFragment",
-                null
-            )
+            ContainerActivity.OpenContainer(requireContext(), "NotificationListFragment", null)
         }
     }
 
     // ---------------- API CALLS ---------------- //
-
-    private fun getHomeData() {
-        viewModel.getHomeData(requireContext(), object : ApiListener<HomeRes> {
+    private suspend fun fetchHomeData() {
+        viewModel.getHomeData(object : ApiListener<HomeRes> {
             override fun onSuccess(t: HomeRes?, mess: String) {
-                val data = t?.data ?: return
-                binding.progressbar.visibility = View.GONE
-                binding.mainlayout.visibility = View.VISIBLE
+                t?.data?.let { data ->
+                    lifecycleScope.launch(Dispatchers.Main) {
+                        binding.progressbar.visibility = View.GONE
+                        binding.mainlayout.visibility = View.VISIBLE
 
-                setMainCategoryLayout(data.categories)
-
-                if (data.popular.isEmpty()) {
-//                    binding.popularlayout.visibility = View.GONE
-                } else {
-//                    binding.popularlayout.visibility = View.VISIBLE
-                    setPopularStore(data.popular)
-
-                }
-
-                setTrendingStores1(data.popular)
-
-                if (data.banner1.isNullOrEmpty()) {
-                    binding.banner1layout.visibility = View.GONE
-                } else {
-                    binding.banner1layout.visibility = View.VISIBLE
-                    Banner1Func(data.banner1)
-                }
-
-//                if (data.banner2.isNullOrEmpty()) {
-//                    binding.banner2layout.visibility = View.GONE
-//                } else {
-//                    binding.banner2layout.visibility = View.VISIBLE
-//                    Glide.with(requireContext()).load(data.banner2[0].image).centerCrop().into(binding.banner2)
-//                }
-
-                if (data.trending.isEmpty()) {
-//                    binding.trendingStorelayout.visibility = View.GONE
-                } else {
-//                    binding.trendingStorelayout.visibility = View.VISIBLE
-                    setTrendingStores(data.trending)
-                }
-
-                if (!data.category_list.isEmpty()){
-                    setActiveHomeCateory(data.category_list)
+                        setMainCategoryLayout(data.categories)
+                        if (data.popular.isNotEmpty()) setPopularStore(data.popular)
+                        setTrendingStores1(data.popular)
+                        if (data.banner1.isNullOrEmpty()) binding.banner1layout.visibility = View.GONE
+                        else Banner1Func(data.banner1)
+                        if (data.trending.isNotEmpty()) setTrendingStores(data.trending)
+                        if (data.category_list.isNotEmpty()) setActiveHomeCategory(data.category_list)
+                    }
                 }
             }
 
             override fun onError(mess: String) {
-                Toast.makeText(
-                    requireContext(),
-                    "Home API error: $mess",
-                    Toast.LENGTH_LONG
-                ).show()
+                lifecycleScope.launch(Dispatchers.Main) {
+                    Toast.makeText(requireContext(), "Home API error: $mess", Toast.LENGTH_LONG).show()
+                }
             }
         })
     }
 
-    private fun setActiveHomeCateory(categoryList: List<Category>) {
-        val mAdapter = CategoryActiveAdapter<Category>(object : RecyclerClickListener {
-            override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
-//                if (data is Category) {
-//                    ContainerActivity.OpenContainerType2(
-//                        requireContext(),
-//                        "SelectedCategoryFragment",
-//                        "CategoryMiniApp",
-//                        data
-//                    )
-//                }
-            }
-        })
-
-        binding.sectionActiveCategories.recyclerActiveCategories.apply {
-            layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL,false)
-            adapter = mAdapter
-        }
-
-        mAdapter.addAllItem(categoryList)
-    }
-
-    private fun getLootProduct() {
-        viewModel.getLootProduct("1", requireContext(), object : ApiListener<LootProductRes> {
-            override fun onSuccess(t: LootProductRes?, mess: String) {
-                t?.data?.let { if (it.isNotEmpty()) setLootProductLayout(it) }
-            }
-        })
-    }
-
-    private fun getGamesData() {
+    private fun fetchGamesData() {
         viewModel.getPopularGames(requireContext(), object : ApiListener<GamesRes> {
             override fun onSuccess(t: GamesRes?, mess: String) {
-                if (t?.status == 200) setPopularGamesLayout(t.data)
+                t?.data?.let { setPopularGamesLayout(it) }
             }
+
+            override fun onError(mess: String) {}
         })
     }
 
@@ -217,180 +141,95 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
                 override fun onSuccess(t: MiniAppbyCategory?, mess: String) {
                     requireContext().toast("Token updated")
                 }
+
+                override fun onError(mess: String) {}
             })
         }
     }
 
     // ---------------- RECYCLERS ---------------- //
-
     private fun setMainCategoryLayout(categories: List<Category>) {
-        val mAdapter = CategoryAdapter<Category>(object : RecyclerClickListener {
+        val adapter = CategoryAdapter<Category>(object : RecyclerClickListener {
             override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
-                if (data is Category) {
-                    ContainerActivity.OpenContainerType2(
-                        requireContext(),
-                        "SelectedCategoryFragment",
-                        "CategoryMiniApp",
-                        data
-                    )
-                }
+                if (data is Category) ContainerActivity.OpenContainerType2(requireContext(), "SelectedCategoryFragment", "CategoryMiniApp", data)
             }
         })
-
         binding.sectionCategories.recyclerCategories.apply {
-            layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL,false)
-            adapter = mAdapter
+            layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
+            this.adapter = adapter
         }
-//        binding.sectionCategories.recyclerCategories.apply {
-//            layoutManager = GridLayoutManager(requireContext(), 4)
-//            adapter = mAdapter
-//        }
-
-//        mAdapter.addAllItem(categories.take(8))
-        mAdapter.addAllItem(categories)
-//        binding.sectionCategories.btnAllCategories.setOnClickListener {
-//            ContainerActivity.OpenContainerType2(
-//                requireContext(),
-//                "SelectedCategoryFragment",
-//                "Categories",
-//                categories
-//            )
-//        }
+        adapter.addAllItem(categories)
     }
 
     private fun setPopularStore(popular: List<MiniApp>) {
-        val mAdapter = PopularStoresAdapter<MiniApp>(object : RecyclerClickListener {
+        val adapter = PopularStoresAdapter<MiniApp>(object : RecyclerClickListener {
             override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
-                if (data is MiniApp) {
-                    ContainerActivity.OpenContainerType2(
-                        requireContext(),
-                        "StoreDetailFragment",
-                        data.name,
-                        data
-                    )
-                }
+                if (data is MiniApp) ContainerActivity.OpenContainerType2(requireContext(), "StoreDetailFragment", data.name, data)
             }
         })
-
-
         binding.sectionPopularStores.recyclerPopularStores.apply {
-//            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             layoutManager = GridLayoutManager(requireContext(), 2, GridLayoutManager.HORIZONTAL, false)
-            adapter = mAdapter
+            this.adapter = adapter
         }
-        mAdapter.addAllItem(popular.take(24))
-
-        binding.sectionPopularStores.btnAllPopularStores.setOnClickListener {
-            ContainerActivity.OpenContainerType2(
-                requireContext(),
-                "SelectedCategoryFragment",
-                "Popular",
-                popular.take(18)
-            )
-        }
+        adapter.addAllItem(popular.take(24))
     }
 
     private fun setTrendingStores(trending: List<MiniApp>) {
-        val mAdapter = TrendingStoresAdapter<MiniApp>(object : RecyclerClickListener {
+        val adapter = TrendingStoresAdapter<MiniApp>(object : RecyclerClickListener {
             override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
-                if (data is MiniApp) {
-                    ContainerActivity.OpenContainerType2(
-                        requireContext(),
-                        "StoreDetailFragment",
-                        data.name,
-                        data
-                    )
-                }
+                if (data is MiniApp) ContainerActivity.OpenContainerType2(requireContext(), "StoreDetailFragment", data.name, data)
             }
         })
-
         binding.sectionTrendingStores.recyclerTrendingStores.apply {
-            layoutManager = LinearLayoutManager(requireContext(),  LinearLayoutManager.HORIZONTAL, false)
-            adapter = mAdapter
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            this.adapter = adapter
         }
-        mAdapter.addAllItem(trending.take(16))
-
-        binding.sectionTrendingStores.btnAllTrendingStores.setOnClickListener {
-            ContainerActivity.OpenContainerType2(
-                requireContext(),
-                "SelectedCategoryFragment",
-                "Trending",
-                trending.take(18)
-            )
-        }
+        adapter.addAllItem(trending.take(16))
     }
 
     private fun setTrendingStores1(trending: List<MiniApp>) {
-        trending.shuffled()
-        val mAdapter = TrendingStoresAdapter1<MiniApp>(object : RecyclerClickListener {
+        val adapter = TrendingStoresAdapter1<MiniApp>(object : RecyclerClickListener {
             override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
-                if (data is MiniApp) {
-                    ContainerActivity.OpenContainerType2(
-                        requireContext(),
-                        "StoreDetailFragment",
-                        data.name,
-                        data
-                    )
-                }
+                if (data is MiniApp) ContainerActivity.OpenContainerType2(requireContext(), "StoreDetailFragment", data.name, data)
             }
         })
-
         binding.recyclerTrendingStores1.apply {
-            layoutManager = LinearLayoutManager(requireContext(),  LinearLayoutManager.HORIZONTAL, false)
-            adapter = mAdapter
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            this.adapter = adapter
         }
-        mAdapter.addAllItem(trending.take(16))
-
-        binding.sectionTrendingStores.btnAllTrendingStores.setOnClickListener {
-            ContainerActivity.OpenContainerType2(
-                requireContext(),
-                "SelectedCategoryFragment",
-                "Trending",
-                trending.take(18)
-            )
-        }
+        adapter.addAllItem(trending.take(16))
     }
 
-
-    private fun setLootProductLayout(data: List<Data>) {
-//        val mAdapter = LootProductAdapter<Data>(object : RecyclerClickListener {
-//            override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
-//                requireContext().openCustomTab(type)
-//            }
-//        })
-//        binding.sectionDiscountedProducts.recyclerDiscountedProducts.apply {
-//            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-//            adapter = mAdapter
-//        }
-//        mAdapter.addAllItem(data)
+    private fun setActiveHomeCategory(categoryList: List<Category>) {
+        val adapter = CategoryActiveAdapter<Category>(object : RecyclerClickListener {
+            override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {}
+        })
+        binding.sectionActiveCategories.recyclerActiveCategories.apply {
+            layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+            this.adapter = adapter
+        }
+        adapter.addAllItem(categoryList)
     }
 
     private fun setPopularGamesLayout(data: List<app.perkhub.Screens.Home.Model.Games.Data>) {
-        val mAdapter = PopularGameAdapter<app.perkhub.Screens.Home.Model.Games.Data>(object : RecyclerClickListener {
+//        Log.d("TAG",data.toString())
+        val adapter = PopularGameAdapter<app.perkhub.Screens.Home.Model.Games.Data>(object : RecyclerClickListener {
             override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
-                if (data is app.perkhub.Screens.Home.Model.Games.Data) {
-                    requireContext().openCustomTab(data.url)
-                }
+                if (data is app.perkhub.Screens.Home.Model.Games.Data) requireContext().openCustomTab(data.url)
             }
         })
-
         binding.sectionPopularGames.recyclerPopularGames.apply {
             layoutManager = GridLayoutManager(requireContext(), 3, GridLayoutManager.HORIZONTAL, false)
-            adapter = mAdapter
+            this.adapter = adapter
         }
-        mAdapter.addAllItem(data.take(24))
+        adapter.addAllItem(data.take(24))
     }
 
     // ---------------- BANNER ---------------- //
-
     private fun Banner1Func(banners: List<Banner>) {
         val imageList = banners.filter { !it.image.isNullOrEmpty() }
             .map { SliderModelMain(it.image, "", it.url, it.id.toString()) }
-
-        if (imageList.isEmpty()) {
-            binding.banner1layout.visibility = View.GONE
-            return
-        }
+        if (imageList.isEmpty()) return
 
         binding.bannerKocMarket.adapter = BannerViewPagerAdapter(
             imageList.toMutableList(),
@@ -410,7 +249,6 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
             (getChildAt(0) as? RecyclerView)?.overScrollMode = RecyclerView.OVER_SCROLL_NEVER
         }
 
-        // Auto scroll
         bannerRunnable = object : Runnable {
             override fun run() {
                 val current = binding.bannerKocMarket.currentItem
@@ -420,20 +258,16 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
             }
         }
         bannerHandler.postDelayed(bannerRunnable!!, 3000)
-
-//        TabLayoutMediator(binding.tabDots, binding.bannerKocMarket) { _, _ -> }.attach()
     }
 
     // ---------------- DRAWER MENU ---------------- //
-
     private fun setupMenu() {
         toggle = ActionBarDrawerToggle(requireActivity(), binding.drawerlayout, R.string.open, R.string.close)
         binding.drawerlayout.addDrawerListener(toggle)
         toggle.syncState()
 
         val header = binding.navView.getHeaderView(0)
-        header.findViewById<TextView>(R.id.Profilename).text =
-            getSharedpref().getUser(USERDATA).data.name.toString()
+        header.findViewById<TextView>(R.id.Profilename).text = getSharedpref().getUser(USERDATA).data.name.toString()
 
         binding.profile.setOnClickListener { binding.drawerlayout.open() }
 
@@ -447,15 +281,13 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
                 R.id.privacy_policy -> requireContext().openCustomTab(PRIVACYPOLICY)
                 R.id.about_us -> requireContext().openCustomTab(ABOUTUS)
                 R.id.contact_us -> requireContext().openCustomTab(CONTACTUS)
-                R.id.logout -> requireContext().OpenDialogForLogOut()
+                R.id.logout -> requireContext().showLogoutDialog()
             }
             true
         }
     }
 
-    // ---------------- LOGOUT DIALOG ---------------- //
-
-    fun Context.OpenDialogForLogOut() {
+    private fun Context.showLogoutDialog() {
         val dialog = Dialog(this)
         dialog.setContentView(R.layout.logout_dialog_layout)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -473,12 +305,10 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
             binding.drawerlayout.close()
             toast("Logged out successfully")
         }
-
         dialog.show()
     }
 
     // ---------------- BACK PRESS ---------------- //
-
     fun onBackPressed() {
         if (backPressedTime + doubleBackPressDuration > System.currentTimeMillis()) {
             activity?.finish()

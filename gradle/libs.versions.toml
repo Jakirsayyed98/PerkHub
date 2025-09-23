@@ -14,6 +14,7 @@ tool = "3.6.0-rc01"
 gsonl = "2.11.0"
 retrofit = "2.11.0"
 okhttp = "4.9.0"
+lifecycle = "2.6.0" # for livedata + viewmodel
 lifecycleViewmodelAndroid = "2.8.4"
 googleGmsGoogleServices = "4.4.2"
 firebaseAuth = "23.0.0"
@@ -21,6 +22,12 @@ glide = "4.16.0"
 browser = "1.8.0"
 firebaseMessaging = "24.0.0"
 lottieVersion = "3.4.0"
+room = "2.5.0" # added for room-runtime + compiler
+roomCompiler = "2.5.0"
+coroutines = "1.7.3"
+#ksp = "1.9.20-1.0.14"
+
+
 
 [libraries]
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
@@ -43,6 +50,19 @@ androidx-tools = { group = "com.android.tools.build", name = "gradle", version.r
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuth" }
 firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging", version.ref = "firebaseMessaging" }
+androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "roomCompiler" }
+
+# --- Room Libraries ---
+androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+
+# --- Lifecycle (ViewModel + LiveData) ---
+androidx-lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifecycle" }
+androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
+
+kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
+kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
+#ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
