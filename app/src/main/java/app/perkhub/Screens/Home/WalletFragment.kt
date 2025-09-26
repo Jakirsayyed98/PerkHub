@@ -1,11 +1,15 @@
 package app.perkhub.Screens.Home
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.perkhub.ContainerActivity
 import app.perkhub.R
@@ -40,11 +44,34 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>() {
 
         _binding!!.toolbar.name.text = "Wallet"
 
-
-
-        getUserDetail()
+        applySafeAreaInsets()
+        getTransactionData()
+//        getUserDetail()
         getWithdrawalTransaction()
         return _binding?.root
+    }
+
+    private fun getTransactionData() {
+        viewModel.getAllTransaction(requireContext(),object : ApiListener<TransactionDataRes>{
+            override fun onSuccess(t: TransactionDataRes?, mess: String) {
+                if (t!!.status==200){
+                    t.data.let {data->
+                        val avail = data.verified.toDouble()// - data.withdrawal.toDouble()
+                        _binding!!.available.text = setSuffixAmount(avail.toString())
+                        _binding!!.rejected.text = setSuffixAmount(data.rejected)
+                        _binding!!.pending.text = setSuffixAmount(data.pending)
+                        _binding!!.withdraw.setOnClickListener {
+                            Log.d("MyBalance",avail.toString())
+                            if (avail>=100){
+                                ContainerActivity.OpenContainer(requireContext(),"WidthdrawFlowFragment","")
+                            }else{
+                                Toast.makeText(requireContext(),"Available Amount should not be less then ₹100",Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+                }
+            }
+        })
     }
 
     private fun getWithdrawalTransaction() {
@@ -90,16 +117,26 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>() {
     }
 
     private fun setUserData(data: TransactionDataRes) {
-        val avail = data.verified.toDouble()// - data.withdrawal.toDouble()
-        _binding!!.available.text = setSuffixAmount(avail.toString())
-        _binding!!.rejected.text = setSuffixAmount(data.rejected)
-        _binding!!.pending.text = setSuffixAmount(data.pending)
+//        val avail = data.verified.toDouble()// - data.withdrawal.toDouble()
+//        _binding!!.available.text = setSuffixAmount(avail.toString())
+//        _binding!!.rejected.text = setSuffixAmount(data.rejected)
+//        _binding!!.pending.text = setSuffixAmount(data.pending)
         _binding!!.withdraw.setOnClickListener {
-            if (avail>=100){
-                ContainerActivity.OpenContainer(requireContext(),"WidthdrawFlowFragment","")
-            }else{
-                Toast.makeText(requireContext(),"Available Amount should not be less then ₹100",Toast.LENGTH_SHORT).show()
-            }
+//            if (avail>=100){
+//                ContainerActivity.OpenContainer(requireContext(),"WidthdrawFlowFragment","")
+//            }else{
+//                Toast.makeText(requireContext(),"Available Amount should not be less then ₹100",Toast.LENGTH_SHORT).show()
+//            }
+        }
+    }
+
+    private fun applySafeAreaInsets() {
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            binding.toolbar2.updatePadding(top = systemBars.top)
+//            binding.navView.updatePadding(top = systemBars.top)
+            binding.mainlayout.updatePadding(bottom = systemBars.bottom)
+            insets
         }
     }
 

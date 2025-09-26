@@ -3,13 +3,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/mainlayout"
     android:orientation="vertical"
     tools:context=".Screens.Home.NotificationListFragment">
 
+    <LinearLayout
+        android:id="@+id/toolbar2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <include
         android:id="@+id/toolbar"
         layout="@layout/toolbar_layout"/>
-
+    </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/notificationlist"
         android:layout_width="match_parent"

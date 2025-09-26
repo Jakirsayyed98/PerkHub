@@ -46,10 +46,9 @@ class AppSharedPefrence {
         prefrence.edit().putString(USERDATA,user).apply()
     }
 
-    fun getUser(USERDATA :String): LoginRes {
+    fun getUser(USERDATA :String): LoginRes? {
         val response= prefrence.getString(USERDATA,null)
-        var user = Gson().fromJson<LoginRes?>(response,LoginRes::class.java)
-        return user
+        return Gson().fromJson<LoginRes?>(response,LoginRes::class.java)
     }
 
 }

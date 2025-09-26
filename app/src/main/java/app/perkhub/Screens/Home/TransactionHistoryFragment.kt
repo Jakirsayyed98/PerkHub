@@ -44,7 +44,7 @@ class TransactionHistoryFragment : BaseFragment<FragmentTransactionHistoryBindin
         viewModel.getAllTransaction(requireContext(),object : ApiListener<TransactionDataRes>{
             override fun onSuccess(t: TransactionDataRes?, mess: String) {
                 if (t!!.status==200){
-                    setData(t.data)
+                    setData(t.data.data)
                 }
             }
         })

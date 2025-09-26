@@ -1,13 +1,13 @@
 package app.perkhub.Screens.Home.Model.Notification
 
 data class Data(
-    val created_at: String,
-    val description: String,
-    val icon: String,
-    val id: Int,
-    val image: String,
+    val id: String,
     val title: String,
-    val type: String,
+    val message: String,
+    val image: String,
+    val click_action: String,
+    val status:Boolean,
+    val created_at: String,
     val updated_at: String,
     val userId: String
 )

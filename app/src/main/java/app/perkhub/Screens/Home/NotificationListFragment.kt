@@ -4,6 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.perkhub.Screens.Home.Adapter.NotificationAdapter
@@ -11,6 +14,7 @@ import app.perkhub.Screens.Home.Model.Notification.Data
 import app.perkhub.Screens.Home.Model.Notification.NotificationListRes
 import app.perkhub.Utils.BaseFragment
 import app.perkhub.Utils.RecyclerClickListener
+import app.perkhub.Utils.openCustomTab
 import app.perkhub.Utils.toast
 import app.perkhub.api.ApiListener
 import app.perkhub.databinding.FragmentNotificationListBinding
@@ -22,7 +26,9 @@ class NotificationListFragment : BaseFragment<FragmentNotificationListBinding>()
     private val notificationAdapter by lazy {
         NotificationAdapter<Data>(object : RecyclerClickListener {
             override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
-                // Handle notification click if needed
+                if (data.toString().startsWith("http")){
+                    requireContext().openCustomTab(data.toString())
+                }
             }
         })
     }
@@ -32,7 +38,7 @@ class NotificationListFragment : BaseFragment<FragmentNotificationListBinding>()
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentNotificationListBinding.inflate(inflater, container, false)
-
+        applySafeAreaInsets()
         binding.toolbar.name.text = "Notification List"
         binding.toolbar.backbtn.setOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
@@ -42,6 +48,15 @@ class NotificationListFragment : BaseFragment<FragmentNotificationListBinding>()
         fetchNotificationList()
 
         return binding.root
+    }
+
+    private fun applySafeAreaInsets() {
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            binding.toolbar2.updatePadding(top = systemBars.top)
+            binding.mainlayout.updatePadding(bottom = systemBars.bottom)
+            insets
+        }
     }
 
     private fun setupRecyclerView() {

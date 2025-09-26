@@ -75,8 +75,9 @@ class EnterDetailFragment : BaseFragment<FragmentEnterDetailBinding>() {
                     t?.Message?.let { requireContext().toast(it) }
 
                     getSharedpref().saveBool(LOGIN, true)
-//                    getSharedpref().saveUser(USERDATA, t!!)
-                    ContainerActivity.OpenContainer(requireContext(), "HomeScreenFragment", null)
+                    getUserDetail()
+////                    getSharedpref().saveUser(USERDATA, t!!)
+//                    ContainerActivity.OpenContainer(requireContext(), "HomeScreenFragment", null)
                     activity?.finish()
                 }
             }
@@ -86,6 +87,22 @@ class EnterDetailFragment : BaseFragment<FragmentEnterDetailBinding>() {
                     dissmissProgress()
                     requireContext().toast(mess)
                 }
+            }
+        })
+    }
+
+    private fun getUserDetail() {
+        viewModel.getUserDetail(requireContext(), object : ApiListener<LoginRes> {
+            override fun onSuccess(t: LoginRes?, mess: String) {
+                t!!.let {
+                    getSharedpref().saveUser(USERDATA, t)
+                    ContainerActivity.OpenContainer(requireContext(), "HomeScreenFragment", null)
+                }
+            }
+
+            override fun onError(mess: String) {
+                super.onError(mess)
+
             }
         })
     }

@@ -4,11 +4,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:id="@+id/mainlayout"
     tools:context=".Screens.Home.WalletFragment">
 
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/toolbar_layout"/>
+    <LinearLayout
+        android:id="@+id/toolbar2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar_layout" />
+    </LinearLayout>
 
 
     <androidx.core.widget.NestedScrollView
@@ -97,7 +103,7 @@
 
             </LinearLayout>
 
-            <LinearLayout
+            <Button
                 android:id="@+id/withdraw"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -107,18 +113,16 @@
                 android:paddingEnd="@dimen/dp20"
                 android:background="@drawable/border_5dp"
                 android:backgroundTint="@color/main_color"
+                android:textColor="@color/white"
+                android:textAllCaps="false"
                 android:gravity="center"
+                android:textSize="@dimen/sp18"
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/dp20"
                 android:layout_marginBottom="@dimen/dp10"
+                android:text="Withdraw"
                 android:orientation="vertical">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Withdraw"
-                    android:textSize="@dimen/sp16"
-                    android:textColor="@color/btn_text"/>
-            </LinearLayout>
+            </Button>
 
             <LinearLayout
                 android:layout_width="match_parent"

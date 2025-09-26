@@ -113,7 +113,7 @@ interface MyApi {
     suspend fun getPopularGames(
     ):Response<GamesRes>
 
-    @GET("miniapp/transactions")
+    @GET("getTxnList")
     suspend fun getAllTransaction(
     ):Response<TransactionDataRes>
 
@@ -128,7 +128,7 @@ interface MyApi {
     ):Response<withdrawalRes>
 
 
-    @GET("getNotificationList")
+    @GET("get-notification-history")
     suspend fun getNotificationList(
     ):Response<NotificationListRes>
 

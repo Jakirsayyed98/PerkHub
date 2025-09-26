@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.util.Log
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.core.content.ContextCompat
@@ -13,6 +14,7 @@ import app.perkhub.Utils.BaseActivity
 import app.perkhub.Utils.LOGIN
 import app.perkhub.Utils.toast
 import app.perkhub.databinding.ActivitySplashBinding
+import com.google.firebase.messaging.FirebaseMessaging
 
 
 class SplashActivity : BaseActivity<ActivitySplashBinding>() {
@@ -34,6 +36,12 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
             window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         }
 
+        FirebaseMessaging.getInstance().subscribeToTopic("all_users")
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.d("FCM", "Subscribed to all_users topic")
+                }
+            }
 
 
 //        this.toast(getSharedpref().getBoolen(LOGIN).toString())

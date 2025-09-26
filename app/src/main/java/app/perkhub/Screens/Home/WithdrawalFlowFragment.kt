@@ -53,7 +53,7 @@ class WithdrawalFlowFragment : BaseFragment<FragmentWithdrawalFlowBinding>() {
                 t!!.let {
                     if (t!!.status==200){
                         callMainFunctions()
-                        VerifiedAmount = it.verified
+                        VerifiedAmount = it.data.verified
                     }
                 }
             }

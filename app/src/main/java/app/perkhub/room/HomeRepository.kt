@@ -22,7 +22,14 @@ class HomeRepository(
         }
 
         val response = api.getHomePage().body() ?: return null
-        homeCacheDao.insertCache(HomeCache(homeResponse = response, lastUpdated = now))
+        if (response.status==200){
+            homeCacheDao.insertCache(HomeCache(homeResponse = response, lastUpdated = now))
+            return response
+        }
+
+        if (cached != null) {
+            return cached.homeResponse
+        }
         return response
     }
 }

@@ -36,6 +36,7 @@ import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import androidx.lifecycle.ViewModelProvider
+import app.perkhub.Screens.login.models.LoginRes
 
 class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
 
@@ -60,12 +61,34 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
 
         // Fetch data
         lifecycleScope.launch { fetchHomeData() }       // HomeViewModel
-        lifecycleScope.launch { fetchGamesData() }      // requestViewModel
+//        lifecycleScope.launch {
+            fetchGamesData()
+//        }      // requestViewModel
+        if (getSharedpref().getUser(USERDATA)==null){
+            getUserDetail()
+            Log.d("TestData","GOT null value")
+        }
+
         lifecycleScope.launch { updateFirebaseToken() } // requestViewModel
 
         return binding.root
     }
 
+    private fun getUserDetail() {
+        viewModel.getUserDetail(requireContext(), object : ApiListener<LoginRes> {
+            override fun onSuccess(t: LoginRes?, mess: String) {
+                t!!.let {
+                    getSharedpref().saveUser(USERDATA, it)
+                    setupMenu()
+                }
+            }
+
+            override fun onError(mess: String) {
+                super.onError(mess)
+
+            }
+        })
+    }
 
 
     override fun onDestroyView() {
@@ -172,6 +195,14 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
             this.adapter = adapter
         }
         adapter.addAllItem(popular.take(24))
+        binding.sectionPopularStores.btnAllPopularStores.setOnClickListener {
+            ContainerActivity.OpenContainerType2(
+                requireContext(),
+                "SelectedCategoryFragment",
+                "Popular",
+                popular.take(18)
+            )
+        }
     }
 
     private fun setTrendingStores(trending: List<MiniApp>) {
@@ -185,6 +216,14 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
             this.adapter = adapter
         }
         adapter.addAllItem(trending.take(16))
+        binding.sectionTrendingStores.btnAllTrendingStores.setOnClickListener {
+            ContainerActivity.OpenContainerType2(
+                requireContext(),
+                "SelectedCategoryFragment",
+                "Trending",
+                trending.take(18)
+            )
+        }
     }
 
     private fun setTrendingStores1(trending: List<MiniApp>) {
@@ -198,6 +237,14 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
             this.adapter = adapter
         }
         adapter.addAllItem(trending.take(16))
+        binding.sectionTrendingStores.btnAllTrendingStores.setOnClickListener {
+            ContainerActivity.OpenContainerType2(
+                requireContext(),
+                "SelectedCategoryFragment",
+                "Trending",
+                trending.take(18)
+            )
+        }
     }
 
     private fun setActiveHomeCategory(categoryList: List<Category>) {
@@ -267,7 +314,12 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         toggle.syncState()
 
         val header = binding.navView.getHeaderView(0)
-        header.findViewById<TextView>(R.id.Profilename).text = getSharedpref().getUser(USERDATA).data.name.toString()
+        val userName = getSharedpref().getUser(USERDATA)?.data
+        header.findViewById<TextView>(R.id.Profilename).text = userName?.name!!.replaceFirstChar { it.uppercase() }.orEmpty()
+        header.findViewById<TextView>(R.id.email).text = userName.email
+        header.findViewById<TextView>(R.id.ProfilenameShort).text = userName.email.toCharArray()[0].toString().uppercase()
+        binding.profileName.text = userName.email.take(2).toString().uppercase()
+
 
         binding.profile.setOnClickListener { binding.drawerlayout.open() }
 

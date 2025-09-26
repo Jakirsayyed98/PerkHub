@@ -27,7 +27,7 @@ object TokenManager {
     }
 
     fun getMobileNumberForToken(context: Context): String? {
-        val number = AppSharedPefrence.getInstance(context).getUser(USERDATA).data.number
+        val number = AppSharedPefrence.getInstance(context).getUser(USERDATA)!!.data.number
         return number
     }
 

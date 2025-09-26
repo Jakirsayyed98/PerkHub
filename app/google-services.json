@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "507918435154",
-    "project_id": "perkhub-9889a",
-    "storage_bucket": "perkhub-9889a.appspot.com"
+    "project_number": "339733579087",
+    "project_id": "perkhub-2f8d2",
+    "storage_bucket": "perkhub-2f8d2.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:507918435154:android:696f4e576375b8e510f08b",
+        "mobilesdk_app_id": "1:339733579087:android:004bba632dd7824edf713a",
         "android_client_info": {
           "package_name": "app.perkhub"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyByoQMamPZVNm9gTzGGFYW3l5E6VIb-7uo"
+          "current_key": "AIzaSyBIdHCs1foJ8qFwORscRmSNl7IuQDVNAKY"
         }
       ],
       "services": {
