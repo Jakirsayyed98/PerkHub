@@ -6,6 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import app.perkhub.R
 import app.perkhub.Screens.Home.Model.TransactionModel.Data
 import app.perkhub.Utils.BaseFragment
@@ -33,14 +36,23 @@ class TransactionDetailFragment : BaseFragment<FragmentTransactionDetailBinding>
         _binding!!.toolbar.backbtn.setOnClickListener {
             requireActivity().onBackPressedDispatcher?.onBackPressed()
         }
-
+        applySafeAreaInsets()
         _binding!!.toolbar.name.text = "Transaction Detail"
 
         val data =Gson().fromJson<Data>( requireActivity().intent?.getStringExtra(DATA),Data::class.java)
         setData(data)
+
         return _binding?.root
     }
 
+    private fun applySafeAreaInsets() {
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            binding.toolbar2.updatePadding(top = systemBars.top)
+            binding.mainlayout.updatePadding(bottom = systemBars.bottom)
+            insets
+        }
+    }
 
     private fun setData(data: Data?) {
         if (data!!.miniApp!=null){
@@ -51,10 +63,10 @@ class TransactionDetailFragment : BaseFragment<FragmentTransactionDetailBinding>
         _binding!!.transactiondate.text = onlyDatewithMonth(data.created_at)
         _binding!!.transactionAmt.text = setSuffixAmount(data.sale_amount)
         _binding!!.commision.text = setSuffixAmount(data.user_commission)
-        _binding!!.transactionstatus.text = if (data.status=="0") "Your Transaction is Tracked Successfully" else if(data.status=="1") "Your Transaction is Verified" else "Your Transaction is Rejected"
-        _binding!!.status.text = if (data.status=="0") "Transaction in Pending" else if(data.status=="1") "Transaction is Verified" else "Transaction is Rejected"
-        _binding!!.transactionstatus.setTextColor( if (data.status=="0") ContextCompat.getColor(requireContext(),R.color.orange) else if(data.status=="1")  ContextCompat.getColor(requireContext(),R.color.green) else  ContextCompat.getColor(requireContext(),R.color.red))
-        _binding!!.icon.setColorFilter(if (data.status=="0") ContextCompat.getColor(requireContext(),R.color.orange) else if(data.status=="1")  ContextCompat.getColor(requireContext(),R.color.green) else  ContextCompat.getColor(requireContext(),R.color.red))
+        _binding!!.transactionstatus.text = if (data.status=="pending") "Your Transaction is Tracked Successfully" else if(data.status=="verified") "Your Transaction is Verified" else "Your Transaction is Rejected"
+        _binding!!.status.text = if (data.status=="pending") "Transaction in Pending" else if(data.status=="verified") "Transaction is Verified" else "Transaction is Rejected"
+        _binding!!.transactionstatus.setTextColor( if (data.status=="pending") ContextCompat.getColor(requireContext(),R.color.orange) else if(data.status=="verified")  ContextCompat.getColor(requireContext(),R.color.green) else  ContextCompat.getColor(requireContext(),R.color.red))
+        _binding!!.icon.setColorFilter(if (data.status=="pending") ContextCompat.getColor(requireContext(),R.color.orange) else if(data.status=="verified")  ContextCompat.getColor(requireContext(),R.color.green) else  ContextCompat.getColor(requireContext(),R.color.red))
 
     }
 

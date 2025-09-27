@@ -20,10 +20,10 @@ class TransactionLayoutAdapter<S>(val clickListener: RecyclerClickListener):Base
             if (s is Data){
 
                 binding.TxnDate.text = onlyDatewithMonth( s.created_at)
-                if (s.status=="0"){
+                if (s.status=="pending"){
                     binding.statusText.setBackgroundColor(ContextCompat.getColor(itemView.context,R.color.orange))
                     binding.statusText.text = "Pending"
-                }else if (s.status =="1"){
+                }else if (s.status =="verified"){
                     binding.statusText.setBackgroundColor(ContextCompat.getColor(itemView.context,R.color.green))
                     binding.statusText.text = "Verified"
                 }else{

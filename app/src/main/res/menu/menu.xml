@@ -12,7 +12,7 @@
     <item
         android:id="@+id/transaction"
         android:icon="@drawable/outline_history_24"
-        android:title="Transactions" />
+        android:title="Store Orders" />
 
     <item
         android:id="@+id/wallet"

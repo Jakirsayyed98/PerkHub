@@ -33,7 +33,7 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/statusView"
-                android:layout_width="@dimen/_110dp"
+                android:layout_width="@dimen/dp110"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="-5dp"

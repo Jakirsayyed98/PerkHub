@@ -20,27 +20,25 @@ class WalletWithdrawalAdapter<S>(val clickListener: RecyclerClickListener): Base
         fun setData(s: S) {
             if (s is Data){
                 binding.TxnDate.text = onlyDatewithMonth( s.created_at)
-                if (s.status=="0"){
-                    binding.statusText.setBackgroundColor(ContextCompat.getColor(itemView.context, R.color.orange))
+                if (s.status=="pending"){
+                    binding.statusView.setCardBackgroundColor(ContextCompat.getColor(itemView.context, R.color.light_orange))
                     binding.statusText.text = "Pending"
                     binding.rejectortxn.visibility = View.GONE
-                }else if (s.status =="1"){
-                    binding.statusText.setBackgroundColor(ContextCompat.getColor(itemView.context, R.color.green))
-                    binding.statusText.text = "Transffered"
+                }else if (s.status =="approved"){
+                    binding.statusView.setCardBackgroundColor(ContextCompat.getColor(itemView.context, R.color.status_verified_bg))
+                    binding.statusText.text = "Transferred"
                     binding.rejectortxn.visibility = View.VISIBLE
                     binding.rejectortxn.text = itemView.context.getString(R.string.txn_id, s.txn_id)
                 }else{
-                    binding.statusText.setBackgroundColor(ContextCompat.getColor(itemView.context, R.color.red))
+                    binding.statusView.setCardBackgroundColor(ContextCompat.getColor(itemView.context, R.color.red_100))
                     binding.statusText.text = "Rejected"
                     binding.rejectortxn.visibility = View.VISIBLE
                     binding.rejectortxn.text = itemView.context.getString(R.string.reject_reason, s.reason)
                 }
                 Glide.with(itemView.context).load(R.drawable.baseline_account_balance_wallet_24).centerCrop().into(binding.storeIcon)
-                binding.title.text = itemView.context.getString(R.string.withdrawal_request_of_200, setSuffixAmount(s.requested_amt))
-                binding.amt.text = itemView.context.getString(R.string.withdrawal_amount,
-                    setSuffixAmount(s.requested_amt)
-                )
-                binding.vpa.text = itemView.context.getString(R.string.vpa, s.vpa_id)
+                binding.title.text = itemView.context.getString(R.string.withdrawal_request_of_200, setSuffixAmount(s.requested_amt.toString()))
+                binding.amt.text = setSuffixAmount(s.requested_amt.toString())
+                binding.vpa.text = itemView.context.getString(R.string.vpa, "dummy")
 
 
                 binding.root.setOnClickListener {

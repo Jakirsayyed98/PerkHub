@@ -3,6 +3,7 @@
     <color name="StaticWhite">#FFF</color>
     <color name="main">#5550BC</color>
     <color name="blue">#1F10C3</color>
+    <color name="light_blue">#3478F2</color>
     <color name="grey">#595959</color>
     <color name="light_grey">#D6595959</color>
     <color name="underline">#9B9B9B</color>
@@ -11,6 +12,7 @@
     <color name="main_color">#5550BC</color>
     <color name="red">#F44336</color>
     <color name="orange">#F2840F</color>
+    <color name="light_orange">#F0AE67</color>
     <color name="red_700">#D32F2F</color>
     <color name="red_100">#F8A2A2</color>
     <color name="transparent_bg">#7CFFFFFF</color>
@@ -57,12 +59,77 @@
 
 
     <!--    // const BG_color = Color(0xFFF7F5F7);-->
-<!--    // const BG_color1 = Color(0xD3F1F1F1);-->
-<!--    const correct_color = Color(0xFF32AB58);-->
-<!--    const VERIFIED_COLOR = Color(0xFF32AB58);-->
-<!--    const PendingColor = Color(0xFFD07E21);-->
-<!--    const Rejeceted = Color(0xFFFC4141);-->
-<!--    const error_color = Colors.red;-->
-<!--    const darkBlue = Color(0xFF1E1E2C);-->
-<!--    const lightBlue = Color(0xFF2D2D44);-->
+    <!-- Primary Colors -->
+    <color name="primary_button_bg">#2563EB</color>
+    <color name="primary_button_bg_pressed">#1D4ED8</color>
+
+    <!-- Text Colors -->
+    <color name="text_primary">#1E293B</color>
+    <color name="text_secondary">#64748B</color>
+    <color name="white_87">#DDFFFFFF</color>
+    <!-- Card Colors -->
+    <color name="card_stroke_color">#E2E8F0</color>
+    <color name="detail_card_bg">#F8FAFC</color>
+    <color name="detail_card_stroke">#E2E8F0</color>
+
+    <!-- Status Colors -->
+    <color name="status_verified_bg">#DCFCE7</color>
+    <color name="status_verified_text">#166534</color>
+    <color name="status_pending_bg">#FEF3C7</color>
+    <color name="status_pending_text">#92400E</color>
+
+    <!-- Icon Background Colors -->
+    <color name="icon_bg_color">#DBEAFE</color>
+    <color name="icon_tint_color">#2563EB</color>
+    <color name="amount_icon_bg">#DCFCE7</color>
+    <color name="amount_icon_tint">#166534</color>
+    <color name="upi_icon_bg">#DBEAFE</color>
+    <color name="upi_icon_tint">#2563EB</color>
+
+    <!-- Status Note Colors -->
+    <color name="status_note_bg">#FEF3C7</color>
+    <color name="status_note_stroke">#FCD34D</color>
+    <color name="status_note_icon_bg">#FCD34D</color>
+    <color name="status_note_icon_text">#92400E</color>
+    <color name="status_note_text_primary">#92400E</color>
+    <color name="status_note_text_secondary">#A16207</color>
+
+    <!-- Button Colors -->
+    <color name="outline_button_stroke">#E2E8F0</color>
+    <color name="outline_button_text">#64748B</color>
+
+
+    <!-- Wallet Background -->
+    <color name="wallet_bg">#F8FAFC</color>
+
+    <!-- Balance Card Colors -->
+    <color name="balance_card_bg">#FFFFFF</color>
+    <color name="white_70">#B3FFFFFF</color>
+
+    <!-- Pending Card Colors -->
+    <color name="pending_card_bg">#FEF3C7</color>
+    <color name="pending_card_stroke">#FCD34D</color>
+    <color name="pending_icon_bg">#FCD34D</color>
+    <color name="pending_icon_tint">#92400E</color>
+    <color name="pending_text_primary">#92400E</color>
+    <color name="pending_text_secondary">#A16207</color>
+
+    <!-- Rejected Card Colors -->
+    <color name="rejected_card_bg">#FEE2E2</color>
+    <color name="rejected_card_stroke">#FCA5A5</color>
+    <color name="rejected_icon_bg">#FCA5A5</color>
+    <color name="rejected_icon_tint">#B91C1C</color>
+    <color name="rejected_text_primary">#B91C1C</color>
+    <color name="rejected_text_secondary">#DC2626</color>
+
+    <!-- Button Colors -->
+    <color name="withdraw_button_bg">#059669</color>
+    <color name="withdraw_button_bg_pressed">#047857</color>
+
+    <!-- History Section -->
+    <color name="history_card_stroke">#E5E7EB</color>
+
+    <!-- Text Colors -->
+    <color name="text_disabled">#9CA3AF</color>
+
 </resources>

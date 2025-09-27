@@ -123,7 +123,7 @@ interface MyApi {
     ):Response<withdrawalRes>
 
 
-    @GET("withdrawals/transactions")
+    @GET("withdrawal/transactions")
     suspend fun getWithdrawalTxn(
     ):Response<withdrawalRes>
 

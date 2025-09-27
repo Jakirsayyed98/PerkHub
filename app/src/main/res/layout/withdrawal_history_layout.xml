@@ -3,137 +3,393 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="@dimen/dp8">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginStart="@dimen/dp5"
-        android:layout_marginTop="@dimen/dp15"
-        android:layout_marginEnd="@dimen/dp5"
-        android:layout_marginBottom="@dimen/dp10"
-        app:cardCornerRadius="@dimen/dp10">
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/dp4"
+        android:layout_marginVertical="@dimen/dp6"
+        app:cardCornerRadius="@dimen/dp16"
+        app:cardElevation="@dimen/dp6"
+        app:cardUseCompatPadding="true"
+        app:strokeColor="@color/card_stroke_color"
+        app:strokeWidth="1dp">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingBottom="@dimen/dp10">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/TxnDate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="@dimen/dp5"
-                android:layout_marginEnd="10dp"
-                android:text="13-Oct-2024"
-                android:textColor="@color/black"
-                android:textSize="12sp" />
-
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/statusView"
-                android:layout_width="@dimen/_110dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="-5dp"
-                android:orientation="vertical"
-                app:cardCornerRadius="@dimen/dp5">
-
-                <TextView
-                    android:id="@+id/statusText"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="@dimen/dp5"
-                    android:padding="3dp"
-                    android:text="Verified"
-                    android:textAlignment="center"
-                    android:textColor="@color/black"
-                    android:textSize="16sp" />
-
-            </androidx.cardview.widget.CardView>
-
+            <!-- Header Section with Gradient Background -->
             <LinearLayout
-                android:id="@+id/namelayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dp10"
-                android:layout_marginTop="@dimen/dp30"
-                android:layout_marginEnd="@dimen/dp10"
-                android:orientation="horizontal">
+                android:background="@color/light_blue"
+                android:orientation="horizontal"
+                android:padding="@dimen/dp16"
+                android:gravity="center_vertical">
 
-                <androidx.cardview.widget.CardView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/dp5"
-                    app:cardCornerRadius="@dimen/dp15"
-                    app:cardElevation="@dimen/dp5">
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
 
                     <ImageView
-                        android:id="@+id/storeIcon"
-                        app:tint="@color/black"
-                        android:layout_width="@dimen/dp45"
-                        android:layout_height="@dimen/dp45"
-                        android:layout_margin="@dimen/dp10" />
+                        android:layout_width="@dimen/dp16"
+                        android:layout_height="@dimen/dp16"
+                        android:src="@drawable/dashboard_icon"
+                        app:tint="@color/white_87"
+                        android:layout_marginEnd="@dimen/dp8" />
+
+                    <TextView
+                        android:id="@+id/TxnDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="13-Oct-2024"
+                        android:textColor="@color/white_87"
+                        android:textSize="14sp"
+                        />
+
+                </LinearLayout>
+
+                <!-- Modern Status Badge -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/statusView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="@dimen/dp20"
+                    app:cardElevation="@dimen/dp2"
+                    app:cardBackgroundColor="@color/status_verified_bg">
+
+                    <LinearLayout
+                        android:id="@+id/statusbg"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:paddingHorizontal="@dimen/dp12"
+                        android:paddingVertical="@dimen/dp6">
+
+                        <TextView
+                            android:id="@+id/statusText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Verified"
+                            android:textColor="@color/status_verified_text"
+                            android:textSize="12sp"
+                            />
+
+                    </LinearLayout>
+
                 </androidx.cardview.widget.CardView>
 
-                <TextView
-                    android:id="@+id/title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="@dimen/dp10"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:text="@string/withdrawal_request_of_200"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/sp14"
-                    android:textStyle="bold" />
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/amt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/namelayout"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:text="@string/withdrawal_amount"
-                android:textColor="@color/black" />
-
-            <TextView
-                android:id="@+id/vpa"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/amt"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:text="@string/vpa"
-                android:textColor="@color/black" />
-
+            <!-- Main Content Section -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/vpa"
-                android:orientation="horizontal">
+                android:orientation="vertical"
+                android:padding="@dimen/dp20">
 
-                <TextView
-                    android:id="@+id/rejectortxn"
+                <!-- Title Section with Icon -->
+                <LinearLayout
+                    android:id="@+id/titleLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="5dp"
-                    android:layout_weight="1"
-                    android:text="@string/reject_reason"
-                    android:textColor="@color/black" />
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="@dimen/dp20">
 
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="@dimen/dp56"
+                        android:layout_height="@dimen/dp56"
+                        app:cardCornerRadius="@dimen/dp16"
+                        app:cardElevation="@dimen/dp3"
+                        app:cardBackgroundColor="@color/icon_bg_color">
+
+                        <ImageView
+                            android:id="@+id/storeIcon"
+                            android:layout_width="@dimen/dp28"
+                            android:layout_height="@dimen/dp28"
+                            android:layout_gravity="center"
+                            android:src="@drawable/wallet"
+                            app:tint="@color/icon_tint_color" />
+
+                    </androidx.cardview.widget.CardView>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="@dimen/dp16"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/withdrawal_request_of_200"
+                            android:textColor="@color/text_primary"
+                            android:textSize="18sp"
+                            android:ellipsize="end"
+                            android:textStyle="bold"
+                            android:maxLines="2"
+                            android:lineSpacingExtra="2dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Transaction Processing"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="13sp"
+                            android:layout_marginTop="@dimen/dp4" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <!-- Details Section -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="@dimen/dp16">
+
+                    <!-- Amount Card -->
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/dp12"
+                        app:cardCornerRadius="@dimen/dp12"
+                        app:cardElevation="@dimen/dp1"
+                        app:cardBackgroundColor="@color/detail_card_bg"
+                        app:strokeColor="@color/detail_card_stroke"
+                        app:strokeWidth="1dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/dp16"
+                            android:gravity="center_vertical">
+
+                            <androidx.cardview.widget.CardView
+                                android:layout_width="@dimen/dp32"
+                                android:layout_height="@dimen/dp32"
+                                app:cardCornerRadius="@dimen/dp8"
+                                app:cardElevation="0dp"
+                                app:cardBackgroundColor="@color/amount_icon_bg">
+
+                                <ImageView
+                                    android:layout_width="@dimen/dp16"
+                                    android:layout_height="@dimen/dp16"
+                                    android:layout_gravity="center"
+                                    android:src="@drawable/wallet"
+                                    app:tint="@color/amount_icon_tint" />
+
+                            </androidx.cardview.widget.CardView>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:layout_marginStart="@dimen/dp12"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Withdrawal Amount"
+                                    android:textColor="@color/text_secondary"
+                                    android:textSize="12sp"/>
+
+                                <TextView
+                                    android:id="@+id/amt"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="₹200.00"
+                                    android:textStyle="bold"
+                                    android:textColor="@color/text_primary"
+                                    android:textSize="20sp"
+                                    android:layout_marginTop="@dimen/dp2" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <!-- VPA Card -->
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/dp12"
+                        app:cardCornerRadius="@dimen/dp12"
+                        app:cardElevation="@dimen/dp1"
+                        app:cardBackgroundColor="@color/detail_card_bg"
+                        app:strokeColor="@color/detail_card_stroke"
+                        app:strokeWidth="1dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/dp16"
+                            android:gravity="center_vertical">
+
+                            <androidx.cardview.widget.CardView
+                                android:layout_width="@dimen/dp32"
+                                android:layout_height="@dimen/dp32"
+                                app:cardCornerRadius="@dimen/dp8"
+                                app:cardElevation="0dp"
+                                app:cardBackgroundColor="@color/upi_icon_bg">
+
+                                <ImageView
+                                    android:layout_width="@dimen/dp16"
+                                    android:layout_height="@dimen/dp16"
+                                    android:layout_gravity="center"
+                                    android:src="@drawable/contact_support"
+                                    app:tint="@color/upi_icon_tint" />
+
+                            </androidx.cardview.widget.CardView>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:layout_marginStart="@dimen/dp12"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="UPI ID"
+                                    android:textColor="@color/text_secondary"
+                                    android:textSize="12sp"/>
+
+                                <TextView
+                                    android:id="@+id/vpa"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="user@example-upi"
+                                    android:textColor="@color/text_primary"
+                                    android:textSize="14sp"
+                                    android:layout_marginTop="@dimen/dp2" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <!-- Status Note Card -->
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="@dimen/dp12"
+                        app:cardElevation="@dimen/dp1"
+                        app:cardBackgroundColor="@color/status_note_bg"
+                        app:strokeColor="@color/status_note_stroke"
+                        app:strokeWidth="1dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/dp16"
+                            android:gravity="center_vertical">
+
+                            <androidx.cardview.widget.CardView
+                                android:layout_width="@dimen/dp32"
+                                android:layout_height="@dimen/dp32"
+                                app:cardCornerRadius="@dimen/dp8"
+                                app:cardElevation="0dp"
+                                app:cardBackgroundColor="@color/status_note_icon_bg">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:text="!"
+                                    android:textColor="@color/status_note_icon_text"
+                                    android:textSize="16sp" />
+
+                            </androidx.cardview.widget.CardView>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:layout_marginStart="@dimen/dp12"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Status Note"
+                                    android:textColor="@color/status_note_text_primary"
+                                    android:textSize="12sp" />
+
+                                <TextView
+                                    android:id="@+id/rejectortxn"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Transaction is under processing"
+                                    android:textColor="@color/status_note_text_secondary"
+                                    android:textSize="14sp"
+                                    android:layout_marginTop="@dimen/dp2" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                </LinearLayout>
+
+                <!-- Action Buttons -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/dp8">
+
+                    <Button
+                        android:id="@+id/btnViewDetails"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="@dimen/dp8"
+                        android:text="View Details"
+                        android:textSize="14sp"
+                        app:cornerRadius="@dimen/dp12"
+                        app:backgroundTint="@color/primary_button_bg"
+                        android:textColor="@color/white"
+                        android:paddingVertical="@dimen/dp12" />
+
+                    <Button
+                        android:id="@+id/btnShare"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Share"
+                        android:textSize="14sp"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        app:cornerRadius="@dimen/dp12"
+                        app:strokeColor="@color/outline_button_stroke"
+                        android:textColor="@color/outline_button_text"
+                        android:paddingHorizontal="@dimen/dp20"
+                        android:paddingVertical="@dimen/dp12" />
+
+                </LinearLayout>
 
             </LinearLayout>
-        </RelativeLayout>
 
+        </LinearLayout>
 
     </androidx.cardview.widget.CardView>
 
