@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
 import android.text.Html
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -45,6 +46,7 @@ class StoreDetailFragment : BaseFragment<FragmentStoreDetailBinding>() {
         }
         applySafeAreaInsets()
         var data = Gson().fromJson<MiniApp>(requireActivity().intent.getStringExtra(DATA),MiniApp::class.java)
+        Log.d("this is miniapp data",data.toString())
         if (data.cbActive){
             _binding!!.cashbackactiveSection.visibility = View.VISIBLE
         }else{
