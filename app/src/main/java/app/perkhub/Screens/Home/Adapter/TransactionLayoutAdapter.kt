@@ -21,13 +21,13 @@ class TransactionLayoutAdapter<S>(val clickListener: RecyclerClickListener):Base
 
                 binding.TxnDate.text = onlyDatewithMonth( s.created_at)
                 if (s.status=="pending"){
-                    binding.statusText.setBackgroundColor(ContextCompat.getColor(itemView.context,R.color.orange))
+                    binding.statusText.setBackgroundColor(ContextCompat.getColor(itemView.context,R.color.status_pending_bg))
                     binding.statusText.text = "Pending"
                 }else if (s.status =="verified"){
-                    binding.statusText.setBackgroundColor(ContextCompat.getColor(itemView.context,R.color.green))
+                    binding.statusText.setBackgroundColor(ContextCompat.getColor(itemView.context,R.color.status_verified_bg))
                     binding.statusText.text = "Verified"
                 }else{
-                    binding.statusText.setBackgroundColor(ContextCompat.getColor(itemView.context,R.color.red))
+                    binding.statusText.setBackgroundColor(ContextCompat.getColor(itemView.context,R.color.rejected_icon_bg))
                     binding.statusText.text = "Rejected"
                 }
                 if (s.miniApp!=null){

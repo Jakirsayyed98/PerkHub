@@ -41,9 +41,9 @@ abstract class BaseFragment<T:ViewBinding> : Fragment() {
 //        }
     }
 
-//    fun statusBarColor(color : Int){
-//        activity?.window?.statusBarColor = ContextCompat.getColor(requireContext(),color)
-//    }
+    fun statusBarColor(color : Int){
+        activity?.window?.statusBarColor = ContextCompat.getColor(requireContext(),color)
+    }
 
     fun showProgress (){
         progress.show()

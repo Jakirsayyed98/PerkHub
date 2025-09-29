@@ -53,11 +53,13 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
     ): View {
         _binding = FragmentHomeScreenBinding.inflate(inflater, container, false)
         binding.progressbar.visibility = View.VISIBLE
-        binding.mainlayout.visibility = View.GONE
-
+        binding.mainlayout1.visibility = View.GONE
+        statusBarColor(R.color.light_blue)
         setupMenu()
         setupClickEvents()
         applySafeAreaInsets()
+
+
 
         // Fetch data
         lifecycleScope.launch { fetchHomeData() }       // HomeViewModel
@@ -125,7 +127,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
                 t?.data?.let { data ->
                     lifecycleScope.launch(Dispatchers.Main) {
                         binding.progressbar.visibility = View.GONE
-                        binding.mainlayout.visibility = View.VISIBLE
+                        binding.mainlayout1.visibility = View.VISIBLE
 
                         setMainCategoryLayout(data.categories)
                         if (data.popular.isNotEmpty()) setPopularStore(data.popular)

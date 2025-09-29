@@ -24,7 +24,7 @@ class TrendingStoresAdapter2<S>(val cliklistner : RecyclerClickListener): BaseRe
                     }else{
                         cashbackBadge.visibility= View.INVISIBLE
                     }
-                    storename.text = s.name+":"
+                    storename.text = s.name
                     binding.root.setOnClickListener {
                         cliklistner.RecyclerClickListener(0,s.url,s)
                     }
