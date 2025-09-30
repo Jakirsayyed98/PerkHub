@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/mainlayout"
+    tools:context=".Screens.withdrawal.WithdrawalFlowFragment">
+
+    <LinearLayout
+        android:id="@+id/toolbar2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar_layout" />
+    </LinearLayout>
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <ImageView
+        android:layout_width="@dimen/dp65"
+        android:layout_height="@dimen/dp65"
+        android:src="@drawable/mobile_icon"
+        android:layout_marginTop="@dimen/dp25"
+        android:layout_gravity="center"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp25"
+        android:text="Add UPI ID"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:textSize="@dimen/sp18" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp25"
+        android:text="Enter your UPI ID to receive payments"
+        android:textAlignment="center"
+        android:textColor="@color/grey"
+        android:textSize="@dimen/sp18" />
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp25"
+        android:text="UPI ID"
+        android:paddingStart="@dimen/dp20"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:textSize="@dimen/sp18" />
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"
+        android:layout_marginStart="@dimen/dp15"
+        android:layout_marginTop="@dimen/dp10"
+        android:layout_marginEnd="@dimen/dp15"
+        android:textAlignment="center"
+        android:textColorHint="@color/grey"
+        app:boxStrokeColor="@color/black"
+        app:hintEnabled="false"
+        app:hintTextColor="@color/black"
+        >
+
+        <EditText
+            android:id="@+id/amount"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp50"
+            android:imeOptions="actionDone"
+            android:background="@drawable/border_5dp"
+            android:inputType="text"
+            android:hint="yourname@upi"
+            android:maxLength="5"
+            android:paddingStart="@dimen/dp25"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp15"
+        android:text="Examples: yourname@paytm, yourname@googlepay, yourname@phonepe"
+        android:paddingStart="@dimen/dp20"
+        android:textColor="@color/grey"
+        android:textSize="@dimen/sp14" />
+
+    <RelativeLayout
+        android:id="@+id/continuebtn"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp50"
+        android:layout_marginStart="@dimen/dp45"
+        android:layout_marginTop="@dimen/dp30"
+        android:layout_marginEnd="@dimen/dp45"
+        android:layout_marginBottom="@dimen/dp20"
+        android:background="@drawable/selected_button_layout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/numberlayout">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="Continue"
+            android:textColor="@color/btn_text"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+</LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+        <View
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:layout_weight="1"
+            android:layout_marginStart="@dimen/dp15"
+            android:layout_marginEnd="@dimen/dp15"
+            android:background="@color/grey"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Or"
+            android:textAlignment="center"
+            android:textColor="@color/grey"
+            android:textStyle="bold"
+            android:textSize="@dimen/sp18" />
+
+
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:layout_weight="1"
+            android:layout_marginStart="@dimen/dp15"
+            android:layout_marginEnd="@dimen/dp15"
+            android:background="@color/grey"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp20"
+        android:orientation="vertical">
+        <ImageView
+            android:layout_width="@dimen/dp65"
+            android:layout_height="@dimen/dp65"
+            android:src="@drawable/otp_icon"
+            android:layout_marginTop="@dimen/dp25"
+            android:layout_gravity="center"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp25"
+            android:text="Add Bank Account"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="@dimen/sp18" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp15"
+            android:text="Enter your bank details for withdrawals"
+            android:textAlignment="center"
+            android:textColor="@color/grey"
+            android:textSize="@dimen/sp18" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp25"
+            android:text="Account Holder Name"
+            android:paddingStart="@dimen/dp20"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="@dimen/sp18" />
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/toolbar"
+            android:layout_marginStart="@dimen/dp15"
+            android:layout_marginTop="@dimen/dp10"
+            android:layout_marginEnd="@dimen/dp15"
+            android:textAlignment="center"
+            android:textColorHint="@color/grey"
+            app:boxStrokeColor="@color/black"
+            app:hintEnabled="false"
+            app:hintTextColor="@color/black"
+            >
+
+            <EditText
+                android:id="@+id/accountHolderName"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp50"
+                android:imeOptions="actionNext"
+                android:background="@drawable/border_5dp"
+                android:inputType="text"
+                android:hint="Ajay"
+                android:paddingStart="@dimen/dp25"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp25"
+            android:text="Account Number"
+            android:paddingStart="@dimen/dp20"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="@dimen/sp18" />
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/toolbar"
+            android:layout_marginStart="@dimen/dp15"
+            android:layout_marginTop="@dimen/dp10"
+            android:layout_marginEnd="@dimen/dp15"
+            android:textAlignment="center"
+            android:textColorHint="@color/grey"
+            app:boxStrokeColor="@color/black"
+            app:hintEnabled="false"
+            app:hintTextColor="@color/black"
+            >
+
+            <EditText
+                android:id="@+id/accountNumber"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp50"
+                android:imeOptions="actionNext"
+                android:background="@drawable/border_5dp"
+                android:inputType="number"
+                android:hint="01234567891234"
+                android:paddingStart="@dimen/dp25"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp25"
+            android:text="IFSC Code"
+            android:paddingStart="@dimen/dp20"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="@dimen/sp18" />
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/toolbar"
+            android:layout_marginStart="@dimen/dp15"
+            android:layout_marginTop="@dimen/dp10"
+            android:layout_marginEnd="@dimen/dp15"
+            android:textAlignment="center"
+            android:textColorHint="@color/grey"
+            app:boxStrokeColor="@color/black"
+            app:hintEnabled="false"
+            app:hintTextColor="@color/black"
+            >
+
+            <EditText
+                android:id="@+id/accountIFSC"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp50"
+                android:imeOptions="actionNext"
+                android:background="@drawable/border_5dp"
+                android:inputType="text"
+                android:hint="HFMC00001234"
+                android:maxLength="11"
+                android:paddingStart="@dimen/dp25"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp25"
+            android:text="Bank Name"
+            android:paddingStart="@dimen/dp20"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="@dimen/sp18" />
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/toolbar"
+            android:layout_marginStart="@dimen/dp15"
+            android:layout_marginTop="@dimen/dp10"
+            android:layout_marginEnd="@dimen/dp15"
+            android:textAlignment="center"
+            android:textColorHint="@color/grey"
+            app:boxStrokeColor="@color/black"
+            app:hintEnabled="false"
+            app:hintTextColor="@color/black"
+            >
+
+            <EditText
+                android:id="@+id/bankName"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp50"
+                android:imeOptions="actionDone"
+                android:background="@drawable/border_5dp"
+                android:hint="HMFD BANK"
+                android:maxLength="5"
+                android:paddingStart="@dimen/dp25"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+
+
+        <RelativeLayout
+            android:id="@+id/bankdetailSave"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp50"
+            android:layout_marginStart="@dimen/dp45"
+            android:layout_marginTop="@dimen/dp30"
+            android:layout_marginEnd="@dimen/dp45"
+            android:layout_marginBottom="@dimen/dp20"
+            android:background="@drawable/selected_button_layout"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/numberlayout">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="Continue"
+                android:textColor="@color/btn_text"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>

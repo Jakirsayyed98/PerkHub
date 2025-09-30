@@ -130,6 +130,7 @@
                     android:layout_height="wrap_content"
                     android:imeOptions="actionDone"
                     android:inputType="number"
+                    android:textSize="@dimen/sp18"
                     android:maxLength="10" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -140,7 +141,7 @@
             <RelativeLayout
                 android:id="@+id/sendOTP"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp30"
+                android:layout_height="@dimen/dp50"
                 android:layout_marginTop="@dimen/dp30"
                 android:layout_marginBottom="@dimen/dp20"
                 android:background="@drawable/selected_button_layout"
@@ -154,7 +155,7 @@
                     android:gravity="center"
                     android:text="Send OTP"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/sp14" />
+                    android:textSize="@dimen/sp18" />
 
             </RelativeLayout>
 
@@ -239,7 +240,7 @@
             <RelativeLayout
                 android:id="@+id/verifyOTP"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp30"
+                android:layout_height="@dimen/dp50"
                 android:layout_marginTop="@dimen/dp30"
                 android:layout_marginBottom="@dimen/dp20"
                 android:background="@drawable/selected_button_layout"
@@ -251,7 +252,7 @@
                     android:gravity="center"
                     android:text="Verify OTP"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/sp14" />
+                    android:textSize="@dimen/sp18" />
 
             </RelativeLayout>
 

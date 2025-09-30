@@ -30,10 +30,10 @@ class TransactionLayoutAdapter<S>(val clickListener: RecyclerClickListener):Base
                     binding.statusText.setBackgroundColor(ContextCompat.getColor(itemView.context,R.color.rejected_icon_bg))
                     binding.statusText.text = "Rejected"
                 }
-                if (s.miniApp!=null){
-                    Glide.with(itemView.context).load(s.miniApp[0].icon).centerCrop().into(binding.storeIcon)
-                    binding.storeName.text = s.miniApp[0].name
-                }
+
+                    Glide.with(itemView.context).load(s.icon).centerCrop().into(binding.storeIcon)
+                    binding.storeName.text = s.miniapp_name
+
 
                 binding.TxnID.text = itemView.context.getString(R.string.txn_id,s.transaction_id)
                 binding.SaleAmount.text = itemView.context.getString(R.string.sale_amount,setSuffixAmount(s.sale_amount))

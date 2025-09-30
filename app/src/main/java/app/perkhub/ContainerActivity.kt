@@ -2,32 +2,28 @@ package app.perkhub
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
-import android.view.View
 import androidx.activity.enableEdgeToEdge
-import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
-import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import app.perkhub.Screens.Home.HomeScreenFragment
-import app.perkhub.Screens.Home.NotificationListFragment
-import app.perkhub.Screens.Home.SelectedCategoryFragment
-import app.perkhub.Screens.Home.StoreDetailFragment
-import app.perkhub.Screens.Home.TransactionDetailFragment
-import app.perkhub.Screens.Home.TransactionHistoryFragment
-import app.perkhub.Screens.Home.WalletFragment
-import app.perkhub.Screens.Home.WithdrawalFlowFragment
+import app.perkhub.Screens.Notifications.NotificationListFragment
+import app.perkhub.Screens.Stores.SelectedCategoryFragment
+import app.perkhub.Screens.Stores.StoreDetailFragment
+import app.perkhub.Screens.StoreTransaction.TransactionDetailFragment
+import app.perkhub.Screens.StoreTransaction.TransactionHistoryFragment
+import app.perkhub.Screens.withdrawal.WalletFragment
+import app.perkhub.Screens.withdrawal.WithdrawalFlowFragment
 import app.perkhub.Utils.BaseActivity
 import app.perkhub.Utils.CONTAINER_TYPE_KEY
 import app.perkhub.Utils.DATA
 import app.perkhub.databinding.ActivityContainerBinding
 import app.perkhub.Screens.login.EnterDetailFragment
 import app.perkhub.Screens.login.EnterMobileNFragment
+import app.perkhub.Screens.withdrawal.AddPaymentMethodFragment
 import app.perkhub.Utils.CONTAINER_TYPE_KEY1
 import com.google.gson.Gson
 
@@ -127,6 +123,9 @@ class ContainerActivity : BaseActivity<ActivityContainerBinding>() {
             }
             "NotificationListFragment"->{
                 addFragment(NotificationListFragment.newInstance())
+            }
+            "AddWithdrawalPaymentMethod"->{
+                addFragment(AddPaymentMethodFragment.newInstance())
             }
         }
     }

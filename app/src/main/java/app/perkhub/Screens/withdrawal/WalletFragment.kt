@@ -1,8 +1,7 @@
-package app.perkhub.Screens.Home
+package app.perkhub.Screens.withdrawal
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,17 +9,21 @@ import android.widget.Toast
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.perkhub.ContainerActivity
-import app.perkhub.R
 import app.perkhub.Screens.Home.Adapter.WalletWithdrawalAdapter
 import app.perkhub.Screens.Home.Model.TransactionModel.TransactionDataRes
 import app.perkhub.Screens.Home.Model.Withdrawal.withdrawalRes
 import app.perkhub.Utils.BaseFragment
 import app.perkhub.Utils.RecyclerClickListener
 import app.perkhub.Utils.setSuffixAmount
+import app.perkhub.Utils.toast
 import app.perkhub.api.ApiListener
 import app.perkhub.databinding.FragmentWalletBinding
+import app.perkhub.room.StoresTransactionsRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class WalletFragment : BaseFragment<FragmentWalletBinding>() {
 
@@ -45,38 +48,6 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>() {
         getWithdrawalTransaction()
 
         return _binding?.root
-    }
-
-    private fun getTransactionData() {
-        viewModel.getAllTransaction(requireContext(), object : ApiListener<TransactionDataRes> {
-            override fun onSuccess(t: TransactionDataRes?, mess: String) {
-                if (t?.status == 200) {
-                    t.data.let { data ->
-                        val avail = data.verified.toDouble()
-                        _binding!!.available.text = avail.toString()
-                        _binding!!.rejected.text = setSuffixAmount(data.rejected)
-                        _binding!!.pending.text = setSuffixAmount(data.pending)
-
-                        _binding!!.withdraw.setOnClickListener {
-                            Log.d("MyBalance", avail.toString())
-                            if (avail >= 100) {
-                                ContainerActivity.OpenContainer(
-                                    requireContext(),
-                                    "WidthdrawFlowFragment",
-                                    ""
-                                )
-                            } else {
-                                Toast.makeText(
-                                    requireContext(),
-                                    "Available Amount should not be less then ₹100",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
-                        }
-                    }
-                }
-            }
-        })
     }
 
     private fun getWithdrawalTransaction() {
@@ -113,17 +84,67 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>() {
         mAdapter.addAllItem(data)
     }
 
-    private fun getUserDetail() {
-        viewModel.getAllTransaction(requireContext(), object : ApiListener<TransactionDataRes> {
-            override fun onSuccess(t: TransactionDataRes?, mess: String) {
-                t?.let {
-                    if (t.status == 200) {
-                        setUserData(t)
+    private fun fetchStoreTransactionsList(forceRefresh: Boolean = false) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            viewModel.getAllTransaction(
+                requireContext(),
+                forceRefresh,
+                object : ApiListener<TransactionDataRes> {
+                    override fun onSuccess(t: TransactionDataRes?, mess: String) {
+                        t?.data?.let {
+                            lifecycleScope.launch(Dispatchers.Main) {
+                                t.data.let { data ->
+                                    val avail = data.verified.toDouble()
+                                    _binding!!.available.text = avail.toString()
+                                    _binding!!.rejected.text = setSuffixAmount(data.rejected)
+                                    _binding!!.pending.text = setSuffixAmount(data.pending)
+
+                                    _binding!!.withdraw.setOnClickListener {
+                                        Log.d("MyBalance", avail.toString())
+//                                        if (avail >= 100) {
+                                            ContainerActivity.OpenContainer(
+                                                requireContext(),
+                                                "WidthdrawFlowFragment",
+                                                ""
+                                            )
+//                                        } else {
+                                            Toast.makeText(
+                                                requireContext(),
+                                                "Available Amount should not be less then ₹100",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+//                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
-                }
-            }
-        })
+
+                    override fun onError(mess: String) {
+                        lifecycleScope.launch(Dispatchers.Main) {
+                            requireContext().toast("Failed to fetch notifications: $mess")
+                        }
+                    }
+                })
+        }
     }
+
+
+    private fun getTransactionData() {
+        val repository = StoresTransactionsRepository(requireContext())
+
+        // CRITICAL FIX: Use viewLifecycleOwner instead of lifecycleScope
+        // This prevents memory leaks when Fragment is destroyed
+        viewLifecycleOwner.lifecycleScope.launch {
+            repository.getStoresTransactionsFlow().collect { t ->
+
+            }
+        }
+
+        // Trigger refresh from server in background
+        fetchStoreTransactionsList(forceRefresh = true)
+    }
+
 
     private fun setUserData(data: TransactionDataRes) {
         _binding!!.withdraw.setOnClickListener {

@@ -1,11 +1,9 @@
-package app.perkhub.Screens.Home
+package app.perkhub.Screens.Stores
 
 import android.annotation.SuppressLint
-import android.os.Build
 import android.os.Bundle
 import android.text.Html
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,9 +13,7 @@ import app.perkhub.R
 import app.perkhub.Screens.Home.Model.GenerateUrl.GenerateSubId
 import app.perkhub.Screens.Home.Model.GenerateUrl.GenerateSubIdRes
 import app.perkhub.Screens.Home.Model.Home.MiniApp
-import app.perkhub.Screens.Home.Model.MiniAppByCategory.MiniAppbyCategory
 import app.perkhub.Utils.BaseFragment
-import app.perkhub.Utils.CONTAINER_TYPE_KEY1
 import app.perkhub.Utils.DATA
 import app.perkhub.Utils.Share
 import app.perkhub.Utils.openCustomTab

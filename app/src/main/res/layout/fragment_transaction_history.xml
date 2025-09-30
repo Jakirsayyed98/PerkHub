@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:id="@+id/mainlayout"
-    tools:context=".Screens.Home.TransactionHistoryFragment">
+    tools:context=".Screens.StoreTransaction.TransactionHistoryFragment">
 
     <LinearLayout
         android:id="@+id/toolbar2"

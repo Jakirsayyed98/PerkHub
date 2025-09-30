@@ -164,7 +164,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
             val token = task.result
             viewModel.updateNotification(token, requireContext(), object : ApiListener<MiniAppbyCategory> {
                 override fun onSuccess(t: MiniAppbyCategory?, mess: String) {
-                    requireContext().toast("Token updated")
+
                 }
 
                 override fun onError(mess: String) {}

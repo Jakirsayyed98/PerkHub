@@ -1,4 +1,4 @@
-package app.perkhub.Screens.Home
+package app.perkhub.Screens.Stores
 
 import android.os.Bundle
 import android.util.Log
@@ -24,7 +24,6 @@ import app.perkhub.Utils.BaseFragment
 import app.perkhub.Utils.CONTAINER_TYPE_KEY1
 import app.perkhub.Utils.DATA
 import app.perkhub.Utils.RecyclerClickListener
-import app.perkhub.Utils.openCustomTab
 import app.perkhub.Utils.toast
 import app.perkhub.api.ApiListener
 import app.perkhub.databinding.FragmentSelectedCategoryBinding

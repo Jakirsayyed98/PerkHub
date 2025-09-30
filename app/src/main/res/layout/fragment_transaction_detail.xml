@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/transaction_detail_bg"
-    tools:context=".Screens.Home.TransactionDetailFragment">
+    tools:context=".Screens.StoreTransaction.TransactionDetailFragment">
 
     <!-- Toolbar -->
     <LinearLayout

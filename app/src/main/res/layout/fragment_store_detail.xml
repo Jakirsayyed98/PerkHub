@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/mainlayout"
-    tools:context=".Screens.Home.StoreDetailFragment">
+    tools:context=".Screens.Stores.StoreDetailFragment">
 
     <LinearLayout
         android:id="@+id/toolbar"

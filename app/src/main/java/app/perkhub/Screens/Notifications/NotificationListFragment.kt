@@ -1,4 +1,5 @@
-package app.perkhub.Screens.Home
+// 10. CORRECTED Fragment Implementation
+package app.perkhub.Screens.Notifications
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -18,6 +19,7 @@ import app.perkhub.Utils.openCustomTab
 import app.perkhub.Utils.toast
 import app.perkhub.api.ApiListener
 import app.perkhub.databinding.FragmentNotificationListBinding
+import app.perkhub.room.NotificationRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -26,7 +28,7 @@ class NotificationListFragment : BaseFragment<FragmentNotificationListBinding>()
     private val notificationAdapter by lazy {
         NotificationAdapter<Data>(object : RecyclerClickListener {
             override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
-                if (data.toString().startsWith("http")){
+                if (data.toString().startsWith("http")) {
                     requireContext().openCustomTab(data.toString())
                 }
             }
@@ -45,7 +47,9 @@ class NotificationListFragment : BaseFragment<FragmentNotificationListBinding>()
         }
 
         setupRecyclerView()
-        fetchNotificationList()
+
+        // Start observing notifications
+        observeNotifications()
 
         return binding.root
     }
@@ -66,29 +70,60 @@ class NotificationListFragment : BaseFragment<FragmentNotificationListBinding>()
         }
     }
 
-    private fun fetchNotificationList() {
+    private fun fetchNotificationList(forceRefresh: Boolean = false) {
         lifecycleScope.launch(Dispatchers.IO) {
-            viewModel.getNotificationList(requireContext(), object : ApiListener<NotificationListRes> {
-                override fun onSuccess(t: NotificationListRes?, mess: String) {
-                    t?.data?.let { data ->
-                        lifecycleScope.launch(Dispatchers.Main) {
-                            setData(data)
+            viewModel.getNotificationList(
+                requireContext(),
+                forceRefresh,
+                object : ApiListener<NotificationListRes> {
+                    override fun onSuccess(t: NotificationListRes?, mess: String) {
+                        t?.data?.let {
+                            lifecycleScope.launch(Dispatchers.Main) {
+                                // Don't call setData here if using Flow
+                                // The Flow will handle it automatically
+                            }
                         }
                     }
-                }
 
-                override fun onError(mess: String) {
-                    lifecycleScope.launch(Dispatchers.Main) {
-                        requireContext().toast("Failed to fetch notifications: $mess")
+                    override fun onError(mess: String) {
+                        lifecycleScope.launch(Dispatchers.Main) {
+                            requireContext().toast("Failed to fetch notifications: $mess")
+                        }
                     }
-                }
-            })
+                })
         }
     }
 
+    private fun observeNotifications() {
+        val repository = NotificationRepository(requireContext())
+
+        // CRITICAL FIX: Use viewLifecycleOwner instead of lifecycleScope
+        // This prevents memory leaks when Fragment is destroyed
+        viewLifecycleOwner.lifecycleScope.launch {
+            repository.getNotificationsFlow().collect { notifications ->
+                // This will be called automatically when:
+                // 1. Fragment opens (shows cached data)
+                // 2. Server data is fetched (shows fresh data)
+                // 3. Push notification arrives (shows new notification)
+                setData(notifications)
+            }
+        }
+
+        // Trigger refresh from server in background
+        fetchNotificationList(forceRefresh = true)
+    }
+
     private fun setData(data: List<Data>) {
-        notificationAdapter.clear()
-        notificationAdapter.addAllItem(data)
+        // Show/hide empty state if needed
+        if (data.isEmpty()) {
+            binding.notificationlist.visibility = View.GONE
+            // binding.emptyState.visibility = View.VISIBLE
+        } else {
+            binding.notificationlist.visibility = View.VISIBLE
+            // binding.emptyState.visibility = View.GONE
+            notificationAdapter.clear()
+            notificationAdapter.addAllItem(data)
+        }
     }
 
     companion object {

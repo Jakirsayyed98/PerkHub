@@ -15,6 +15,7 @@ import app.perkhub.Screens.Home.Model.MiniAppByCategory.MiniAppSearchReq
 import app.perkhub.Screens.Home.Model.MiniAppByCategory.MiniAppbyCategory
 import app.perkhub.Screens.Home.Model.Notification.NotificationListRes
 import app.perkhub.Screens.Home.Model.Notification.TokenReq
+import app.perkhub.Screens.Home.Model.TransactionModel.Datas
 import app.perkhub.Screens.Home.Model.TransactionModel.TransactionDataRes
 import app.perkhub.Screens.Home.Model.Withdrawal.WithdrawalReq
 import app.perkhub.Screens.Home.Model.Withdrawal.withdrawalRes
@@ -24,6 +25,8 @@ import app.perkhub.Screens.login.models.SaveUserDetail
 import app.perkhub.Screens.login.models.SendOtpReq
 import app.perkhub.Screens.login.models.VerifyOtpReq
 import app.perkhub.room.HomeRepository
+import app.perkhub.room.NotificationRepository
+import app.perkhub.room.StoresTransactionsRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
@@ -127,8 +130,67 @@ class RequestViewModel(
         launchApi({ apiProvider(context).getPopularGames().body() }, listener)
     }
 
-    fun getAllTransaction(context: Context, listener: ApiListener<TransactionDataRes>) {
-        launchApi({ apiProvider(context).getAllTransaction().body() }, listener)
+//    fun getAllTransaction(context: Context, listener: ApiListener<TransactionDataRes>) {
+//        launchApi({ apiProvider(context).getAllTransaction().body() }, listener)
+//    }
+
+    fun getAllTransaction(
+        context: Context,
+        forceRefresh: Boolean = false,
+        listener: ApiListener<TransactionDataRes>
+    ) {
+        val repository = StoresTransactionsRepository(context)
+
+        viewModelScope.launch {
+            try {
+                // First, load from database
+                val cachedData = repository.getStoresTransactions()
+
+                if (cachedData.isNotEmpty() && !forceRefresh) {
+                    // Return cached data immediately
+                    val cachedResponse = TransactionDataRes(
+                        data = Datas(
+                            data = ArrayList(cachedData), // Convert List to ArrayList
+                            pending = "0",
+                            rejected = "0",
+                            verified = "0",
+                            withdrawal = "0"
+                        ),
+                        message = "Loaded from cache",
+                        status = 1
+                    )
+                    listener.onSuccess(cachedResponse, "Loaded from cache")
+                }
+
+                // Then fetch from server in background
+                launchApi({ apiProvider(context).getAllTransaction().body() },
+                    object : ApiListener<TransactionDataRes> {
+                        override fun onSuccess(t: TransactionDataRes?, mess: String) {
+                            viewModelScope.launch {
+                                t?.data?.data.let {
+                                    // Save to database
+                                    if (it != null) {
+                                        repository.saveStoresTransactions(it)
+                                    }
+                                    // Notify listener with fresh data
+                                    listener.onSuccess(t, mess)
+                                }
+                            }
+                        }
+
+                        override fun onError(mess: String) {
+                            // If no cached data, propagate error
+                            if (cachedData.isEmpty()) {
+                                listener.onError(mess)
+                            }
+                            // Otherwise, we already returned cached data
+                        }
+                    })
+
+            } catch (e: Exception) {
+                listener.onError(e.message ?: "Unknown error")
+            }
+        }
     }
 
     fun getUserDetail(context: Context, listener: ApiListener<LoginRes>) {
@@ -143,7 +205,60 @@ class RequestViewModel(
         launchApi({ apiProvider(context).ReqForWithdrawal(req).body() }, listener)
     }
 
-    fun getNotificationList(context: Context, listener: ApiListener<NotificationListRes>) {
-        launchApi({ apiProvider(context).getNotificationList().body() }, listener)
+//    fun getNotificationList(context: Context, listener: ApiListener<NotificationListRes>) {
+//        launchApi({ apiProvider(context).getNotificationList().body() }, listener)
+//    }
+
+    fun getNotificationList(
+        context: Context,
+        forceRefresh: Boolean = false,
+        listener: ApiListener<NotificationListRes>
+    ) {
+        val repository = NotificationRepository(context)
+
+        viewModelScope.launch {
+            try {
+                // First, load from database
+                val cachedData = repository.getNotifications()
+
+                if (cachedData.isNotEmpty() && !forceRefresh) {
+                    // Return cached data immediately
+                    val cachedResponse = NotificationListRes(
+                        data = cachedData,
+                        errorCode = "0",
+                        errorMsg = ""
+                    )
+                    listener.onSuccess(cachedResponse, "Loaded from cache")
+                }
+
+                // Then fetch from server in background
+                launchApi({ apiProvider(context).getNotificationList().body() },
+                    object : ApiListener<NotificationListRes> {
+                        override fun onSuccess(t: NotificationListRes?, mess: String) {
+                            viewModelScope.launch {
+                                t?.data?.let {
+                                    // Save to database
+                                    repository.saveNotifications(it)
+
+                                    // Notify listener with fresh data
+                                    listener.onSuccess(t, mess)
+                                }
+                            }
+                        }
+
+                        override fun onError(mess: String) {
+                            // If no cached data, propagate error
+                            if (cachedData.isEmpty()) {
+                                listener.onError(mess)
+                            }
+                            // Otherwise, we already returned cached data
+                        }
+                    })
+
+            } catch (e: Exception) {
+                listener.onError(e.message ?: "Unknown error")
+            }
+        }
     }
+
 }

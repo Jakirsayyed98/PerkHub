@@ -5,9 +5,10 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import app.perkhub.Screens.Home.Model.Notification.Data
 
 @Database(
-    entities = [HomeCache::class], // ✅ Correct entity name
+    entities = [HomeCache::class,Data::class,app.perkhub.Screens.Home.Model.TransactionModel.Data::class], // ✅ Correct entity name
     version = 1,
     exportSchema = false
 )
@@ -15,6 +16,8 @@ import androidx.room.TypeConverters
 abstract class HomeDatabase : RoomDatabase() {
 
     abstract fun homeCacheDao(): HomeCacheDao
+    abstract fun notificationDao(): NotificationDao
+    abstract fun storeTransactionDao(): StoreTransactionsDao
 
     companion object {
         @Volatile

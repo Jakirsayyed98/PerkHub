@@ -1,24 +1,26 @@
-package app.perkhub.Screens.Home
+package app.perkhub.Screens.StoreTransaction
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.perkhub.ContainerActivity
-import app.perkhub.R
 import app.perkhub.Screens.Home.Adapter.TransactionLayoutAdapter
 import app.perkhub.Screens.Home.Model.TransactionModel.Data
 import app.perkhub.Screens.Home.Model.TransactionModel.TransactionDataRes
 import app.perkhub.Utils.BaseFragment
 import app.perkhub.Utils.RecyclerClickListener
+import app.perkhub.Utils.toast
 import app.perkhub.api.ApiListener
 import app.perkhub.databinding.FragmentTransactionHistoryBinding
+import app.perkhub.room.StoresTransactionsRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class TransactionHistoryFragment : BaseFragment<FragmentTransactionHistoryBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,18 +45,62 @@ class TransactionHistoryFragment : BaseFragment<FragmentTransactionHistoryBindin
         return _binding?.root
     }
 
-    private fun getTransactionData() {
-        viewModel.getAllTransaction(requireContext(),object : ApiListener<TransactionDataRes>{
-            override fun onSuccess(t: TransactionDataRes?, mess: String) {
-                if (t!!.status==200){
-                    requireActivity().runOnUiThread {
-                        setData(t.data.data)
+//    private fun getTransactionData() {
+//        viewModel.getAllTransaction(requireContext(),object : ApiListener<TransactionDataRes>{
+//            override fun onSuccess(t: TransactionDataRes?, mess: String) {
+//                if (t!!.status==200){
+//                    requireActivity().runOnUiThread {
+//                        setData(t.data.data)
+//                    }
+//                }
+//            }
+//        })
+//    }
+
+
+    private fun fetchStoreTransactionsList(forceRefresh: Boolean = false) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            viewModel.getAllTransaction(
+                requireContext(),
+                forceRefresh,
+                object : ApiListener<TransactionDataRes> {
+                    override fun onSuccess(t: TransactionDataRes?, mess: String) {
+                        t?.data?.let {
+                            lifecycleScope.launch(Dispatchers.Main) {
+                                // Don't call setData here if using Flow
+                                // The Flow will handle it automatically
+                            }
+                        }
                     }
-                }
-            }
-        })
+
+                    override fun onError(mess: String) {
+                        lifecycleScope.launch(Dispatchers.Main) {
+                            requireContext().toast("Failed to fetch notifications: $mess")
+                        }
+                    }
+                })
+        }
     }
 
+
+    private fun getTransactionData() {
+        val repository = StoresTransactionsRepository(requireContext())
+
+        // CRITICAL FIX: Use viewLifecycleOwner instead of lifecycleScope
+        // This prevents memory leaks when Fragment is destroyed
+        viewLifecycleOwner.lifecycleScope.launch {
+            repository.getStoresTransactionsFlow().collect { t ->
+                // This will be called automatically when:
+                // 1. Fragment opens (shows cached data)
+                // 2. Server data is fetched (shows fresh data)
+                // 3. Push notification arrives (shows new notification)
+                setData(t)
+            }
+        }
+
+        // Trigger refresh from server in background
+        fetchStoreTransactionsList(forceRefresh = true)
+    }
 
     private fun applySafeAreaInsets() {
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
