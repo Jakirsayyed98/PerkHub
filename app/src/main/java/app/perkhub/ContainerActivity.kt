@@ -24,6 +24,7 @@ import app.perkhub.databinding.ActivityContainerBinding
 import app.perkhub.Screens.login.EnterDetailFragment
 import app.perkhub.Screens.login.EnterMobileNFragment
 import app.perkhub.Screens.withdrawal.AddPaymentMethodFragment
+import app.perkhub.Screens.withdrawal.WithdrawalConfirmationFragment
 import app.perkhub.Utils.CONTAINER_TYPE_KEY1
 import com.google.gson.Gson
 
@@ -126,6 +127,10 @@ class ContainerActivity : BaseActivity<ActivityContainerBinding>() {
             }
             "AddWithdrawalPaymentMethod"->{
                 addFragment(AddPaymentMethodFragment.newInstance())
+            }
+
+            "WithdrawalConfirmationFragment"->{
+                addFragment(WithdrawalConfirmationFragment.newInstance())
             }
         }
     }

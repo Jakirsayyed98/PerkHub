@@ -24,6 +24,9 @@ import app.perkhub.Screens.login.models.LoginRes
 import app.perkhub.Screens.login.models.SaveUserDetail
 import app.perkhub.Screens.login.models.SendOtpReq
 import app.perkhub.Screens.login.models.VerifyOtpReq
+import app.perkhub.Screens.withdrawal.model.addPaymentMethodReq
+import app.perkhub.Screens.withdrawal.model.addPaymentMethodRes
+import app.perkhub.Screens.withdrawal.model.getPaymentMethodsRes
 import app.perkhub.room.HomeRepository
 import app.perkhub.room.NotificationRepository
 import app.perkhub.room.StoresTransactionsRepository
@@ -203,6 +206,14 @@ class RequestViewModel(
 
     fun reqForWithdrawal(req: WithdrawalReq, context: Context, listener: ApiListener<withdrawalRes>) {
         launchApi({ apiProvider(context).ReqForWithdrawal(req).body() }, listener)
+    }
+
+    fun AddPaymentMethod(req: addPaymentMethodReq, context: Context, listener: ApiListener<addPaymentMethodRes>) {
+        launchApi({ apiProvider(context).addPaymentMethod(req).body() }, listener)
+    }
+
+    fun GetPaymentMethod(context: Context, listener: ApiListener<getPaymentMethodsRes>) {
+        launchApi({ apiProvider(context).getPaymentMethods().body() }, listener)
     }
 
 //    fun getNotificationList(context: Context, listener: ApiListener<NotificationListRes>) {

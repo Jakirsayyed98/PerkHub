@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginTop="@dimen/dp10"
+    android:layout_marginHorizontal="@dimen/dp5"
+    app:cardCornerRadius="@dimen/dp20"
+    android:layout_marginBottom="@dimen/dp10"
+    app:cardElevation="@dimen/dp5"
+    android:layout_height="100dp">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/dp10"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="@dimen/dp45"
+            android:layout_height="@dimen/dp45"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/otp_icon"/>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/dp20"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/bankName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="UPI"
+                android:textStyle="bold"
+                android:textSize="@dimen/sp20"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/accountNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="UPI"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textSize="@dimen/sp16"
+                android:textColor="@color/black"/>
+
+        </LinearLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

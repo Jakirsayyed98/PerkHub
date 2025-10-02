@@ -72,7 +72,7 @@
             android:imeOptions="actionDone"
             android:background="@drawable/border_5dp"
             android:inputType="number"
-            android:hint="0.00"
+            android:hint="₹100.00"
             android:maxLength="5"
             android:paddingStart="@dimen/dp25"/>
 
@@ -84,7 +84,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp25"
-        android:text="Minimum withdrawal: $10.00"
+        android:text="Minimum withdrawal: ₹100.00"
         android:paddingStart="@dimen/dp20"
         android:textColor="@color/black"
         android:textSize="@dimen/sp14" />

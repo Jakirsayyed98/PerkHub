@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:id="@+id/mainlayout"
-    tools:context=".Screens.withdrawal.WithdrawalFlowFragment">
+    tools:context=".Screens.withdrawal.AddPaymentMethodFragment">
 
     <LinearLayout
         android:id="@+id/toolbar2"
@@ -81,14 +81,13 @@
         >
 
         <EditText
-            android:id="@+id/amount"
+            android:id="@+id/upi"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp50"
             android:imeOptions="actionDone"
             android:background="@drawable/border_5dp"
             android:inputType="text"
             android:hint="yourname@upi"
-            android:maxLength="5"
             android:paddingStart="@dimen/dp25"/>
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -294,7 +293,6 @@
                 android:background="@drawable/border_5dp"
                 android:inputType="text"
                 android:hint="HFMC00001234"
-                android:maxLength="11"
                 android:paddingStart="@dimen/dp25"/>
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -329,7 +327,6 @@
                 android:imeOptions="actionDone"
                 android:background="@drawable/border_5dp"
                 android:hint="HMFD BANK"
-                android:maxLength="5"
                 android:paddingStart="@dimen/dp25"/>
 
         </com.google.android.material.textfield.TextInputLayout>

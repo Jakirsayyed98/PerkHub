@@ -1,27 +1,40 @@
 package app.perkhub.Screens.withdrawal
 
+import android.annotation.SuppressLint
+import android.app.Dialog
+import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import androidx.appcompat.widget.AppCompatButton
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import app.perkhub.ContainerActivity
+import app.perkhub.R
+import app.perkhub.Screens.withdrawal.Adapter.PaymentMethodsAdapter
+import app.perkhub.Screens.withdrawal.model.Data
+import app.perkhub.Screens.withdrawal.model.getPaymentMethodsRes
 import app.perkhub.StatusDialogFragment
 import app.perkhub.Utils.BaseFragment
+import app.perkhub.Utils.RecyclerClickListener
 import app.perkhub.Utils.toast
+import app.perkhub.api.ApiListener
 import app.perkhub.databinding.FragmentWithdrawalFlowBinding
 
 
 class WithdrawalFlowFragment : BaseFragment<FragmentWithdrawalFlowBinding>() {
 
-//    var userdata : LoginRes?=null
-    var VerifiedAmount = "0"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -53,11 +66,62 @@ class WithdrawalFlowFragment : BaseFragment<FragmentWithdrawalFlowBinding>() {
 
         _binding!!.continuebtn.setOnClickListener {
             if(_binding!!.continuebtn.isSelected){
-                ContainerActivity.OpenContainer(requireContext(),"AddWithdrawalPaymentMethod",null)
+                getPaymentMethod()
+
             }
         }
 
         return _binding?.root
+    }
+
+    private fun getPaymentMethod() {
+
+        viewModel.GetPaymentMethod(requireContext(),object:ApiListener<getPaymentMethodsRes>{
+            override fun onSuccess(t: getPaymentMethodsRes?, mess: String) {
+                t!!.let {
+                    if(t.status==200){
+                        if (t.data.size>0){
+                            requireActivity().runOnUiThread {
+                                requireContext().ShowPaymentMethods(it.data)
+                            }
+
+                        }else{
+                            ContainerActivity.OpenContainer(requireContext(),"AddWithdrawalPaymentMethod",null)
+                        }
+                    }
+                }
+            }
+
+        })
+    }
+
+    private fun Context.ShowPaymentMethods(data: ArrayList<Data>) {
+        val dialog = Dialog(this)
+        dialog.setContentView(R.layout.payment_method_dialog)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        val AddMore = dialog.findViewById<AppCompatButton>(R.id.AddMore)
+        val paymentMethods = dialog.findViewById<RecyclerView>(R.id.paymentMethods)
+        dialog.setCancelable(true)
+        setPaymethodList(data,paymentMethods)
+        AddMore.setOnClickListener {
+            ContainerActivity.OpenContainer(requireContext(),"AddWithdrawalPaymentMethod",null)
+
+        }
+        dialog.show()
+    }
+
+    private fun setPaymethodList(data: ArrayList<Data>,paymentMethods: RecyclerView) {
+        val adapter = PaymentMethodsAdapter<Data>(object :RecyclerClickListener{
+            override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
+                ContainerActivity.OpenContainer(requireContext(),"WithdrawalConfirmationFragment",null)
+            }
+        })
+
+        paymentMethods.apply {
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            this.adapter = adapter
+        }
+        adapter.addAllItem(data)
     }
 
     private fun applySafeAreaInsets() {
@@ -69,24 +133,6 @@ class WithdrawalFlowFragment : BaseFragment<FragmentWithdrawalFlowBinding>() {
         }
     }
 
-    private fun ShowSuccessDialog(status: String) {
-        val dialogFragment = StatusDialogFragment.newInstance(status)
-        val fragmentManager: FragmentManager = childFragmentManager
-        val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
-        dialogFragment.show(fragmentTransaction, "StatusDialogFragment")
-
-        // Dismiss the dialog after 2 seconds
-      try {
-          Handler().postDelayed({
-              if (dialogFragment.isAdded) {
-                  dialogFragment.dismiss()
-                  requireActivity().onBackPressedDispatcher?.onBackPressed()
-              }
-          }, 4000) // 2000 milliseconds = 2 seconds
-      }catch (e :Exception){
-            e.printStackTrace()
-      }
-    }
 
     companion object {
         @JvmStatic

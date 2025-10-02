@@ -20,6 +20,9 @@ import app.perkhub.Screens.login.models.LoginRes
 import app.perkhub.Screens.login.models.SaveUserDetail
 import app.perkhub.Screens.login.models.SendOtpReq
 import app.perkhub.Screens.login.models.VerifyOtpReq
+import app.perkhub.Screens.withdrawal.model.addPaymentMethodReq
+import app.perkhub.Screens.withdrawal.model.addPaymentMethodRes
+import app.perkhub.Screens.withdrawal.model.getPaymentMethodsRes
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody
 import okhttp3.logging.HttpLoggingInterceptor
@@ -131,6 +134,16 @@ interface MyApi {
     @GET("get-notification-history")
     suspend fun getNotificationList(
     ):Response<NotificationListRes>
+
+
+    @GET("withdrawal/getPaymentMethod")
+    suspend fun getPaymentMethods(
+    ):Response<getPaymentMethodsRes>
+
+  @POST("withdrawal/addPaymentMethod")
+    suspend fun addPaymentMethod(
+        @Body body: addPaymentMethodReq
+    ):Response<addPaymentMethodRes>
 
 
 
