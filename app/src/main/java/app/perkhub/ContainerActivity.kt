@@ -2,6 +2,7 @@ package app.perkhub
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.core.view.ViewCompat
@@ -11,6 +12,9 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
 import app.perkhub.Screens.Home.HomeScreenFragment
 import app.perkhub.Screens.Notifications.NotificationListFragment
+import app.perkhub.Screens.Profile.NewTicketFragment
+import app.perkhub.Screens.Profile.ProfileFragment
+import app.perkhub.Screens.Profile.TicketListFragment
 import app.perkhub.Screens.Stores.SelectedCategoryFragment
 import app.perkhub.Screens.Stores.StoreDetailFragment
 import app.perkhub.Screens.StoreTransaction.TransactionDetailFragment
@@ -68,7 +72,7 @@ class ContainerActivity : BaseActivity<ActivityContainerBinding>() {
         binding = ActivityContainerBinding.inflate(layoutInflater)
         enableEdgeToEdge()
         WindowCompat.setDecorFitsSystemWindows(window, false)
-//        window.statusBarColor = Color.TRANSPARENT
+        window.statusBarColor = Color.WHITE
         WindowInsetsControllerCompat(window, window.decorView).apply {
             isAppearanceLightStatusBars = true
         }
@@ -132,6 +136,19 @@ class ContainerActivity : BaseActivity<ActivityContainerBinding>() {
             "WithdrawalConfirmationFragment"->{
                 addFragment(WithdrawalConfirmationFragment.newInstance())
             }
+
+            "ProfileFragment"->{
+                addFragment(ProfileFragment.newInstance())
+            }
+
+            "TicketListFragment"->{
+                addFragment(TicketListFragment.newInstance())
+            }
+
+            "NewTicketFragment"->{
+                addFragment(NewTicketFragment.newInstance())
+            }
+
         }
     }
 

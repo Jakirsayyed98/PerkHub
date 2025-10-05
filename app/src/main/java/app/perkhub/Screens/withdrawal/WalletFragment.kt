@@ -17,6 +17,7 @@ import app.perkhub.Screens.Home.Model.TransactionModel.TransactionDataRes
 import app.perkhub.Screens.Home.Model.Withdrawal.withdrawalRes
 import app.perkhub.Utils.BaseFragment
 import app.perkhub.Utils.RecyclerClickListener
+import app.perkhub.Utils.Snackbar
 import app.perkhub.Utils.setSuffixAmount
 import app.perkhub.Utils.toast
 import app.perkhub.api.ApiListener
@@ -45,11 +46,15 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>() {
 
         applySafeAreaInsets()
         getTransactionData()
-        getWithdrawalTransaction()
+
 
         return _binding?.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        getWithdrawalTransaction()
+    }
     private fun getWithdrawalTransaction() {
         viewModel.getWithdrawalTxn(requireContext(), object : ApiListener<withdrawalRes> {
             override fun onSuccess(t: withdrawalRes?, mess: String) {
@@ -101,19 +106,15 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>() {
 
                                     _binding!!.withdraw.setOnClickListener {
                                         Log.d("MyBalance", avail.toString())
-//                                        if (avail >= 100) {
+                                        if (avail >= 100) {
                                             ContainerActivity.OpenContainer(
                                                 requireContext(),
                                                 "WidthdrawFlowFragment",
                                                 ""
                                             )
-//                                        } else {
-                                            Toast.makeText(
-                                                requireContext(),
-                                                "Available Amount should not be less then ₹100",
-                                                Toast.LENGTH_SHORT
-                                            ).show()
-//                                        }
+                                        } else {
+                                            requireContext().Snackbar("Available Amount should not be less then ₹100",_binding!!.mainlayout)
+                                        }
                                     }
                                 }
                             }

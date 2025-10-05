@@ -239,7 +239,7 @@
                     <RelativeLayout
                         android:id="@+id/detail"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/dp30"
+                        android:layout_height="@dimen/dp50"
                         android:layout_marginTop="@dimen/dp30"
                         android:layout_marginBottom="@dimen/dp20"
                         android:layout_marginStart="@dimen/dp15"

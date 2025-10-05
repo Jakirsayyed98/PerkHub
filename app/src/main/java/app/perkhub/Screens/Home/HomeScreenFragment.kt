@@ -37,6 +37,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import androidx.lifecycle.ViewModelProvider
 import app.perkhub.Screens.login.models.LoginRes
+import com.google.android.material.snackbar.Snackbar
 
 class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
 
@@ -104,7 +105,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             binding.toolbar.updatePadding(top = systemBars.top)
-            binding.navView.updatePadding(top = systemBars.top)
+//            binding.navView.updatePadding(top = systemBars.top)
             binding.mainlayout.updatePadding(bottom = systemBars.bottom)
             insets
         }
@@ -142,7 +143,8 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
 
             override fun onError(mess: String) {
                 lifecycleScope.launch(Dispatchers.Main) {
-                    Toast.makeText(requireContext(), "Home API error: $mess", Toast.LENGTH_LONG).show()
+                    requireContext().Snackbar("Home API error: $mess",_binding!!.mainlayout)
+//                    Toast.makeText(requireContext(), "Home API error: $mess", Toast.LENGTH_LONG).show()
                 }
             }
         })
@@ -151,7 +153,11 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
     private fun fetchGamesData() {
         viewModel.getPopularGames(requireContext(), object : ApiListener<GamesRes> {
             override fun onSuccess(t: GamesRes?, mess: String) {
-                t?.data?.let { setPopularGamesLayout(it) }
+                t?.data?.let {
+                    lifecycleScope.launch(Dispatchers.Main) {
+                        setPopularGamesLayout(it)
+                    }
+                }
             }
 
             override fun onError(mess: String) {}
@@ -311,34 +317,38 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
 
     // ---------------- DRAWER MENU ---------------- //
     private fun setupMenu() {
-        toggle = ActionBarDrawerToggle(requireActivity(), binding.drawerlayout, R.string.open, R.string.close)
-        binding.drawerlayout.addDrawerListener(toggle)
-        toggle.syncState()
-
-        val header = binding.navView.getHeaderView(0)
+//        toggle = ActionBarDrawerToggle(requireActivity(), binding.drawerlayout, R.string.open, R.string.close)
+//        binding.drawerlayout.addDrawerListener(toggle)
+//        toggle.syncState()
+//
+//        val header = binding.navView.getHeaderView(0)
         val userName = getSharedpref().getUser(USERDATA)?.data
-        header.findViewById<TextView>(R.id.Profilename).text = userName?.name!!.replaceFirstChar { it.uppercase() }.orEmpty()
-        header.findViewById<TextView>(R.id.email).text = userName.email
-        header.findViewById<TextView>(R.id.ProfilenameShort).text = userName.email.toCharArray()[0].toString().uppercase()
-        binding.profileName.text = userName.email.take(2).toString().uppercase()
+//        header.findViewById<TextView>(R.id.Profilename).text = userName?.name!!.replaceFirstChar { it.uppercase() }.orEmpty()
+//        header.findViewById<TextView>(R.id.email).text = userName.email
+//        header.findViewById<TextView>(R.id.ProfilenameShort).text = userName.email.toCharArray()[0].toString().uppercase()
+        binding.profileName.text = userName!!.email.take(2).toString().uppercase()
 
 
-        binding.profile.setOnClickListener { binding.drawerlayout.open() }
-
-        binding.navView.setNavigationItemSelectedListener {
-            when (it.itemId) {
-                R.id.home -> binding.drawerlayout.close()
-                R.id.transaction -> ContainerActivity.OpenContainer(requireContext(), "TransactionHistoryFragment", "")
-                R.id.wallet -> ContainerActivity.OpenContainer(requireContext(), "WalletFragment", "")
-                R.id.share -> requireContext().shareAppLink()
-                R.id.rate_us -> requireContext().rateUsApp()
-                R.id.privacy_policy -> requireContext().openCustomTab(PRIVACYPOLICY)
-                R.id.about_us -> requireContext().openCustomTab(ABOUTUS)
-                R.id.contact_us -> requireContext().openCustomTab(CONTACTUS)
-                R.id.logout -> requireContext().showLogoutDialog()
-            }
-            true
+        binding.profile.setOnClickListener {
+            ContainerActivity.OpenContainer(requireContext(), "ProfileFragment", "")
+//            binding.drawerlayout.open()
         }
+
+//        binding.navView.setNavigationItemSelectedListener {
+//            when (it.itemId) {
+//                R.id.home -> binding.drawerlayout.close()
+//                R.id.transaction -> ContainerActivity.OpenContainer(requireContext(), "TransactionHistoryFragment", "")
+//
+//                R.id.wallet -> ContainerActivity.OpenContainer(requireContext(), "WalletFragment", "")
+//                R.id.share -> requireContext().shareAppLink()
+//                R.id.rate_us -> requireContext().rateUsApp()
+//                R.id.privacy_policy -> requireContext().openCustomTab(PRIVACYPOLICY)
+//                R.id.about_us -> requireContext().openCustomTab(ABOUTUS)
+//                R.id.contact_us -> requireContext().openCustomTab(CONTACTUS)
+//                R.id.logout -> requireContext().showLogoutDialog()
+//            }
+//            true
+//        }
     }
 
     private fun Context.showLogoutDialog() {
@@ -352,12 +362,12 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         cancel.setOnClickListener {
             dialog.dismiss()
             binding.drawerlayout.close()
-            toast("Stay logged in")
+            Snackbar("Stay logged in",_binding!!.mainlayout)
         }
         leave.setOnClickListener {
             dialog.dismiss()
             binding.drawerlayout.close()
-            toast("Logged out successfully")
+            Snackbar("Logged out successfully",_binding!!.mainlayout)
         }
         dialog.show()
     }

@@ -49,6 +49,16 @@
     <string name="notes"><b>•</b> Cashback is calculated on the purchase amount excluding taxes and shipping\n\n<b>•</b> Using external coupon codes may affect cashback tracking
         \n\n<b>•</b> Cashback may be reduced or cancelled if items are returned\n\n<b>•</b> Some product categories may be excluded from cashback</string>
     <string name="we_ll_redirect_you_to">We\'ll redirect you to %s via our perkhub link to track your purchase.</string>
+    <string name="help_support"><![CDATA[Help & Support]]></string>
+    <string name="subject_test_subject"><b>Subject:</b> %s</string>
+    <string name="ticket_id_1234"><b>Ticket Id:</b>#%s</string>
+    <string name="category_shopping"><b>Category:</b> %s</string>
+    <string name="last_message_shopping"><b>Last Message:</b> %s</string>
+    <string name="priority_medium"><b>Priority:</b> %s</string>
 
-    <!-- Backwards compatibility -->
+    <string name="tickets_notes"><b>•</b> Be specific about your issue and include relevant details\n\n<b>•</b> Mention any error messages you received
+        \n\n<b>•</b> Include transaction IDs or order numbers if applicable\n\n<b>•</b> Attach screenshots if they help explain the problem</string>
+
+
+
 </resources>

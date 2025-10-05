@@ -43,11 +43,11 @@ class StoreDetailFragment : BaseFragment<FragmentStoreDetailBinding>() {
         applySafeAreaInsets()
         var data = Gson().fromJson<MiniApp>(requireActivity().intent.getStringExtra(DATA),MiniApp::class.java)
         Log.d("this is miniapp data",data.toString())
-        if (data.cbActive){
-            _binding!!.cashbackactiveSection.visibility = View.VISIBLE
-        }else{
-            _binding!!.cashbackactiveSection.visibility = View.GONE
-        }
+//        if (data.cbActive){
+//            _binding!!.cashbackactiveSection.visibility = View.VISIBLE
+//        }else{
+//            _binding!!.cashbackactiveSection.visibility = View.GONE
+//        }
         _binding!!.storename.text = data.name
         _binding!!.link.setText(data.url)
         _binding!!.storenameterm.text = getString(R.string.complete_your_purchase,data.name)
@@ -57,19 +57,31 @@ class StoreDetailFragment : BaseFragment<FragmentStoreDetailBinding>() {
 
         _binding!!.cashbacktext.text = Html.fromHtml(if (!data.cbPercentage.isNullOrEmpty()) "upto "+data.cbPercentage+" Cashback" else "" , Html.FROM_HTML_MODE_LEGACY)
 
-        if (!data.cbActive){
-            _binding!!.cashbackactiveSection.visibility = View.GONE
+        if (data.cbActive){
+            _binding!!.cahbackdetails.visibility = View.VISIBLE
+            _binding!!.sharelink.visibility = View.VISIBLE
+            _binding!!.importantNote.visibility = View.VISIBLE
+        }else{
+            _binding!!.cahbackdetails.visibility = View.GONE
+            _binding!!.sharelink.visibility = View.GONE
+            _binding!!.importantNote.visibility = View.GONE
             _binding!!.cashbacktext.text =  "Cashback is not active"
-//            _binding!!.cashbacktext.setTextColor(R.color.red)
-//            _binding!!.cashbacktext.setBackgroundColor(R.color.red_100)
-
         }
+         if (data.trending){
+                _binding!!.tag.visibility = View.VISIBLE
+            }else{
+                _binding!!.tag.visibility = View.GONE
+            }
 
         _binding!!.share.setOnClickListener {
             GetUrl(data.name.toString(),"Share")
         }
         _binding!!.shop.setOnClickListener {
-            GetUrl(data.name.toString(),"Shop")
+            if (data.cbActive) {
+                GetUrl(data.name.toString(), "Shop")
+            }else{
+                requireContext().openCustomTab(data.url)
+            }
         }
 
 

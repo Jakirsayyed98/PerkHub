@@ -15,11 +15,14 @@ import app.perkhub.Screens.Home.Model.Notification.TokenReq
 import app.perkhub.Screens.Home.Model.TransactionModel.TransactionDataRes
 import app.perkhub.Screens.Home.Model.Withdrawal.WithdrawalReq
 import app.perkhub.Screens.Home.Model.Withdrawal.withdrawalRes
+import app.perkhub.Screens.Profile.model.TicketsRes
 import app.perkhub.Screens.login.models.GetToken
 import app.perkhub.Screens.login.models.LoginRes
 import app.perkhub.Screens.login.models.SaveUserDetail
 import app.perkhub.Screens.login.models.SendOtpReq
 import app.perkhub.Screens.login.models.VerifyOtpReq
+import app.perkhub.Screens.withdrawal.model.RequestWithdrawalReq
+import app.perkhub.Screens.withdrawal.model.RequestWithdrawalRes
 import app.perkhub.Screens.withdrawal.model.addPaymentMethodReq
 import app.perkhub.Screens.withdrawal.model.addPaymentMethodRes
 import app.perkhub.Screens.withdrawal.model.getPaymentMethodsRes
@@ -144,6 +147,15 @@ interface MyApi {
     suspend fun addPaymentMethod(
         @Body body: addPaymentMethodReq
     ):Response<addPaymentMethodRes>
+
+@POST("withdrawal/request")
+    suspend fun RequestWithdrawalPayment(
+        @Body body: RequestWithdrawalReq
+    ):Response<RequestWithdrawalRes>
+
+    @GET("tickets/by_user")
+    suspend fun getAllTickets(
+    ):Response<TicketsRes>
 
 
 

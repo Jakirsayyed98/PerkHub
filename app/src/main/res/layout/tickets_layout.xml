@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="@dimen/dp10"
+    android:id="@+id/card"
+    app:cardBackgroundColor="@color/green"
+    app:cardCornerRadius="@dimen/dp15">
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:cardCornerRadius="@dimen/dp15"
+        android:layout_marginStart="@dimen/dp10">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/dp10"
+            android:orientation="vertical">
+                <TextView
+                    android:id="@+id/status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Open"
+                    android:background="@drawable/border_5dp"
+                    android:textAlignment="textEnd"
+                    android:textSize="@dimen/sp14"
+                    android:padding="@dimen/dp5"
+                    android:layout_gravity="end"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/subject"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/subject_test_subject"
+                android:textSize="@dimen/sp16"
+                android:textColor="@color/black"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/ticketId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/ticket_id_1234"
+                android:layout_marginTop="@dimen/dp10"
+                android:textSize="@dimen/sp14"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/category_shopping"
+                android:layout_marginTop="@dimen/dp10"
+                android:textSize="@dimen/sp14"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/lastMessage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/last_message_shopping"
+                android:layout_marginTop="@dimen/dp10"
+                android:textSize="@dimen/sp14"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/priority"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/priority_medium"
+                android:layout_marginTop="@dimen/dp10"
+                android:textSize="@dimen/sp14"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textColor="@color/black" />
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</androidx.cardview.widget.CardView>

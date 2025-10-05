@@ -77,15 +77,6 @@
 
                         </androidx.cardview.widget.CardView>
 
-                        <!-- Online Status Indicator -->
-                        <View
-                            android:layout_width="@dimen/dp12"
-                            android:layout_height="@dimen/dp12"
-                            android:layout_gravity="bottom|end"
-                            android:layout_marginEnd="@dimen/dp2"
-                            android:layout_marginBottom="@dimen/dp2"
-                            android:background="@drawable/dashboard_icon" />
-
                     </FrameLayout>
 
                     <!-- Modern Search Bar -->
@@ -418,20 +409,6 @@
         </androidx.core.widget.NestedScrollView>
         </LinearLayout>
         <!-- Modern Floating Action Button (Optional) -->
-        <Button
-            android:id="@+id/fabQuickAction"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_marginEnd="@dimen/dp16"
-            android:layout_marginBottom="@dimen/dp16"
-            android:text="Quick Shop"
-            android:textColor="@color/white"
-            app:icon="@drawable/shopping_cart"
-            app:iconTint="@color/white"
-            app:backgroundTint="@color/fab_bg"
-            app:elevation="@dimen/dp8"
-            />
 
         <!-- Modern Loading Indicator -->
         <FrameLayout
@@ -440,6 +417,7 @@
             android:layout_height="match_parent"
             android:background="@color/loading_overlay_bg"
             android:clickable="true"
+            android:layout_marginTop="@dimen/dp100"
             android:focusable="true">
 
             <LinearLayout
@@ -470,13 +448,5 @@
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-    <!-- Modern Navigation Drawer -->
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/nav_view"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:fitsSystemWindows="true"
-        app:headerLayout="@layout/nav_header"
-        app:menu="@menu/menu" />
+
 </androidx.drawerlayout.widget.DrawerLayout>

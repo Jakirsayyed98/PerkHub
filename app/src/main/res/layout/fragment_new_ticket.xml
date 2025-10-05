@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/mainlayout"
+    android:orientation="vertical"
+    tools:context=".Screens.Profile.NewTicketFragment">
+        <!-- Toolbar -->
+        <LinearLayout
+            android:id="@+id/toolbar2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <include
+                android:id="@+id/toolbar"
+                layout="@layout/toolbar_layout"/>
+        </LinearLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <!-- Main Content Card -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/dp15"
+                    android:layout_marginTop="@dimen/dp15"
+                    android:layout_marginBottom="@dimen/dp15"
+                    app:cardCornerRadius="@dimen/dp15"
+                    app:cardBackgroundColor="@android:color/white">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/dp15"
+                        android:orientation="vertical">
+
+                        <!-- Header -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Create New Ticket"
+                            android:textStyle="bold"
+                            android:textSize="@dimen/sp24"
+                            android:textColor="#212121"
+                            android:letterSpacing="0.01"
+                            android:layout_marginBottom="8dp"/>
+
+                        <View
+                            android:layout_width="@dimen/dp48"
+                            android:layout_height="@dimen/dp4"
+                            android:background="@color/light_blue"
+                            android:layout_marginBottom="24dp"/>
+
+                        <!-- Subject Section -->
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/subjectLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Subject *"
+                            app:hintTextColor="#757575"
+                            app:boxStrokeColor="@color/light_blue"
+                            app:boxBackgroundMode="outline"
+                            app:boxCornerRadiusTopStart="@dimen/dp12"
+                            app:boxCornerRadiusTopEnd="@dimen/dp12"
+                            app:boxCornerRadiusBottomStart="@dimen/dp12"
+                            app:boxCornerRadiusBottomEnd="@dimen/dp12">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/subject"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="text"
+                                android:maxLines="1"
+                                android:textSize="@dimen/dp16"
+                                android:padding="@dimen/dp16"
+                                android:textColor="#212121"/>
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <!-- Category Section -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Category *"
+                            android:layout_marginTop="@dimen/dp10"
+                            android:textSize="@dimen/sp16"
+                            android:textStyle="bold"
+                            android:textColor="#212121"
+                            android:layout_marginBottom="@dimen/dp8"/>
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:cardCornerRadius="@dimen/dp12"
+                            app:strokeWidth="@dimen/dp1"
+                            app:strokeColor="#BDBDBD"
+                            app:cardBackgroundColor="@android:color/white">
+
+                            <Spinner
+                                android:id="@+id/category"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:minHeight="@dimen/dp45"
+                                android:paddingStart="@dimen/dp15"
+                                android:paddingEnd="@dimen/dp15"
+                                android:spinnerMode="dropdown"/>
+                        </androidx.cardview.widget.CardView>
+
+                        <!-- Priority Section -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Priority *"
+                            android:layout_marginTop="@dimen/dp10"
+                            android:textSize="@dimen/dp15"
+                            android:textStyle="bold"
+                            android:textColor="#212121"
+                            android:layout_marginBottom="@dimen/dp8"/>
+
+                        <RadioGroup
+                            android:id="@+id/priorityGroup"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+
+                                <RadioButton
+                                    android:id="@+id/low"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:minHeight="@dimen/dp45"
+                                    android:paddingStart="16dp"
+                                    android:paddingEnd="16dp"
+                                    android:background="?attr/selectableItemBackground"
+                                    android:buttonTint="@color/light_blue"
+                                    android:checked="true"
+                                    android:textSize="@dimen/dp15"
+                                    android:textColor="#212121"
+                                    android:text="Low" />
+
+
+                                <RadioButton
+                                    android:id="@+id/medium"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:minHeight="@dimen/dp45"
+                                    android:paddingStart="16dp"
+                                    android:paddingEnd="16dp"
+                                    android:background="?attr/selectableItemBackground"
+                                    android:buttonTint="@color/light_blue"
+                                    android:textSize="@dimen/dp15"
+                                    android:textColor="#212121"
+                                    android:text="Medium" />
+
+                                <RadioButton
+                                    android:id="@+id/high"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:minHeight="@dimen/dp45"
+                                    android:paddingStart="16dp"
+                                    android:paddingEnd="16dp"
+                                    android:background="?attr/selectableItemBackground"
+                                    android:buttonTint="@color/light_blue"
+                                    android:textSize="@dimen/dp15"
+                                    android:textColor="#212121"
+                                    android:text="High" />
+                        </RadioGroup>
+
+                        <!-- Description Section -->
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/descriptionLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp10"
+                            android:hint="Description *"
+                            app:hintTextColor="#757575"
+                            app:boxStrokeColor="@color/light_blue"
+                            app:boxBackgroundMode="outline"
+                            app:boxCornerRadiusTopStart="12dp"
+                            app:boxCornerRadiusTopEnd="12dp"
+                            app:boxCornerRadiusBottomStart="12dp"
+                            app:boxCornerRadiusBottomEnd="12dp"
+                            app:counterEnabled="true"
+                            app:counterMaxLength="500">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/description"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:minHeight="120dp"
+                                android:gravity="top|start"
+                                android:inputType="textMultiLine|textCapSentences"
+                                android:maxLength="500"
+                                android:padding="16dp"
+                                android:textSize="@dimen/dp15"
+                                android:textColor="#212121"
+                                android:hint="Please provide detailed information about your issue..."/>
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <!-- Submit Button -->
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/createTicketBtn"
+                            android:layout_width="match_parent"
+                            android:layout_height="56dp"
+                            android:layout_marginTop="@dimen/dp10"
+                            android:text="Create Ticket"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textAllCaps="false"
+                            android:textColor="@android:color/white"
+                            app:cornerRadius="12dp"
+                            android:background="@drawable/selected_button_layout"
+                            app:elevation="2dp"/>
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/dp10"
+                    app:cardCornerRadius="@dimen/dp10"
+                    app:cardBackgroundColor="@color/protipbg"
+                    android:layout_marginHorizontal="@dimen/dp15"
+                    android:layout_marginBottom="@dimen/dp24"
+                    app:cardElevation="-2dp"
+                    android:layout_marginTop="@dimen/dp15">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/protiptext"
+                        android:textSize="@dimen/sp18"
+                        android:textStyle="bold"
+                        android:layout_marginHorizontal="@dimen/dp15"
+                        android:layout_marginTop="@dimen/dp15"
+                        android:text="Tips for Better Support"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/protiptext"
+                        android:textSize="@dimen/sp14"
+                        android:layout_marginHorizontal="@dimen/dp15"
+                        android:layout_marginVertical="@dimen/dp15"
+                        android:textStyle="bold"
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/tickets_notes"/>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+</LinearLayout>

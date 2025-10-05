@@ -102,18 +102,29 @@ class WithdrawalFlowFragment : BaseFragment<FragmentWithdrawalFlowBinding>() {
         val AddMore = dialog.findViewById<AppCompatButton>(R.id.AddMore)
         val paymentMethods = dialog.findViewById<RecyclerView>(R.id.paymentMethods)
         dialog.setCancelable(true)
-        setPaymethodList(data,paymentMethods)
+        setPaymethodList(data,paymentMethods,dialog)
         AddMore.setOnClickListener {
             ContainerActivity.OpenContainer(requireContext(),"AddWithdrawalPaymentMethod",null)
-
         }
         dialog.show()
     }
 
-    private fun setPaymethodList(data: ArrayList<Data>,paymentMethods: RecyclerView) {
+
+    private fun setPaymethodList(data: ArrayList<Data>,paymentMethods: RecyclerView,dialog: Dialog) {
+        val withdrawal =HashMap<String,String>()
+        withdrawal["amount"]=_binding!!.amount.text.toString()
+
         val adapter = PaymentMethodsAdapter<Data>(object :RecyclerClickListener{
             override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
-                ContainerActivity.OpenContainer(requireContext(),"WithdrawalConfirmationFragment",null)
+                if(data is Data){
+                    withdrawal["bankName"]= data.bank_name ?: "UPI"
+                    withdrawal["accountNumber"]=data.identifier!!
+                    withdrawal["paymentMethodId"]=data.id
+                    dialog.dismiss()
+                    ContainerActivity.OpenContainer(requireContext(),"WithdrawalConfirmationFragment",withdrawal)
+                    requireActivity().onBackPressedDispatcher?.onBackPressed()
+                }
+
             }
         })
 

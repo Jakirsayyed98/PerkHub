@@ -6,15 +6,22 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
+import com.google.android.material.snackbar.Snackbar
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 
 fun Context.toast(text:String){
     Toast.makeText(this,text,Toast.LENGTH_LONG).show()
+}
+
+fun Context.Snackbar(text:String,view:View){
+    Snackbar.make(view, text, Snackbar.LENGTH_LONG).show();
+
 }
 
 fun Context.openCustomTab(uri: String?) {

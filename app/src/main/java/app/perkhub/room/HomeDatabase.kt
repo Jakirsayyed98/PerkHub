@@ -6,18 +6,20 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import app.perkhub.Screens.Home.Model.Notification.Data
+import app.perkhub.room.Tickets.TicketsDao
 
 @Database(
-    entities = [HomeCache::class,Data::class,app.perkhub.Screens.Home.Model.TransactionModel.Data::class], // ✅ Correct entity name
+    entities = [HomeCache::class,Data::class,app.perkhub.Screens.Home.Model.TransactionModel.Data::class, app.perkhub.Screens.Profile.model.Data::class], // ✅ Correct entity name
     version = 1,
     exportSchema = false
 )
-@TypeConverters(HomeResponseConverter::class) // ✅ Required for HomeRes (custom type)
+@TypeConverters(HomeResponseConverter::class)
 abstract class HomeDatabase : RoomDatabase() {
 
     abstract fun homeCacheDao(): HomeCacheDao
     abstract fun notificationDao(): NotificationDao
     abstract fun storeTransactionDao(): StoreTransactionsDao
+    abstract fun ticketsDao(): TicketsDao
 
     companion object {
         @Volatile
@@ -28,9 +30,9 @@ abstract class HomeDatabase : RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     HomeDatabase::class.java,
-                    "home_database"
+                    "perkhub_database"
                 )
-                    .fallbackToDestructiveMigration() // ✅ prevents crashes if schema changes
+                    .fallbackToDestructiveMigration()
                     .build()
                 INSTANCE = instance
                 instance

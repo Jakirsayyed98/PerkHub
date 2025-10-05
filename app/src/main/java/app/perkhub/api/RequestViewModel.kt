@@ -19,22 +19,25 @@ import app.perkhub.Screens.Home.Model.TransactionModel.Datas
 import app.perkhub.Screens.Home.Model.TransactionModel.TransactionDataRes
 import app.perkhub.Screens.Home.Model.Withdrawal.WithdrawalReq
 import app.perkhub.Screens.Home.Model.Withdrawal.withdrawalRes
+import app.perkhub.Screens.Profile.model.TicketsRes
 import app.perkhub.Screens.login.models.GetToken
 import app.perkhub.Screens.login.models.LoginRes
 import app.perkhub.Screens.login.models.SaveUserDetail
 import app.perkhub.Screens.login.models.SendOtpReq
 import app.perkhub.Screens.login.models.VerifyOtpReq
+import app.perkhub.Screens.withdrawal.model.RequestWithdrawalReq
+import app.perkhub.Screens.withdrawal.model.RequestWithdrawalRes
 import app.perkhub.Screens.withdrawal.model.addPaymentMethodReq
 import app.perkhub.Screens.withdrawal.model.addPaymentMethodRes
 import app.perkhub.Screens.withdrawal.model.getPaymentMethodsRes
 import app.perkhub.room.HomeRepository
 import app.perkhub.room.NotificationRepository
 import app.perkhub.room.StoresTransactionsRepository
+import app.perkhub.room.Tickets.TicketsRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 fun CoroutineScope.launchSafe(
@@ -215,6 +218,12 @@ class RequestViewModel(
     fun GetPaymentMethod(context: Context, listener: ApiListener<getPaymentMethodsRes>) {
         launchApi({ apiProvider(context).getPaymentMethods().body() }, listener)
     }
+  fun RequestWithdrawalPayment(
+      req: RequestWithdrawalReq,
+      context: Context, listener: ApiListener<RequestWithdrawalRes>
+  ) {
+        launchApi({ apiProvider(context).RequestWithdrawalPayment(req).body() }, listener)
+    }
 
 //    fun getNotificationList(context: Context, listener: ApiListener<NotificationListRes>) {
 //        launchApi({ apiProvider(context).getNotificationList().body() }, listener)
@@ -250,6 +259,58 @@ class RequestViewModel(
                                 t?.data?.let {
                                     // Save to database
                                     repository.saveNotifications(it)
+
+                                    // Notify listener with fresh data
+                                    listener.onSuccess(t, mess)
+                                }
+                            }
+                        }
+
+                        override fun onError(mess: String) {
+                            // If no cached data, propagate error
+                            if (cachedData.isEmpty()) {
+                                listener.onError(mess)
+                            }
+                            // Otherwise, we already returned cached data
+                        }
+                    })
+
+            } catch (e: Exception) {
+                listener.onError(e.message ?: "Unknown error")
+            }
+        }
+    }
+
+    fun getAllTickets(
+        context: Context,
+        forceRefresh: Boolean = false,
+        listener: ApiListener<TicketsRes>
+    ) {
+        val repository = TicketsRepository(context)
+
+        viewModelScope.launch {
+            try {
+                // First, load from database
+                val cachedData = repository.getAllTickets()
+
+                if (cachedData.isNotEmpty() && !forceRefresh) {
+                    // Return cached data immediately
+                    val cachedResponse = TicketsRes(
+                        data = cachedData,
+                        status = 200,
+                        message = "success"
+                    )
+                    listener.onSuccess(cachedResponse, "Loaded from cache")
+                }
+
+                // Then fetch from server in background
+                launchApi({ apiProvider(context).getAllTickets().body() },
+                    object : ApiListener<TicketsRes> {
+                        override fun onSuccess(t: TicketsRes?, mess: String) {
+                            viewModelScope.launch {
+                                t?.data?.let {
+                                    // Save to database
+                                    repository.saveTickets(it)
 
                                     // Notify listener with fresh data
                                     listener.onSuccess(t, mess)
