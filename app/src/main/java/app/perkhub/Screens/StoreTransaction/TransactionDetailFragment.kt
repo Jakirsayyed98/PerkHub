@@ -35,22 +35,12 @@ class TransactionDetailFragment : BaseFragment<FragmentTransactionDetailBinding>
         _binding!!.toolbar.backbtn.setOnClickListener {
             requireActivity().onBackPressedDispatcher?.onBackPressed()
         }
-        applySafeAreaInsets()
         _binding!!.toolbar.name.text = "Transaction Detail"
 
         val data =Gson().fromJson<Data>( requireActivity().intent?.getStringExtra(DATA),Data::class.java)
         setData(data)
 
         return _binding?.root
-    }
-
-    private fun applySafeAreaInsets() {
-        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            binding.toolbar2.updatePadding(top = systemBars.top)
-            binding.mainlayout.updatePadding(bottom = systemBars.bottom)
-            insets
-        }
     }
 
     private fun setData(data: Data?) {

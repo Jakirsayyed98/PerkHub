@@ -41,7 +41,7 @@ class TransactionHistoryFragment : BaseFragment<FragmentTransactionHistoryBindin
         _binding!!.toolbar.name.text = "Store Orders"
 
         getTransactionData()
-        applySafeAreaInsets()
+
         return _binding?.root
     }
 
@@ -100,15 +100,6 @@ class TransactionHistoryFragment : BaseFragment<FragmentTransactionHistoryBindin
 
         // Trigger refresh from server in background
         fetchStoreTransactionsList(forceRefresh = true)
-    }
-
-    private fun applySafeAreaInsets() {
-        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            binding.toolbar2.updatePadding(top = systemBars.top)
-            binding.mainlayout.updatePadding(bottom = systemBars.bottom)
-            insets
-        }
     }
 
 

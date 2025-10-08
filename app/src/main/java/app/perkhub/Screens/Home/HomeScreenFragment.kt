@@ -58,9 +58,6 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         statusBarColor(R.color.light_blue)
         setupMenu()
         setupClickEvents()
-        applySafeAreaInsets()
-
-
 
         // Fetch data
         lifecycleScope.launch { fetchHomeData() }       // HomeViewModel
@@ -69,7 +66,6 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
 //        }      // requestViewModel
         if (getSharedpref().getUser(USERDATA)==null){
             getUserDetail()
-            Log.d("TestData","GOT null value")
         }
 
         lifecycleScope.launch { updateFirebaseToken() } // requestViewModel
@@ -98,17 +94,6 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         super.onDestroyView()
         bannerRunnable?.let { bannerHandler.removeCallbacks(it) }
         _binding = null
-    }
-
-    // ---------------- SAFE AREA ---------------- //
-    private fun applySafeAreaInsets() {
-        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            binding.toolbar.updatePadding(top = systemBars.top)
-//            binding.navView.updatePadding(top = systemBars.top)
-            binding.mainlayout.updatePadding(bottom = systemBars.bottom)
-            insets
-        }
     }
 
     // ---------------- CLICK EVENTS ---------------- //

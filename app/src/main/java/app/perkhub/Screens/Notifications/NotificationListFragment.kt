@@ -40,7 +40,6 @@ class NotificationListFragment : BaseFragment<FragmentNotificationListBinding>()
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentNotificationListBinding.inflate(inflater, container, false)
-        applySafeAreaInsets()
         binding.toolbar.name.text = "Notification List"
         binding.toolbar.backbtn.setOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
@@ -54,14 +53,6 @@ class NotificationListFragment : BaseFragment<FragmentNotificationListBinding>()
         return binding.root
     }
 
-    private fun applySafeAreaInsets() {
-        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            binding.toolbar2.updatePadding(top = systemBars.top)
-            binding.mainlayout.updatePadding(bottom = systemBars.bottom)
-            insets
-        }
-    }
 
     private fun setupRecyclerView() {
         binding.notificationlist.apply {

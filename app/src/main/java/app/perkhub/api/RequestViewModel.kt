@@ -19,6 +19,11 @@ import app.perkhub.Screens.Home.Model.TransactionModel.Datas
 import app.perkhub.Screens.Home.Model.TransactionModel.TransactionDataRes
 import app.perkhub.Screens.Home.Model.Withdrawal.WithdrawalReq
 import app.perkhub.Screens.Home.Model.Withdrawal.withdrawalRes
+import app.perkhub.Screens.Profile.model.CreateNewTicketRequest
+import app.perkhub.Screens.Profile.model.CreateNewTicketResponse
+import app.perkhub.Screens.Profile.model.RequestTicketMessage
+import app.perkhub.Screens.Profile.model.TicketMessageRes
+import app.perkhub.Screens.Profile.model.TicketMessageResponse
 import app.perkhub.Screens.Profile.model.TicketsRes
 import app.perkhub.Screens.login.models.GetToken
 import app.perkhub.Screens.login.models.LoginRes
@@ -39,6 +44,7 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 fun CoroutineScope.launchSafe(
     dispatcher: CoroutineDispatcher = Dispatchers.IO,
@@ -225,9 +231,28 @@ class RequestViewModel(
         launchApi({ apiProvider(context).RequestWithdrawalPayment(req).body() }, listener)
     }
 
-//    fun getNotificationList(context: Context, listener: ApiListener<NotificationListRes>) {
-//        launchApi({ apiProvider(context).getNotificationList().body() }, listener)
-//    }
+    fun getAllTicketByMessage(
+      ticketId: String,
+      context: Context, listener: ApiListener<TicketMessageRes>
+  ) {
+        launchApi({ apiProvider(context).getAllTicketByMessage(ticketId).body() }, listener)
+    }
+
+
+    fun createTicket(
+        ticketMessage: CreateNewTicketRequest,
+        context: Context, listener: ApiListener<CreateNewTicketResponse>
+    ) {
+        launchApi({ apiProvider(context).createTicket(ticketMessage).body() }, listener)
+    }
+
+
+    fun sendTicketMessage(
+        ticketMessage: RequestTicketMessage,
+        context: Context, listener: ApiListener<TicketMessageResponse>
+    ) {
+        launchApi({ apiProvider(context).sendTicketMessage(ticketMessage).body() }, listener)
+    }
 
     fun getNotificationList(
         context: Context,
@@ -332,5 +357,6 @@ class RequestViewModel(
             }
         }
     }
+
 
 }

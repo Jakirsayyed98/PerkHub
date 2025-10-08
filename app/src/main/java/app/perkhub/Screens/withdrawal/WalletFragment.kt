@@ -43,8 +43,6 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>() {
         }
 
         _binding!!.toolbar.name.text = "PerkHub Wallet"
-
-        applySafeAreaInsets()
         getTransactionData()
 
 
@@ -153,14 +151,6 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>() {
         }
     }
 
-    private fun applySafeAreaInsets() {
-        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            binding.toolbar2.updatePadding(top = systemBars.top)
-            binding.mainlayout.updatePadding(bottom = systemBars.bottom)
-            insets
-        }
-    }
 
     companion object {
         @JvmStatic

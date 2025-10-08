@@ -80,7 +80,6 @@ class SelectedCategoryFragment : BaseFragment<FragmentSelectedCategoryBinding>()
         }
 
         setupRecyclerViews()
-        applySafeAreaInsets()
         setupInitialView()
         setupSearchListener()
 
@@ -91,15 +90,6 @@ class SelectedCategoryFragment : BaseFragment<FragmentSelectedCategoryBinding>()
         binding.listOfStores.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = miniAppAdapter
-        }
-    }
-
-    private fun applySafeAreaInsets() {
-        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            binding.toolbar2.updatePadding(top = systemBars.top)
-            binding.listOfStores.updatePadding(bottom = systemBars.bottom)
-            insets
         }
     }
 

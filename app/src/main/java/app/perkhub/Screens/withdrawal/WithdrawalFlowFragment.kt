@@ -47,8 +47,6 @@ class WithdrawalFlowFragment : BaseFragment<FragmentWithdrawalFlowBinding>() {
         // Inflate the layout for this fragment
         _binding = FragmentWithdrawalFlowBinding.inflate(layoutInflater,container,false)
         _binding!!.toolbar.name.text = "Withdraw Funds"
-        applySafeAreaInsets()
-
         _binding!!.toolbar.backbtn.setOnClickListener {
             requireActivity().onBackPressedDispatcher?.onBackPressed()
         }
@@ -134,16 +132,6 @@ class WithdrawalFlowFragment : BaseFragment<FragmentWithdrawalFlowBinding>() {
         }
         adapter.addAllItem(data)
     }
-
-    private fun applySafeAreaInsets() {
-        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            binding.toolbar2.updatePadding(top = systemBars.top)
-            binding.mainlayout.updatePadding(bottom = systemBars.bottom)
-            insets
-        }
-    }
-
 
     companion object {
         @JvmStatic

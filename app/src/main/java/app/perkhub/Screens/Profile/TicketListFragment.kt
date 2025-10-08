@@ -39,7 +39,6 @@ class TicketListFragment : BaseFragment<FragmentTicketListBinding>() {
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentTicketListBinding.inflate(layoutInflater,container,false)
-        applySafeAreaInsets()
         _binding!!.toolbar.name.text = "Customer Support"
         _binding!!.toolbar.backbtn.setOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
@@ -53,15 +52,6 @@ class TicketListFragment : BaseFragment<FragmentTicketListBinding>() {
 
 
         return _binding?.root
-    }
-
-    private fun applySafeAreaInsets() {
-        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            binding.toolbar2.updatePadding(top = systemBars.top)
-            binding.mainlayout.updatePadding(bottom = systemBars.bottom)
-            insets
-        }
     }
 
     private fun fetchTickets(forceRefresh: Boolean = false) {
@@ -110,7 +100,9 @@ class TicketListFragment : BaseFragment<FragmentTicketListBinding>() {
     private fun setTicketsData(tickets: List<Data>){
         val mAdapter = TicketsAdapter<Data>(object : RecyclerClickListener {
             override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
-
+                if (data is Data){
+                    ContainerActivity.OpenContainer(requireContext(),"TicketMessageFragment",data)
+                }
             }
         })
 

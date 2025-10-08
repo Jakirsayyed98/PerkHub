@@ -9,12 +9,14 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import app.perkhub.Screens.Home.HomeScreenFragment
 import app.perkhub.Screens.Notifications.NotificationListFragment
 import app.perkhub.Screens.Profile.NewTicketFragment
 import app.perkhub.Screens.Profile.ProfileFragment
 import app.perkhub.Screens.Profile.TicketListFragment
+import app.perkhub.Screens.Profile.TicketMessageFragment
 import app.perkhub.Screens.Stores.SelectedCategoryFragment
 import app.perkhub.Screens.Stores.StoreDetailFragment
 import app.perkhub.Screens.StoreTransaction.TransactionDetailFragment
@@ -81,12 +83,12 @@ class ContainerActivity : BaseActivity<ActivityContainerBinding>() {
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-//            view.updatePadding(
-//                left = systemBars.left,
-//                top = systemBars.top,
-//                right = systemBars.right,
-//                bottom = systemBars.bottom
-//            )
+            view.updatePadding(
+                left = systemBars.left,
+                top = systemBars.top,
+                right = systemBars.right,
+                bottom = systemBars.bottom
+            )
             insets
         }
         val type = intent.getStringExtra(CONTAINER_TYPE_KEY)
@@ -147,6 +149,10 @@ class ContainerActivity : BaseActivity<ActivityContainerBinding>() {
 
             "NewTicketFragment"->{
                 addFragment(NewTicketFragment.newInstance())
+            }
+
+            "TicketMessageFragment"->{
+                addFragment(TicketMessageFragment.newInstance())
             }
 
         }

@@ -40,14 +40,9 @@ class StoreDetailFragment : BaseFragment<FragmentStoreDetailBinding>() {
         _binding!!.backbtn.setOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
-        applySafeAreaInsets()
+
         var data = Gson().fromJson<MiniApp>(requireActivity().intent.getStringExtra(DATA),MiniApp::class.java)
-        Log.d("this is miniapp data",data.toString())
-//        if (data.cbActive){
-//            _binding!!.cashbackactiveSection.visibility = View.VISIBLE
-//        }else{
-//            _binding!!.cashbackactiveSection.visibility = View.GONE
-//        }
+
         _binding!!.storename.text = data.name
         _binding!!.link.setText(data.url)
         _binding!!.storenameterm.text = getString(R.string.complete_your_purchase,data.name)
@@ -110,34 +105,6 @@ class StoreDetailFragment : BaseFragment<FragmentStoreDetailBinding>() {
 
 
     }
-
-    private fun applySafeAreaInsets() {
-        ViewCompat.setOnApplyWindowInsetsListener(_binding!!.root) { _, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-
-            // Apply top inset to toolbar (so it won’t overlap status bar)
-
-            binding.mainlayout.setPadding(
-                binding.mainlayout.paddingLeft,
-                systemBars.top,
-                binding.mainlayout.paddingRight,
-                binding.mainlayout.paddingBottom
-            )
-
-            // Apply bottom inset to recycler or main scrollable container
-//            binding.buttonLayout.setPadding(
-//                binding.buttonLayout.paddingLeft,
-//                binding.buttonLayout.paddingTop,
-//                binding.buttonLayout.paddingRight,
-//                systemBars.bottom
-//            )
-
-            // You do NOT pad the whole root drawerLayout, only the children
-            insets
-        }
-    }
-
-
 
     companion object {
         @JvmStatic

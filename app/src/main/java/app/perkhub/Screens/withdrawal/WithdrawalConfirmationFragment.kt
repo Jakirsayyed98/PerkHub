@@ -39,7 +39,6 @@ class WithdrawalConfirmationFragment : BaseFragment<FragmentWithdrawalConfirmati
         // Inflate the layout for this fragment
         _binding = FragmentWithdrawalConfirmationBinding.inflate(layoutInflater,container,false)
         _binding!!.toolbar.name.text = "Withdraw Funds"
-        applySafeAreaInsets()
 
         val jsonString = activity?.intent?.getStringExtra(DATA)
         val mapData: HashMap<String, String>? = jsonString?.let {
@@ -87,15 +86,6 @@ class WithdrawalConfirmationFragment : BaseFragment<FragmentWithdrawalConfirmati
             }
 
         })
-    }
-
-    private fun applySafeAreaInsets() {
-        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            binding.toolbar2.updatePadding(top = systemBars.top)
-            binding.mainlayout.updatePadding(bottom = systemBars.bottom)
-            insets
-        }
     }
 
     private fun showSuccessDialog(status: String) {

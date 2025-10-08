@@ -33,7 +33,6 @@ class AddPaymentMethodFragment : BaseFragment<FragmentAddPaymentMethodBinding>()
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentAddPaymentMethodBinding.inflate(layoutInflater,container,false)
-        applySafeAreaInsets()
         _binding!!.toolbar.name.text = "Add Payment Method"
         _binding!!.toolbar.backbtn.setOnClickListener {
             requireActivity().onBackPressedDispatcher?.onBackPressed()
@@ -96,16 +95,6 @@ class AddPaymentMethodFragment : BaseFragment<FragmentAddPaymentMethodBinding>()
                 }
             }
         })
-    }
-
-
-    private fun applySafeAreaInsets() {
-        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            binding.toolbar2.updatePadding(top = systemBars.top)
-            binding.mainlayout.updatePadding(bottom = systemBars.bottom)
-            insets
-        }
     }
 
     companion object {

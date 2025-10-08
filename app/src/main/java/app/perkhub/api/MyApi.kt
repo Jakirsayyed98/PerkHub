@@ -15,6 +15,11 @@ import app.perkhub.Screens.Home.Model.Notification.TokenReq
 import app.perkhub.Screens.Home.Model.TransactionModel.TransactionDataRes
 import app.perkhub.Screens.Home.Model.Withdrawal.WithdrawalReq
 import app.perkhub.Screens.Home.Model.Withdrawal.withdrawalRes
+import app.perkhub.Screens.Profile.model.CreateNewTicketRequest
+import app.perkhub.Screens.Profile.model.CreateNewTicketResponse
+import app.perkhub.Screens.Profile.model.RequestTicketMessage
+import app.perkhub.Screens.Profile.model.TicketMessageRes
+import app.perkhub.Screens.Profile.model.TicketMessageResponse
 import app.perkhub.Screens.Profile.model.TicketsRes
 import app.perkhub.Screens.login.models.GetToken
 import app.perkhub.Screens.login.models.LoginRes
@@ -39,6 +44,7 @@ import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.Path
 import retrofit2.http.Query
 import java.util.concurrent.TimeUnit
 
@@ -156,6 +162,22 @@ interface MyApi {
     @GET("tickets/by_user")
     suspend fun getAllTickets(
     ):Response<TicketsRes>
+
+    @POST("tickets/create")
+    suspend fun createTicket(
+        @Body body: CreateNewTicketRequest
+    ):Response<CreateNewTicketResponse>
+
+
+    @GET("tickets/{id}")
+    suspend fun getAllTicketByMessage(
+        @Path("id") ticketId: String
+    ):Response<TicketMessageRes>
+
+    @POST("tickets/send-msg")
+    suspend fun sendTicketMessage(
+        @Body body: RequestTicketMessage
+    ):Response<TicketMessageResponse>
 
 
 

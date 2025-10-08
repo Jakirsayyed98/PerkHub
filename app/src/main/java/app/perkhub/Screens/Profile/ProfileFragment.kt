@@ -50,8 +50,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
         setMenuList()
-        applySafeAreaInsets()
-
         val userName = getSharedpref().getUser(USERDATA)?.data
         _binding!!.Profilename.text= userName?.name!!.replaceFirstChar { it.uppercase() }.orEmpty()
         _binding!!.email.text = userName.email
@@ -113,16 +111,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
             Snackbar("Logged out successfully",_binding!!.mainlayout)
         }
         dialog.show()
-    }
-
-    // ---------------- SAFE AREA ---------------- //
-    private fun applySafeAreaInsets() {
-        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            binding.toolbar2.updatePadding(top = systemBars.top)
-            binding.mainlayout.updatePadding(bottom = systemBars.bottom)
-            insets
-        }
     }
 
     companion object {
