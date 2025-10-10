@@ -13,6 +13,7 @@ import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import app.perkhub.Screens.Home.HomeScreenFragment
 import app.perkhub.Screens.Notifications.NotificationListFragment
+import app.perkhub.Screens.Offers.OffersFragment
 import app.perkhub.Screens.Profile.NewTicketFragment
 import app.perkhub.Screens.Profile.ProfileFragment
 import app.perkhub.Screens.Profile.TicketListFragment
@@ -153,6 +154,10 @@ class ContainerActivity : BaseActivity<ActivityContainerBinding>() {
 
             "TicketMessageFragment"->{
                 addFragment(TicketMessageFragment.newInstance())
+            }
+
+            "OffersFragment"->{
+                addFragment(OffersFragment.newInstance())
             }
 
         }

@@ -15,6 +15,9 @@ import app.perkhub.Screens.Home.Model.Notification.TokenReq
 import app.perkhub.Screens.Home.Model.TransactionModel.TransactionDataRes
 import app.perkhub.Screens.Home.Model.Withdrawal.WithdrawalReq
 import app.perkhub.Screens.Home.Model.Withdrawal.withdrawalRes
+import app.perkhub.Screens.Offers.model.Offerlistres
+import app.perkhub.Screens.Offers.model.OffersData
+import app.perkhub.Screens.Offers.model.SearchOfferReq
 import app.perkhub.Screens.Profile.model.CreateNewTicketRequest
 import app.perkhub.Screens.Profile.model.CreateNewTicketResponse
 import app.perkhub.Screens.Profile.model.RequestTicketMessage
@@ -178,6 +181,15 @@ interface MyApi {
     suspend fun sendTicketMessage(
         @Body body: RequestTicketMessage
     ):Response<TicketMessageResponse>
+
+    @POST("offers/search-by-store")
+    suspend fun searchOfferByStoreName(
+        @Body body: SearchOfferReq
+    ):Response<Offerlistres>
+
+    @GET("offers/homepage")
+    suspend fun getOffersHomePage(
+    ):Response<Offerlistres>
 
 
 

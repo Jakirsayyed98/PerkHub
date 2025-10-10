@@ -1,5 +1,7 @@
 package app.perkhub.Screens.Profile.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -18,7 +20,9 @@ data class DataTicket(
     val ticket_messages: List<TicketMessage>
 )
 
+@Entity(tableName = "ticket_messages")
 data class TicketMessage(
+    @PrimaryKey
     val id: String,
     val ticket_id: String,
     val author_type: String, // "user" or "admin"

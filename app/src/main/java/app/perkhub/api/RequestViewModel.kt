@@ -19,9 +19,13 @@ import app.perkhub.Screens.Home.Model.TransactionModel.Datas
 import app.perkhub.Screens.Home.Model.TransactionModel.TransactionDataRes
 import app.perkhub.Screens.Home.Model.Withdrawal.WithdrawalReq
 import app.perkhub.Screens.Home.Model.Withdrawal.withdrawalRes
+import app.perkhub.Screens.Offers.model.Offerlistres
+import app.perkhub.Screens.Offers.model.SearchOfferReq
 import app.perkhub.Screens.Profile.model.CreateNewTicketRequest
 import app.perkhub.Screens.Profile.model.CreateNewTicketResponse
+import app.perkhub.Screens.Profile.model.DataTicket
 import app.perkhub.Screens.Profile.model.RequestTicketMessage
+import app.perkhub.Screens.Profile.model.TicketMessage
 import app.perkhub.Screens.Profile.model.TicketMessageRes
 import app.perkhub.Screens.Profile.model.TicketMessageResponse
 import app.perkhub.Screens.Profile.model.TicketsRes
@@ -38,6 +42,7 @@ import app.perkhub.Screens.withdrawal.model.getPaymentMethodsRes
 import app.perkhub.room.HomeRepository
 import app.perkhub.room.NotificationRepository
 import app.perkhub.room.StoresTransactionsRepository
+import app.perkhub.room.Tickets.TicketMessageRepository
 import app.perkhub.room.Tickets.TicketsRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -231,11 +236,61 @@ class RequestViewModel(
         launchApi({ apiProvider(context).RequestWithdrawalPayment(req).body() }, listener)
     }
 
+
     fun getAllTicketByMessage(
-      ticketId: String,
-      context: Context, listener: ApiListener<TicketMessageRes>
-  ) {
-        launchApi({ apiProvider(context).getAllTicketByMessage(ticketId).body() }, listener)
+        ticketId: String,
+        context: Context,
+        forceRefresh: Boolean = false,
+        listener: ApiListener<TicketMessageRes>
+    )
+    {
+        val repository = TicketMessageRepository(context)
+
+        viewModelScope.launch {
+            try {
+                // First, load from database
+                val cachedData = repository.getMessagesOnce(ticketId)
+
+                if (cachedData.isNotEmpty() && !forceRefresh) {
+                    // Return cached data immediately
+                    val message = DataTicket(ticket_messages = cachedData, id = ticketId, user_id = "", status = "", created_at = "", subject = "")
+                    val cachedResponse = TicketMessageRes(
+                        status = 200,
+                        message = "success",
+                        data = message,
+
+                    )
+                    listener.onSuccess(cachedResponse, "Loaded from cache")
+                }
+
+                // Then fetch from server in background
+                launchApi({ apiProvider(context).getAllTicketByMessage(ticketId).body() },
+                    object : ApiListener<TicketMessageRes> {
+                        override fun onSuccess(t: TicketMessageRes?, mess: String) {
+                            viewModelScope.launch {
+                                t?.data?.let {
+                                    // Save to database
+                                    repository.saveMessages(it.ticket_messages)
+
+                                    // Notify listener with fresh data
+                                    listener.onSuccess(t, mess)
+                                }
+                            }
+                        }
+
+                        override fun onError(mess: String) {
+                            // If no cached data, propagate error
+                            if (cachedData.isEmpty()) {
+                                listener.onError(mess)
+                            }
+                            // Otherwise, we already returned cached data
+                        }
+                    })
+
+            } catch (e: Exception) {
+                listener.onError(e.message ?: "Unknown error")
+            }
+        }
     }
 
 
@@ -358,5 +413,17 @@ class RequestViewModel(
         }
     }
 
+
+    fun getOffersListHomePage(
+        context: Context, listener: ApiListener<Offerlistres>
+    ) {
+        launchApi({ apiProvider(context).getOffersHomePage().body() }, listener)
+    }
+fun searchOffersByStore(
+    request: SearchOfferReq,
+    context: Context, listener: ApiListener<Offerlistres>
+    ) {
+        launchApi({ apiProvider(context).searchOfferByStoreName(request).body() }, listener)
+    }
 
 }

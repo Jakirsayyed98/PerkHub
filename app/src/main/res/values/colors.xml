@@ -13,10 +13,14 @@
     <color name="main_color">#5550BC</color>
     <color name="red">#F44336</color>
     <color name="orange">#F2840F</color>
+    <color name="offers_bg">#F97217</color>
+    <color name="offers_bg1">#FA9752</color>
     <color name="light_orange">#F0AE67</color>
+    <color name="light_offer_bg">#FEF4F0</color>
     <color name="red_700">#D32F2F</color>
     <color name="red_100">#F8A2A2</color>
     <color name="transparent_bg">#7CFFFFFF</color>
+
 
 
 

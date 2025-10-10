@@ -8,15 +8,22 @@ import android.view.WindowManager
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import app.perkhub.Screens.Home.Model.Notification.NotificationListRes
 import app.perkhub.Screens.Profile.adapter.TicketsMessageAdapter
 import app.perkhub.Screens.Profile.model.*
 import app.perkhub.Utils.BaseFragment
 import app.perkhub.Utils.DATA
 import app.perkhub.Utils.RecyclerClickListener
+import app.perkhub.Utils.toast
 import app.perkhub.api.ApiListener
 import app.perkhub.databinding.FragmentTicketMessageBinding
+import app.perkhub.room.NotificationRepository
+import app.perkhub.room.Tickets.TicketMessageRepository
 import com.google.gson.Gson
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.*
 
 class TicketMessageFragment : BaseFragment<FragmentTicketMessageBinding>() {
@@ -41,7 +48,7 @@ class TicketMessageFragment : BaseFragment<FragmentTicketMessageBinding>() {
         setupRecycler()
         setupSendButtonVisibility()
         setupSendButton()
-        callTicketMessageLayout(ticketId)
+        observeTicketsMessage(ticketId)
 
         return binding.root
     }
@@ -93,23 +100,59 @@ class TicketMessageFragment : BaseFragment<FragmentTicketMessageBinding>() {
         }
     }
 
-    /** Fetch messages from API */
-    private fun callTicketMessageLayout(ticketId: String) {
-        viewModel.getAllTicketByMessage(ticketId, requireContext(), object : ApiListener<TicketMessageRes> {
-            override fun onSuccess(t: TicketMessageRes?, mess: String) {
-                t?.let {
-                    if (it.status == 200) {
-                        requireActivity().runOnUiThread {
-                            messageList.clear()
-                            messageList.addAll(it.data.ticket_messages)
-                            mAdapter.addAllItem(messageList)
-                            scrollToBottom()
+    private fun fetchTicketMessageList(forceRefresh: Boolean = false) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            viewModel.getAllTicketByMessage(
+                ticketId,
+                requireContext(),
+                forceRefresh,
+                object : ApiListener<TicketMessageRes> {
+                    override fun onSuccess(t: TicketMessageRes?, mess: String) {
+                        t?.data?.let {
+                            lifecycleScope.launch(Dispatchers.Main) {
+                                messageList.clear()
+                                messageList.addAll(it.ticket_messages)
+                                mAdapter.addAllItem(messageList)
+                                scrollToBottom()
+                            }
                         }
                     }
-                }
-            }
-        })
+
+                    override fun onError(mess: String) {
+                        lifecycleScope.launch(Dispatchers.Main) {
+                            requireContext().toast("Failed to fetch ticketMessage: $mess")
+                        }
+                    }
+                })
+        }
     }
+
+    private fun observeTicketsMessage(ticketId: String) {
+        val repository = TicketMessageRepository(requireContext())
+
+        // CRITICAL FIX: Use viewLifecycleOwner instead of lifecycleScope
+        // This prevents memory leaks when Fragment is destroyed
+        viewLifecycleOwner.lifecycleScope.launch {
+            repository.getMessages(ticketId).collect { notifications ->
+                // This will be called automatically when:
+                // 1. Fragment opens (shows cached data)
+                // 2. Server data is fetched (shows fresh data)
+                // 3. Push notification arrives (shows new notification)
+                setData(notifications)
+            }
+        }
+
+        // Trigger refresh from server in background
+        fetchTicketMessageList(forceRefresh = true)
+    }
+
+    private fun setData(data: List<TicketMessage>) {
+        messageList.clear()
+        messageList.addAll(data)
+        mAdapter.addAllItem(messageList)
+        scrollToBottom()
+    }
+
 
     /** Instantly show user message in UI */
     private fun sendMessageInstantly(messageText: String) {
@@ -130,7 +173,10 @@ class TicketMessageFragment : BaseFragment<FragmentTicketMessageBinding>() {
         val requestData = RequestTicketMessage(ticketId, ticketMessage)
         viewModel.sendTicketMessage(requestData, requireContext(), object : ApiListener<TicketMessageResponse> {
             override fun onSuccess(t: TicketMessageResponse?, mess: String) {
-                callTicketMessageLayout(ticketId)
+//                callTicketMessageLayout(ticketId)
+                messageList.clear()
+                messageList.add(TicketMessage("",ticketId,"user",ticketMessage,""))
+                mAdapter.addAllItem(messageList)
             }
         })
     }

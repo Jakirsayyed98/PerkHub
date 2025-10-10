@@ -2,6 +2,8 @@ package app.perkhub.Utils
 
 import android.R
 import android.content.ActivityNotFoundException
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -114,4 +116,9 @@ fun Context.rateUsApp() {
     }
 }
 
-
+fun copyToClipboard(context: Context, text: String, bindView: View) {
+    val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+    val clip = ClipData.newPlainText("Copied Text", text)
+    clipboard.setPrimaryClip(clip)
+    context.Snackbar("Coupon code copied successfully!",bindView)
+}
