@@ -11,6 +11,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
+import app.perkhub.Screens.Games.GamesFragment
 import app.perkhub.Screens.Home.HomeScreenFragment
 import app.perkhub.Screens.Notifications.NotificationListFragment
 import app.perkhub.Screens.Offers.OffersFragment
@@ -159,6 +160,10 @@ class ContainerActivity : BaseActivity<ActivityContainerBinding>() {
             "OffersFragment"->{
                 addFragment(OffersFragment.newInstance())
             }
+
+             "GamesFragment"->{
+                addFragment(GamesFragment.newInstance())
+             }
 
         }
     }

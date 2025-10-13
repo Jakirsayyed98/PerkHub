@@ -4,8 +4,8 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import app.perkhub.Screens.Games.model.GamesRes
 import app.perkhub.Screens.Home.Model.Auth.VerifyOTP
-import app.perkhub.Screens.Home.Model.Games.GamesRes
 import app.perkhub.Screens.Home.Model.GenerateUrl.GenerateSubId
 import app.perkhub.Screens.Home.Model.GenerateUrl.GenerateSubIdRes
 import app.perkhub.Screens.Home.Model.Home.HomeRes
@@ -44,6 +44,7 @@ import app.perkhub.room.NotificationRepository
 import app.perkhub.room.StoresTransactionsRepository
 import app.perkhub.room.Tickets.TicketMessageRepository
 import app.perkhub.room.Tickets.TicketsRepository
+import app.perkhub.room.games.GamesRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
@@ -139,12 +140,58 @@ class RequestViewModel(
         launchApi({ apiProvider(context).updateNotification(TokenReq(token)).body() }, listener)
     }
 
-    fun getAllGames(context: Context, listener: ApiListener<GamesRes>) {
-        launchApi({ apiProvider(context).getAllGames().body() }, listener)
-    }
+    fun getPopularGames( context: Context,
+                         forceRefresh: Boolean = false,
+                         listener: ApiListener<GamesRes>
+    ) {
+        val repository = GamesRepository(context)
 
-    fun getPopularGames(context: Context, listener: ApiListener<GamesRes>) {
-        launchApi({ apiProvider(context).getPopularGames().body() }, listener)
+        viewModelScope.launch {
+            try {
+                // Load cached popular games
+                val cachedData = repository.getAllPopularGames()
+
+                if (cachedData.isNotEmpty() && !forceRefresh) {
+                    // ✅ Return cached data and stop — don’t call API
+                    val cachedResponse = GamesRes(
+                        data = cachedData,
+                        message = "Loaded from cache",
+                        status = 200
+                    )
+                    listener.onSuccess(cachedResponse, "Loaded from cache")
+                    return@launch
+                }
+
+                // ✅ Call API only when no cache or forceRefresh = true
+                launchApi(
+                    { apiProvider(context).getAllGames().body() },
+                    object : ApiListener<GamesRes> {
+                        override fun onSuccess(t: GamesRes?, mess: String) {
+                            viewModelScope.launch {
+                                t?.data?.let {
+                                    // Save fresh data into DB
+                                    repository.saveGames(it)
+                                    // Return API response to listener
+                                    listener.onSuccess(t, mess)
+                                }
+                            }
+                        }
+
+                        override fun onError(mess: String) {
+                            // If no cached data exists, propagate the error
+                            if (cachedData.isEmpty()) {
+                                listener.onError(mess)
+                            }
+                            // Otherwise, we already returned cached data, so ignore
+                        }
+                    }
+                )
+
+            } catch (e: Exception) {
+                listener.onError(e.message ?: "Unknown error")
+            }
+        }
+
     }
 
 //    fun getAllTransaction(context: Context, listener: ApiListener<TransactionDataRes>) {
@@ -424,6 +471,54 @@ fun searchOffersByStore(
     context: Context, listener: ApiListener<Offerlistres>
     ) {
         launchApi({ apiProvider(context).searchOfferByStoreName(request).body() }, listener)
+    }
+
+
+    fun getGamesList(
+        context: Context,
+        forceRefresh: Boolean = false,
+        listener: ApiListener<GamesRes>
+    ) {
+        val repository = GamesRepository(context)
+
+        viewModelScope.launch {
+            try {
+                // Load cached data
+                val cachedData = repository.getAllGames()
+
+                if (cachedData.isNotEmpty() && !forceRefresh) {
+
+                    val cachedResponse = GamesRes(
+                        data = cachedData,
+                        message = "Loaded from cache",
+                        status = 200
+                    )
+                    listener.onSuccess(cachedResponse, "Loaded from cache")
+                    return@launch
+                }
+
+                launchApi(
+                    { apiProvider(context).getAllGames().body() },
+                    object : ApiListener<GamesRes> {
+                        override fun onSuccess(t: GamesRes?, mess: String) {
+                            viewModelScope.launch {
+                                t?.data?.let {
+                                    repository.saveGames(it) // Save fresh data
+                                    listener.onSuccess(t, mess) // Return API data
+                                }
+                            }
+                        }
+
+                        override fun onError(mess: String) {
+                            listener.onError(mess)
+                        }
+                    }
+                )
+
+            } catch (e: Exception) {
+                listener.onError(e.message ?: "Unknown error")
+            }
+        }
     }
 
 }

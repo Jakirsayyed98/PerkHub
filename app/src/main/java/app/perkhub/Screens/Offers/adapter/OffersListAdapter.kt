@@ -37,8 +37,8 @@ class OffersListAdapter<S>(val clickList: RecyclerClickListener):BaseRecyclerVie
                     .load(s.image)
                     .circleCrop()
                     .into(binding.icon)
-                binding.root.setOnClickListener {
-                    clickList.RecyclerClickListener(0,s.store_name.toString(),s)
+                binding.shop.setOnClickListener {
+                    clickList.RecyclerClickListener(0,s.store_id.toString(),s)
                 }
             }
         }

@@ -542,6 +542,21 @@
 
             </androidx.cardview.widget.CardView>
             </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/dp10"
+                android:textSize="@dimen/sp16"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:text="Offers &amp; Coupons"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/offers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

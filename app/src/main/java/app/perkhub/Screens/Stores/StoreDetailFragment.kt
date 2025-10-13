@@ -9,18 +9,27 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import app.perkhub.R
 import app.perkhub.Screens.Home.Model.GenerateUrl.GenerateSubId
 import app.perkhub.Screens.Home.Model.GenerateUrl.GenerateSubIdRes
 import app.perkhub.Screens.Home.Model.Home.MiniApp
+import app.perkhub.Screens.Offers.adapter.OffersListAdapter
+import app.perkhub.Screens.Offers.model.Offerlistres
+import app.perkhub.Screens.Offers.model.OffersData
+import app.perkhub.Screens.Offers.model.SearchOfferReq
 import app.perkhub.Utils.BaseFragment
 import app.perkhub.Utils.DATA
+import app.perkhub.Utils.RecyclerClickListener
 import app.perkhub.Utils.Share
 import app.perkhub.Utils.openCustomTab
 import app.perkhub.api.ApiListener
 import app.perkhub.databinding.FragmentStoreDetailBinding
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class StoreDetailFragment : BaseFragment<FragmentStoreDetailBinding>() {
@@ -42,7 +51,7 @@ class StoreDetailFragment : BaseFragment<FragmentStoreDetailBinding>() {
         }
 
         var data = Gson().fromJson<MiniApp>(requireActivity().intent.getStringExtra(DATA),MiniApp::class.java)
-
+        searchOffersAndCoupons(data.name)
         _binding!!.storename.text = data.name
         _binding!!.link.setText(data.url)
         _binding!!.storenameterm.text = getString(R.string.complete_your_purchase,data.name)
@@ -69,11 +78,11 @@ class StoreDetailFragment : BaseFragment<FragmentStoreDetailBinding>() {
             }
 
         _binding!!.share.setOnClickListener {
-            GetUrl(data.name.toString(),"Share")
+            GetUrl(data.id.toString(),"Share")
         }
         _binding!!.shop.setOnClickListener {
             if (data.cbActive) {
-                GetUrl(data.name.toString(), "Shop")
+                GetUrl(data.id.toString(), "Shop")
             }else{
                 requireContext().openCustomTab(data.url)
             }
@@ -105,6 +114,37 @@ class StoreDetailFragment : BaseFragment<FragmentStoreDetailBinding>() {
 
 
     }
+
+
+    private fun searchOffersAndCoupons(query: String) {
+        val request = SearchOfferReq(query)
+        viewModel.searchOffersByStore(request, requireContext(), object : ApiListener<Offerlistres> {
+            override fun onSuccess(t: Offerlistres?, mess: String) {
+                t?.data?.let { data ->
+                    viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
+                        setupRecyclerView(data)  // Show only search results
+                    }
+                }
+            }
+
+
+        })
+    }
+
+    private fun setupRecyclerView(data : List<OffersData>) {
+        val offersAdapter = OffersListAdapter<OffersData>(object : RecyclerClickListener {
+            override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
+                GetUrl(type, "Shop")
+            }
+        })
+
+        binding.offers.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = offersAdapter
+        }
+        offersAdapter.addAllItem(data)
+    }
+
 
     companion object {
         @JvmStatic

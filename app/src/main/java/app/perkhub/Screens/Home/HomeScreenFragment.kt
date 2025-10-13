@@ -20,8 +20,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import app.perkhub.ContainerActivity
 import app.perkhub.R
+import app.perkhub.Screens.Games.model.GamesRes
 import app.perkhub.Screens.Home.Adapter.*
-import app.perkhub.Screens.Home.Model.Games.GamesRes
 import app.perkhub.Screens.Home.Model.Home.*
 import app.perkhub.Screens.Home.Model.MiniAppByCategory.MiniAppbyCategory
 import app.perkhub.Utils.*
@@ -35,8 +35,10 @@ import app.perkhub.room.RequestViewModelFactory
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import androidx.lifecycle.ViewModelProvider
+import app.perkhub.Screens.Home.Model.Notification.NotificationListRes
 import app.perkhub.Screens.login.models.LoginRes
+import app.perkhub.room.NotificationRepository
+import app.perkhub.room.games.GamesRepository
 import com.google.android.material.snackbar.Snackbar
 
 class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
@@ -58,12 +60,9 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         statusBarColor(R.color.light_blue)
         setupMenu()
         setupClickEvents()
-
+        observePopularGames()
         // Fetch data
         lifecycleScope.launch { fetchHomeData() }       // HomeViewModel
-//        lifecycleScope.launch {
-            fetchGamesData()
-//        }      // requestViewModel
         if (getSharedpref().getUser(USERDATA)==null){
             getUserDetail()
         }
@@ -71,6 +70,25 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         lifecycleScope.launch { updateFirebaseToken() } // requestViewModel
 
         return binding.root
+    }
+
+    private fun observePopularGames() {
+        val repository = GamesRepository(requireContext())
+
+        // CRITICAL FIX: Use viewLifecycleOwner instead of lifecycleScope
+        // This prevents memory leaks when Fragment is destroyed
+        viewLifecycleOwner.lifecycleScope.launch {
+            repository.getAllPopularGamesFlow().collect { games ->
+                // This will be called automatically when:
+                // 1. Fragment opens (shows cached data)
+                // 2. Server data is fetched (shows fresh data)
+                // 3. Push notification arrives (shows new notification)
+                setPopularGamesLayout(games)
+            }
+        }
+
+        // Trigger refresh from server in background
+        fetchGamesList(forceRefresh = true)
     }
 
     private fun getUserDetail() {
@@ -135,18 +153,28 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         })
     }
 
-    private fun fetchGamesData() {
-        viewModel.getPopularGames(requireContext(), object : ApiListener<GamesRes> {
-            override fun onSuccess(t: GamesRes?, mess: String) {
-                t?.data?.let {
-                    lifecycleScope.launch(Dispatchers.Main) {
-                        setPopularGamesLayout(it)
+    private fun fetchGamesList(forceRefresh: Boolean = false) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            viewModel.getPopularGames(
+                requireContext(),
+                forceRefresh,
+                object : ApiListener<GamesRes> {
+                    override fun onSuccess(t: GamesRes?, mess: String) {
+                        t?.data?.let {
+                            lifecycleScope.launch(Dispatchers.Main) {
+                                // Don't call setData here if using Flow
+                                // The Flow will handle it automatically
+                            }
+                        }
                     }
-                }
-            }
 
-            override fun onError(mess: String) {}
-        })
+                    override fun onError(mess: String) {
+                        lifecycleScope.launch(Dispatchers.Main) {
+                            requireContext().toast("Failed to fetch notifications: $mess")
+                        }
+                    }
+                })
+        }
     }
 
     private fun updateFirebaseToken() {
@@ -251,11 +279,10 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         adapter.addAllItem(categoryList)
     }
 
-    private fun setPopularGamesLayout(data: List<app.perkhub.Screens.Home.Model.Games.Data>) {
-//        Log.d("TAG",data.toString())
-        val adapter = PopularGameAdapter<app.perkhub.Screens.Home.Model.Games.Data>(object : RecyclerClickListener {
+    private fun setPopularGamesLayout(data: List<app.perkhub.Screens.Games.model.Data>) {
+        val adapter = PopularGameAdapter<app.perkhub.Screens.Games.model.Data>(object : RecyclerClickListener {
             override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
-                if (data is app.perkhub.Screens.Home.Model.Games.Data) requireContext().openCustomTab(data.url)
+                if (data is app.perkhub.Screens.Games.model.Data) requireContext().openCustomTab(data.url)
             }
         })
         binding.sectionPopularGames.recyclerPopularGames.apply {

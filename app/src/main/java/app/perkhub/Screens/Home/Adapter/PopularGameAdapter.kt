@@ -3,7 +3,7 @@ package app.perkhub.Screens.Home.Adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import app.perkhub.Screens.Home.Model.Games.Data
+import app.perkhub.Screens.Games.model.Data
 import app.perkhub.Utils.BaseRecyclerView
 import app.perkhub.Utils.RecyclerClickListener
 import app.perkhub.databinding.HomeGamesLayoutBinding

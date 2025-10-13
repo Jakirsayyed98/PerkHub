@@ -121,7 +121,7 @@ interface MyApi {
 
     @GET("getAllGames")
     suspend fun getAllGames(
-    ):Response<GamesRes>
+    ):Response<app.perkhub.Screens.Games.model.GamesRes>
 
 
     @GET("get-popular-games")
