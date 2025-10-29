@@ -51,4 +51,8 @@ class AppSharedPefrence {
         return Gson().fromJson<LoginRes?>(response,LoginRes::class.java)
     }
 
+    fun clearAll() {
+        prefrence.edit().clear().apply()
+    }
+
 }

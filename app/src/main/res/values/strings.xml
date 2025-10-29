@@ -56,6 +56,8 @@
     <string name="last_message_shopping"><b>Last Message:</b> %s</string>
     <string name="priority_medium"><b>Priority:</b> %s</string>
 
+    <string name="OnetimeCashback"><b>•</b> Cashback is calculated on the purchase amount excluding taxes and shipping\n\n</string>
+
     <string name="tickets_notes"><b>•</b> Be specific about your issue and include relevant details\n\n<b>•</b> Mention any error messages you received
         \n\n<b>•</b> Include transaction IDs or order numbers if applicable\n\n<b>•</b> Attach screenshots if they help explain the problem</string>
 

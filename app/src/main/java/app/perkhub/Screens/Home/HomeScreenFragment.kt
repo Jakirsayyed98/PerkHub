@@ -37,6 +37,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import app.perkhub.Screens.Home.Model.Notification.NotificationListRes
 import app.perkhub.Screens.login.models.LoginRes
+import app.perkhub.api.BaseRes
 import app.perkhub.room.NotificationRepository
 import app.perkhub.room.games.GamesRepository
 import com.google.android.material.snackbar.Snackbar
@@ -181,8 +182,8 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
             if (!task.isSuccessful) return@addOnCompleteListener
             val token = task.result
-            viewModel.updateNotification(token, requireContext(), object : ApiListener<MiniAppbyCategory> {
-                override fun onSuccess(t: MiniAppbyCategory?, mess: String) {
+            viewModel.updateNotification(token, requireContext(), object : ApiListener<BaseRes> {
+                override fun onSuccess(t: BaseRes?, mess: String) {
 
                 }
 

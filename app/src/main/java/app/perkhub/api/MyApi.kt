@@ -16,7 +16,6 @@ import app.perkhub.Screens.Home.Model.TransactionModel.TransactionDataRes
 import app.perkhub.Screens.Home.Model.Withdrawal.WithdrawalReq
 import app.perkhub.Screens.Home.Model.Withdrawal.withdrawalRes
 import app.perkhub.Screens.Offers.model.Offerlistres
-import app.perkhub.Screens.Offers.model.OffersData
 import app.perkhub.Screens.Offers.model.SearchOfferReq
 import app.perkhub.Screens.Profile.model.CreateNewTicketRequest
 import app.perkhub.Screens.Profile.model.CreateNewTicketResponse
@@ -35,169 +34,184 @@ import app.perkhub.Screens.withdrawal.model.addPaymentMethodReq
 import app.perkhub.Screens.withdrawal.model.addPaymentMethodRes
 import app.perkhub.Screens.withdrawal.model.getPaymentMethodsRes
 import okhttp3.OkHttpClient
-import okhttp3.RequestBody
 import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Call
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
-import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
+import retrofit2.http.Url
 import java.util.concurrent.TimeUnit
 
 interface MyApi {
 
-    //Login APIs Start
-    @POST("sendOTP")// used
-    suspend fun sendOtp(
-        @Body body: SendOtpReq
-    ):Response<BaseRes>
+        // ----------------- LOGIN APIs -----------------
+        @POST
+        suspend fun sendOtp(
+            @Url url: String,
+            @Body body: SendOtpReq
+        ): Response<BaseRes>
 
-    @POST("verifyOTP") //used
-    suspend fun verifyOTP(
-        @Body body: VerifyOtpReq
-    ):Response<VerifyOTP>
+        @POST
+        suspend fun verifyOtp(
+            @Url url: String,
+            @Body body: VerifyOtpReq
+        ): Response<VerifyOTP>
 
-    @POST("authorization")
-    suspend fun getAuthorization(
-        @Body body: GetToken
-    ):Response<BaseRes>
+        @POST
+        suspend fun getAuthorization(
+            @Url url: String,
+            @Body body: GetToken
+        ): Response<BaseRes>
 
-    @GET("getUserDetail")
-    suspend fun getUserDetail(
-    ):Response<LoginRes>
+        @GET
+        suspend fun getUserDetail(
+            @Url url: String = NativeEndpoints.getUserDetail()
+        ): Response<LoginRes>
 
+        @POST
+        suspend fun saveDetail(
+            @Url url: String,
+            @Body body: SaveUserDetail
+        ): Response<BaseRes>
 
-    @POST("savedetail")//used
-    suspend fun SaveDetail(
-        @Body body: SaveUserDetail
-    ):Response<BaseRes>
-    //Login APIs End
+        // ----------------- HOME -----------------
+        @GET
+        suspend fun getHomePage(
+            @Url url: String = NativeEndpoints.getHomePage()
+        ): Response<HomeRes>
 
+        // ----------------- MINI APPS -----------------
+        @POST
+        suspend fun getMiniAppByCategory(
+            @Url url: String,
+            @Body body: MiniAppByCategoryReq
+        ): Response<MiniAppbyCategory>
 
+        @POST
+        suspend fun generateUrl(
+            @Url url: String,
+            @Body body: GenerateSubId
+        ): Response<GenerateSubIdRes>
 
-    //Home
-    @GET("getHomePage")
-    suspend fun getHomePage(
-    ):Response<HomeRes>
+        @POST
+        suspend fun searchMiniApps(
+            @Url url: String,
+            @Body body: MiniAppSearchReq
+        ): Response<MiniAppbyCategory>
 
-    //MiniAppByCategory
-    @POST("getStoresByCategory")
-    suspend fun getMiniAppByCategory(
-        @Body body:MiniAppByCategoryReq
-    ):Response<MiniAppbyCategory>
+        @POST
+        suspend fun updateNotification(
+            @Url url: String,
+            @Body body: TokenReq
+        ): Response<BaseRes>
 
-    @POST("genrateSubID")
-    suspend fun generateUrl(
-        @Body body: GenerateSubId
-    ):Response<GenerateSubIdRes>
+        // ----------------- LOOT PRODUCTS -----------------
+        @POST
+        suspend fun getLootProduct(
+            @Url url: String,
+            @Query("page") page: String
+        ): Response<LootProductRes>
 
-    //Loot Products
-    @POST("getAllLootoffers")
-    suspend fun getLootProduct(
-        @Query("page") page:String
-    ):Response<LootProductRes>
+        // ----------------- GAMES -----------------
+        @GET
+        suspend fun getAllGames(
+            @Url url: String = NativeEndpoints.getAllGames()
+        ): Response<app.perkhub.Screens.Games.model.GamesRes>
 
+        @GET
+        suspend fun getPopularGames(
+            @Url url: String = NativeEndpoints.getPopularGames()
+        ): Response<app.perkhub.Screens.Games.model.GamesRes>
 
-//searchMiniApps
-    @POST("searchMiniApps")
-    suspend fun searchminiApps(
-    @Body body: MiniAppSearchReq
-    ):Response<MiniAppbyCategory>
+        // ----------------- TRANSACTIONS -----------------
+        @GET
+        suspend fun getAllTransactions(
+            @Url url: String,
+        ): Response<TransactionDataRes>
 
-    @POST("updateNotificationToken")
-    suspend fun updateNotification(
-        @Body body: TokenReq
-    ):Response<MiniAppbyCategory>
+        // ----------------- WITHDRAWALS -----------------
+        @POST
+        suspend fun requestWithdrawal(
+            @Url url: String,
+            @Body body: WithdrawalReq
+        ): Response<RequestWithdrawalRes>
 
+        @GET
+        suspend fun getWithdrawalTxn(
+            @Url url: String = NativeEndpoints.withdrawalTransactions()
+        ): Response<withdrawalRes>
 
+        @GET
+        suspend fun getPaymentMethods(
+            @Url url: String = NativeEndpoints.withdrawalGetPaymentMethod()
+        ): Response<getPaymentMethodsRes>
 
+        @POST
+        suspend fun addPaymentMethod(
+            @Url url: String,
+            @Body body: addPaymentMethodReq
+        ): Response<addPaymentMethodRes>
 
-    @GET("getAllGames")
-    suspend fun getAllGames(
-    ):Response<app.perkhub.Screens.Games.model.GamesRes>
+        @POST
+        suspend fun requestWithdrawalPayment(
+            @Url url: String = NativeEndpoints.withdrawalRequest(),
+            @Body body: RequestWithdrawalReq
+        ): Response<RequestWithdrawalRes>
 
+        // ----------------- NOTIFICATIONS -----------------
+        @GET
+        suspend fun getNotificationList(
+            @Url url: String = NativeEndpoints.getNotificationHistory()
+        ): Response<NotificationListRes>
 
-    @GET("get-popular-games")
-    suspend fun getPopularGames(
-    ):Response<GamesRes>
+        // ----------------- SUPPORT / TICKETS -----------------
+        @GET
+        suspend fun getAllTickets(
+            @Url url: String = NativeEndpoints.ticketsByUser()
+        ): Response<TicketsRes>
 
-    @GET("getTxnList")
-    suspend fun getAllTransaction(
-    ):Response<TransactionDataRes>
+        @POST
+        suspend fun createTicket(
+            @Url url: String,
+            @Body body: CreateNewTicketRequest
+        ): Response<CreateNewTicketResponse>
 
-    @POST("withdrawals/request")
-    suspend fun ReqForWithdrawal(
-        @Body body: WithdrawalReq
-    ):Response<withdrawalRes>
+        @GET
+        suspend fun getTicketMessages(
+            @Url url: String
+        ): Response<TicketMessageRes>
 
+        @POST
+        suspend fun sendTicketMessage(
+            @Url url: String,
+            @Body body: RequestTicketMessage
+        ): Response<TicketMessageResponse>
 
-    @GET("withdrawal/transactions")
-    suspend fun getWithdrawalTxn(
-    ):Response<withdrawalRes>
+        // ----------------- OFFERS -----------------
+        @POST
+        suspend fun searchOfferByStoreName(
+            @Url url: String,
+            @Body body: SearchOfferReq
+        ): Response<Offerlistres>
 
-
-    @GET("get-notification-history")
-    suspend fun getNotificationList(
-    ):Response<NotificationListRes>
-
-
-    @GET("withdrawal/getPaymentMethod")
-    suspend fun getPaymentMethods(
-    ):Response<getPaymentMethodsRes>
-
-  @POST("withdrawal/addPaymentMethod")
-    suspend fun addPaymentMethod(
-        @Body body: addPaymentMethodReq
-    ):Response<addPaymentMethodRes>
-
-@POST("withdrawal/request")
-    suspend fun RequestWithdrawalPayment(
-        @Body body: RequestWithdrawalReq
-    ):Response<RequestWithdrawalRes>
-
-    @GET("tickets/by_user")
-    suspend fun getAllTickets(
-    ):Response<TicketsRes>
-
-    @POST("tickets/create")
-    suspend fun createTicket(
-        @Body body: CreateNewTicketRequest
-    ):Response<CreateNewTicketResponse>
-
-
-    @GET("tickets/{id}")
-    suspend fun getAllTicketByMessage(
-        @Path("id") ticketId: String
-    ):Response<TicketMessageRes>
-
-    @POST("tickets/send-msg")
-    suspend fun sendTicketMessage(
-        @Body body: RequestTicketMessage
-    ):Response<TicketMessageResponse>
-
-    @POST("offers/search-by-store")
-    suspend fun searchOfferByStoreName(
-        @Body body: SearchOfferReq
-    ):Response<Offerlistres>
-
-    @GET("offers/homepage")
-    suspend fun getOffersHomePage(
-    ):Response<Offerlistres>
+        @GET
+        suspend fun getOffersHomePage(
+            @Url url: String = NativeEndpoints.offersHomepage()
+        ): Response<Offerlistres>
 
 
 
     companion object{
+      external fun BaseURL(): String?
       operator  fun invoke(context : Context):MyApi{
+          System.loadLibrary("perkhub")
 //          val BaseUrl = "https://api.perkhub.in/api/"
-          val BaseUrl = "https://blessed-pretty-mammal.ngrok-free.app/api/"
-            var BaseURl = "$BaseUrl"
+//          val BaseUrl = "https://blessed-pretty-mammal.ngrok-free.app/api/"
+            var BaseURl =BaseURL()// "$BaseUrl"
             val httploggingInterceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
             val client = OkHttpClient.Builder()
                 .connectTimeout(30, TimeUnit.SECONDS)

@@ -537,6 +537,17 @@
                         android:layout_marginTop="@dimen/dp10"
                         android:text="@string/notes"/>
 
+                    <TextView
+                        android:id="@+id/oneTimeCashback"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/pointtext"
+                        android:textSize="@dimen/sp14"
+                        android:textStyle="bold"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginTop="@dimen/dp10"
+                        android:text="@string/OnetimeCashback"/>
+
 
                 </LinearLayout>
 
@@ -544,6 +555,7 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/offerTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"

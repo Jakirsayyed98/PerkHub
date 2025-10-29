@@ -122,7 +122,12 @@ class StoreDetailFragment : BaseFragment<FragmentStoreDetailBinding>() {
             override fun onSuccess(t: Offerlistres?, mess: String) {
                 t?.data?.let { data ->
                     viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
-                        setupRecyclerView(data)  // Show only search results
+                        setupRecyclerView(data)
+                        if(data.size>0){
+                            binding.offerTitle.visibility = View.VISIBLE
+                        }else{
+                            binding.offerTitle.visibility = View.GONE
+                        }
                     }
                 }
             }

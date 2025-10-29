@@ -103,7 +103,7 @@ class AuthInterceptor(
 
             val request = GetToken(mobileNumber)
             val apiService = MyApi(context)
-            val response = apiService.getAuthorization(request)
+            val response = apiService.getAuthorization(NativeEndpoints.authorization(),request)
 
             if (response.isSuccessful) {
                 val tokenResponse = response.body()

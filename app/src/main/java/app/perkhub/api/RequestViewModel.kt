@@ -50,7 +50,6 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 fun CoroutineScope.launchSafe(
     dispatcher: CoroutineDispatcher = Dispatchers.IO,
@@ -97,23 +96,23 @@ class RequestViewModel(
 
     // --- Other APIs ---
     fun sendOTP(req: SendOtpReq, context: Context, listener: ApiListener<BaseRes>) {
-        launchApi({ apiProvider(context).sendOtp(req).body() }, listener)
+        launchApi({ apiProvider(context).sendOtp(NativeEndpoints.sendOTP(),req).body() }, listener)
     }
 
     fun getAuthorizationToken(req: GetToken, context: Context, listener: ApiListener<BaseRes>) {
-        launchApi({ apiProvider(context).getAuthorization(req).body() }, listener)
+        launchApi({ apiProvider(context).getAuthorization(NativeEndpoints.authorization(),req).body() }, listener)
     }
 
     fun verifyOTP(req: VerifyOtpReq, context: Context, listener: ApiListener<VerifyOTP>) {
-        launchApi({ apiProvider(context).verifyOTP(req).body() }, listener)
+        launchApi({ apiProvider(context).verifyOtp(NativeEndpoints.verifyOTP(),req).body() }, listener)
     }
 
     fun saveDetail(req: SaveUserDetail, context: Context, listener: ApiListener<BaseRes>) {
-        launchApi({ apiProvider(context).SaveDetail(req).body() }, listener)
+        launchApi({ apiProvider(context).saveDetail(NativeEndpoints.saveDetail(),req).body() }, listener)
     }
 
     fun getLootProduct(page: String, context: Context, listener: ApiListener<LootProductRes>) {
-        launchApi({ apiProvider(context).getLootProduct(page).body() }, listener)
+        launchApi({ apiProvider(context).getLootProduct(NativeEndpoints.getAllLootoffers(),page).body() }, listener)
     }
 
     fun getMiniAppByCategory(
@@ -121,7 +120,7 @@ class RequestViewModel(
         context: Context,
         listener: ApiListener<MiniAppbyCategory>
     ) {
-        launchApi({ apiProvider(context).getMiniAppByCategory(req).body() }, listener)
+        launchApi({ apiProvider(context).getMiniAppByCategory(NativeEndpoints.getStoresByCategory(),req).body() }, listener)
     }
 
     fun searchMiniApps(
@@ -129,15 +128,15 @@ class RequestViewModel(
         context: Context,
         listener: ApiListener<MiniAppbyCategory>
     ) {
-        launchApi({ apiProvider(context).searchminiApps(req).body() }, listener)
+        launchApi({ apiProvider(context).searchMiniApps( NativeEndpoints.searchMiniApps(),req).body() }, listener)
     }
 
     fun generateUrl(req: GenerateSubId, context: Context, listener: ApiListener<GenerateSubIdRes>) {
-        launchApi({ apiProvider(context).generateUrl(req).body() }, listener)
+        launchApi({ apiProvider(context).generateUrl(NativeEndpoints.genrateSubID(),req).body() }, listener)
     }
 
-    fun updateNotification(token: String, context: Context, listener: ApiListener<MiniAppbyCategory>) {
-        launchApi({ apiProvider(context).updateNotification(TokenReq(token)).body() }, listener)
+    fun updateNotification(token: String, context: Context, listener: ApiListener<BaseRes>) {
+        launchApi({ apiProvider(context).updateNotification(NativeEndpoints.updateNotificationToken(),TokenReq(token)).body() }, listener)
     }
 
     fun getPopularGames( context: Context,
@@ -152,7 +151,6 @@ class RequestViewModel(
                 val cachedData = repository.getAllPopularGames()
 
                 if (cachedData.isNotEmpty() && !forceRefresh) {
-                    // ✅ Return cached data and stop — don’t call API
                     val cachedResponse = GamesRes(
                         data = cachedData,
                         message = "Loaded from cache",
@@ -162,7 +160,6 @@ class RequestViewModel(
                     return@launch
                 }
 
-                // ✅ Call API only when no cache or forceRefresh = true
                 launchApi(
                     { apiProvider(context).getAllGames().body() },
                     object : ApiListener<GamesRes> {
@@ -227,7 +224,7 @@ class RequestViewModel(
                 }
 
                 // Then fetch from server in background
-                launchApi({ apiProvider(context).getAllTransaction().body() },
+                launchApi({ apiProvider(context).getAllTransactions(NativeEndpoints.getTxnList()).body() },
                     object : ApiListener<TransactionDataRes> {
                         override fun onSuccess(t: TransactionDataRes?, mess: String) {
                             viewModelScope.launch {
@@ -265,12 +262,12 @@ class RequestViewModel(
         launchApi({ apiProvider(context).getWithdrawalTxn().body() }, listener)
     }
 
-    fun reqForWithdrawal(req: WithdrawalReq, context: Context, listener: ApiListener<withdrawalRes>) {
-        launchApi({ apiProvider(context).ReqForWithdrawal(req).body() }, listener)
-    }
+//    fun reqForWithdrawal(req: WithdrawalReq, context: Context, listener: ApiListener<withdrawalRes>) {
+//        launchApi({ apiProvider(context).requestWithdrawal(NativeEndpoints.withdrawalsRequest(),req).body() }, listener)
+//    }
 
     fun AddPaymentMethod(req: addPaymentMethodReq, context: Context, listener: ApiListener<addPaymentMethodRes>) {
-        launchApi({ apiProvider(context).addPaymentMethod(req).body() }, listener)
+        launchApi({ apiProvider(context).addPaymentMethod(NativeEndpoints.withdrawalAddPaymentMethod(),req).body() }, listener)
     }
 
     fun GetPaymentMethod(context: Context, listener: ApiListener<getPaymentMethodsRes>) {
@@ -280,7 +277,7 @@ class RequestViewModel(
       req: RequestWithdrawalReq,
       context: Context, listener: ApiListener<RequestWithdrawalRes>
   ) {
-        launchApi({ apiProvider(context).RequestWithdrawalPayment(req).body() }, listener)
+        launchApi({ apiProvider(context).requestWithdrawalPayment(NativeEndpoints.withdrawalsRequest(),req).body() }, listener)
     }
 
 
@@ -311,7 +308,9 @@ class RequestViewModel(
                 }
 
                 // Then fetch from server in background
-                launchApi({ apiProvider(context).getAllTicketByMessage(ticketId).body() },
+                val endPoint=NativeEndpoints.ticketsById()
+                val url = "${endPoint}/$ticketId"
+                launchApi({ apiProvider(context).getTicketMessages(url).body() },
                     object : ApiListener<TicketMessageRes> {
                         override fun onSuccess(t: TicketMessageRes?, mess: String) {
                             viewModelScope.launch {
@@ -345,7 +344,7 @@ class RequestViewModel(
         ticketMessage: CreateNewTicketRequest,
         context: Context, listener: ApiListener<CreateNewTicketResponse>
     ) {
-        launchApi({ apiProvider(context).createTicket(ticketMessage).body() }, listener)
+        launchApi({ apiProvider(context).createTicket( NativeEndpoints.ticketsCreate(),ticketMessage).body() }, listener)
     }
 
 
@@ -353,7 +352,7 @@ class RequestViewModel(
         ticketMessage: RequestTicketMessage,
         context: Context, listener: ApiListener<TicketMessageResponse>
     ) {
-        launchApi({ apiProvider(context).sendTicketMessage(ticketMessage).body() }, listener)
+        launchApi({ apiProvider(context).sendTicketMessage(NativeEndpoints.ticketsSendMsg(),ticketMessage).body() }, listener)
     }
 
     fun getNotificationList(
@@ -470,7 +469,7 @@ fun searchOffersByStore(
     request: SearchOfferReq,
     context: Context, listener: ApiListener<Offerlistres>
     ) {
-        launchApi({ apiProvider(context).searchOfferByStoreName(request).body() }, listener)
+        launchApi({ apiProvider(context).searchOfferByStoreName(NativeEndpoints.offersSearchByStore(),request).body() }, listener)
     }
 
 

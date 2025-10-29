@@ -2,6 +2,7 @@ package app.perkhub.Screens.Profile
 
 import android.app.Dialog
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -19,6 +20,7 @@ import app.perkhub.ContainerActivity
 import app.perkhub.R
 import app.perkhub.Screens.Profile.adapter.ProfileMenuAdapter
 import app.perkhub.Screens.Profile.model.menuList
+import app.perkhub.SplashActivity
 import app.perkhub.Utils.ABOUTUS
 import app.perkhub.Utils.BaseFragment
 import app.perkhub.Utils.CONTACTUS
@@ -112,6 +114,10 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
         }
         leave.setOnClickListener {
             dialog.dismiss()
+            getSharedpref().clearAll()
+            val intent = Intent(requireContext(), SplashActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
             Snackbar("Logged out successfully",_binding!!.mainlayout)
         }
         dialog.show()
