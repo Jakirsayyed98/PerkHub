@@ -155,6 +155,11 @@
     <dimen name="dp160">160dp</dimen>
     <dimen name="dp200">200dp</dimen>
     <dimen name="dp250">250dp</dimen>
+    <dimen name="dp260">260dp</dimen>
+    <dimen name="dp270">270dp</dimen>
+    <dimen name="dp280">280dp</dimen>
+    <dimen name="dp290">290dp</dimen>
+    <dimen name="dp300">300dp</dimen>
 
     <!-- SP values (1sp - 150sp) -->
     <dimen name="sp1">1sp</dimen>

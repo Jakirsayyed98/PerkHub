@@ -8,17 +8,19 @@ import app.perkhub.Utils.BaseRecyclerView
 import app.perkhub.Utils.RecyclerClickListener
 import app.perkhub.databinding.HomeGamesLayoutBinding
 import app.perkhub.databinding.LootproductLayoutBinding
+import app.perkhub.databinding.TrendingGamesLayoutBinding
 import com.bumptech.glide.Glide
 
 class TrendingGameAdapter<S>(val clickListener: RecyclerClickListener): BaseRecyclerView<S,TrendingGameAdapter<S>.Holder>() {
 
-    inner class Holder(val binding: HomeGamesLayoutBinding):RecyclerView.ViewHolder(binding.root){
+    inner class Holder(val binding: TrendingGamesLayoutBinding):RecyclerView.ViewHolder(binding.root){
         fun setData(s:S){
             if (s is Data){
                 binding.tvGameName.text = s.name
+                binding.tvGameDis.text = s.description
                 binding.tvPlays.text = "${formatPlays(s.gamePlays)} plays"
                 Glide.with(itemView.context).load(s.assets.cover).into(binding.imgCover)
-                binding.root.setOnClickListener {
+                binding.playbtn.setOnClickListener {
                     clickListener.RecyclerClickListener(0,"",s)
                 }
             }
@@ -36,7 +38,7 @@ class TrendingGameAdapter<S>(val clickListener: RecyclerClickListener): BaseRecy
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
-        return Holder(HomeGamesLayoutBinding.inflate(LayoutInflater.from(parent.context),parent,false))
+        return Holder(TrendingGamesLayoutBinding.inflate(LayoutInflater.from(parent.context),parent,false))
     }
 
     override fun getItemCount(): Int {

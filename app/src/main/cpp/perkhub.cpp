@@ -77,6 +77,11 @@ Java_app_perkhub_api_NativeEndpoints_getPopularGames(JNIEnv *env, jobject) {
 }
 
 JNIEXPORT jstring JNICALL
+Java_app_perkhub_api_NativeEndpoints_getAllGamesCategory(JNIEnv *env, jobject) {
+    return env->NewStringUTF("games-categories");
+}
+
+JNIEXPORT jstring JNICALL
 Java_app_perkhub_api_NativeEndpoints_getTxnList(JNIEnv *env, jobject) {
     return env->NewStringUTF("getTxnList");
 }

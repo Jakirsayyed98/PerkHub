@@ -67,6 +67,55 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <!-- Modern Banner Section -->
+            <LinearLayout
+                android:id="@+id/banner1layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="@dimen/dp10"
+                android:paddingHorizontal="@dimen/dp10">
+
+                <!-- Banner Card with Modern Design -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/bannerCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="170dp"
+                    app:cardCornerRadius="@dimen/dp20"
+                    app:cardElevation="@dimen/dp2"
+                    app:cardUseCompatPadding="true"
+                    app:strokeWidth="0dp">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <androidx.viewpager2.widget.ViewPager2
+                            android:id="@+id/bannerKocMarket"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:clipToPadding="false"
+                            android:clipChildren="false"
+                            android:overScrollMode="never" />
+
+                        <!-- Banner Indicator -->
+                        <LinearLayout
+                            android:id="@+id/bannerIndicator"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom|center_horizontal"
+                            android:layout_marginBottom="@dimen/dp16"
+                            android:orientation="horizontal"
+                            android:paddingHorizontal="@dimen/dp8"
+                            android:paddingVertical="@dimen/dp4" />
+
+                    </FrameLayout>
+
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
+
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -113,6 +162,69 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
             </LinearLayout>
+
+            <!-- Modern Banner 2 Section -->
+            <LinearLayout
+                android:id="@+id/banner2layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="@dimen/dp10"
+                android:paddingHorizontal="@dimen/dp10">
+
+                <!-- Banner Card with Modern Design -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/bannerCard2"
+                    android:layout_width="match_parent"
+                    android:layout_height="170dp"
+                    app:cardCornerRadius="@dimen/dp20"
+                    app:cardElevation="@dimen/dp2"
+                    app:cardUseCompatPadding="true"
+                    app:strokeWidth="0dp">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <androidx.viewpager2.widget.ViewPager2
+                            android:id="@+id/bannerKocMarket2"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:clipToPadding="false"
+                            android:clipChildren="false"
+                            android:overScrollMode="never" />
+
+                        <!-- Banner Indicator -->
+                        <LinearLayout
+                            android:id="@+id/bannerIndicator2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom|center_horizontal"
+                            android:layout_marginBottom="@dimen/dp16"
+                            android:orientation="horizontal"
+                            android:paddingHorizontal="@dimen/dp8"
+                            android:paddingVertical="@dimen/dp4" />
+
+                    </FrameLayout>
+
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp20"
+                android:layout_marginBottom="@dimen/dp20"
+                android:orientation="vertical">
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/gameCategories"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

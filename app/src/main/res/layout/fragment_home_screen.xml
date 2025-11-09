@@ -13,29 +13,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!-- App Bar Layout with Modern Material Design -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-<!--        <LinearLayout-->
-<!--            android:id="@+id/appBarLayout"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:fitsSystemWindows="true"-->
-<!--            app:elevation="0dp">-->
-
-            <!-- Modern Toolbar -->
-<!--            <com.google.android.material.appbar.MaterialToolbar-->
-<!--                android:id="@+id/toolbar"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:background="@color/light_blue"-->
-<!--                android:minHeight="?attr/actionBarSize"-->
-<!--                android:paddingHorizontal="@dimen/dp16"-->
-<!--                android:paddingVertical="@dimen/dp8"-->
-<!--                app:contentInsetStart="0dp"-->
-<!--                app:layout_scrollFlags="scroll|enterAlways|snap">-->
 
                 <LinearLayout
                     android:id="@+id/toolbar"
@@ -176,11 +157,6 @@
 
                 </LinearLayout>
 
-<!--            </com.google.android.material.appbar.MaterialToolbar>-->
-
-<!--        </LinearLayout>-->
-
-        <!-- Main Scrollable Content -->
         <androidx.core.widget.NestedScrollView
             android:id="@+id/mainlayout1"
             android:layout_width="match_parent"
@@ -201,15 +177,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingHorizontal="@dimen/dp16">
+                    android:layout_marginTop="@dimen/dp10"
+                    android:paddingHorizontal="@dimen/dp10">
 
                     <!-- Banner Card with Modern Design -->
                     <androidx.cardview.widget.CardView
                         android:id="@+id/bannerCard"
                         android:layout_width="match_parent"
-                        android:layout_height="160dp"
+                        android:layout_height="170dp"
                         app:cardCornerRadius="@dimen/dp20"
-                        app:cardElevation="@dimen/dp8"
+                        app:cardElevation="@dimen/dp2"
                         app:cardUseCompatPadding="true"
                         app:strokeWidth="0dp">
 
@@ -256,6 +233,7 @@
 
                 </LinearLayout>
 
+
                 <!-- Trending Stores Section -->
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -270,6 +248,62 @@
                         android:layout_height="wrap_content" />
 
                 </LinearLayout>
+
+                <!-- Promotional Banner Section -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/bannerPromoCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginTop="@dimen/dp15"
+                    android:layout_marginHorizontal="@dimen/dp6"
+                    app:cardCornerRadius="@dimen/dp20"
+                    app:cardElevation="@dimen/dp2"
+                    app:cardUseCompatPadding="true">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <androidx.viewpager2.widget.ViewPager2
+                            android:id="@+id/promotional_banner"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:clipToPadding="false"
+                            android:clipChildren="false"
+                            android:overScrollMode="never" />
+
+                        <!-- Overlay Text -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:background="#66000000"
+                            android:padding="@dimen/dp16">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Limited Time Offer!"
+                                android:textColor="@color/white"
+                                android:textStyle="bold"
+                                android:textSize="18sp"
+                                android:gravity="center" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Get up to 50% cashback on top stores"
+                                android:textColor="@color/white"
+                                android:textSize="14sp"
+                                android:gravity="center"
+                                android:layout_marginTop="@dimen/dp4" />
+                        </LinearLayout>
+
+                    </FrameLayout>
+
+                </androidx.cardview.widget.CardView>
+
 
                 <!-- Featured Banner with Modern Overlay -->
                 <androidx.cardview.widget.CardView
@@ -387,6 +421,75 @@
                         android:layout_height="wrap_content" />
 
                 </LinearLayout>
+
+                <!-- App Exclusive Banner -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/bannerExclusiveCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp"
+                    android:layout_marginTop="@dimen/dp24"
+                    android:layout_marginHorizontal="@dimen/dp6"
+                    app:cardCornerRadius="@dimen/dp10"
+                    app:cardElevation="@dimen/dp2"
+                    app:cardUseCompatPadding="true">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <androidx.viewpager2.widget.ViewPager2
+                            android:id="@+id/exclusiveBanner"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:clipToPadding="false"
+                            android:clipChildren="false"
+                            android:overScrollMode="never" />
+
+                        <!-- Overlay Content -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:background="#80000000"
+                            android:padding="@dimen/dp16">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="🏆 PerkHub Exclusive"
+                                android:textColor="@color/white"
+                                android:textStyle="bold"
+                                android:textSize="20sp"
+                                android:gravity="center" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Play games, earn coins, and redeem exciting rewards!"
+                                android:textColor="@color/white"
+                                android:textSize="14sp"
+                                android:gravity="center"
+                                android:layout_marginTop="@dimen/dp6" />
+
+                            <Button
+                                android:id="@+id/btnExploreRewards"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Explore Now"
+                                android:textStyle="bold"
+                                android:textColor="@color/white"
+                                android:backgroundTint="@color/primary_button_bg"
+                                android:layout_marginTop="@dimen/dp12"
+                                android:paddingHorizontal="@dimen/dp20"
+                                android:paddingVertical="@dimen/dp8"
+                                android:layout_gravity="center_horizontal" />
+                        </LinearLayout>
+
+                    </FrameLayout>
+
+                </androidx.cardview.widget.CardView>
+
 
                 <!-- Active Categories Section -->
                 <LinearLayout

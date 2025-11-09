@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface GamesDao {
 
+
     @Query("SELECT * FROM games")
     fun getAllGames(): Flow<List<Data>>
 

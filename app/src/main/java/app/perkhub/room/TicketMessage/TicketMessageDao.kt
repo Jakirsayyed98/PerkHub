@@ -30,6 +30,7 @@ interface TicketMessageDao {
     @Query("DELETE FROM ticket_messages WHERE ticket_id = :ticketId")
     suspend fun deleteMessagesByTicketId(ticketId: String)
 
+
     // ✅ Delete all messages (optional)
     @Query("DELETE FROM ticket_messages")
     suspend fun clearAllMessages()

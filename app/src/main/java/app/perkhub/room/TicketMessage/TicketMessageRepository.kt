@@ -1,6 +1,7 @@
 package app.perkhub.room.Tickets
 
 import android.content.Context
+import android.util.Log
 import app.perkhub.Screens.Profile.model.TicketMessage
 import app.perkhub.room.HomeDatabase
 import kotlinx.coroutines.flow.Flow
@@ -11,6 +12,7 @@ class TicketMessageRepository(context: Context) {
 
     /** 🔹 Get all messages (real-time) for a specific ticket */
     fun getMessages(ticketId: String): Flow<List<TicketMessage>> {
+        Log.d("Ticket ID",ticketId)
         return messageDao.getMessagesByTicketId(ticketId)
     }
 

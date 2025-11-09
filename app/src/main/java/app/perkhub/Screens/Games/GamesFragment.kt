@@ -1,6 +1,8 @@
 package app.perkhub.Screens.Games
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,17 +11,25 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import app.perkhub.R
+import app.perkhub.Screens.Games.adapter.GameCategoriesAdapter
 import app.perkhub.Screens.Games.adapter.PopularGameAdapter
 import app.perkhub.Screens.Games.adapter.TrendingGameAdapter
 import app.perkhub.Screens.Games.model.Data
+import app.perkhub.Screens.Games.model.GameCategoryData
+import app.perkhub.Screens.Games.model.GamesCategoryRes
 import app.perkhub.Screens.Games.model.GamesRes
+import app.perkhub.Screens.Home.Adapter.BannerViewPagerAdapter
+import app.perkhub.Screens.Home.Adapter.SliderModelMain
+import app.perkhub.Screens.Home.Model.Home.Banner
 import app.perkhub.Utils.BaseFragment
 import app.perkhub.Utils.RecyclerClickListener
 import app.perkhub.Utils.openCustomTab
 import app.perkhub.Utils.toast
 import app.perkhub.api.ApiListener
 import app.perkhub.databinding.FragmentGamesBinding
+import app.perkhub.room.games.GamesCategoryRepository
 import app.perkhub.room.games.GamesRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -27,9 +37,14 @@ import kotlinx.coroutines.launch
 
 class GamesFragment : BaseFragment<FragmentGamesBinding>() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+    private val bannerHandler = Handler(Looper.getMainLooper())
+    private var bannerRunnable: Runnable? = null
+
+    private val bannerHandler2 = Handler(Looper.getMainLooper())
+    private var bannerRunnable2: Runnable? = null
+
+    private val gamesList = ArrayList<Data>()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,8 +53,77 @@ class GamesFragment : BaseFragment<FragmentGamesBinding>() {
         // Inflate the layout for this fragment
         _binding = FragmentGamesBinding.inflate(layoutInflater,container,false)
         setToolBar()
-        observePopularGames()
+        observeGames()
+        observeGameCategories()
         return _binding?.root
+    }
+
+    private fun Banner1Func(banners: List<Data>) {
+        val imageList = banners.filter { it.assets.wall.isNotEmpty() }
+            .map { SliderModelMain(it.assets.wall, "", it.url, it.id.toString()) }
+        if (imageList.isEmpty()) return
+
+        binding.bannerKocMarket.adapter = BannerViewPagerAdapter(
+            imageList.toMutableList(),
+            binding.bannerKocMarket,
+            object : RecyclerClickListener {
+                override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
+                    requireContext().openCustomTab(type)
+                }
+            }
+        )
+
+        binding.bannerKocMarket.apply {
+            clipToPadding = false
+            clipChildren = false
+            offscreenPageLimit = 3
+            setPadding(1, 0, 1, 0)
+            (getChildAt(0) as? RecyclerView)?.overScrollMode = RecyclerView.OVER_SCROLL_NEVER
+        }
+
+        bannerRunnable = object : Runnable {
+            override fun run() {
+                val current = binding.bannerKocMarket.currentItem
+                val next = if (current == imageList.size - 1) 0 else current + 1
+                binding.bannerKocMarket.setCurrentItem(next, true)
+                bannerHandler.postDelayed(this, 6000)
+            }
+        }
+        bannerHandler.postDelayed(bannerRunnable!!, 6000)
+    }
+
+    private fun Banner2Func(banners: List<Data>) {
+        val imageList = banners.filter { it.assets.wall.isNotEmpty() }
+            .map { SliderModelMain(it.assets.wall, "", it.url, it.id.toString()) }
+        if (imageList.isEmpty()) return
+
+        binding.bannerKocMarket2.adapter = BannerViewPagerAdapter(
+            imageList.toMutableList(),
+            binding.bannerKocMarket2,
+            object : RecyclerClickListener {
+                override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
+                    requireContext().openCustomTab(type)
+                }
+            }
+        )
+
+        binding.bannerKocMarket2.apply {
+            clipToPadding = false
+            clipChildren = false
+            offscreenPageLimit = 3
+            setPadding(1, 0, 1, 0)
+            (getChildAt(0) as? RecyclerView)?.overScrollMode = RecyclerView.OVER_SCROLL_NEVER
+        }
+
+        bannerRunnable2 = object : Runnable {
+            override fun run() {
+                val current = binding.bannerKocMarket2.currentItem
+                val next = if (current == imageList.size - 1) 0 else current + 1
+                binding.bannerKocMarket2.setCurrentItem(next, true)
+                bannerHandler2.postDelayed(this, 4000)
+            }
+        }
+        bannerHandler2.postDelayed(bannerRunnable2!!, 4000)
     }
 
     private fun setToolBar() {
@@ -56,7 +140,7 @@ class GamesFragment : BaseFragment<FragmentGamesBinding>() {
         binding.toolbar.root.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.games_bg))
     }
 
-    private fun observePopularGames() {
+    private fun observeGames() {
         val repository = GamesRepository(requireContext())
 
         // CRITICAL FIX: Use viewLifecycleOwner instead of lifecycleScope
@@ -67,8 +151,13 @@ class GamesFragment : BaseFragment<FragmentGamesBinding>() {
                 // 1. Fragment opens (shows cached data)
                 // 2. Server data is fetched (shows fresh data)
                 // 3. Push notification arrives (shows new notification)
+                Banner1Func(if(games.size>10) games.shuffled().subList(0,10) else games)
+                Banner2Func(if(games.size>10) games.shuffled().subList(0,10) else games)
                 setPopularGamesLayout(games.shuffled())
                 setTrendingGamesLayout(games.shuffled())
+                gamesList.clear()
+                gamesList.addAll(games)
+
             }
         }
 
@@ -84,11 +173,11 @@ class GamesFragment : BaseFragment<FragmentGamesBinding>() {
         })
 
         binding.populargame.apply {
-            layoutManager = GridLayoutManager(requireContext(), 3, GridLayoutManager.HORIZONTAL, false)
+            layoutManager = GridLayoutManager(requireContext(), 2, GridLayoutManager.HORIZONTAL, false)
             adapter = mAdapter
         }
 
-        mAdapter.addAllItem(if (games.size>20) games.subList(0,21) else games)
+        mAdapter.addAllItem(if (games.size>14) games.subList(0,14) else games)
     }
 
     private fun setTrendingGamesLayout(games: List<Data>) {
@@ -99,11 +188,12 @@ class GamesFragment : BaseFragment<FragmentGamesBinding>() {
         })
 
         binding.trendinggame.apply {
-            layoutManager = GridLayoutManager(requireContext(), 3, GridLayoutManager.HORIZONTAL, false)
+//            layoutManager = GridLayoutManager(requireContext(), 3, GridLayoutManager.HORIZONTAL, false)
+            layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
             adapter = mAdapter
         }
 
-        mAdapter.addAllItem(if (games.size>20) games.subList(0,21) else games)
+        mAdapter.addAllItem(if (games.size>14) games.shuffled().subList(0,14) else games.shuffled())
     }
 
     private fun fetchGamesList(forceRefresh: Boolean = false) {
@@ -124,6 +214,64 @@ class GamesFragment : BaseFragment<FragmentGamesBinding>() {
                     override fun onError(mess: String) {
                         lifecycleScope.launch(Dispatchers.Main) {
                             requireContext().toast("Failed to fetch notifications: $mess")
+                        }
+                    }
+                })
+        }
+    }
+
+    private fun observeGameCategories() {
+        val repository = GamesCategoryRepository(requireContext())
+
+        // CRITICAL FIX: Use viewLifecycleOwner instead of lifecycleScope
+        // This prevents memory leaks when Fragment is destroyed
+        viewLifecycleOwner.lifecycleScope.launch {
+            repository.getGamesCategory().collect { gameCategory ->
+                // This will be called automatically when:
+                // 1. Fragment opens (shows cached data)
+                // 2. Server data is fetched (shows fresh data)
+                // 3. Push notification arrives (shows new notification)
+                setGameCategoriesWithLayout(gameCategory.shuffled())
+            }
+        }
+
+        // Trigger refresh from server in background
+        fetchGameCategoriesList(forceRefresh = true)
+    }
+
+    private fun setGameCategoriesWithLayout(gamesCategory: List<GameCategoryData>) {
+        val mAdapter = GameCategoriesAdapter<GameCategoryData>(object : RecyclerClickListener{
+            override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
+//                if (data is Data) requireContext().openCustomTab(data.url)
+            }
+        })
+
+        binding.gameCategories.apply {
+            layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
+            adapter = mAdapter
+        }
+
+        mAdapter.addAllItem(gamesCategory)
+    }
+
+    private fun fetchGameCategoriesList(forceRefresh: Boolean = false) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            viewModel.getAllGamesCategory(
+                requireContext(),
+                forceRefresh,
+                object : ApiListener<GamesCategoryRes> {
+                    override fun onSuccess(t: GamesCategoryRes?, mess: String) {
+                        t?.data?.let {
+                            lifecycleScope.launch(Dispatchers.Main) {
+                                // Don't call setData here if using Flow
+                                // The Flow will handle it automatically
+                            }
+                        }
+                    }
+
+                    override fun onError(mess: String) {
+                        lifecycleScope.launch(Dispatchers.Main) {
+                            requireContext().toast("Failed to fetch games categories: $mess")
                         }
                     }
                 })

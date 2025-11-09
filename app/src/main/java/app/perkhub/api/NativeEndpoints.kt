@@ -18,6 +18,7 @@ object NativeEndpoints {
     external fun searchMiniApps(): String
     external fun updateNotificationToken(): String
     external fun getAllGames(): String
+    external fun getAllGamesCategory() :  String
     external fun getPopularGames(): String
     external fun getTxnList(): String
     external fun withdrawalsRequest(): String

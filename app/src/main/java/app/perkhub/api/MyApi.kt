@@ -1,6 +1,7 @@
 package app.perkhub.api
 
 import android.content.Context
+import app.perkhub.Screens.Games.model.GamesCategoryRes
 import app.perkhub.Screens.Home.Model.Auth.VerifyOTP
 import app.perkhub.Screens.Home.Model.Games.GamesRes
 import app.perkhub.Screens.Home.Model.GenerateUrl.GenerateSubId
@@ -121,6 +122,11 @@ interface MyApi {
         suspend fun getAllGames(
             @Url url: String = NativeEndpoints.getAllGames()
         ): Response<app.perkhub.Screens.Games.model.GamesRes>
+
+    @GET
+    suspend fun getAllGamesCategory(
+        @Url url: String = NativeEndpoints.getAllGamesCategory()
+    ): Response<GamesCategoryRes>
 
         @GET
         suspend fun getPopularGames(

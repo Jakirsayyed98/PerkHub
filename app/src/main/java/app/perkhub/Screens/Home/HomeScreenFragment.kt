@@ -139,6 +139,14 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
                         setTrendingStores1(data.popular)
                         if (data.banner1.isNullOrEmpty()) binding.banner1layout.visibility = View.GONE
                         else Banner1Func(data.banner1)
+
+                        if (data.banner2.isNullOrEmpty()) binding.promotionalBanner.visibility = View.GONE
+                        else BannerPromotional(data.banner2)
+
+                        if (data.banner3.isNullOrEmpty()) binding.exclusiveBanner.visibility = View.GONE
+                        else BannerExclusive(data.banner3)
+
+
                         if (data.trending.isNotEmpty()) setTrendingStores(data.trending)
                         if (data.category_list.isNotEmpty()) setActiveHomeCategory(data.category_list)
                     }
@@ -322,11 +330,82 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
                 val current = binding.bannerKocMarket.currentItem
                 val next = if (current == imageList.size - 1) 0 else current + 1
                 binding.bannerKocMarket.setCurrentItem(next, true)
-                bannerHandler.postDelayed(this, 3000)
+                bannerHandler.postDelayed(this, 6000)
             }
         }
-        bannerHandler.postDelayed(bannerRunnable!!, 3000)
+        bannerHandler.postDelayed(bannerRunnable!!, 6000)
     }
+
+    // ---------------- BANNER ---------------- //
+    private fun BannerPromotional(banners: List<Banner>) {
+        val imageList = banners.filter { !it.image.isNullOrEmpty() }
+            .map { SliderModelMain(it.image, "", it.url, it.id.toString()) }
+        if (imageList.isEmpty()) return
+
+        binding.promotionalBanner.adapter = BannerViewPagerAdapter(
+            imageList.toMutableList(),
+            binding.promotionalBanner,
+            object : RecyclerClickListener {
+                override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
+                    requireContext().openCustomTab(type)
+                }
+            }
+        )
+
+        binding.promotionalBanner.apply {
+            clipToPadding = false
+            clipChildren = false
+            offscreenPageLimit = 3
+            setPadding(1, 0, 1, 0)
+            (getChildAt(0) as? RecyclerView)?.overScrollMode = RecyclerView.OVER_SCROLL_NEVER
+        }
+
+        bannerRunnable = object : Runnable {
+            override fun run() {
+                val current = binding.promotionalBanner.currentItem
+                val next = if (current == imageList.size - 1) 0 else current + 1
+                binding.promotionalBanner.setCurrentItem(next, true)
+                bannerHandler.postDelayed(this, 3500)
+            }
+        }
+        bannerHandler.postDelayed(bannerRunnable!!, 3500)
+    }
+
+
+    private fun BannerExclusive(banners: List<Banner>) {
+        val imageList = banners.filter { !it.image.isNullOrEmpty() }
+            .map { SliderModelMain(it.image, "", it.url, it.id.toString()) }
+        if (imageList.isEmpty()) return
+
+        binding.exclusiveBanner.adapter = BannerViewPagerAdapter(
+            imageList.toMutableList(),
+            binding.exclusiveBanner,
+            object : RecyclerClickListener {
+                override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
+                    requireContext().openCustomTab(type)
+                }
+            }
+        )
+
+        binding.exclusiveBanner.apply {
+            clipToPadding = false
+            clipChildren = false
+            offscreenPageLimit = 3
+            setPadding(1, 0, 1, 0)
+            (getChildAt(0) as? RecyclerView)?.overScrollMode = RecyclerView.OVER_SCROLL_NEVER
+        }
+
+        bannerRunnable = object : Runnable {
+            override fun run() {
+                val current = binding.exclusiveBanner.currentItem
+                val next = if (current == imageList.size - 1) 0 else current + 1
+                binding.exclusiveBanner.setCurrentItem(next, true)
+                bannerHandler.postDelayed(this, 4000)
+            }
+        }
+        bannerHandler.postDelayed(bannerRunnable!!, 4000)
+    }
+
 
     // ---------------- DRAWER MENU ---------------- //
     private fun setupMenu() {

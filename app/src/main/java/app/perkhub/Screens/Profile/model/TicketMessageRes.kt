@@ -28,7 +28,9 @@ data class TicketMessage(
     val author_type: String, // "user" or "admin"
     val body: String,
     val created_at: String
-) {
+)
+
+{
     fun getFormattedTime(): String {
         return try {
             // Example: "2025-10-04T22:54:55.473569+05:30"
