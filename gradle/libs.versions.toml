@@ -25,6 +25,8 @@ lottieVersion = "3.4.0"
 room = "2.5.0" # added for room-runtime + compiler
 roomCompiler = "2.5.0"
 coroutines = "1.7.3"
+firebaseCrashlytics = "20.0.3"
+googleFirebaseCrashlytics = "3.0.6"
 #ksp = "1.9.20-1.0.14"
 
 
@@ -64,8 +66,10 @@ kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-cor
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
 #ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version = "33.1.1" }
+firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics", version.ref = "firebaseCrashlytics" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 google-gms-google-services = { id = "com.google.gms.google-services", version.ref = "googleGmsGoogleServices" }
+google-firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "googleFirebaseCrashlytics" }

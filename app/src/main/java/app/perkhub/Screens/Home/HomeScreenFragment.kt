@@ -120,7 +120,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         search.setOnClickListener {
             ContainerActivity.OpenContainerType2(requireContext(), "SelectedCategoryFragment", "Search", null)
         }
-        notification.setOnClickListener {
+        notificationLayout.setOnClickListener {
             ContainerActivity.OpenContainer(requireContext(), "NotificationListFragment", null)
         }
     }

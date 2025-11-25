@@ -3,6 +3,7 @@
         alias(libs.plugins.jetbrains.kotlin.android)
         alias(libs.plugins.google.gms.google.services)
         id("com.google.devtools.ksp") version "1.9.20-1.0.14"
+        alias(libs.plugins.google.firebase.crashlytics)
         //    kotlin("kapt")
     }
 
@@ -67,6 +68,7 @@
         implementation(libs.androidx.browser)
         implementation(libs.firebase.messaging)
         implementation(libs.androidx.lottie)
+        implementation(libs.firebase.crashlytics)
 
         // Room
     //    kapt(libs.androidx.room.compiler)

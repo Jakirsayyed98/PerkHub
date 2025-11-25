@@ -105,6 +105,7 @@
 
                     <!-- Notification Bell with Badge -->
                     <FrameLayout
+                        android:id="@+id/notification_layout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
 
@@ -272,34 +273,6 @@
                             android:clipChildren="false"
                             android:overScrollMode="never" />
 
-                        <!-- Overlay Text -->
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:gravity="center"
-                            android:orientation="vertical"
-                            android:background="#66000000"
-                            android:padding="@dimen/dp16">
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="Limited Time Offer!"
-                                android:textColor="@color/white"
-                                android:textStyle="bold"
-                                android:textSize="18sp"
-                                android:gravity="center" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="Get up to 50% cashback on top stores"
-                                android:textColor="@color/white"
-                                android:textSize="14sp"
-                                android:gravity="center"
-                                android:layout_marginTop="@dimen/dp4" />
-                        </LinearLayout>
-
                     </FrameLayout>
 
                 </androidx.cardview.widget.CardView>
@@ -444,47 +417,6 @@
                             android:clipToPadding="false"
                             android:clipChildren="false"
                             android:overScrollMode="never" />
-
-                        <!-- Overlay Content -->
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical"
-                            android:gravity="center"
-                            android:background="#80000000"
-                            android:padding="@dimen/dp16">
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="🏆 PerkHub Exclusive"
-                                android:textColor="@color/white"
-                                android:textStyle="bold"
-                                android:textSize="20sp"
-                                android:gravity="center" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="Play games, earn coins, and redeem exciting rewards!"
-                                android:textColor="@color/white"
-                                android:textSize="14sp"
-                                android:gravity="center"
-                                android:layout_marginTop="@dimen/dp6" />
-
-                            <Button
-                                android:id="@+id/btnExploreRewards"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Explore Now"
-                                android:textStyle="bold"
-                                android:textColor="@color/white"
-                                android:backgroundTint="@color/primary_button_bg"
-                                android:layout_marginTop="@dimen/dp12"
-                                android:paddingHorizontal="@dimen/dp20"
-                                android:paddingVertical="@dimen/dp8"
-                                android:layout_gravity="center_horizontal" />
-                        </LinearLayout>
 
                     </FrameLayout>
 

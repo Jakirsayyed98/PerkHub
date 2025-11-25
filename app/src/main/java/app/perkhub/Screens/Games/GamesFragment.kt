@@ -3,15 +3,12 @@ package app.perkhub.Screens.Games
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import app.perkhub.ContainerActivity
 import app.perkhub.R
 import app.perkhub.Screens.Games.adapter.GameCategoriesAdapter
 import app.perkhub.Screens.Games.adapter.PopularGameAdapter
@@ -22,7 +19,6 @@ import app.perkhub.Screens.Games.model.GamesCategoryRes
 import app.perkhub.Screens.Games.model.GamesRes
 import app.perkhub.Screens.Home.Adapter.BannerViewPagerAdapter
 import app.perkhub.Screens.Home.Adapter.SliderModelMain
-import app.perkhub.Screens.Home.Model.Home.Banner
 import app.perkhub.Utils.BaseFragment
 import app.perkhub.Utils.RecyclerClickListener
 import app.perkhub.Utils.openCustomTab
@@ -34,7 +30,6 @@ import app.perkhub.room.games.GamesRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-
 class GamesFragment : BaseFragment<FragmentGamesBinding>() {
 
     private val bannerHandler = Handler(Looper.getMainLooper())
@@ -45,13 +40,16 @@ class GamesFragment : BaseFragment<FragmentGamesBinding>() {
 
     private val gamesList = ArrayList<Data>()
 
+    // Local caches for combining
+    private var allCategories = emptyList<GameCategoryData>()
+    private var allGames = emptyList<Data>()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: android.view.LayoutInflater,
+        container: android.view.ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        _binding = FragmentGamesBinding.inflate(layoutInflater,container,false)
+    ): android.view.View? {
+        _binding = FragmentGamesBinding.inflate(inflater, container, false)
         setToolBar()
         observeGames()
         observeGameCategories()
@@ -135,6 +133,10 @@ class GamesFragment : BaseFragment<FragmentGamesBinding>() {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
+        binding.searchLayout.setOnClickListener {
+            ContainerActivity.OpenContainer(requireContext(),"SearchGameFragment",null)
+        }
+
         binding.toolbar.toolbar.elevation = 0f
         binding.toolbar.name.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
         binding.toolbar.root.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.games_bg))
@@ -143,30 +145,27 @@ class GamesFragment : BaseFragment<FragmentGamesBinding>() {
     private fun observeGames() {
         val repository = GamesRepository(requireContext())
 
-        // CRITICAL FIX: Use viewLifecycleOwner instead of lifecycleScope
-        // This prevents memory leaks when Fragment is destroyed
         viewLifecycleOwner.lifecycleScope.launch {
             repository.getGames().collect { games ->
-                // This will be called automatically when:
-                // 1. Fragment opens (shows cached data)
-                // 2. Server data is fetched (shows fresh data)
-                // 3. Push notification arrives (shows new notification)
-                Banner1Func(if(games.size>10) games.shuffled().subList(0,10) else games)
-                Banner2Func(if(games.size>10) games.shuffled().subList(0,10) else games)
+                allGames = games
+                Banner1Func(if (games.size > 10) games.shuffled().subList(0, 10) else games)
+                Banner2Func(if (games.size > 10) games.shuffled().subList(0, 10) else games)
                 setPopularGamesLayout(games.shuffled())
-                setTrendingGamesLayout(games.shuffled())
+                setGamesLayout(games.shuffled())
+
                 gamesList.clear()
                 gamesList.addAll(games)
 
+                // Combine after games are fetched
+                combineCategoriesWithGames()
             }
         }
 
-        // Trigger refresh from server in background
         fetchGamesList(forceRefresh = true)
     }
 
     private fun setPopularGamesLayout(games: List<Data>) {
-        val mAdapter = PopularGameAdapter<Data>(object : RecyclerClickListener{
+        val mAdapter = PopularGameAdapter<Data>(object : RecyclerClickListener {
             override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
                 if (data is Data) requireContext().openCustomTab(data.url)
             }
@@ -177,23 +176,22 @@ class GamesFragment : BaseFragment<FragmentGamesBinding>() {
             adapter = mAdapter
         }
 
-        mAdapter.addAllItem(if (games.size>14) games.subList(0,14) else games)
+        mAdapter.addAllItem(if (games.size > 14) games.subList(0, 14) else games)
     }
 
-    private fun setTrendingGamesLayout(games: List<Data>) {
-        val mAdapter = TrendingGameAdapter<Data>(object : RecyclerClickListener{
+    private fun setGamesLayout(games: List<Data>) {
+        val mAdapter = TrendingGameAdapter<Data>(object : RecyclerClickListener {
             override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
                 if (data is Data) requireContext().openCustomTab(data.url)
             }
         })
 
         binding.trendinggame.apply {
-//            layoutManager = GridLayoutManager(requireContext(), 3, GridLayoutManager.HORIZONTAL, false)
-            layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             adapter = mAdapter
         }
 
-        mAdapter.addAllItem(if (games.size>14) games.shuffled().subList(0,14) else games.shuffled())
+        mAdapter.addAllItem(if (games.size > 14) games.shuffled().subList(0, 14) else games.shuffled())
     }
 
     private fun fetchGamesList(forceRefresh: Boolean = false) {
@@ -202,18 +200,10 @@ class GamesFragment : BaseFragment<FragmentGamesBinding>() {
                 requireContext(),
                 forceRefresh,
                 object : ApiListener<GamesRes> {
-                    override fun onSuccess(t: GamesRes?, mess: String) {
-                        t?.data?.let {
-                            lifecycleScope.launch(Dispatchers.Main) {
-                                // Don't call setData here if using Flow
-                                // The Flow will handle it automatically
-                            }
-                        }
-                    }
-
+                    override fun onSuccess(t: GamesRes?, mess: String) {}
                     override fun onError(mess: String) {
                         lifecycleScope.launch(Dispatchers.Main) {
-                            requireContext().toast("Failed to fetch notifications: $mess")
+                            requireContext().toast("Failed to fetch games: $mess")
                         }
                     }
                 })
@@ -223,31 +213,43 @@ class GamesFragment : BaseFragment<FragmentGamesBinding>() {
     private fun observeGameCategories() {
         val repository = GamesCategoryRepository(requireContext())
 
-        // CRITICAL FIX: Use viewLifecycleOwner instead of lifecycleScope
-        // This prevents memory leaks when Fragment is destroyed
         viewLifecycleOwner.lifecycleScope.launch {
             repository.getGamesCategory().collect { gameCategory ->
-                // This will be called automatically when:
-                // 1. Fragment opens (shows cached data)
-                // 2. Server data is fetched (shows fresh data)
-                // 3. Push notification arrives (shows new notification)
-                setGameCategoriesWithLayout(gameCategory.shuffled())
+                allCategories = gameCategory
+                combineCategoriesWithGames()
             }
         }
 
-        // Trigger refresh from server in background
         fetchGameCategoriesList(forceRefresh = true)
     }
 
+    private fun combineCategoriesWithGames() {
+        if (allCategories.isEmpty() || allGames.isEmpty()) return
+
+        val mergedCategories = allCategories.map { category ->
+            val relatedGames = allGames.filter { game ->
+                // assuming `Data` has `category_id`
+                game.category_id == category.id
+            }
+            category.apply {
+                games = relatedGames
+            }
+        }
+
+        // Filter only categories that have games
+        val validCategories = mergedCategories.filter { it.games.isNotEmpty() }
+        setGameCategoriesWithLayout(validCategories)
+    }
+
     private fun setGameCategoriesWithLayout(gamesCategory: List<GameCategoryData>) {
-        val mAdapter = GameCategoriesAdapter<GameCategoryData>(object : RecyclerClickListener{
+        val mAdapter = GameCategoriesAdapter<GameCategoryData>(object : RecyclerClickListener {
             override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
-//                if (data is Data) requireContext().openCustomTab(data.url)
+                if (data is Data) requireContext().openCustomTab(data.url)
             }
         })
 
         binding.gameCategories.apply {
-            layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             adapter = mAdapter
         }
 
@@ -260,18 +262,10 @@ class GamesFragment : BaseFragment<FragmentGamesBinding>() {
                 requireContext(),
                 forceRefresh,
                 object : ApiListener<GamesCategoryRes> {
-                    override fun onSuccess(t: GamesCategoryRes?, mess: String) {
-                        t?.data?.let {
-                            lifecycleScope.launch(Dispatchers.Main) {
-                                // Don't call setData here if using Flow
-                                // The Flow will handle it automatically
-                            }
-                        }
-                    }
-
+                    override fun onSuccess(t: GamesCategoryRes?, mess: String) {}
                     override fun onError(mess: String) {
                         lifecycleScope.launch(Dispatchers.Main) {
-                            requireContext().toast("Failed to fetch games categories: $mess")
+                            requireContext().toast("Failed to fetch game categories: $mess")
                         }
                     }
                 })
@@ -280,8 +274,6 @@ class GamesFragment : BaseFragment<FragmentGamesBinding>() {
 
     companion object {
         @JvmStatic
-        fun newInstance() =
-            GamesFragment().apply {
-            }
+        fun newInstance() = GamesFragment()
     }
 }

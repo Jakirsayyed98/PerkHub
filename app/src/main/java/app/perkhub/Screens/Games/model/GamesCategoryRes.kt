@@ -1,6 +1,7 @@
 package app.perkhub.Screens.Games.model
 
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 
 data class GamesCategoryRes(
@@ -15,5 +16,8 @@ data class GameCategoryData(
     val id: String,
     val name: String,
     val status: Boolean,
-    val icon: String
-)
+    val icon: String,
+){
+    @Ignore
+    var games: List<Data> = emptyList()
+}

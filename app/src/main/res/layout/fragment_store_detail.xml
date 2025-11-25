@@ -306,7 +306,7 @@
                             android:textSize="@dimen/sp16"
                             android:textStyle="bold"
                             android:textColor="@color/black"
-                            android:text="Cashback Pending"/>
+                            android:text="Cashback in Pending"/>
 
                         <TextView
                             android:layout_width="match_parent"
@@ -357,7 +357,7 @@
                             android:textSize="@dimen/sp16"
                             android:textStyle="bold"
                             android:textColor="@color/black"
-                            android:text="Cashback Pending"/>
+                            android:text="Cashback Approved"/>
 
                         <TextView
                             android:layout_width="match_parent"
@@ -367,7 +367,7 @@
                             android:textSize="@dimen/sp13"
                             android:layout_marginTop="@dimen/dp5"
                             android:textColor="@color/grey"
-                            android:text="Your cashback will appear in pending balance within 1-3 days after purchase."/>
+                            android:text="After approval of cashback you can withdraw your cashback directly into your account."/>
                     </LinearLayout>
                 </LinearLayout>
 
@@ -562,6 +562,7 @@
                 android:layout_marginStart="@dimen/dp10"
                 android:textSize="@dimen/sp16"
                 android:textStyle="bold"
+                android:visibility="gone"
                 android:textColor="@color/black"
                 android:text="Offers &amp; Coupons"/>
 

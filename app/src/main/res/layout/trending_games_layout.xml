@@ -43,15 +43,19 @@
             android:orientation="vertical"
             android:minHeight="140dp">
 
+            <androidx.cardview.widget.CardView
+                android:layout_width="@dimen/dp75"
+                android:layout_height="@dimen/dp75"
+                app:cardCornerRadius="@dimen/dp10"
+                android:layout_marginTop="5dp"
+                android:layout_gravity="center">
             <ImageView
                 android:id="@+id/img_cover"
                 android:layout_width="@dimen/dp75"
                 android:layout_height="@dimen/dp75"
                 android:scaleType="centerCrop"
-                android:layout_marginTop="5dp"
-                android:layout_gravity="center"
                 android:contentDescription="Game Cover" />
-
+            </androidx.cardview.widget.CardView>
 
             <TextView
                 android:id="@+id/tv_game_name"

@@ -1,7 +1,9 @@
 package app.perkhub.Screens.Games.adapter
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import app.perkhub.Screens.Games.model.Data
 import app.perkhub.Screens.Games.model.GameCategoryData
@@ -19,9 +21,22 @@ class GameCategoriesAdapter<S>(val clickListener: RecyclerClickListener): BaseRe
         fun setData(s:S){
             if (s is GameCategoryData){
                 binding.categoryName.text = s.name
-
+                setGamesList(binding,s.games,itemView.context)
             }
         }
+    }
+
+    private fun setGamesList(binding: GameCategoryLayoutBinding,games: List<Data>,context :Context) {
+        val gameAdapter = CategoryWiseGameAdapter<Data>(object:RecyclerClickListener{
+            override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
+                clickListener.RecyclerClickListener(posi,type,data)
+            }
+        })
+        binding.games.apply {
+            layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
+            adapter= gameAdapter
+        }
+        gameAdapter.addAllItem(games)
     }
 
     fun formatPlays(count: String): String {
