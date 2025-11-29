@@ -35,6 +35,8 @@
     <string name="cashback_rates">Cashback Rates</string>
     <string name="how_it_works">How It Works</string>
 
+    <string name="account_blocked">Account Blocked</string>
+
     <!-- Button Text -->
     <string name="share_earn">Share &amp; Earn</string>
     <string name="shop_earn">Shop &amp; Earn</string>
@@ -60,6 +62,7 @@
 
     <string name="tickets_notes"><b>•</b> Be specific about your issue and include relevant details\n\n<b>•</b> Mention any error messages you received
         \n\n<b>•</b> Include transaction IDs or order numbers if applicable\n\n<b>•</b> Attach screenshots if they help explain the problem</string>
+    <string name="your_perkhub_account_blocked">Your PerkHub account has been temporarily blocked due to unusual activity. Please contact our support team at <b>support-team@perkhub.in</b> for further assistance.</string>
 
 
 </resources>

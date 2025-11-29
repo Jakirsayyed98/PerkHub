@@ -2,6 +2,7 @@ package app.perkhub.Screens.Home
 
 import android.app.Dialog
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -37,6 +38,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import app.perkhub.Screens.Home.Model.Notification.NotificationListRes
 import app.perkhub.Screens.login.models.LoginRes
+import app.perkhub.SplashActivity
 import app.perkhub.api.BaseRes
 import app.perkhub.room.NotificationRepository
 import app.perkhub.room.games.GamesRepository
@@ -64,9 +66,9 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         observePopularGames()
         // Fetch data
         lifecycleScope.launch { fetchHomeData() }       // HomeViewModel
-        if (getSharedpref().getUser(USERDATA)==null){
+//        if (getSharedpref().getUser(USERDATA)==null){
             getUserDetail()
-        }
+//        }
 
         lifecycleScope.launch { updateFirebaseToken() } // requestViewModel
 
@@ -95,7 +97,8 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
     private fun getUserDetail() {
         viewModel.getUserDetail(requireContext(), object : ApiListener<LoginRes> {
             override fun onSuccess(t: LoginRes?, mess: String) {
-                t!!.let {
+                t!!.let{
+
                     getSharedpref().saveUser(USERDATA, it)
                     setupMenu()
                 }
@@ -426,6 +429,12 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
 //            binding.drawerlayout.open()
         }
 
+        if (userName.blocked){
+            requireActivity().runOnUiThread {
+                requireContext().showBlockedUserDialog()
+            }
+        }
+
 //        binding.navView.setNavigationItemSelectedListener {
 //            when (it.itemId) {
 //                R.id.home -> binding.drawerlayout.close()
@@ -443,27 +452,6 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
 //        }
     }
 
-    private fun Context.showLogoutDialog() {
-        val dialog = Dialog(this)
-        dialog.setContentView(R.layout.logout_dialog_layout)
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        val cancel = dialog.findViewById<AppCompatButton>(R.id.cancel)
-        val leave = dialog.findViewById<AppCompatButton>(R.id.leave)
-        dialog.setCancelable(true)
-
-        cancel.setOnClickListener {
-            dialog.dismiss()
-            binding.drawerlayout.close()
-            Snackbar("Stay logged in",_binding!!.mainlayout)
-        }
-        leave.setOnClickListener {
-            dialog.dismiss()
-            binding.drawerlayout.close()
-            Snackbar("Logged out successfully",_binding!!.mainlayout)
-        }
-        dialog.show()
-    }
-
     // ---------------- BACK PRESS ---------------- //
     fun onBackPressed() {
         if (backPressedTime + doubleBackPressDuration > System.currentTimeMillis()) {
@@ -478,4 +466,14 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         @JvmStatic
         fun newInstance() = HomeScreenFragment()
     }
+
+
+    private fun Context.showBlockedUserDialog() {
+        val dialog = Dialog(this)
+        dialog.setContentView(R.layout.blocked_user_dialog_layout)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.setCancelable(false)
+        dialog.show()
+    }
+
 }
