@@ -12,7 +12,6 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import app.perkhub.Utils.BaseActivity
 import app.perkhub.Utils.LOGIN
-import app.perkhub.Utils.toast
 import app.perkhub.databinding.ActivitySplashBinding
 import com.google.firebase.messaging.FirebaseMessaging
 
@@ -42,9 +41,6 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
                     Log.d("FCM", "Subscribed to all_users topic")
                 }
             }
-
-
-//        this.toast(getSharedpref().getBoolen(LOGIN).toString())
 
         val timer = object: CountDownTimer(2000, 1000) {
             override fun onTick(millisUntilFinished: Long) {

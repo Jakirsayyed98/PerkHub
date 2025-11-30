@@ -2,19 +2,13 @@ package app.perkhub.Screens.Home
 
 import android.app.Dialog
 import android.content.Context
-import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.*
-import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.appcompat.widget.AppCompatButton
-import androidx.core.view.*
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,25 +18,15 @@ import app.perkhub.R
 import app.perkhub.Screens.Games.model.GamesRes
 import app.perkhub.Screens.Home.Adapter.*
 import app.perkhub.Screens.Home.Model.Home.*
-import app.perkhub.Screens.Home.Model.MiniAppByCategory.MiniAppbyCategory
 import app.perkhub.Utils.*
 import app.perkhub.api.ApiListener
-import app.perkhub.api.MyApi
 import app.perkhub.databinding.FragmentHomeScreenBinding
-import app.perkhub.room.HomeDatabase
-import app.perkhub.room.HomeRepository
-import app.perkhub.room.HomeViewModel
-import app.perkhub.room.RequestViewModelFactory
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import app.perkhub.Screens.Home.Model.Notification.NotificationListRes
 import app.perkhub.Screens.login.models.LoginRes
-import app.perkhub.SplashActivity
 import app.perkhub.api.BaseRes
-import app.perkhub.room.NotificationRepository
 import app.perkhub.room.games.GamesRepository
-import com.google.android.material.snackbar.Snackbar
 
 class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
 
@@ -51,7 +35,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
     private val doubleBackPressDuration = 3000L
     private val bannerHandler = Handler(Looper.getMainLooper())
     private var bannerRunnable: Runnable? = null
-
+    private var blockedDialog: Dialog? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -159,7 +143,6 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
             override fun onError(mess: String) {
                 lifecycleScope.launch(Dispatchers.Main) {
                     requireContext().Snackbar("Home API error: $mess",_binding!!.mainlayout)
-//                    Toast.makeText(requireContext(), "Home API error: $mess", Toast.LENGTH_LONG).show()
                 }
             }
         })
@@ -182,7 +165,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
 
                     override fun onError(mess: String) {
                         lifecycleScope.launch(Dispatchers.Main) {
-                            requireContext().toast("Failed to fetch notifications: $mess")
+                            requireContext().Snackbar("Failed to fetch notifications: $mess",_binding!!.mainlayout)
                         }
                     }
                 })
@@ -433,6 +416,8 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
             requireActivity().runOnUiThread {
                 requireContext().showBlockedUserDialog()
             }
+        }else{
+            hideBlockedDialog()
         }
 
 //        binding.navView.setNavigationItemSelectedListener {
@@ -457,7 +442,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         if (backPressedTime + doubleBackPressDuration > System.currentTimeMillis()) {
             activity?.finish()
         } else {
-            requireContext().toast("Press back again to exit")
+            requireContext().Snackbar("Press back again to exit",_binding!!.mainlayout)
         }
         backPressedTime = System.currentTimeMillis()
     }
@@ -469,11 +454,18 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
 
 
     private fun Context.showBlockedUserDialog() {
-        val dialog = Dialog(this)
-        dialog.setContentView(R.layout.blocked_user_dialog_layout)
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        dialog.setCancelable(false)
-        dialog.show()
+        blockedDialog = Dialog(this)
+        blockedDialog!!.setContentView(R.layout.blocked_user_dialog_layout)
+        blockedDialog!!.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        blockedDialog!!.setCancelable(false)
+        blockedDialog!!.show()
+    }
+
+    private fun hideBlockedDialog() {
+        if (blockedDialog?.isShowing == true) {
+            blockedDialog?.dismiss()
+        }
+        blockedDialog = null
     }
 
 }

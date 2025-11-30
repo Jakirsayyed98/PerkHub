@@ -12,7 +12,7 @@ import app.perkhub.Screens.Profile.model.*
 import app.perkhub.Utils.BaseFragment
 import app.perkhub.Utils.DATA
 import app.perkhub.Utils.RecyclerClickListener
-import app.perkhub.Utils.toast
+import app.perkhub.Utils.Snackbar
 import app.perkhub.api.ApiListener
 import app.perkhub.databinding.FragmentTicketMessageBinding
 import app.perkhub.room.Tickets.TicketMessageRepository
@@ -117,7 +117,7 @@ class TicketMessageFragment : BaseFragment<FragmentTicketMessageBinding>() {
 
                     override fun onError(mess: String) {
                         lifecycleScope.launch(Dispatchers.Main) {
-                            requireContext().toast("Failed to fetch messages: $mess")
+                            requireContext().Snackbar("Failed to fetch messages: $mess",_binding!!.ticketChatLayout)
                         }
                     }
                 })
@@ -190,7 +190,7 @@ class TicketMessageFragment : BaseFragment<FragmentTicketMessageBinding>() {
                         pendingMessageIds.remove(tempId)
                         messageList.removeAll { it.id == tempId }
                         mAdapter.addAllItem(messageList)
-                        requireContext().toast("Failed to send message: $mess")
+                        requireContext().Snackbar("Failed to send message: $mess",_binding!!.messageInputLayout)
                     }
                 }
             })

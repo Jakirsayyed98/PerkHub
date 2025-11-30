@@ -15,8 +15,8 @@ import app.perkhub.Screens.Games.model.Data
 import app.perkhub.Screens.Games.model.GamesRes
 import app.perkhub.Utils.BaseFragment
 import app.perkhub.Utils.RecyclerClickListener
+import app.perkhub.Utils.Snackbar
 import app.perkhub.Utils.openCustomTab
-import app.perkhub.Utils.toast
 import app.perkhub.api.ApiListener
 import app.perkhub.databinding.FragmentSearchGameBinding
 import app.perkhub.room.games.GamesRepository
@@ -121,7 +121,7 @@ class SearchGameFragment : BaseFragment<FragmentSearchGameBinding>() {
                     override fun onSuccess(t: GamesRes?, mess: String) {}
                     override fun onError(mess: String) {
                         lifecycleScope.launch(Dispatchers.Main) {
-                            requireContext().toast("Failed to fetch games: $mess")
+                            requireContext().Snackbar("Failed to fetch games: $mess",_binding!!.games)
                         }
                     }
                 })

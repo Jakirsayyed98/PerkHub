@@ -15,7 +15,7 @@ import app.perkhub.Screens.Home.Model.TransactionModel.Data
 import app.perkhub.Screens.Home.Model.TransactionModel.TransactionDataRes
 import app.perkhub.Utils.BaseFragment
 import app.perkhub.Utils.RecyclerClickListener
-import app.perkhub.Utils.toast
+import app.perkhub.Utils.Snackbar
 import app.perkhub.api.ApiListener
 import app.perkhub.databinding.FragmentTransactionHistoryBinding
 import app.perkhub.room.StoresTransactionsRepository
@@ -75,7 +75,7 @@ class TransactionHistoryFragment : BaseFragment<FragmentTransactionHistoryBindin
 
                     override fun onError(mess: String) {
                         lifecycleScope.launch(Dispatchers.Main) {
-                            requireContext().toast("Failed to fetch notifications: $mess")
+                            requireContext().Snackbar("Failed to fetch Transactions",_binding!!.mainlayout)
                         }
                     }
                 })

@@ -17,9 +17,9 @@ import app.perkhub.Screens.login.models.SendOtpReq
 import app.perkhub.Screens.login.models.VerifyOtpReq
 import app.perkhub.Utils.BaseFragment
 import app.perkhub.Utils.LOGIN
+import app.perkhub.Utils.Snackbar
 import app.perkhub.Utils.TOKEN
 import app.perkhub.Utils.USERDATA
-import app.perkhub.Utils.toast
 import app.perkhub.api.ApiListener
 import app.perkhub.api.BaseRes
 import app.perkhub.api.tokens.TokenManager
@@ -106,7 +106,7 @@ class EnterMobileNFragment : BaseFragment<FragmentEnterMobileNBinding>() {
 
             override fun onError(mess: String) {
                 lifecycleScope.launch(Dispatchers.Main) {
-                    requireContext().toast(mess)
+                    requireContext().Snackbar(mess,_binding!!.OTPlayout)
                 }
             }
         })
@@ -131,7 +131,7 @@ class EnterMobileNFragment : BaseFragment<FragmentEnterMobileNBinding>() {
             override fun onError(mess: String) {
                 lifecycleScope.launch(Dispatchers.Main) {
                     dissmissProgress()
-                    requireContext().toast(mess)
+                    requireContext().Snackbar(mess,_binding!!.OTPlayout)
                 }
             }
         })
@@ -152,7 +152,7 @@ class EnterMobileNFragment : BaseFragment<FragmentEnterMobileNBinding>() {
 
             override fun onError(mess: String) {
                 lifecycleScope.launch(Dispatchers.Main) {
-                    requireContext().toast(mess)
+                    requireContext().Snackbar(mess,_binding!!.OTPlayout)
                 }
             }
         })
@@ -177,7 +177,7 @@ class EnterMobileNFragment : BaseFragment<FragmentEnterMobileNBinding>() {
 
             override fun onError(mess: String) {
                 lifecycleScope.launch(Dispatchers.Main) {
-                    requireContext().toast(mess)
+                    requireContext().Snackbar(mess,_binding!!.OTPlayout)
                 }
             }
         })

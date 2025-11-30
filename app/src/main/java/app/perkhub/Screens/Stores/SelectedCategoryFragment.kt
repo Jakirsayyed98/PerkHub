@@ -24,7 +24,7 @@ import app.perkhub.Utils.BaseFragment
 import app.perkhub.Utils.CONTAINER_TYPE_KEY1
 import app.perkhub.Utils.DATA
 import app.perkhub.Utils.RecyclerClickListener
-import app.perkhub.Utils.toast
+import app.perkhub.Utils.Snackbar
 import app.perkhub.api.ApiListener
 import app.perkhub.databinding.FragmentSelectedCategoryBinding
 import com.google.gson.Gson
@@ -184,7 +184,7 @@ class SelectedCategoryFragment : BaseFragment<FragmentSelectedCategoryBinding>()
 
                 override fun onError(mess: String) {
                     lifecycleScope.launch(Dispatchers.Main) {
-                        requireContext().toast("Failed to load mini apps: $mess")
+                        requireContext().Snackbar("Failed to load mini apps: $mess",_binding!!.searchLayout)
                     }
                 }
             })
@@ -203,7 +203,7 @@ class SelectedCategoryFragment : BaseFragment<FragmentSelectedCategoryBinding>()
 
                 override fun onError(mess: String) {
                     lifecycleScope.launch(Dispatchers.Main) {
-                        requireContext().toast("Search failed: $mess")
+                        requireContext().Snackbar("Search failed: $mess",_binding!!.searchLayout)
                     }
                 }
             })

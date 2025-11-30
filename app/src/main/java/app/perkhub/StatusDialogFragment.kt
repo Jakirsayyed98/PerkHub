@@ -10,7 +10,6 @@ import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import app.perkhub.Utils.DATA
 import app.perkhub.Utils.SUCCESS
-import app.perkhub.Utils.toast
 import com.airbnb.lottie.LottieAnimationView
 
 

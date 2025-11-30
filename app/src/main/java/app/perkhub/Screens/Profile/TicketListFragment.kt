@@ -18,7 +18,7 @@ import app.perkhub.Screens.Profile.model.Data
 import app.perkhub.Screens.Profile.model.TicketsRes
 import app.perkhub.Utils.BaseFragment
 import app.perkhub.Utils.RecyclerClickListener
-import app.perkhub.Utils.toast
+import app.perkhub.Utils.Snackbar
 import app.perkhub.api.ApiListener
 import app.perkhub.databinding.FragmentTicketListBinding
 import app.perkhub.room.NotificationRepository
@@ -71,7 +71,7 @@ class TicketListFragment : BaseFragment<FragmentTicketListBinding>() {
 
                     override fun onError(mess: String) {
                         lifecycleScope.launch(Dispatchers.Main) {
-                            requireContext().toast("Failed to fetch notifications: $mess")
+                            requireContext().Snackbar("Failed to fetch tickets: $mess",_binding!!.mainlayout)
                         }
                     }
                 })

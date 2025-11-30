@@ -5,10 +5,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updatePadding
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.perkhub.ContainerActivity
@@ -19,7 +15,6 @@ import app.perkhub.Utils.BaseFragment
 import app.perkhub.Utils.RecyclerClickListener
 import app.perkhub.Utils.Snackbar
 import app.perkhub.Utils.setSuffixAmount
-import app.perkhub.Utils.toast
 import app.perkhub.api.ApiListener
 import app.perkhub.databinding.FragmentWalletBinding
 import app.perkhub.room.StoresTransactionsRepository
@@ -121,7 +116,7 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>() {
 
                     override fun onError(mess: String) {
                         lifecycleScope.launch(Dispatchers.Main) {
-                            requireContext().toast("Failed to fetch notifications: $mess")
+                            requireContext().Snackbar("Failed to fetch Transactions: $mess",_binding!!.mainlayout)
                         }
                     }
                 })

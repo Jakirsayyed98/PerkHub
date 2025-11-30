@@ -15,8 +15,8 @@ import app.perkhub.Screens.Home.Model.Notification.Data
 import app.perkhub.Screens.Home.Model.Notification.NotificationListRes
 import app.perkhub.Utils.BaseFragment
 import app.perkhub.Utils.RecyclerClickListener
+import app.perkhub.Utils.Snackbar
 import app.perkhub.Utils.openCustomTab
-import app.perkhub.Utils.toast
 import app.perkhub.api.ApiListener
 import app.perkhub.databinding.FragmentNotificationListBinding
 import app.perkhub.room.NotificationRepository
@@ -78,7 +78,7 @@ class NotificationListFragment : BaseFragment<FragmentNotificationListBinding>()
 
                     override fun onError(mess: String) {
                         lifecycleScope.launch(Dispatchers.Main) {
-                            requireContext().toast("Failed to fetch notifications: $mess")
+                            requireContext().Snackbar("Failed to fetch notifications: $mess",_binding!!.mainlayout)
                         }
                     }
                 })

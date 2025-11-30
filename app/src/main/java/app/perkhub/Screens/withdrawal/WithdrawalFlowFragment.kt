@@ -28,7 +28,6 @@ import app.perkhub.Screens.withdrawal.model.getPaymentMethodsRes
 import app.perkhub.StatusDialogFragment
 import app.perkhub.Utils.BaseFragment
 import app.perkhub.Utils.RecyclerClickListener
-import app.perkhub.Utils.toast
 import app.perkhub.api.ApiListener
 import app.perkhub.databinding.FragmentWithdrawalFlowBinding
 

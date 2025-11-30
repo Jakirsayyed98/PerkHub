@@ -11,12 +11,12 @@ import app.perkhub.ContainerActivity
 import app.perkhub.Utils.BaseFragment
 import app.perkhub.Utils.LOGIN
 import app.perkhub.Utils.USERDATA
-import app.perkhub.Utils.toast
 import app.perkhub.api.ApiListener
 import app.perkhub.api.BaseRes
 import app.perkhub.databinding.FragmentEnterDetailBinding
 import app.perkhub.Screens.login.models.LoginRes
 import app.perkhub.Screens.login.models.SaveUserDetail
+import app.perkhub.Utils.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -72,7 +72,9 @@ class EnterDetailFragment : BaseFragment<FragmentEnterDetailBinding>() {
             override fun onSuccess(t: BaseRes?, mess: String) {
                 lifecycleScope.launch(Dispatchers.Main) {
                     dissmissProgress()
-                    t?.Message?.let { requireContext().toast(it) }
+                    t?.Message?.let {
+                        requireContext().Snackbar(it,_binding!!.detail)
+                    }
 
                     getSharedpref().saveBool(LOGIN, true)
                     getUserDetail()
@@ -85,7 +87,7 @@ class EnterDetailFragment : BaseFragment<FragmentEnterDetailBinding>() {
             override fun onError(mess: String) {
                 lifecycleScope.launch(Dispatchers.Main) {
                     dissmissProgress()
-                    requireContext().toast(mess)
+                    requireContext().Snackbar(mess,_binding!!.detail)
                 }
             }
         })

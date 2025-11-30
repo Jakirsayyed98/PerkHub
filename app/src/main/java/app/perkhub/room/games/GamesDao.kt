@@ -2,6 +2,7 @@ package app.perkhub.room.games
 
 import androidx.room.*
 import app.perkhub.Screens.Games.model.Data
+import app.perkhub.room.HomeCache
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -34,4 +35,8 @@ interface GamesDao {
 
     @Query("SELECT COUNT(*) FROM games")
     suspend fun getCount(): Int
+
+    @Query("SELECT * FROM games LIMIT 1")
+    fun getCacheFlow(): Flow<Data?>
+
 }

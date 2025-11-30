@@ -123,10 +123,10 @@ interface MyApi {
             @Url url: String = NativeEndpoints.getAllGames()
         ): Response<app.perkhub.Screens.Games.model.GamesRes>
 
-    @GET
-    suspend fun getAllGamesCategory(
-        @Url url: String = NativeEndpoints.getAllGamesCategory()
-    ): Response<GamesCategoryRes>
+        @GET
+        suspend fun getAllGamesCategory(
+            @Url url: String = NativeEndpoints.getAllGamesCategory()
+        ): Response<GamesCategoryRes>
 
         @GET
         suspend fun getPopularGames(

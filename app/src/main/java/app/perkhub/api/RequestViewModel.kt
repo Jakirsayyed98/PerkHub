@@ -152,15 +152,17 @@ class RequestViewModel(
             try {
                 // Load cached popular games
                 val cachedData = repository.getAllPopularGames()
+                val isCacheValid = repository.isPopularCacheValid(context)
 
-                if (cachedData.isNotEmpty() && !forceRefresh) {
-                    val cachedResponse = GamesRes(
-                        data = cachedData,
-                        message = "Loaded from cache",
-                        status = 200
-                    )
-                    listener.onSuccess(cachedResponse, "Loaded from cache")
-                    return@launch
+
+                if (cachedData.isNotEmpty() && isCacheValid && !forceRefresh) {
+                        val cachedResponse = GamesRes(
+                            data = cachedData,
+                            message = "Loaded from cache",
+                            status = 200
+                        )
+                        listener.onSuccess(cachedResponse, "Loaded from cache")
+                        return@launch
                 }
 
                 launchApi(
@@ -468,12 +470,12 @@ class RequestViewModel(
     ) {
         launchApi({ apiProvider(context).getOffersHomePage().body() }, listener)
     }
-fun searchOffersByStore(
-    request: SearchOfferReq,
-    context: Context, listener: ApiListener<Offerlistres>
-    ) {
-        launchApi({ apiProvider(context).searchOfferByStoreName(NativeEndpoints.offersSearchByStore(),request).body() }, listener)
-    }
+    fun searchOffersByStore(
+        request: SearchOfferReq,
+        context: Context, listener: ApiListener<Offerlistres>
+        ) {
+            launchApi({ apiProvider(context).searchOfferByStoreName(NativeEndpoints.offersSearchByStore(),request).body() }, listener)
+        }
 
 
     fun getGamesList(

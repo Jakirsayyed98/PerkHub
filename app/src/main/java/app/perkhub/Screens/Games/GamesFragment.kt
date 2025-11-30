@@ -21,12 +21,13 @@ import app.perkhub.Screens.Home.Adapter.BannerViewPagerAdapter
 import app.perkhub.Screens.Home.Adapter.SliderModelMain
 import app.perkhub.Utils.BaseFragment
 import app.perkhub.Utils.RecyclerClickListener
+import app.perkhub.Utils.Snackbar
 import app.perkhub.Utils.openCustomTab
-import app.perkhub.Utils.toast
 import app.perkhub.api.ApiListener
 import app.perkhub.databinding.FragmentGamesBinding
 import app.perkhub.room.games.GamesCategoryRepository
 import app.perkhub.room.games.GamesRepository
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -203,7 +204,7 @@ class GamesFragment : BaseFragment<FragmentGamesBinding>() {
                     override fun onSuccess(t: GamesRes?, mess: String) {}
                     override fun onError(mess: String) {
                         lifecycleScope.launch(Dispatchers.Main) {
-                            requireContext().toast("Failed to fetch games: $mess")
+                            requireContext().Snackbar("Failed to fetch games: $mess",_binding!!.populargame)
                         }
                     }
                 })
@@ -265,7 +266,7 @@ class GamesFragment : BaseFragment<FragmentGamesBinding>() {
                     override fun onSuccess(t: GamesCategoryRes?, mess: String) {}
                     override fun onError(mess: String) {
                         lifecycleScope.launch(Dispatchers.Main) {
-                            requireContext().toast("Failed to fetch game categories: $mess")
+                            requireContext().Snackbar("Failed to fetch game categories: $mess",_binding!!.gameCategories)
                         }
                     }
                 })
