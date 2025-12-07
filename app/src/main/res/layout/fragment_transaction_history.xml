@@ -21,8 +21,29 @@
         android:id="@+id/transactions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:listitem="@layout/transaction_layout"
+        android:visibility="gone"
         android:layout_marginStart="@dimen/dp5"
         android:layout_marginEnd="@dimen/dp5"/>
+
+
+    <LinearLayout
+        android:id="@+id/noDataFound"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp250"
+            android:src="@drawable/no_data_found"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="No Data Found"
+            android:textStyle="bold"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp18"/>
+    </LinearLayout>
+
 
 </LinearLayout>

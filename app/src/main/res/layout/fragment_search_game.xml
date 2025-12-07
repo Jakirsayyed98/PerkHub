@@ -68,20 +68,27 @@
         android:id="@+id/games"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:visibility="gone"
         android:layout_weight="1"
         android:layout_marginTop="@dimen/dp10"/>
 
-    <TextView
-        android:id="@+id/tv_no_games_found"
+    <LinearLayout
+        android:id="@+id/noDataFound"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:text="No games found. Search based on name, category.."
-        android:textColor="@color/black"
-        android:textSize="@dimen/sp16"
-        android:padding="@dimen/dp20"
-        android:visibility="gone"
-        tools:visibility="visible"/>
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp250"
+            android:src="@drawable/no_data_found"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="No Data Found"
+            android:textStyle="bold"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp18"/>
+    </LinearLayout>
 
 </LinearLayout>

@@ -2,9 +2,13 @@ package app.perkhub
 
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
@@ -36,6 +40,7 @@ import app.perkhub.Screens.withdrawal.AddPaymentMethodFragment
 import app.perkhub.Screens.withdrawal.WithdrawalConfirmationFragment
 import app.perkhub.Utils.CONTAINER_TYPE_KEY1
 import com.google.gson.Gson
+import android.Manifest
 
 class ContainerActivity : BaseActivity<ActivityContainerBinding>() {
 
@@ -71,7 +76,7 @@ class ContainerActivity : BaseActivity<ActivityContainerBinding>() {
 
         }
     }
-
+    private val notificationPermissionRequestCode = 1001
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityContainerBinding.inflate(layoutInflater)
@@ -83,7 +88,7 @@ class ContainerActivity : BaseActivity<ActivityContainerBinding>() {
         }
 
         setContentView(binding.root)
-
+        requestNotificationPermissionIfNeeded()
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             view.updatePadding(
@@ -97,6 +102,41 @@ class ContainerActivity : BaseActivity<ActivityContainerBinding>() {
         val type = intent.getStringExtra(CONTAINER_TYPE_KEY)
         PassScreen(type)
     }
+
+    private fun requestNotificationPermissionIfNeeded() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.POST_NOTIFICATIONS
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                    notificationPermissionRequestCode
+                )
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        if (requestCode == notificationPermissionRequestCode) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission granted
+            } else {
+                // Permission denied — you can show a message if needed
+            }
+        }
+
+
+    }
+
 
     private fun PassScreen(type: String?) {
         when(type){

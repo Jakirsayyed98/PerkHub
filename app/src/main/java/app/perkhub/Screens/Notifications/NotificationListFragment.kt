@@ -108,10 +108,10 @@ class NotificationListFragment : BaseFragment<FragmentNotificationListBinding>()
         // Show/hide empty state if needed
         if (data.isEmpty()) {
             binding.notificationlist.visibility = View.GONE
-            // binding.emptyState.visibility = View.VISIBLE
+             binding.noDataFound.visibility = View.VISIBLE
         } else {
             binding.notificationlist.visibility = View.VISIBLE
-            // binding.emptyState.visibility = View.GONE
+             binding.noDataFound.visibility = View.GONE
             notificationAdapter.clear()
             notificationAdapter.addAllItem(data)
         }

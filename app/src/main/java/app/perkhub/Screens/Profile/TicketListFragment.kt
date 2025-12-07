@@ -112,6 +112,13 @@ class TicketListFragment : BaseFragment<FragmentTicketListBinding>() {
         }
 
         mAdapter.addAllItem(tickets)
+        if (tickets.isEmpty()){
+            binding.tickets.visibility = View.GONE
+            binding.noDataFound.visibility = View.VISIBLE
+        }else{
+            binding.tickets.visibility = View.VISIBLE
+            binding.noDataFound.visibility = View.GONE
+        }
     }
 
     companion object {

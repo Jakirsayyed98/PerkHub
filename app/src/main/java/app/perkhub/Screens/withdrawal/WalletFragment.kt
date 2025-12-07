@@ -53,7 +53,7 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>() {
             override fun onSuccess(t: withdrawalRes?, mess: String) {
                 t?.let {
                     if (it.status == 200 && it.data.isNotEmpty()) {
-                        // ✅ Ensure UI updates happen on the main thread
+                        // Ensure UI updates happen on the main thread
                         requireActivity().runOnUiThread {
                             setLayout(it.data)
                         }
@@ -80,6 +80,13 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>() {
         }
 
         mAdapter.addAllItem(data)
+        if (data.isEmpty()){
+            binding.noDataFound.visibility = View.VISIBLE
+            binding.withdrawalhistory.visibility = View.GONE
+        }else{
+            binding.noDataFound.visibility = View.GONE
+            binding.withdrawalhistory.visibility = View.VISIBLE
+        }
     }
 
     private fun fetchStoreTransactionsList(forceRefresh: Boolean = false) {

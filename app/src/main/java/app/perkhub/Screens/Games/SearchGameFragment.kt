@@ -82,10 +82,10 @@ class SearchGameFragment : BaseFragment<FragmentSearchGameBinding>() {
     private fun toggleEmptyView(itemCount: Int) {
         if (itemCount == 0) {
             binding.games.visibility = View.GONE
-            binding.tvNoGamesFound.visibility = View.VISIBLE
+            binding.noDataFound.visibility = View.VISIBLE
         } else {
             binding.games.visibility = View.VISIBLE
-            binding.tvNoGamesFound.visibility = View.GONE
+            binding.noDataFound.visibility = View.GONE
         }
     }
 

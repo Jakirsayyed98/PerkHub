@@ -70,12 +70,28 @@
         android:id="@+id/tickets"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:layout_marginTop="@dimen/dp15"/>
-    <TextView
+
+
+    <LinearLayout
+        android:id="@+id/noDataFound"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="No Tickets Found"
-        android:gravity="center_vertical"
-        android:textAlignment="center"
-        tools:ignore="RtlCompat" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp250"
+            android:src="@drawable/no_data_found"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="No Data Found"
+            android:textStyle="bold"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp18"/>
+    </LinearLayout>
+
+
 </LinearLayout>

@@ -118,6 +118,13 @@ class TransactionHistoryFragment : BaseFragment<FragmentTransactionHistoryBindin
             adapter = mAdapter
         }
         mAdapter.addAllItem(data)
+        if(data.isEmpty()){
+            binding.noDataFound.visibility = View.VISIBLE
+            binding.transactions.visibility = View.GONE
+        }else{
+            binding.transactions.visibility = View.VISIBLE
+            binding.noDataFound.visibility = View.GONE
+        }
     }
 
     companion object {

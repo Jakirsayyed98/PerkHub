@@ -170,6 +170,13 @@ class SelectedCategoryFragment : BaseFragment<FragmentSelectedCategoryBinding>()
         }
         categoryAdapter.clear()
         categoryAdapter.addAllItem(categories)
+        if (categories.isEmpty()) {
+            binding.listOfStores.visibility = View.GONE
+            binding.noDataFound.visibility = View.VISIBLE
+        } else {
+            binding.listOfStores.visibility = View.VISIBLE
+            binding.noDataFound.visibility = View.GONE
+        }
     }
 
     private fun getListOfMiniApps(categoryId: String) {
@@ -213,6 +220,13 @@ class SelectedCategoryFragment : BaseFragment<FragmentSelectedCategoryBinding>()
     private fun setLayout(data: List<MiniApp>) {
         miniAppAdapter.clear()
         miniAppAdapter.addAllItem(data)
+        if (data.isEmpty()) {
+            binding.listOfStores.visibility = View.GONE
+            binding.noDataFound.visibility = View.VISIBLE
+        } else {
+            binding.listOfStores.visibility = View.VISIBLE
+            binding.noDataFound.visibility = View.GONE
+        }
     }
 
     companion object {
