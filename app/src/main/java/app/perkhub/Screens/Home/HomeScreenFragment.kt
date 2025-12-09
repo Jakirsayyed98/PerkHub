@@ -37,6 +37,10 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
     private var bannerRunnable: Runnable? = null
     private var blockedDialog: Dialog? = null
 
+    private var banner1Runnable: Runnable? = null
+    private var promoBannerRunnable: Runnable? = null
+    private var exclusiveBannerRunnable: Runnable? = null
+    private var firebaseTaskActive = false
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -97,9 +101,16 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
 
 
     override fun onDestroyView() {
-        super.onDestroyView()
-        bannerRunnable?.let { bannerHandler.removeCallbacks(it) }
+
+        banner1Runnable?.let { bannerHandler.removeCallbacks(it) }
+        promoBannerRunnable?.let { bannerHandler.removeCallbacks(it) }
+        exclusiveBannerRunnable?.let { bannerHandler.removeCallbacks(it) }
+
+        banner1Runnable = null
+        promoBannerRunnable = null
+        exclusiveBannerRunnable = null
         _binding = null
+        super.onDestroyView()
     }
 
     // ---------------- CLICK EVENTS ---------------- //
@@ -173,9 +184,14 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
     }
 
     private fun updateFirebaseToken() {
+        firebaseTaskActive = true
         FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+            if (!firebaseTaskActive) return@addOnCompleteListener
             if (!task.isSuccessful) return@addOnCompleteListener
-            val token = task.result
+            val token = task.result ?: return@addOnCompleteListener
+
+            if (!isAdded || activity == null) return@addOnCompleteListener
+
             viewModel.updateNotification(token, requireContext(), object : ApiListener<BaseRes> {
                 override fun onSuccess(t: BaseRes?, mess: String) {
 
@@ -311,7 +327,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
             (getChildAt(0) as? RecyclerView)?.overScrollMode = RecyclerView.OVER_SCROLL_NEVER
         }
 
-        bannerRunnable = object : Runnable {
+        banner1Runnable = object : Runnable {
             override fun run() {
                 val current = binding.bannerKocMarket.currentItem
                 val next = if (current == imageList.size - 1) 0 else current + 1
@@ -319,7 +335,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
                 bannerHandler.postDelayed(this, 6000)
             }
         }
-        bannerHandler.postDelayed(bannerRunnable!!, 6000)
+        bannerHandler.postDelayed(banner1Runnable!!, 6000)
     }
 
     // ---------------- BANNER ---------------- //
@@ -346,7 +362,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
             (getChildAt(0) as? RecyclerView)?.overScrollMode = RecyclerView.OVER_SCROLL_NEVER
         }
 
-        bannerRunnable = object : Runnable {
+        promoBannerRunnable = object : Runnable {
             override fun run() {
                 val current = binding.promotionalBanner.currentItem
                 val next = if (current == imageList.size - 1) 0 else current + 1
@@ -354,7 +370,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
                 bannerHandler.postDelayed(this, 3500)
             }
         }
-        bannerHandler.postDelayed(bannerRunnable!!, 3500)
+        bannerHandler.postDelayed(promoBannerRunnable!!, 3500)
     }
 
 
@@ -381,7 +397,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
             (getChildAt(0) as? RecyclerView)?.overScrollMode = RecyclerView.OVER_SCROLL_NEVER
         }
 
-        bannerRunnable = object : Runnable {
+        exclusiveBannerRunnable = object : Runnable {
             override fun run() {
                 val current = binding.exclusiveBanner.currentItem
                 val next = if (current == imageList.size - 1) 0 else current + 1
@@ -389,21 +405,13 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
                 bannerHandler.postDelayed(this, 4000)
             }
         }
-        bannerHandler.postDelayed(bannerRunnable!!, 4000)
+        bannerHandler.postDelayed(exclusiveBannerRunnable!!, 4000)
     }
 
 
     // ---------------- DRAWER MENU ---------------- //
     private fun setupMenu() {
-//        toggle = ActionBarDrawerToggle(requireActivity(), binding.drawerlayout, R.string.open, R.string.close)
-//        binding.drawerlayout.addDrawerListener(toggle)
-//        toggle.syncState()
-//
-//        val header = binding.navView.getHeaderView(0)
         val userName = getSharedpref().getUser(USERDATA)?.data
-//        header.findViewById<TextView>(R.id.Profilename).text = userName?.name!!.replaceFirstChar { it.uppercase() }.orEmpty()
-//        header.findViewById<TextView>(R.id.email).text = userName.email
-//        header.findViewById<TextView>(R.id.ProfilenameShort).text = userName.email.toCharArray()[0].toString().uppercase()
         binding.profileName.text = userName!!.email.take(2).toString().uppercase()
 
 
@@ -419,22 +427,6 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         }else{
             hideBlockedDialog()
         }
-
-//        binding.navView.setNavigationItemSelectedListener {
-//            when (it.itemId) {
-//                R.id.home -> binding.drawerlayout.close()
-//                R.id.transaction -> ContainerActivity.OpenContainer(requireContext(), "TransactionHistoryFragment", "")
-//
-//                R.id.wallet -> ContainerActivity.OpenContainer(requireContext(), "WalletFragment", "")
-//                R.id.share -> requireContext().shareAppLink()
-//                R.id.rate_us -> requireContext().rateUsApp()
-//                R.id.privacy_policy -> requireContext().openCustomTab(PRIVACYPOLICY)
-//                R.id.about_us -> requireContext().openCustomTab(ABOUTUS)
-//                R.id.contact_us -> requireContext().openCustomTab(CONTACTUS)
-//                R.id.logout -> requireContext().showLogoutDialog()
-//            }
-//            true
-//        }
     }
 
     // ---------------- BACK PRESS ---------------- //

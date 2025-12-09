@@ -7,6 +7,8 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -22,10 +24,25 @@ fun Context.toast(text:String){
 }
 
 fun Context.Snackbar(text:String,view:View){
-    Snackbar.make(view, text, Snackbar.LENGTH_LONG).show();
+    if (view == null) return
+    if (!view.isAttachedToWindow) return
+
+    if (Looper.myLooper() == Looper.getMainLooper()) {
+        com.google.android.material.snackbar.Snackbar
+            .make(view, text, com.google.android.material.snackbar.Snackbar.LENGTH_LONG)
+            .show()
+    } else {
+        Handler(Looper.getMainLooper()).post {
+            if (view.isAttachedToWindow) {
+                com.google.android.material.snackbar.Snackbar
+                    .make(view, text, com.google.android.material.snackbar.Snackbar.LENGTH_LONG)
+                    .show()
+            }
+        }
+    }
+
 
 }
-
 fun Context.openCustomTab(uri: String?) {
     val customIntent = CustomTabsIntent.Builder()
     val customTabsIntent = customIntent.build()
