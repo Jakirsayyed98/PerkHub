@@ -132,6 +132,8 @@ class EnterMobileNFragment : BaseFragment<FragmentEnterMobileNBinding>() {
                 lifecycleScope.launch(Dispatchers.Main) {
                     dissmissProgress()
                     requireContext().Snackbar(mess,_binding!!.OTPlayout)
+                    binding.OTP.text?.clear()
+                    binding.OTP.requestFocus()
                 }
             }
         })

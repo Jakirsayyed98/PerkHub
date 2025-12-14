@@ -215,9 +215,7 @@ interface MyApi {
       external fun BaseURL(): String?
       operator  fun invoke(context : Context):MyApi{
           System.loadLibrary("perkhub")
-//          val BaseUrl = "https://api.perkhub.in/api/"
-//          val BaseUrl = "https://blessed-pretty-mammal.ngrok-free.app/api/"
-            var BaseURl =BaseURL()// "$BaseUrl"
+            var BaseURl =BaseURL()
             val httploggingInterceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
             val client = OkHttpClient.Builder()
                 .connectTimeout(30, TimeUnit.SECONDS)

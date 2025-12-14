@@ -10,7 +10,7 @@ data class BaseRes(
     val ErrorCode: String,
 
     @SerializedName("status")
-    val Status: Any,
+    val Status: Int,
 
     @SerializedName("data")
     val Data: Data

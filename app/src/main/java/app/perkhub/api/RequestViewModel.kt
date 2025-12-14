@@ -48,11 +48,13 @@ import app.perkhub.room.Tickets.TicketMessageRepository
 import app.perkhub.room.Tickets.TicketsRepository
 import app.perkhub.room.games.GamesCategoryRepository
 import app.perkhub.room.games.GamesRepository
+import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import retrofit2.Response
 
 fun CoroutineScope.launchSafe(
     dispatcher: CoroutineDispatcher = Dispatchers.IO,
@@ -73,18 +75,37 @@ class RequestViewModel(
 ) : ViewModel() {
 
     private fun <T> launchApi(
-        block: suspend () -> T?,
+        block: suspend () -> Response<T>,
         listener: ApiListener<T>
     ) {
         viewModelScope.launchSafe(onError = {
-            Log.e("RequestViewModel", "API call failed", it)
-            listener.onError(it.message ?: "Unknown error")
+            listener.onError(it.message ?: "Something went wrong")
         }) {
             val response = block()
-            if (response != null) listener.onResponse(response)
-            else listener.onError("Empty response")
+
+            if (response.isSuccessful) {
+                val body = response.body()
+                if (body != null) {
+                    listener.onSuccess(body, "success")
+                } else {
+                    listener.onError("Empty response")
+                }
+            } else {
+                val errorMsg = try {
+                    val json = response.errorBody()?.string()
+                    val parsed = Gson().fromJson(json, ApiErrorRes::class.java)
+                    parsed?.error?.message
+                        ?: parsed?.message
+                        ?: "Something went wrong"
+                } catch (e: Exception) {
+                    "Something went wrong"
+                }
+
+                listener.onError(errorMsg)
+            }
         }
     }
+
 
     // --- Home API with caching ---
     fun getHomeData(listener: ApiListener<HomeRes>) {
@@ -99,23 +120,23 @@ class RequestViewModel(
 
     // --- Other APIs ---
     fun sendOTP(req: SendOtpReq, context: Context, listener: ApiListener<BaseRes>) {
-        launchApi({ apiProvider(context).sendOtp(NativeEndpoints.sendOTP(),req).body() }, listener)
+        launchApi({ apiProvider(context).sendOtp(NativeEndpoints.sendOTP(),req) }, listener)
     }
 
     fun getAuthorizationToken(req: GetToken, context: Context, listener: ApiListener<BaseRes>) {
-        launchApi({ apiProvider(context).getAuthorization(NativeEndpoints.authorization(),req).body() }, listener)
+        launchApi({ apiProvider(context).getAuthorization(NativeEndpoints.authorization(),req) }, listener)
     }
 
     fun verifyOTP(req: VerifyOtpReq, context: Context, listener: ApiListener<VerifyOTP>) {
-        launchApi({ apiProvider(context).verifyOtp(NativeEndpoints.verifyOTP(),req).body() }, listener)
+        launchApi({ apiProvider(context).verifyOtp(NativeEndpoints.verifyOTP(),req) }, listener)
     }
 
     fun saveDetail(req: SaveUserDetail, context: Context, listener: ApiListener<BaseRes>) {
-        launchApi({ apiProvider(context).saveDetail(NativeEndpoints.saveDetail(),req).body() }, listener)
+        launchApi({ apiProvider(context).saveDetail(NativeEndpoints.saveDetail(),req) }, listener)
     }
 
     fun getLootProduct(page: String, context: Context, listener: ApiListener<LootProductRes>) {
-        launchApi({ apiProvider(context).getLootProduct(NativeEndpoints.getAllLootoffers(),page).body() }, listener)
+        launchApi({ apiProvider(context).getLootProduct(NativeEndpoints.getAllLootoffers(),page) }, listener)
     }
 
     fun getMiniAppByCategory(
@@ -123,7 +144,7 @@ class RequestViewModel(
         context: Context,
         listener: ApiListener<MiniAppbyCategory>
     ) {
-        launchApi({ apiProvider(context).getMiniAppByCategory(NativeEndpoints.getStoresByCategory(),req).body() }, listener)
+        launchApi({ apiProvider(context).getMiniAppByCategory(NativeEndpoints.getStoresByCategory(),req) }, listener)
     }
 
     fun searchMiniApps(
@@ -131,15 +152,15 @@ class RequestViewModel(
         context: Context,
         listener: ApiListener<MiniAppbyCategory>
     ) {
-        launchApi({ apiProvider(context).searchMiniApps( NativeEndpoints.searchMiniApps(),req).body() }, listener)
+        launchApi({ apiProvider(context).searchMiniApps( NativeEndpoints.searchMiniApps(),req) }, listener)
     }
 
     fun generateUrl(req: GenerateSubId, context: Context, listener: ApiListener<GenerateSubIdRes>) {
-        launchApi({ apiProvider(context).generateUrl(NativeEndpoints.genrateSubID(),req).body() }, listener)
+        launchApi({ apiProvider(context).generateUrl(NativeEndpoints.genrateSubID(),req) }, listener)
     }
 
     fun updateNotification(token: String, context: Context, listener: ApiListener<BaseRes>) {
-        launchApi({ apiProvider(context).updateNotification(NativeEndpoints.updateNotificationToken(),TokenReq(token)).body() }, listener)
+        launchApi({ apiProvider(context).updateNotification(NativeEndpoints.updateNotificationToken(),TokenReq(token)) }, listener)
     }
 
     fun getPopularGames( context: Context,
@@ -166,7 +187,7 @@ class RequestViewModel(
                 }
 
                 launchApi(
-                    { apiProvider(context).getAllGames().body() },
+                    { apiProvider(context).getAllGames() },
                     object : ApiListener<GamesRes> {
                         override fun onSuccess(t: GamesRes?, mess: String) {
                             viewModelScope.launch {
@@ -197,7 +218,7 @@ class RequestViewModel(
     }
 
 //    fun getAllTransaction(context: Context, listener: ApiListener<TransactionDataRes>) {
-//        launchApi({ apiProvider(context).getAllTransaction().body() }, listener)
+//        launchApi({ apiProvider(context).getAllTransaction() }, listener)
 //    }
 
     fun getAllTransaction(
@@ -229,7 +250,7 @@ class RequestViewModel(
                 }
 
                 // Then fetch from server in background
-                launchApi({ apiProvider(context).getAllTransactions(NativeEndpoints.getTxnList()).body() },
+                launchApi({ apiProvider(context).getAllTransactions(NativeEndpoints.getTxnList()) },
                     object : ApiListener<TransactionDataRes> {
                         override fun onSuccess(t: TransactionDataRes?, mess: String) {
                             viewModelScope.launch {
@@ -260,29 +281,29 @@ class RequestViewModel(
     }
 
     fun getUserDetail(context: Context, listener: ApiListener<LoginRes>) {
-        launchApi({ apiProvider(context).getUserDetail().body() }, listener)
+        launchApi({ apiProvider(context).getUserDetail() }, listener)
     }
 
     fun getWithdrawalTxn(context: Context, listener: ApiListener<withdrawalRes>) {
-        launchApi({ apiProvider(context).getWithdrawalTxn().body() }, listener)
+        launchApi({ apiProvider(context).getWithdrawalTxn() }, listener)
     }
 
 //    fun reqForWithdrawal(req: WithdrawalReq, context: Context, listener: ApiListener<withdrawalRes>) {
-//        launchApi({ apiProvider(context).requestWithdrawal(NativeEndpoints.withdrawalsRequest(),req).body() }, listener)
+//        launchApi({ apiProvider(context).requestWithdrawal(NativeEndpoints.withdrawalsRequest(),req) }, listener)
 //    }
 
     fun AddPaymentMethod(req: addPaymentMethodReq, context: Context, listener: ApiListener<addPaymentMethodRes>) {
-        launchApi({ apiProvider(context).addPaymentMethod(NativeEndpoints.withdrawalAddPaymentMethod(),req).body() }, listener)
+        launchApi({ apiProvider(context).addPaymentMethod(NativeEndpoints.withdrawalAddPaymentMethod(),req) }, listener)
     }
 
     fun GetPaymentMethod(context: Context, listener: ApiListener<getPaymentMethodsRes>) {
-        launchApi({ apiProvider(context).getPaymentMethods().body() }, listener)
+        launchApi({ apiProvider(context).getPaymentMethods() }, listener)
     }
   fun RequestWithdrawalPayment(
       req: RequestWithdrawalReq,
       context: Context, listener: ApiListener<RequestWithdrawalRes>
   ) {
-        launchApi({ apiProvider(context).requestWithdrawalPayment(NativeEndpoints.withdrawalsRequest(),req).body() }, listener)
+        launchApi({ apiProvider(context).requestWithdrawalPayment(NativeEndpoints.withdrawalsRequest(),req) }, listener)
     }
 
 
@@ -315,7 +336,7 @@ class RequestViewModel(
                 // Then fetch from server in background
                 val endPoint=NativeEndpoints.ticketsById()
                 val url = "${endPoint}/$ticketId"
-                launchApi({ apiProvider(context).getTicketMessages(url).body() },
+                launchApi({ apiProvider(context).getTicketMessages(url) },
                     object : ApiListener<TicketMessageRes> {
                         override fun onSuccess(t: TicketMessageRes?, mess: String) {
                             viewModelScope.launch {
@@ -349,7 +370,7 @@ class RequestViewModel(
         ticketMessage: CreateNewTicketRequest,
         context: Context, listener: ApiListener<CreateNewTicketResponse>
     ) {
-        launchApi({ apiProvider(context).createTicket( NativeEndpoints.ticketsCreate(),ticketMessage).body() }, listener)
+        launchApi({ apiProvider(context).createTicket( NativeEndpoints.ticketsCreate(),ticketMessage) }, listener)
     }
 
 
@@ -357,7 +378,7 @@ class RequestViewModel(
         ticketMessage: RequestTicketMessage,
         context: Context, listener: ApiListener<TicketMessageResponse>
     ) {
-        launchApi({ apiProvider(context).sendTicketMessage(NativeEndpoints.ticketsSendMsg(),ticketMessage).body() }, listener)
+        launchApi({ apiProvider(context).sendTicketMessage(NativeEndpoints.ticketsSendMsg(),ticketMessage) }, listener)
     }
 
     fun getNotificationList(
@@ -383,7 +404,7 @@ class RequestViewModel(
                 }
 
                 // Then fetch from server in background
-                launchApi({ apiProvider(context).getNotificationList().body() },
+                launchApi({ apiProvider(context).getNotificationList() },
                     object : ApiListener<NotificationListRes> {
                         override fun onSuccess(t: NotificationListRes?, mess: String) {
                             viewModelScope.launch {
@@ -435,7 +456,7 @@ class RequestViewModel(
                 }
 
                 // Then fetch from server in background
-                launchApi({ apiProvider(context).getAllTickets().body() },
+                launchApi({ apiProvider(context).getAllTickets() },
                     object : ApiListener<TicketsRes> {
                         override fun onSuccess(t: TicketsRes?, mess: String) {
                             viewModelScope.launch {
@@ -468,13 +489,13 @@ class RequestViewModel(
     fun getOffersListHomePage(
         context: Context, listener: ApiListener<Offerlistres>
     ) {
-        launchApi({ apiProvider(context).getOffersHomePage().body() }, listener)
+        launchApi({ apiProvider(context).getOffersHomePage() }, listener)
     }
     fun searchOffersByStore(
         request: SearchOfferReq,
         context: Context, listener: ApiListener<Offerlistres>
         ) {
-            launchApi({ apiProvider(context).searchOfferByStoreName(NativeEndpoints.offersSearchByStore(),request).body() }, listener)
+            launchApi({ apiProvider(context).searchOfferByStoreName(NativeEndpoints.offersSearchByStore(),request) }, listener)
         }
 
 
@@ -502,7 +523,7 @@ class RequestViewModel(
                 }
 
                 launchApi(
-                    { apiProvider(context).getAllGames().body() },
+                    { apiProvider(context).getAllGames() },
                     object : ApiListener<GamesRes> {
                         override fun onSuccess(t: GamesRes?, mess: String) {
                             viewModelScope.launch {
@@ -549,7 +570,7 @@ class RequestViewModel(
                 }
 
                 launchApi(
-                    { apiProvider(context).getAllGamesCategory().body() },
+                    { apiProvider(context).getAllGamesCategory() },
                     object : ApiListener<GamesCategoryRes> {
                         override fun onSuccess(t: GamesCategoryRes?, mess: String) {
                             viewModelScope.launch {

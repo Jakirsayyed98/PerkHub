@@ -1,5 +1,6 @@
 package app.perkhub.Screens.Offers.adapter
 
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,7 +22,7 @@ class OffersListAdapter<S>(val clickList: RecyclerClickListener):BaseRecyclerVie
 
                 binding.storename.text = s.store_name
                 binding.title.text = s.title
-                binding.dis.text = s.description
+                binding.dis.text =  Html.fromHtml(s.description, Html.FROM_HTML_MODE_LEGACY)
                 if (s.type.equals("coupon")){
                     binding.couponlayout.visibility = View.VISIBLE
                     binding.couponCode.text = s.coupon_code
