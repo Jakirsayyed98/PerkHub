@@ -65,4 +65,33 @@
     <string name="your_perkhub_account_blocked">Your PerkHub account has been temporarily blocked due to unusual activity. Please contact our support team at <b>support-team@perkhub.in</b> for further assistance.</string>
 
 
+    <string name="important_notes_title">Important Notes</string>
+
+    <string name="notes_line"><![CDATA[
+<b>• Cashback is applicable only on eligible purchases and selected stores.</b><br/>
+<b>• Cashback is credited after the return or refund period is completed.</b><br/>
+<b>• Orders that are canceled, returned, or exchanged are not eligible for cashback.</b><br/>
+<b>• Cashback tracking depends on the merchant and may take time.</b><br/>
+<b>• Avoid using VPNs, ad blockers, or private browsing while placing the order.</b><br/>
+<b>• Using external coupon codes may affect cashback tracking.</b><br/>
+<b>• Some product categories may be excluded from cashback.</b><br/>
+<b>• Some brands offer cashback only to new users and only on the first purchase.</b><br/>
+<b>• Cashback amount and confirmation timeline may vary by store.</b><br/>
+<b>• Final cashback approval is subject to merchant validation and partner policies.</b>
+]]></string>
+
+    <string name="referral_link_placeholder">Your referral link will appear here</string>
+    <string name="share">Share</string>
+
+    <string name="store_icon">Store icon</string>
+    <string name="store_name">Flipkart</string>
+    <string name="offer">Offer</string>
+    <string name="offer_title">Extra 10% Cashback on Electronics</string>
+    <string name="offer_description">Shop using this offer and earn cashback on eligible purchases.</string>
+    <string name="coupon_code">Coupon Code</string>
+    <string name="sample_coupon">FLIP10</string>
+    <string name="copy_coupon">Copy coupon code</string>
+    <string name="valid_till">Valid till Oct 17, 2025</string>
+    <string name="shop_now">Shop Now</string>
+
 </resources>

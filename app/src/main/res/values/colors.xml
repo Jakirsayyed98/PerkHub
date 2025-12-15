@@ -200,4 +200,111 @@
     <color name="step_pending_icon">#D97706</color>
     <color name="step_pending_text">#D97706</color>
     <color name="progress_line_color">#E5E7EB</color>
+
+
+
+
+    <!-- Accent Colors (Modern Purple/Indigo Theme) -->
+    <color name="accent_primary">#6366F1</color>
+    <color name="accent_secondary">#8B5CF6</color>
+    <color name="accent_gradient_start">#6366F1</color>
+    <color name="accent_gradient_end">#D946EF</color>
+
+    <!-- Background Colors -->
+    <color name="coupon_bg">#F0F3FF</color>
+    <color name="coupon_border">#C7D2FE</color>
+    <color name="badge_bg">#EF4444</color>
+
+    <!-- CTA Gradient Colors (Orange to Red) -->
+    <color name="cta_gradient_start">#F59E0B</color>
+    <color name="cta_gradient_end">#EF4444</color>
+
+    <!-- Urgency Colors -->
+    <color name="urgency_red">#DC2626</color>
+    <color name="urgency_bg">#FEE2E2</color>
+
+    <!-- Opacity Colors -->
+    <color name="white_80">#CCFFFFFF</color>
+    <color name="white_30">#4DFFFFFF</color>
+    <color name="black_10">#1A000000</color>
+
+    <!-- Grey Shades (Neutral Palette) -->
+    <color name="grey_light">#E5E7EB</color>
+    <color name="grey_medium">#9CA3AF</color>
+    <color name="grey_dark">#4B5563</color>
+
+    <!-- Success & Status Colors -->
+    <color name="success">#10B981</color>
+    <color name="warning">#F59E0B</color>
+    <color name="error">#EF4444</color>
+    <color name="info">#3B82F6</color>
+
+    <!-- Gradient Colors for Header (Purple Gradient) -->
+    <color name="gradient_purple_start">#6366F1</color>
+    <color name="gradient_purple_middle">#8B5CF6</color>
+    <color name="gradient_purple_end">#D946EF</color>
+
+    <!-- Modern UI Colors (Gen-Z Palette) -->
+    <color name="neon_blue">#00F5FF</color>
+    <color name="neon_pink">#FF006E</color>
+    <color name="neon_purple">#8B5CF6</color>
+    <color name="soft_lavender">#E0E7FF</color>
+    <color name="mint_green">#6EE7B7</color>
+    <color name="coral_pink">#FF6B9D</color>
+    <color name="electric_blue">#0EA5E9</color>
+    <color name="sunshine_yellow">#FCD34D</color>
+
+    <!-- Card & Surface Colors -->
+    <color name="card_bg">#FFFFFF</color>
+    <color name="surface">#F9FAFB</color>
+    <color name="surface_secondary">#F3F4F6</color>
+
+    <!-- Overlay Colors -->
+    <color name="overlay_light">#33000000</color>
+    <color name="overlay_medium">#66000000</color>
+    <color name="overlay_dark">#80000000</color>
+
+    <!-- Ripple Effect Colors */
+    <color name="ripple_light">#1A6366F1</color>
+    <color name="ripple_medium">#336366F1</color>
+    <color name="ripple_dark">#4D6366F1</color>
+
+    <!- Shimmer Effect Colors -->
+    <color name="shimmer_base">#E5E7EB</color>
+    <color name="shimmer_highlight">#F3F4F6</color>
+
+    <!-- Badge Colors -->
+    <color name="badge_hot">#EF4444</color>
+    <color name="badge_new">#10B981</color>
+    <color name="badge_trending">#8B5CF6</color>
+    <color name="badge_exclusive">#F59E0B</color>
+
+    <!-- Social Media Brand Colors (Optional) -->
+    <color name="facebook">#1877F2</color>
+    <color name="instagram">#E4405F</color>
+    <color name="twitter">#1DA1F2</color>
+    <color name="whatsapp">#25D366</color>
+
+    <!-- Dark Mode Colors (Optional - for future implementation) -->
+    <color name="dark_background">#0F172A</color>
+    <color name="dark_surface">#1E293B</color>
+    <color name="dark_text_primary">#F1F5F9</color>
+    <color name="dark_text_secondary">#94A3B8</color>
+
+    <!-- Border Colors -->
+    <color name="border_light">#E5E7EB</color>
+    <color name="border_medium">#D1D5DB</color>
+    <color name="border_dark">#9CA3AF</color>
+
+    <!-- Highlight Colors */
+    <color name="highlight_yellow">#FEF3C7</color>
+    <color name="highlight_blue">#DBEAFE</color>
+    <color name="highlight_green">#D1FAE5</color>
+    <color name="highlight_red">#FEE2E2</color>
+    <color name="highlight_purple">#EDE9FE</color>
+
+    <!- Shadow Colors -->
+    <color name="shadow_light">#0D000000</color>
+    <color name="shadow_medium">#1A000000</color>
+    <color name="shadow_dark">#33000000</color>
 </resources>

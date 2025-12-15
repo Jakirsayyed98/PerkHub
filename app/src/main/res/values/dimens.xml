@@ -153,6 +153,9 @@
     <dimen name="dp149">149dp</dimen>
     <dimen name="dp150">150dp</dimen>
     <dimen name="dp160">160dp</dimen>
+    <dimen name="dp170">170dp</dimen>
+    <dimen name="dp180">180dp</dimen>
+    <dimen name="dp190">190dp</dimen>
     <dimen name="dp200">200dp</dimen>
     <dimen name="dp250">250dp</dimen>
     <dimen name="dp260">260dp</dimen>
@@ -335,4 +338,26 @@
     <dimen name="logo_width">140dp</dimen>
     <dimen name="logo_height">70dp</dimen>
 
+
+    <!-- Elevation -->
+    <dimen name="elevation_low">2dp</dimen>
+    <dimen name="elevation_medium">4dp</dimen>
+    <dimen name="elevation_high">8dp</dimen>
+
+    <!-- Card Corner Radius -->
+    <dimen name="corner_radius_small">8dp</dimen>
+    <dimen name="corner_radius_medium">12dp</dimen>
+    <dimen name="corner_radius_large">16dp</dimen>
+    <dimen name="corner_radius_xlarge">20dp</dimen>
+
+    <!-- Icon Sizes -->
+    <dimen name="icon_small">16dp</dimen>
+    <dimen name="icon_medium">24dp</dimen>
+    <dimen name="icon_large">32dp</dimen>
+    <dimen name="icon_xlarge">48dp</dimen>
+
+    <!-- Button Heights -->
+    <dimen name="button_height_small">40dp</dimen>
+    <dimen name="button_height_medium">48dp</dimen>
+    <dimen name="button_height_large">56dp</dimen>
 </resources>

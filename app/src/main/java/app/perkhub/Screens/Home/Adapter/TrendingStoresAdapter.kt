@@ -27,7 +27,7 @@ class TrendingStoresAdapter<S>(val cliklistner : RecyclerClickListener): BaseRec
                         cashbackBadge.visibility= View.INVISIBLE
                     }
                     storename.text = s.name
-                    cashbackText.text = "Upto "+s.cbPercentage+" cashback"
+                    cashbackText.text = "Upto "+s.cbPercentage+"\ncashback"
                     binding.root.setOnClickListener {
                         cliklistner.RecyclerClickListener(0,s.url,s)
                     }

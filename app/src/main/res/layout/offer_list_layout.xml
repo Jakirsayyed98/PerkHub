@@ -1,140 +1,328 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="@dimen/dp15"
-    android:elevation="@dimen/dp5"
-    android:layout_margin="@dimen/dp10">
+    android:layout_marginHorizontal="@dimen/dp16"
+    android:layout_marginVertical="@dimen/dp8"
+    app:cardCornerRadius="@dimen/dp20"
+    app:cardElevation="2dp"
+    app:strokeWidth="0dp"
+    android:backgroundTint="@color/white"
+    app:cardPreventCornerOverlap="true">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="@dimen/dp15"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <LinearLayout
+        <!-- Gradient Header Background -->
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <ImageView
-                android:id="@+id/icon"
-                android:layout_width="@dimen/dp55"
-                android:layout_height="@dimen/dp55"
-                android:src="@color/offers_bg1"
-                />
+            android:background="@drawable/gradient_header_bg"
+            android:padding="@dimen/dp16">
+
+            <!-- Store Icon with Badge Effect -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/iconCard"
+                android:layout_width="@dimen/dp45"
+                android:layout_height="@dimen/dp45"
+                app:cardCornerRadius="@dimen/dp16"
+                app:cardElevation="@dimen/dp4"
+                app:strokeWidth="@dimen/dp2"
+                app:strokeColor="@color/white"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/icon"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:contentDescription="@string/store_icon"
+                    tools:src="@drawable/ic_placeholder" />
+            </androidx.cardview.widget.CardView>
+
+            <!-- Store Info -->
             <LinearLayout
+                android:id="@+id/storeInfo"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginStart="@dimen/dp15"
-                android:layout_marginEnd="@dimen/dp15"
-                android:layout_gravity="center_vertical"
-                android:orientation="vertical">
-                    <TextView
-                        android:id="@+id/storename"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textStyle="bold"
-                        android:textSize="@dimen/sp18"
-                        android:textColor="@color/black"
-                        android:text="Flipkart"/>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Offer"/>
-            </LinearLayout>
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:textSize="@dimen/sp18"
-            android:layout_marginTop="@dimen/dp10"
-            android:textColor="@color/black"
-            android:maxLines="2"
-            android:text="Title"/>
-
-        <TextView
-            android:id="@+id/dis"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:maxLines="4"
-            android:ellipsize="end"
-            android:textSize="@dimen/sp16"
-            android:layout_marginTop="@dimen/dp10"
-            android:textColor="@color/black"
-            android:text="Title"/>
-
-
-        <LinearLayout
-            android:id="@+id/couponlayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/border_5dp"
-            android:backgroundTint="@color/light_offer_bg"
-            android:elevation="@dimen/dp3"
-            android:layout_marginTop="@dimen/dp10"
-            android:padding="@dimen/dp15"
-            android:orientation="horizontal">
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_gravity="center_vertical"
-                android:orientation="vertical">
-
+                android:layout_marginStart="@dimen/dp12"
+                android:layout_marginEnd="@dimen/dp8"
+                android:orientation="vertical"
+                app:layout_constraintStart_toEndOf="@id/iconCard"
+                app:layout_constraintEnd_toStartOf="@id/trendingBadge"
+                app:layout_constraintTop_toTopOf="@id/iconCard"
+                app:layout_constraintBottom_toBottomOf="@id/iconCard">
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:id="@+id/storename"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Coupon Code"/>
-
-                <TextView
-                    android:id="@+id/couponCode"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:text="@string/store_name"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp16"
                     android:textStyle="bold"
-                    android:textSize="@dimen/sp18"
-                    android:textColor="@color/offers_bg"
-                    android:text="Flipkart"/>
+                    android:letterSpacing="0.01"
+                    tools:text="Nike Store" />
+
+                <TextView
+                    android:id="@+id/storeType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp2"
+                    android:text="@string/offer"
+                    android:textColor="@color/white_87"
+                    android:textSize="@dimen/sp11"
+                    tools:text="Fashion &amp; Lifestyle" />
             </LinearLayout>
 
-            <ImageView
-                android:id="@+id/copy"
-                android:layout_width="@dimen/dp55"
-                android:layout_height="@dimen/dp55"
-                android:background="@drawable/border_5dp"
-                android:backgroundTint="@color/offers_bg"
-                android:padding="@dimen/dp15"
-                android:src="@drawable/copy"/>
+            <!-- Trending Badge -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/trendingBadge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="@dimen/dp12"
+                app:cardElevation="0dp"
+                android:backgroundTint="@color/pending_card_bg"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🔥 HOT"
+                    android:textColor="@color/grey"
+                    android:textSize="@dimen/sp9"
+                    android:textStyle="bold"
+                    android:paddingHorizontal="@dimen/dp10"
+                    android:paddingVertical="@dimen/dp4"
+                    android:letterSpacing="0.05" />
+            </androidx.cardview.widget.CardView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Content Section -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/dp16">
+
+            <!-- Offer Title with Icon -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/offer_title"
+                    android:textColor="@color/text_primary"
+                    android:textSize="@dimen/sp17"
+                    android:textStyle="bold"
+                    android:lineSpacingExtra="@dimen/dp2"
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    tools:text="Get 50% OFF on All Sneakers" />
+
+                <ImageView
+                    android:layout_width="@dimen/dp24"
+                    android:layout_height="@dimen/dp24"
+                    android:layout_marginStart="@dimen/dp8"
+                    android:src="@drawable/ic_star_sparkle"
+                    android:contentDescription="offer icon"
+                    app:tint="@color/primary_text" />
+            </LinearLayout>
+
+            <!-- Offer Description -->
+            <TextView
+                android:id="@+id/dis"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp8"
+                android:text="@string/offer_description"
+                android:textColor="@color/text_secondary"
+                android:textSize="@dimen/sp13"
+                android:maxLines="4"
+                android:ellipsize="end"
+                tools:text="Grab the best deals on premium sneakers. Limited time offer!" />
+
+            <!-- Dashed Divider -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp1"
+                android:layout_marginVertical="@dimen/dp16"
+                android:background="@drawable/dashed_divider"
+                android:layerType="software" />
+
+            <!-- Coupon Card with Glassmorphism Effect -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/couponlayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="@dimen/dp16"
+                app:cardElevation="0dp"
+                app:strokeWidth="@dimen/dp2"
+                app:strokeColor="@color/coupon_border"
+                android:backgroundTint="@color/coupon_bg">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/dp13"
+                    android:gravity="center_vertical">
+
+                    <!-- Coupon Icon -->
+                    <ImageView
+                        android:layout_width="@dimen/dp22"
+                        android:layout_height="@dimen/dp22"
+                        android:src="@drawable/ic_coupon_ticket"
+                        android:contentDescription="@string/coupon_code"
+                        app:tint="@color/accent_primary" />
+
+                    <!-- Coupon Details -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="@dimen/dp12"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/coupon_code"
+                            android:textSize="@dimen/sp10"
+                            android:textAllCaps="true"
+                            android:letterSpacing="0.08" />
+
+                        <TextView
+                            android:id="@+id/couponCode"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp2"
+                            android:text="@string/sample_coupon"
+                            android:textColor="@color/accent_primary"
+                            android:textSize="@dimen/sp16"
+                            android:textStyle="bold"
+                            android:letterSpacing="0.05"
+                            tools:text="NIKE50" />
+                    </LinearLayout>
+
+                    <!-- Copy Button with Ripple Effect -->
+                    <Button
+                        android:id="@+id/copy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="TAP TO COPY"
+                        android:textSize="@dimen/sp9"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        android:letterSpacing="0.05"
+                        app:icon="@drawable/ic_copy"
+                        app:iconTint="@color/black"
+                        app:iconGravity="textStart"
+                        app:iconPadding="@dimen/dp6"
+                        app:cornerRadius="@dimen/dp12"
+                        app:backgroundTint="@color/accent_primary"
+                        app:rippleColor="@color/white_30"
+                        android:paddingHorizontal="@dimen/dp16"
+                        android:paddingVertical="@dimen/dp10"
+                        app:elevation="@dimen/dp2"
+                        style="@style/Widget.Material3.Button.ElevatedButton" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Validity with Icon -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp12"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="@dimen/dp16"
+                    android:layout_height="@dimen/dp16"
+                    android:src="@drawable/ic_clock"
+                    />
+
+                <TextView
+                    android:id="@+id/validTill"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="@dimen/dp6"
+                    android:text="@string/valid_till"
+                    android:textSize="@dimen/sp10"
+                    tools:text="Valid till Dec 31, 2024" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="⏰ 5 days left"
+                    android:textColor="@color/urgency_red"
+                    android:textSize="@dimen/sp10"
+                    android:textStyle="bold"
+                    android:background="@drawable/urgency_bg"
+                    android:paddingHorizontal="@dimen/dp8"
+                    android:paddingVertical="@dimen/dp4" />
+            </LinearLayout>
+
+            <!-- CTA Button with Gradient -->
+            <Button
+                android:id="@+id/shop"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp35"
+                android:layout_marginTop="@dimen/dp16"
+                android:text="@string/shop_now"
+                android:textAllCaps="false"
+                android:textSize="@dimen/sp14"
+                android:textStyle="bold"
+                android:letterSpacing="0.02"
+                android:textColor="@color/white"
+                app:icon="@drawable/ic_arrow_forward"
+                app:iconGravity="end"
+                app:iconTint="@color/white"
+                app:cornerRadius="@dimen/dp14"
+                android:background="@drawable/gradient_cta_button"
+                app:rippleColor="@color/white_30"
+                app:elevation="@dimen/dp4"
+                 />
+
+            <!-- Social Proof -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp12"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="@dimen/dp13"
+                    android:layout_height="@dimen/dp16"
+                    android:src="@drawable/ic_users"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp6"
+                    android:text="1.2K people used this today"
+                    android:textSize="@dimen/sp10" />
+            </LinearLayout>
+
         </LinearLayout>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Valid till Oct 17,2025"
-            android:layout_marginTop="@dimen/dp10"
-            android:textColor="@color/black"
-            android:textSize="14sp"/>
-
-        <Button
-            android:id="@+id/shop"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Shop Now"
-            android:textAlignment="center"
-            android:textAllCaps="false"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_marginTop="@dimen/dp20"
-            android:layout_marginBottom="@dimen/dp20"
-            android:background="@drawable/border_5dp"
-            android:backgroundTint="@color/point3"
-            android:textColor="@color/sharebg"/>
 
     </LinearLayout>
 

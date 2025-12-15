@@ -434,7 +434,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         if (backPressedTime + doubleBackPressDuration > System.currentTimeMillis()) {
             activity?.finish()
         } else {
-            requireContext().Snackbar("Press back again to exit",_binding!!.mainlayout)
+            requireContext().Snackbar("Press back again to exit",_binding!!.drawerlayout)
         }
         backPressedTime = System.currentTimeMillis()
     }

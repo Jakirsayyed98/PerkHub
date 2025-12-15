@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.text.HtmlCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
@@ -61,12 +62,18 @@ class StoreDetailFragment : BaseFragment<FragmentStoreDetailBinding>() {
 
         _binding!!.cashbacktext.text = Html.fromHtml(if (!data.cbPercentage.isNullOrEmpty()) "upto "+data.cbPercentage+" Cashback" else "" , Html.FROM_HTML_MODE_LEGACY)
 
+        _binding!!.tvGeneralNotes.text =
+            HtmlCompat.fromHtml(
+                getString(R.string.notes_line),
+                HtmlCompat.FROM_HTML_MODE_LEGACY
+            )
+
         if (data.cbActive){
-            _binding!!.cahbackdetails.visibility = View.VISIBLE
+            _binding!!.cashbackdetails.visibility = View.VISIBLE
             _binding!!.sharelink.visibility = View.VISIBLE
             _binding!!.importantNote.visibility = View.VISIBLE
         }else{
-            _binding!!.cahbackdetails.visibility = View.GONE
+            _binding!!.cashbackdetails.visibility = View.GONE
             _binding!!.sharelink.visibility = View.GONE
             _binding!!.importantNote.visibility = View.GONE
             _binding!!.cashbacktext.text =  "Cashback is not active"
@@ -137,7 +144,7 @@ class StoreDetailFragment : BaseFragment<FragmentStoreDetailBinding>() {
     }
 
     private fun setupRecyclerView(data : List<OffersData>) {
-        val offersAdapter = OffersListAdapter<OffersData>(object : RecyclerClickListener {
+       val offersAdapter = OffersListAdapter(object : RecyclerClickListener {
             override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
                 GetUrl(type, "Shop")
             }
@@ -146,8 +153,9 @@ class StoreDetailFragment : BaseFragment<FragmentStoreDetailBinding>() {
         binding.offers.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = offersAdapter
+            setHasFixedSize(true)
         }
-        offersAdapter.addAllItem(data)
+        offersAdapter.submitList(data)
     }
 
 
