@@ -462,7 +462,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="PerkHub India Pvt. Ltd."
+                        android:text="© PerkHub India Pvt. Ltd. — Since 2024"
                         android:textSize="@dimen/sp18"
                         android:layout_marginTop="@dimen/dp20"
                         android:paddingHorizontal="@dimen/dp20"
