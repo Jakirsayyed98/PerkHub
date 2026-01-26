@@ -60,7 +60,7 @@ class StoreDetailFragment : BaseFragment<FragmentStoreDetailBinding>() {
         _binding!!.shareearntitle.text = getString(R.string.generate_your_unique_referral_link,data.name)
         Glide.with(requireContext()).load(data.icon).into(_binding!!.icon)
 
-        _binding!!.cashbacktext.text = Html.fromHtml(if (!data.cbPercentage.isNullOrEmpty()) "upto "+data.cbPercentage+" Cashback" else "" , Html.FROM_HTML_MODE_LEGACY)
+        _binding!!.cashbacktext.text = Html.fromHtml(if (!data.cbPercentage.isNullOrEmpty()) "Upto "+data.cbPercentage+" Cashback" else "" , Html.FROM_HTML_MODE_LEGACY)
 
         _binding!!.tvGeneralNotes.text =
             HtmlCompat.fromHtml(
@@ -76,7 +76,9 @@ class StoreDetailFragment : BaseFragment<FragmentStoreDetailBinding>() {
             _binding!!.cashbackdetails.visibility = View.GONE
             _binding!!.sharelink.visibility = View.GONE
             _binding!!.importantNote.visibility = View.GONE
-            _binding!!.cashbacktext.text =  "Cashback is not active"
+//            _binding!!.cashbacktext.text =  "Cashback is not active"
+            _binding!!.cashbacktext.text =  "This brand does not offer cashback."
+            _binding!!.shop.text =  "Continue to Store"
         }
          if (data.trending){
                 _binding!!.tag.visibility = View.VISIBLE

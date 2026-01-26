@@ -88,7 +88,7 @@ Java_app_perkhub_api_NativeEndpoints_getTxnList(JNIEnv *env, jobject) {
 
 JNIEXPORT jstring JNICALL
 Java_app_perkhub_api_NativeEndpoints_withdrawalsRequest(JNIEnv *env, jobject) {
-    return env->NewStringUTF("withdrawals/request");
+    return env->NewStringUTF("withdrawal/request");
 }
 
 JNIEXPORT jstring JNICALL

@@ -20,8 +20,8 @@
     <string name="close">Close</string>
     <string name="logout">Logout</string>
     <string name="txn_id"><b>Txn ID : #</b>%s</string>
-    <string name="sale_amount"><b>Sale Amount : </b>%s</string>
-    <string name="commission_amount"><b>CB Amount : </b>%s</string>
+    <string name="sale_amount"><b>Order Amount : </b>%s</string>
+    <string name="commission_amount"><b>CB : </b>%s</string>
     <string name="withdrawal_history">Withdrawal History</string>
     <string name="withdrawal_amount"><b>Withdrawal Amount :-</b> %s</string>
     <string name="withdrawal_request_of_200">Withdrawal request of %s</string>
@@ -94,5 +94,6 @@
     <string name="valid_till">Valid till Oct 17, 2025</string>
     <string name="shop_now">Shop Now</string>
     <string name="india_s_cashback_rewards_hub"><![CDATA[India’s Best Cashback & Rewards Hub]]></string>
+    <string name="upto_cashback">Upto 8% Cashback</string>
 
 </resources>

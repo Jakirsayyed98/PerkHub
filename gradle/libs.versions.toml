@@ -27,6 +27,7 @@ roomCompiler = "2.5.0"
 coroutines = "1.7.3"
 firebaseCrashlytics = "20.0.3"
 googleFirebaseCrashlytics = "3.0.6"
+serviceAuth = "21.2.0"
 #ksp = "1.9.20-1.0.14"
 
 
@@ -53,6 +54,7 @@ junit = { group = "junit", name = "junit", version.ref = "junit" }
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuth" }
 firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging", version.ref = "firebaseMessaging" }
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "roomCompiler" }
+androidx-auth = { group = "com.google.android.gms", name = "play-services-auth", version.ref = "serviceAuth" }
 
 # --- Room Libraries ---
 androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }

@@ -45,7 +45,7 @@ class WithdrawalFlowFragment : BaseFragment<FragmentWithdrawalFlowBinding>() {
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentWithdrawalFlowBinding.inflate(layoutInflater,container,false)
-        _binding!!.toolbar.name.text = "Withdraw Funds"
+        _binding!!.toolbar.name.text = "Withdraw Amount"
         _binding!!.toolbar.backbtn.setOnClickListener {
             requireActivity().onBackPressedDispatcher?.onBackPressed()
         }
@@ -53,16 +53,16 @@ class WithdrawalFlowFragment : BaseFragment<FragmentWithdrawalFlowBinding>() {
         _binding!!.amount.addTextChangedListener {
             if (it.toString()!=""){
                 if (it.toString().toInt()>=100){
-                    _binding!!.continuebtn.isSelected = true
+                    _binding!!.continueBtn.isSelected = true
                 }else{
-                    _binding!!.continuebtn.isSelected = false
+                    _binding!!.continueBtn.isSelected = false
                 }
             }
 
         }
 
-        _binding!!.continuebtn.setOnClickListener {
-            if(_binding!!.continuebtn.isSelected){
+        _binding!!.continueBtn.setOnClickListener {
+            if(_binding!!.continueBtn.isSelected){
                 getPaymentMethod()
 
             }

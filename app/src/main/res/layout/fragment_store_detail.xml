@@ -80,7 +80,7 @@
                     android:textSize="@dimen/sp12"
                     android:textStyle="bold"
                     android:elevation="@dimen/dp10"
-                    android:text="upto 8% Cashback"/>
+                    android:text="@string/upto_cashback"/>
 
                 <TextView
                     android:id="@+id/tag"

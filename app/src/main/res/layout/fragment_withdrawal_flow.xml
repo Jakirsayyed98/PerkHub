@@ -2,21 +2,18 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:id="@+id/mainlayout"
     tools:context=".Screens.withdrawal.WithdrawalFlowFragment">
 
-    <LinearLayout
-        android:id="@+id/toolbar2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <include
-            android:id="@+id/toolbar"
-            layout="@layout/toolbar_layout" />
-    </LinearLayout>
+    <!-- Toolbar -->
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar_layout" />
 
+    <!-- Available Balance Title -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -26,80 +23,73 @@
         android:textColor="@color/black"
         android:textSize="@dimen/sp18" />
 
+    <!-- Available Balance Amount -->
     <TextView
-        android:id="@+id/availbaleAmount"
+        android:id="@+id/availableAmount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp15"
-        android:text="250rs"
+        android:text="₹250"
         android:textAlignment="center"
         android:textColor="@color/green"
         android:textSize="@dimen/sp35"
-        android:textStyle="bold"
-        />
+        android:textStyle="bold" />
 
-
+    <!-- Withdrawal Amount Label -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp25"
-        android:text="Withdrawal Amount"
         android:paddingStart="@dimen/dp20"
+        android:text="Withdrawal Amount"
         android:textColor="@color/black"
-        android:textStyle="bold"
-        android:textSize="@dimen/sp18" />
+        android:textSize="@dimen/sp18"
+        android:textStyle="bold" />
 
-
+    <!-- Amount Input -->
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/numberlayout"
+        android:id="@+id/amountLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/toolbar"
         android:layout_marginStart="@dimen/dp15"
+        android:hint="₹"
         android:layout_marginTop="@dimen/dp10"
         android:layout_marginEnd="@dimen/dp15"
-        android:textAlignment="center"
-        android:textColorHint="@color/grey"
         app:boxStrokeColor="@color/black"
-        app:hintEnabled="false"
-        app:hintTextColor="@color/black"
-        >
+        app:hintEnabled="false">
 
-        <EditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/amount"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp50"
-            android:imeOptions="actionDone"
             android:background="@drawable/border_5dp"
+            android:hint="₹100"
+            android:imeOptions="actionDone"
             android:inputType="number"
-            android:hint="₹100.00"
             android:maxLength="5"
-            android:paddingStart="@dimen/dp25"/>
-
+            android:paddingStart="@dimen/dp25" />
     </com.google.android.material.textfield.TextInputLayout>
 
-
-
+    <!-- Minimum Withdrawal Info -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp25"
-        android:text="Minimum withdrawal: ₹100.00"
+        android:layout_marginTop="@dimen/dp15"
         android:paddingStart="@dimen/dp20"
+        android:text="Minimum withdrawal amount is ₹100"
         android:textColor="@color/black"
         android:textSize="@dimen/sp14" />
 
+    <!-- Continue Button -->
     <RelativeLayout
-        android:id="@+id/continuebtn"
+        android:id="@+id/continueBtn"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp50"
         android:layout_marginStart="@dimen/dp45"
         android:layout_marginTop="@dimen/dp30"
         android:layout_marginEnd="@dimen/dp45"
         android:layout_marginBottom="@dimen/dp20"
-        android:background="@drawable/selected_button_layout"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/numberlayout">
+        android:background="@drawable/selected_button_layout">
 
         <TextView
             android:layout_width="match_parent"
@@ -108,7 +98,6 @@
             android:text="Continue"
             android:textColor="@color/btn_text"
             android:textStyle="bold" />
-
     </RelativeLayout>
 
 </LinearLayout>

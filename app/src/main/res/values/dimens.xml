@@ -157,12 +157,15 @@
     <dimen name="dp180">180dp</dimen>
     <dimen name="dp190">190dp</dimen>
     <dimen name="dp200">200dp</dimen>
+    <dimen name="dp210">210dp</dimen>
+    <dimen name="dp220">220dp</dimen>
     <dimen name="dp250">250dp</dimen>
     <dimen name="dp260">260dp</dimen>
     <dimen name="dp270">270dp</dimen>
     <dimen name="dp280">280dp</dimen>
     <dimen name="dp290">290dp</dimen>
     <dimen name="dp300">300dp</dimen>
+    <dimen name="dp360">360dp</dimen>
 
     <!-- SP values (1sp - 150sp) -->
     <dimen name="sp1">1sp</dimen>

@@ -282,7 +282,7 @@
                 <androidx.cardview.widget.CardView
                     android:id="@+id/featuredBannerCard"
                     android:layout_width="match_parent"
-                    android:layout_height="300dp"
+                    android:layout_height="@dimen/dp360"
                     android:layout_marginTop="@dimen/dp24"
                     app:cardCornerRadius="@dimen/dp20"
                     app:cardElevation="@dimen/dp6"

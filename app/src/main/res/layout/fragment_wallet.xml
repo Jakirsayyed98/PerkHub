@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:id="@+id/mainlayout"
-    android:background="@color/BG_color"
+    android:background="@color/white"
     tools:context=".Screens.withdrawal.WalletFragment">
 
     <!-- Toolbar Section -->
@@ -93,7 +93,7 @@
                                     android:id="@+id/available"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="150"
+                                    android:hint="0.00"
                                     android:textColor="@color/white"
                                     android:textSize="34sp"
                                     android:textStyle="bold"
@@ -166,7 +166,7 @@
                             android:id="@+id/pending"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="150"
+                            android:hint="0.00"
                             android:textSize="20sp"
                             android:textStyle="bold"
                             android:textColor="@color/pending_text_primary"
@@ -224,7 +224,7 @@
                             android:id="@+id/rejected"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="150"
+                            android:hint="0.00"
                             android:textSize="20sp"
                             android:textStyle="bold"
                             android:textColor="@color/rejected_text_primary"
