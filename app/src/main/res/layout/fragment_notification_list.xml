@@ -33,7 +33,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="No Data Found"
+            android:text="Notification not found"
             android:textStyle="bold"
             android:textAlignment="center"
             android:textColor="@color/black"

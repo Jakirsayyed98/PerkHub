@@ -79,7 +79,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="No Data Found"
+            android:text="No Offers Found"
             android:textStyle="bold"
             android:textAlignment="center"
             android:textColor="@color/black"
