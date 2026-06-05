@@ -96,4 +96,22 @@
     <string name="india_s_cashback_rewards_hub"><![CDATA[India’s Best Cashback & Rewards Hub]]></string>
     <string name="upto_cashback">Upto 8% Cashback</string>
 
+
+    <string name="welcome_to_perkhub">Welcome to PerkHub</string>
+    <string name="start_earning_cashback_today">Start earning cashback today!</string>
+    <string name="we_will_send_you_verification_code">We\'ll send you a verification code</string>
+    <string name="mobile_number">Mobile Number</string>
+    <string name="send_otp">Send OTP</string>
+    <string name="verify_phone">Verify Phone</string>
+    <string name="verification_code">Verification Code</string>
+    <string name="verify_otp">Verify OTP</string>
+    <string name="resend_otp">Resend OTP</string>
+
+    <string name="hot_badge">🔥 HOT</string>
+    <string name="offer_icon">Offer Icon</string>
+    <string name="tap_to_copy">COPY</string>
+    <string name="days_left">⏰ 5 days left</string>
+    <string name="people_used_today">1.2K people used this today</string>
+    <string name="users">Users</string>
+
 </resources>

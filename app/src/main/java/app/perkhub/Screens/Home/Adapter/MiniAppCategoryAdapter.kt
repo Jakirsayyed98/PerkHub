@@ -18,7 +18,8 @@ class MiniAppCategoryAdapter<S>(val clickListener: RecyclerClickListener):BaseRe
             if ( s is MiniApp){
                 Glide.with(itemView.context).load(s.icon).circleCrop().into(binding.icon)
                 binding.name.text = s.name
-                binding.cb.text = s.cbPercentage
+
+                binding.cb.text =if (s.cbActive) "Upto "+s.cbPercentage+" Cashback" else "Cashback is not active"
                 binding.root.setOnClickListener {
                     clickListener.RecyclerClickListener(0,s.url,s)
                 }

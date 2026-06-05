@@ -307,4 +307,5 @@
     <color name="shadow_light">#0D000000</color>
     <color name="shadow_medium">#1A000000</color>
     <color name="shadow_dark">#33000000</color>
+    <color name="login_statusbar_color">#9033E9</color>
 </resources>

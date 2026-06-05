@@ -4,7 +4,9 @@ import android.app.Dialog
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewbinding.ViewBinding
@@ -41,8 +43,34 @@ abstract class BaseFragment<T:ViewBinding> : Fragment() {
 //        }
     }
 
-    fun statusBarColor(color : Int){
-        activity?.window?.statusBarColor = ContextCompat.getColor(requireContext(),color)
+
+    fun statusBarColor(color: Int) {
+        activity?.window?.statusBarColor =
+            ContextCompat.getColor(requireContext(), color)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.R)
+    fun statusBarTextblack() {
+//        theme?.applyStyle(R.style.TextViewBold, true)
+        val controller =  activity?.window?.insetsController
+        controller?.setSystemBarsAppearance(
+            android.view.WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS,
+            android.view.WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
+        )
+    }
+
+
+    /**
+     * true  -> dark icons (light background)
+     * false -> light icons (dark background)
+     */
+    fun setStatusBarIconsDark(isDark: Boolean) {
+        activity?.window?.let { window ->
+            WindowInsetsControllerCompat(
+                window,
+                window.decorView
+            ).isAppearanceLightStatusBars = isDark
+        }
     }
 
     fun showProgress (){

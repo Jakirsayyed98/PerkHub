@@ -43,17 +43,26 @@ fun Context.Snackbar(text:String,view:View){
 
 
 }
-fun Context.openCustomTab(uri: String?) {
-    val customIntent = CustomTabsIntent.Builder()
-    val customTabsIntent = customIntent.build()
-    customIntent.setToolbarColor(ContextCompat.getColor(this, R.color.white))
-    val packageName = "com.android.chrome"
-    if (packageName != null) {
-        customTabsIntent.intent.setPackage(packageName)
-        customTabsIntent.launchUrl(this, Uri.parse(uri))
-    } else {
-        this.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(uri)))
+fun Context.openCustomTab(url: String?) {
+    try {
+        val builder = androidx.browser.customtabs.CustomTabsIntent.Builder()
+        val customTabsIntent = builder.build()
+        customTabsIntent.launchUrl(this, android.net.Uri.parse(url))
+    } catch (e: Exception) {
+        e.printStackTrace()
     }
+//    val customIntent = CustomTabsIntent.Builder()
+//    val customTabsIntent = customIntent.build()
+//    customIntent.setToolbarColor(ContextCompat.getColor(this, R.color.white))
+//    val packageName = "com.android.chrome"
+//    if (packageName != null) {
+//        customTabsIntent.intent.setPackage(packageName)
+//        customTabsIntent.launchUrl(this, Uri.parse(uri))
+//    } else {
+//        this.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(uri)))
+//    }
+
+
 }
 
 fun setSuffixAmount(text : String):String{

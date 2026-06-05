@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import app.perkhub.ContainerActivity
+import app.perkhub.R
 import app.perkhub.Utils.BaseFragment
 import app.perkhub.Utils.LOGIN
 import app.perkhub.Utils.USERDATA
@@ -36,7 +37,8 @@ class EnterDetailFragment : BaseFragment<FragmentEnterDetailBinding>() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentEnterDetailBinding.inflate(inflater, container, false)
-
+        statusBarColor(R.color.login_statusbar_color)
+        setStatusBarIconsDark(false)
         setupForm()
         setupClickListeners()
 

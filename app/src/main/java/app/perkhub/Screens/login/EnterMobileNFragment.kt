@@ -41,7 +41,8 @@ class EnterMobileNFragment : BaseFragment<FragmentEnterMobileNBinding>() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentEnterMobileNBinding.inflate(inflater, container, false)
-
+        statusBarColor(R.color.login_statusbar_color)
+        setStatusBarIconsDark(false)
         setupClickListeners()
         handleBackPress()
 

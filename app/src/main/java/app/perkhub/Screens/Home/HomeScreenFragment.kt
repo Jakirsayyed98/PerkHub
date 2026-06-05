@@ -49,6 +49,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         binding.progressbar.visibility = View.VISIBLE
         binding.mainlayout1.visibility = View.GONE
         statusBarColor(R.color.light_blue)
+        setStatusBarIconsDark(false)
         setupMenu()
         setupClickEvents()
         observePopularGames()

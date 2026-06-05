@@ -44,8 +44,9 @@
                         android:layout_marginTop="@dimen/dp20"
                         android:textAlignment="center"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/sp24"
+                        android:textSize="@dimen/sp20"
                         android:textStyle="bold"
+                        android:fontFamily="@font/poppins_medium"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -59,6 +60,7 @@
                         android:textAlignment="center"
                         android:textColor="@color/grey"
                         android:textSize="@dimen/sp14"
+                        android:fontFamily="@font/poppins_regular"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -70,8 +72,9 @@
                         android:layout_marginStart="@dimen/dp20"
                         android:layout_marginTop="@dimen/dp20"
                         android:text="Enter your Name"
+                        android:fontFamily="@font/poppins_medium"
                         android:textStyle="bold"
-                        android:textSize="@dimen/sp16"
+                        android:textSize="@dimen/sp14"
                         android:textColor="@color/black"
                         app:layout_constraintTop_toBottomOf="@id/dis" />
 
@@ -95,6 +98,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:background="@color/white"
+                            android:fontFamily="@font/poppins_regular"
                             android:gravity="center_vertical"
                             android:textSize="@dimen/sp14"
                             android:imeOptions="actionNext" />
@@ -110,7 +114,8 @@
                         android:text="Enter your Email Id"
                         android:textColor="@color/black"
                         android:textStyle="bold"
-                        android:textSize="@dimen/sp16"
+                        android:fontFamily="@font/poppins_medium"
+                        android:textSize="@dimen/sp14"
                         app:layout_constraintTop_toBottomOf="@id/namelayout" />
 
                     <LinearLayout
@@ -135,6 +140,7 @@
                             android:gravity="center_vertical"
                             android:background="@color/white"
                             android:textSize="@dimen/sp14"
+                            android:fontFamily="@font/poppins_regular"
                             android:imeOptions="actionNext" />
 
                     </LinearLayout>
@@ -148,7 +154,8 @@
                         android:text="Select your Date of Birth"
                         android:textColor="@color/black"
                         android:textStyle="bold"
-                        android:textSize="@dimen/sp16"
+                        android:fontFamily="@font/poppins_medium"
+                        android:textSize="@dimen/sp14"
                         app:layout_constraintTop_toBottomOf="@id/emaillayout" />
 
                     <LinearLayout
@@ -172,64 +179,71 @@
                             android:gravity="center_vertical"
                             android:paddingStart="@dimen/dp15"
                             android:textSize="@dimen/sp14"
+                            android:fontFamily="@font/poppins_regular"
                             android:text="Select your Date of Birth"
                             android:textColor="@color/black" />
 
                     </LinearLayout>
 
-                    <RadioGroup
-                        android:id="@+id/gender"
+                    <TextView
+                        android:id="@+id/genderTv"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp15"
+                        android:paddingStart="@dimen/sp25"
+                        android:text="Gender"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/poppins_medium"
+                        android:textSize="@dimen/sp16"
+                        android:textColor="@color/black"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/doblayout" />
+
+                    <RadioGroup
+                        android:id="@+id/gender"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dp10"
-                        app:layout_constraintTop_toBottomOf="@+id/doblayout">
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/genderTv">
 
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/dp5"
-                            android:paddingStart="@dimen/sp25"
-                            android:text="Gender"
-                            android:textStyle="bold"
-                            android:textSize="@dimen/sp16"
-                            android:textColor="@color/black"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/title" />
 
 
                         <RadioButton
                             android:id="@+id/male"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/dp30"
-                            android:layout_marginEnd="@dimen/dp30"
-                            android:layout_marginTop="@dimen/dp10"
                             android:buttonTint="@color/main"
                             android:checked="true"
+                            android:layout_marginHorizontal="@dimen/dp10"
+                            android:fontFamily="@font/poppins_regular"
                             android:textSize="@dimen/sp14"
                             android:text="Male" />
 
 
                         <RadioButton
                             android:id="@+id/female"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/dp30"
-                            android:layout_marginEnd="@dimen/dp30"
                             android:buttonTint="@color/main"
                             android:textSize="@dimen/sp14"
+                            android:layout_marginHorizontal="@dimen/dp10"
+                            android:fontFamily="@font/poppins_regular"
                             android:text="Female" />
 
                         <RadioButton
                             android:id="@+id/other"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/dp30"
-                            android:layout_marginEnd="@dimen/dp30"
                             android:buttonTint="@color/main"
                             android:textSize="@dimen/sp14"
+                            android:fontFamily="@font/poppins_regular"
+                            android:layout_marginHorizontal="@dimen/dp10"
                             android:text="Other" />
 
 
