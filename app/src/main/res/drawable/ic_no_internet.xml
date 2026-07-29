@@ -1,0 +1,26 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- WiFi -->
+    <path
+        android:fillColor="#58E4C7"
+        android:pathData="M12,18a1.5,1.5 0,1 0,0.01 0z"/>
+
+    <path
+        android:fillColor="#58E4C7"
+        android:pathData="M7.76,13.76a6,6 0,0 1,8.48 0l1.41,-1.41a8,8 0,0 0,-11.3 0z"/>
+
+    <path
+        android:fillColor="#58E4C7"
+        android:pathData="M4.93,10.93a10,10 0,0 1,14.14 0l1.41,-1.41a12,12 0,0 0,-16.96 0z"/>
+
+    <!-- Slash -->
+    <path
+        android:fillColor="#F44336"
+        android:pathData="M5,4 L20,19"
+        android:strokeColor="#F44336"
+        android:strokeWidth="2"/>
+</vector>

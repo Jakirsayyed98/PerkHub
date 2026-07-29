@@ -2,7 +2,6 @@
     <string name="app_name">PerkHub</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="enter_mobile_number">Enter Mobile Number</string>
     <string name="perkhub">PerkHub</string>
     <string name="all_you_need_in_one_app">All You need in One App</string>
     <string name="login_register">Login with Mobile number</string>
@@ -100,11 +99,9 @@
     <string name="welcome_to_perkhub">Welcome to PerkHub</string>
     <string name="start_earning_cashback_today">Start earning cashback today!</string>
     <string name="we_will_send_you_verification_code">We\'ll send you a verification code</string>
-    <string name="mobile_number">Mobile Number</string>
     <string name="send_otp">Send OTP</string>
     <string name="verify_phone">Verify Phone</string>
     <string name="verification_code">Verification Code</string>
-    <string name="verify_otp">Verify OTP</string>
     <string name="resend_otp">Resend OTP</string>
 
     <string name="hot_badge">🔥 HOT</string>
@@ -113,5 +110,46 @@
     <string name="days_left">⏰ 5 days left</string>
     <string name="people_used_today">1.2K people used this today</string>
     <string name="users">Users</string>
+
+    <string name="welcome">Welcome to PerkHub</string>
+    <string name="verify_otp">Verify OTP</string>
+    <string name="lets_know">Let\'s get to know you</string>
+
+    <string name="mobile_description">Enter your mobile number to get\nstarted. We\'ll send you an OTP\non WhatsApp.</string>
+    <string name="otp_sent">We\'ve sent a 6-digit OTP to your WhatsApp\non %1$s</string>
+    <string name="personal_details_description">Please enter personal details to continue</string>
+    <string name="otp_verified">OTP <font color="#47E1B5">Verified!</font></string>
+    <string name="number_verified">Your mobile number has been successfully verified.</string>
+    <string name="mobile_number">Mobile Number</string>
+
+    <string name="enter_mobile">Enter mobile number</string>
+
+    <string name="terms_text">
+    I agree to the Terms &amp; Conditions and Privacy Policy.
+</string>
+
+    <string name="sms_notice">
+By tapping Verify Mobile Number, you authorize PerkHub to send a one-time verification SMS from your device. Standard carrier SMS charges may apply.
+</string>
+
+    <string name="verify_mobile">Verify Mobile Number</string>
+    <string name="verify_and_continue">Verify &amp; Continue</string>
+    <string name="continue_btn">Continue</string>
+    <string name="secure_otp">Your OTP is secure and will expire in %1$s</string>
+
+    <string name="data_safe">
+Your data is safe with us
+</string>
+
+    <string name="data_safe_desc">
+We use your mobile number only for account verification and security. We never sell your personal information.
+</string>
+    <string name="no_internet">No Internet Connection</string>
+
+    <string name="no_internet_message">
+    Please check your internet connection and try again.
+</string>
+
+    <string name="retry">Retry</string>
 
 </resources>

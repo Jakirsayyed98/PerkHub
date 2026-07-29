@@ -1,281 +1,452 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/login_bg"
+    android:background="@color/white"
+    android:fitsSystemWindows="true"
     tools:context=".Screens.login.EnterDetailFragment">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        android:overScrollMode="never"
+        android:scrollbars="none"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+
+        <LinearLayout
+                        android:id="@+id/mainContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingStart="24dp"
+                        android:paddingTop="16dp"
+                        android:paddingEnd="24dp">
+
+
+                        <ImageView
+                            android:id="@+id/imgLogo"
+                            android:layout_width="140dp"
+                            android:layout_height="140dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="28dp"
+                            android:contentDescription="@string/app_name"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/icon_logo" />
+
+                        <!-- ========================================= -->
+                        <!-- Title -->
+                        <!-- ========================================= -->
+
+                        <TextView
+                            android:id="@+id/tvTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/lets_know"
+                            android:textColor="@android:color/black"
+                            android:textStyle="bold"
+                            app:fontFamily="@font/poppins_bold"
+                            android:textSize="@dimen/sp24"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="20dp"/>
+                        <!-- ========================================= -->
+                        <!-- Description -->
+                        <!-- ========================================= -->
+
+                        <TextView
+                            android:id="@+id/tvDescription"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/personal_details_description"
+                            android:textColor="@android:color/black"
+                            app:fontFamily="@font/poppins_regular"
+                            android:textAlignment="center"
+                            android:textSize="@dimen/sp15"
+                            android:layout_marginTop="12dp"/>
+
+            <!-- ========================================= -->
+                        <!-- Space Before Form -->
+                        <!-- ========================================= -->
+
+                        <Space
+                            android:layout_width="match_parent"
+                            android:layout_height="28dp" />
+
+                        <!-- ========================================= -->
+                        <!-- Full Name -->
+                        <!-- ========================================= -->
+
+                        <TextView
+                            android:id="@+id/tvFullName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Full Name"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            android:fontFamily="@font/poppins_semibold"/>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="110dp">
+            android:layout_height="60dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_gender_container"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp">
 
-            <androidx.cardview.widget.CardView
+            <ImageView
+                android:id="@+id/imgFullName"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_person"
+                app:tint="#9CA3AF" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                                android:id="@+id/etFullName"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:minHeight="56dp"
+                                android:fontFamily="@font/poppins_regular"
+                                android:inputType="textPersonName|textCapWords"
+                                android:paddingTop="16dp"
+                android:background="@drawable/bg_gender_container"
+                android:backgroundTint="@color/white"
+                android:layout_marginStart="@dimen/dp10"
+                                android:paddingBottom="16dp"
+                android:hint="Enter your full name"
+                                android:textColor="@android:color/black"
+                                android:textColorHint="#8E97B5"
+                                android:textSize="16sp"/>
+        </LinearLayout>
+
+                        <!-- ========================================= -->
+                        <!-- Email -->
+                        <!-- ========================================= -->
+
+                        <TextView
+                            android:id="@+id/tvEmail"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            android:text="Email Address"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            android:fontFamily="@font/poppins_semibold"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_gender_container"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_email"
+                app:tint="#9CA3AF" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                                android:id="@+id/etEmail"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:minHeight="56dp"
+                                android:fontFamily="@font/poppins_regular"
+                                android:inputType="textEmailAddress"
+                                android:paddingTop="16dp"
+                android:layout_marginStart="@dimen/dp10"
+                android:hint="Enter your email address"
+                                android:background="@drawable/bg_gender_container"
+                                android:backgroundTint="@color/white"
+                                android:paddingBottom="16dp"
+                                android:textColor="@android:color/black"
+                                android:textColorHint="#8E97B5"
+                                android:textSize="16sp"/>
+
+        </LinearLayout>
+                        <!-- ========================================= -->
+                        <!-- Space Before Next Section -->
+                        <!-- ========================================= -->
+
+
+                        <!-- ========================================= -->
+                        <!-- Gender -->
+                        <!-- ========================================= -->
+
+            <!-- Gender -->
+
+            <TextView
+                android:id="@+id/tvGender"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="Gender"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                android:fontFamily="@font/poppins_semibold"/>
+
+            <LinearLayout
+                android:id="@+id/layoutGender"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginTop="12dp"
+
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/layoutMale"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_gender_selected"
+                    android:clickable="true"
+                    android:layout_marginHorizontal="@dimen/dp5"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/imgMale"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:src="@drawable/ic_male"
+                        app:tint="#18D8AE"/>
+
+                    <TextView
+                        android:id="@+id/txtMale"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="Male"
+                        android:textColor="#18D8AE"
+                        android:textStyle="bold"
+                        android:textSize="15sp"/>
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/layoutFemale"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="@drawable/bg_gender_container"
+                    android:layout_marginHorizontal="@dimen/dp5"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/imgFemale"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:src="@drawable/ic_female"
+                        app:tint="#7A7A7A"/>
+
+                    <TextView
+                        android:id="@+id/txtFemale"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="Female"
+                        android:textColor="#666666"
+                        android:textSize="15sp"/>
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/layoutOther"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:layout_marginHorizontal="@dimen/dp5"
+                    android:background="@drawable/bg_gender_container"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/imgOther"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:src="@drawable/ic_person"
+                        app:tint="#7A7A7A"/>
+
+                    <TextView
+                        android:id="@+id/txtOther"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:gravity="center"
+                        android:text="Prefer\nnot to say"
+                        android:textAlignment="center"
+                        android:textColor="#666666"
+                        android:textSize="13sp"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+                        <!-- ========================================= -->
+                        <!-- Date Of Birth -->
+                        <!-- ========================================= -->
+
+                        <TextView
+                            android:id="@+id/tvDob"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            android:text="Date of Birth"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            android:fontFamily="@font/poppins_semibold"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_gender_container"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp">
+
+            <ImageView
+
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_calendar"
+                app:tint="#9CA3AF" />
+
+
+            <androidx.appcompat.widget.AppCompatEditText
+                                android:id="@+id/etDob"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:focusable="false"
+                                android:clickable="true"
+                                android:cursorVisible="false"
+                                android:inputType="none"
+                                android:minHeight="56dp"
+                                android:background="@drawable/bg_gender_container"
+                android:backgroundTint="@color/white"
+                android:layout_marginStart="@dimen/dp10"
+                android:hint="Select your date of birth"
+                                android:textColor="@android:color/black"
+                                android:textSize="16sp"/>
+        </LinearLayout>
+            <!-- ========================================= -->
+            <!-- Security Information -->
+            <!-- ========================================= -->
+
+            <LinearLayout
+                android:id="@+id/layoutSecurity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dp30"
-                android:layout_marginTop="@dimen/dp10"
-                android:layout_marginEnd="@dimen/dp30"
-                app:cardCornerRadius="@dimen/dp10"
-                app:cardElevation="@dimen/dp20"
-                android:layout_marginBottom="@dimen/dp150"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
+                android:layout_marginTop="32dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/mobilenumberlayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/imgSecurity"
+                    android:layout_width="52dp"
+                    android:layout_height="52dp"
+                    android:src="@drawable/sheld_icon" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/title"
-                        android:layout_width="match_parent"
+                        android:id="@+id/tvSecurityTitle"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/please_enter_your_detail"
-                        android:layout_marginTop="@dimen/dp20"
-                        android:textAlignment="center"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/sp20"
-                        android:textStyle="bold"
                         android:fontFamily="@font/poppins_medium"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:text="Your information is safe with us."
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
 
                     <TextView
-                        android:id="@+id/dis"
-                        android:layout_width="match_parent"
+                        android:id="@+id/tvSecurityDesc"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dp5"
-                        android:text="@string/enter_your_detail_for"
-                        android:textAlignment="center"
-                        android:textColor="@color/grey"
-                        android:textSize="@dimen/sp14"
+                        android:layout_marginTop="2dp"
                         android:fontFamily="@font/poppins_regular"
-                        android:textStyle="bold"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/title" />
-                    <TextView
-                        android:id="@+id/nametitle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dp20"
-                        android:layout_marginTop="@dimen/dp20"
-                        android:text="Enter your Name"
-                        android:fontFamily="@font/poppins_medium"
-                        android:textStyle="bold"
-                        android:textSize="@dimen/sp14"
-                        android:textColor="@color/black"
-                        app:layout_constraintTop_toBottomOf="@id/dis" />
+                        android:text="We never share your information with anyone."
+                        android:textColor="#7C8798"
+                        android:textSize="13sp" />
 
-                    <LinearLayout
-                        android:id="@+id/namelayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:layout_marginStart="@dimen/dp15"
-                        android:layout_marginTop="@dimen/dp10"
-                        android:layout_marginEnd="@dimen/dp15"
-                        android:background="@drawable/border_view"
-                        android:orientation="vertical"
-                        android:padding="4dp"
-                        android:textColorHint="@color/grey"
-                        app:boxStrokeColor="@color/black"
-                        app:hintTextColor="@color/black"
-                        app:layout_constraintTop_toBottomOf="@id/nametitle">
+                </LinearLayout>
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/name"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@color/white"
-                            android:fontFamily="@font/poppins_regular"
-                            android:gravity="center_vertical"
-                            android:textSize="@dimen/sp14"
-                            android:imeOptions="actionNext" />
+            </LinearLayout>
 
-                    </LinearLayout>
+            <!-- Space -->
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="40dp" />
+
+            <!-- ========================================= -->
+            <!-- Continue Button -->
+            <!-- ========================================= -->
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/btnContinue"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp60"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                app:cardCornerRadius="18dp"
+                app:cardElevation="0dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_continue_gradient">
 
                     <TextView
-                        android:id="@+id/emailtitle"
-                        android:layout_width="match_parent"
+                        android:id="@+id/txtContinue"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dp20"
-                        android:layout_marginTop="@dimen/dp20"
-                        android:text="Enter your Email Id"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:fontFamily="@font/poppins_medium"
-                        android:textSize="@dimen/sp14"
-                        app:layout_constraintTop_toBottomOf="@id/namelayout" />
+                        android:layout_centerInParent="true"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:text="Continue"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/sp18" />
 
-                    <LinearLayout
-                        android:id="@+id/emaillayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:layout_marginStart="@dimen/dp15"
-                        android:layout_marginTop="@dimen/dp10"
-                        android:layout_marginEnd="@dimen/dp15"
-                        android:background="@drawable/border_view"
-                        android:orientation="vertical"
-                        android:padding="4dp"
-                        android:textColorHint="@color/grey"
-                        app:boxStrokeColor="@color/black"
-                        app:hintTextColor="@color/black"
-                        app:layout_constraintTop_toBottomOf="@id/emailtitle">
+                    <ImageView
+                        android:id="@+id/imgArrow"
+                        android:layout_width="@dimen/dp35"
+                        android:layout_height="@dimen/dp35"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="16dp"
+                        android:background="@drawable/bg_arrow_circle"
+                        android:padding="10dp"
+                        android:src="@drawable/ic_arrow_forward"
+                        app:tint="@color/white" />
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/emailid"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:gravity="center_vertical"
-                            android:background="@color/white"
-                            android:textSize="@dimen/sp14"
-                            android:fontFamily="@font/poppins_regular"
-                            android:imeOptions="actionNext" />
-
-                    </LinearLayout>
-
-                    <TextView
-                        android:id="@+id/DOBtitle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dp20"
-                        android:layout_marginTop="@dimen/dp20"
-                        android:text="Select your Date of Birth"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:fontFamily="@font/poppins_medium"
-                        android:textSize="@dimen/sp14"
-                        app:layout_constraintTop_toBottomOf="@id/emaillayout" />
-
-                    <LinearLayout
-                        android:id="@+id/doblayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:layout_marginStart="@dimen/dp15"
-                        android:layout_marginTop="@dimen/dp10"
-                        android:layout_marginEnd="@dimen/dp15"
-                        android:background="@drawable/border_view"
-                        android:orientation="vertical"
-                        android:textColorHint="@color/grey"
-                        app:boxStrokeColor="@color/black"
-                        app:hintTextColor="@color/black"
-                        app:layout_constraintTop_toBottomOf="@id/DOBtitle">
-
-                        <TextView
-                            android:id="@+id/DOB"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:gravity="center_vertical"
-                            android:paddingStart="@dimen/dp15"
-                            android:textSize="@dimen/sp14"
-                            android:fontFamily="@font/poppins_regular"
-                            android:text="Select your Date of Birth"
-                            android:textColor="@color/black" />
-
-                    </LinearLayout>
-
-                    <TextView
-                        android:id="@+id/genderTv"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dp15"
-                        android:paddingStart="@dimen/sp25"
-                        android:text="Gender"
-                        android:textStyle="bold"
-                        android:fontFamily="@font/poppins_medium"
-                        android:textSize="@dimen/sp16"
-                        android:textColor="@color/black"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/doblayout" />
-
-                    <RadioGroup
-                        android:id="@+id/gender"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dp10"
-                        android:orientation="horizontal"
-                        android:gravity="center"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/genderTv">
-
-
-
-
-                        <RadioButton
-                            android:id="@+id/male"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:buttonTint="@color/main"
-                            android:checked="true"
-                            android:layout_marginHorizontal="@dimen/dp10"
-                            android:fontFamily="@font/poppins_regular"
-                            android:textSize="@dimen/sp14"
-                            android:text="Male" />
-
-
-                        <RadioButton
-                            android:id="@+id/female"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:buttonTint="@color/main"
-                            android:textSize="@dimen/sp14"
-                            android:layout_marginHorizontal="@dimen/dp10"
-                            android:fontFamily="@font/poppins_regular"
-                            android:text="Female" />
-
-                        <RadioButton
-                            android:id="@+id/other"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:buttonTint="@color/main"
-                            android:textSize="@dimen/sp14"
-                            android:fontFamily="@font/poppins_regular"
-                            android:layout_marginHorizontal="@dimen/dp10"
-                            android:text="Other" />
-
-
-                    </RadioGroup>
-
-
-                    <RelativeLayout
-                        android:id="@+id/detail"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/dp50"
-                        android:layout_marginTop="@dimen/dp30"
-                        android:layout_marginBottom="@dimen/dp20"
-                        android:layout_marginStart="@dimen/dp15"
-                        android:layout_marginEnd="@dimen/dp15"
-                        android:background="@drawable/selected_button_layout"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/gender">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:gravity="center"
-                            android:text="Register"
-                            android:textColor="@color/white"
-                            android:textStyle="bold" />
-
-                    </RelativeLayout>
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
+                </RelativeLayout>
 
             </androidx.cardview.widget.CardView>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </LinearLayout>
-</ScrollView>
+        </LinearLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

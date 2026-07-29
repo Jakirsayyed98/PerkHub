@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:id="@+id/rootLayout"
+    tools:context=".Screens.login.OTP_verification_Fragment">
+
+    <ScrollView
+        android:id="@+id/rootScrollView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp">
+            <!-- Logo -->
+            <ImageView
+                android:id="@+id/icon"
+                android:layout_width="140dp"
+                android:layout_height="140dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/icon_logo"
+                android:scaleType="fitCenter"
+                android:contentDescription="@null"
+                />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/verify_otp"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                app:fontFamily="@font/poppins_bold"
+                android:textSize="@dimen/sp24"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"/>
+
+            <!-- Description -->
+
+            <TextView
+                android:id="@+id/tvOtpSent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textAlignment="center"
+                android:textColor="#6B7280"
+                android:text="@string/otp_sent"
+                android:textSize="15sp"
+                app:fontFamily="@font/poppins_regular"
+                android:layout_marginTop="12dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/etOtp1"
+                    style="@style/OtpEditText"
+                    android:inputType="number"
+                    android:maxLength="1"
+                    android:digits="0123456789"
+                    android:importantForAccessibility="yes"
+                    android:autofillHints="smsOTPCode"
+                    android:importantForAutofill="yes"
+                    android:imeOptions="actionNext"
+                    android:textColor="@color/black"
+                    android:textIsSelectable="false"/>
+
+                <EditText
+                    android:id="@+id/etOtp2"
+                    style="@style/OtpEditText"
+                    android:textColor="@color/black"
+                    android:inputType="number"
+                    android:maxLength="1"
+                    android:digits="0123456789"
+                    android:imeOptions="actionNext"
+                    android:importantForAutofill="yes"
+                    android:importantForAccessibility="yes"
+                    android:layout_marginStart="12dp"
+                    android:textIsSelectable="false"/>
+
+                <EditText
+                    android:id="@+id/etOtp3"
+                    style="@style/OtpEditText"
+                    android:textColor="@color/black"
+                    android:inputType="number"
+                    android:maxLength="1"
+                    android:digits="0123456789"
+                    android:imeOptions="actionNext"
+                    android:importantForAccessibility="yes"
+                    android:importantForAutofill="yes"
+                    android:layout_marginStart="12dp"
+                    android:textIsSelectable="false"/>
+
+                <EditText
+                    android:id="@+id/etOtp4"
+                    style="@style/OtpEditText"
+                    android:textColor="@color/black"
+                    android:inputType="number"
+                    android:maxLength="1"
+                    android:digits="0123456789"
+                    android:imeOptions="actionNext"
+                    android:importantForAccessibility="yes"
+                    android:importantForAutofill="yes"
+                    android:layout_marginStart="12dp"
+                    android:textIsSelectable="false"/>
+
+                <EditText
+                    android:id="@+id/etOtp5"
+                    style="@style/OtpEditText"
+                    android:inputType="number"
+                    android:maxLength="1"
+                    android:digits="0123456789"
+                    android:importantForAutofill="yes"
+                    android:imeOptions="actionNext"
+                    android:importantForAccessibility="yes"
+                    android:textColor="@color/black"
+                    android:layout_marginStart="12dp"
+                    android:textIsSelectable="false"/>
+
+                <EditText
+                    android:id="@+id/etOtp6"
+                    style="@style/OtpEditText"
+                    android:inputType="number"
+                    android:maxLength="1"
+                    android:digits="0123456789"
+                    android:importantForAutofill="yes"
+                    android:importantForAccessibility="yes"
+                    android:imeOptions="actionDone"
+                    android:textColor="@color/black"
+                    android:layout_marginStart="12dp"
+                    android:textIsSelectable="false"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="24dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/ivSecurity"
+                    android:layout_width="@dimen/dp20"
+                    android:layout_height="20dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/sheld_icon"
+                    android:contentDescription="@null"
+                    />
+
+                <TextView
+                    android:id="@+id/tvOtpTimer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:textSize="15sp"
+                    android:textColor="#9CA3AF"
+                    android:fontFamily="@font/poppins_regular"
+                    android:text="@string/secure_otp" />
+
+            </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp28" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/verifyBtn"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp60"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                app:cardCornerRadius="@dimen/dp18"
+                android:enabled="false"
+                android:alpha="0.5"
+                app:cardElevation="0dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_continue_gradient">
+
+                    <TextView
+                        android:id="@+id/txtContinue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:text="@string/verify_and_continue"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/sp18" />
+
+                    <ImageView
+                        android:id="@+id/imgArrow"
+                        android:layout_width="@dimen/dp35"
+                        android:layout_height="@dimen/dp35"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="16dp"
+                        android:background="@drawable/bg_arrow_circle"
+                        android:padding="10dp"
+                        android:src="@drawable/ic_arrow_forward"
+                        android:contentDescription="@null"
+                        app:tint="@color/white" />
+
+                    <ProgressBar
+                        android:id="@+id/progressVerify"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_centerInParent="true"
+                        android:visibility="gone"/>
+
+                </RelativeLayout>
+
+            </androidx.cardview.widget.CardView>  <!-- Bottom Security -->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="30dp">
+
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:scaleType="centerCrop"
+                    android:contentDescription="@null"
+                    android:src="@drawable/sheld_icon"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginStart="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/data_safe"
+                        android:textColor="@android:color/black"
+                        android:textStyle="bold"
+                        app:fontFamily="@font/poppins_semibold"
+                        android:textSize="@dimen/sp16"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/data_safe_desc"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/sp14"
+                        android:layout_marginTop="4dp"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <include
+        android:id="@+id/noInternetView"
+        layout="@layout/view_no_internet"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

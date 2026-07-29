@@ -24,6 +24,8 @@
     <color name="games_bg">#9734E6</color>
     <color name="games_bg_light">#BD76F6</color>
 
+    <color name="colorPrimary">#18D8AE</color>
+    <color name="gray_600">#666666</color>
 
 
     <!-- Primary Colors -->

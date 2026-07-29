@@ -41,6 +41,11 @@ import app.perkhub.Screens.withdrawal.WithdrawalConfirmationFragment
 import app.perkhub.Utils.CONTAINER_TYPE_KEY1
 import com.google.gson.Gson
 import android.Manifest
+import app.perkhub.Screens.login.OTP_verification_Fragment
+import app.perkhub.Utils.ENTER_DETAIL_FRAGMENT
+import app.perkhub.Utils.ENTER_MOBILE_NUMBER
+import app.perkhub.Utils.HOME_SCREEN_FRAGMENT
+import app.perkhub.Utils.VERIFY_OTP_FRAGMENT
 
 class ContainerActivity : BaseActivity<ActivityContainerBinding>() {
 
@@ -140,14 +145,17 @@ class ContainerActivity : BaseActivity<ActivityContainerBinding>() {
 
     private fun PassScreen(type: String?) {
         when(type){
-            "EnterMobileNumber" ->{
+            ENTER_MOBILE_NUMBER ->{
                 addFragment(EnterMobileNFragment.newInstance())
             }
-            "EnterDetailFragment" ->{
+            VERIFY_OTP_FRAGMENT ->{
+                addFragment(OTP_verification_Fragment.newInstance())
+            }
+            ENTER_DETAIL_FRAGMENT ->{
                 addFragment(EnterDetailFragment.newInstance())
             }
 
-            "HomeScreenFragment" ->{
+            HOME_SCREEN_FRAGMENT ->{
                 addFragment(HomeScreenFragment.newInstance())
             }
 

@@ -25,7 +25,7 @@ class AuthInterceptor(
         val requestWithAuth = originalRequest.newBuilder()
             .addHeader("Authorization", "Bearer $token")
             .build()
-
+        Log.d("@@@@@@@",requestWithAuth.toString())
         val response = chain.proceed(requestWithAuth)
 
         if (response.code != 401) {

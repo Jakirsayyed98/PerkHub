@@ -15,3 +15,11 @@ const val PRIVACYPOLICY = "${PolicyBaseUrl}privacypolicy"
 const val ABOUTUS = "${PolicyBaseUrl}aboutus"
 const val termsandcondition = "${PolicyBaseUrl}termsandcondition"
 const val CONTACTUS = "${PolicyBaseUrl}contactus"
+const val RESENDOTP="Resend OTP"
+
+
+//FRAGMENTS
+const val VERIFY_OTP_FRAGMENT = "VerifyOtpFragment"
+const val ENTER_MOBILE_NUMBER = "EnterMobileNumber"
+const val ENTER_DETAIL_FRAGMENT = "EnterDetailFragment"
+const val HOME_SCREEN_FRAGMENT = "HomeScreenFragment"

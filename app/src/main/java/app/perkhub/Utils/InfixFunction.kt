@@ -1,6 +1,7 @@
 package app.perkhub.Utils
 
 import android.R
+import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -10,7 +11,9 @@ import android.net.Uri
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.util.TypedValue
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
@@ -148,3 +151,18 @@ fun copyToClipboard(context: Context, text: String, bindView: View) {
     clipboard.setPrimaryClip(clip)
     context.Snackbar("Coupon code copied successfully!",bindView)
 }
+
+fun Activity.hideKeyboard() {
+    val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    val view = currentFocus ?: View(this)
+    imm.hideSoftInputFromWindow(view.windowToken, 0)
+}
+
+fun getMaskedMobileNumber(mobile: String): String {
+    return if (mobile.length == 10) {
+        "+91 ******${mobile.takeLast(4)}"
+    } else {
+        mobile
+    }
+}
+

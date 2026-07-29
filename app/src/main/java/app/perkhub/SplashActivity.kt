@@ -11,6 +11,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import app.perkhub.Utils.BaseActivity
+import app.perkhub.Utils.ENTER_MOBILE_NUMBER
+import app.perkhub.Utils.HOME_SCREEN_FRAGMENT
 import app.perkhub.Utils.LOGIN
 import app.perkhub.databinding.ActivitySplashBinding
 import com.google.firebase.messaging.FirebaseMessaging
@@ -48,12 +50,11 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
             }
 
             override fun onFinish() {
-
                 if (getSharedpref().getBoolen(LOGIN) == true){
-                    ContainerActivity.OpenContainer(this@SplashActivity,"HomeScreenFragment",null)
+                    ContainerActivity.OpenContainer(this@SplashActivity, HOME_SCREEN_FRAGMENT,null)
                     finish()
                 }else{
-                    ContainerActivity.OpenContainer(this@SplashActivity,"EnterMobileNumber",null)
+                    ContainerActivity.OpenContainer(this@SplashActivity,ENTER_MOBILE_NUMBER,null)
                     finish()
                 }
             }

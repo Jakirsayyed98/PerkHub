@@ -49,5 +49,38 @@
         <item name="android:elevation">4dp</item>
         <item name="android:stateListAnimator">@animator/button_state_list_animator</item>
     </style>
+
+    <style name="OtpEditText">
+
+        <item name="android:layout_width">48dp</item>
+        <item name="android:layout_height">64dp</item>
+
+        <item name="android:gravity">center</item>
+
+        <item name="android:background">@drawable/bg_otp</item>
+
+        <item name="android:textSize">24sp</item>
+
+        <item name="android:textStyle">bold</item>
+
+        <item name="android:textColor">#FFFFFF</item>
+
+        <item name="android:maxLength">1</item>
+
+        <item name="android:inputType">number</item>
+
+        <item name="android:fontFamily">@font/poppins_semibold</item>
+
+        <item name="android:cursorVisible">true</item>
+
+    </style>
+
+    <style name="FullScreenDialog" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowBackground">@android:color/white</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
 </resources>
 

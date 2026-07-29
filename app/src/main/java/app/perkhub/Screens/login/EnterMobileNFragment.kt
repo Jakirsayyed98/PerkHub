@@ -1,215 +1,193 @@
 package app.perkhub.Screens.login
 
+import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.TextPaint
+import android.text.method.LinkMovementMethod
+import android.text.method.DigitsKeyListener
+import android.text.style.ClickableSpan
+import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
-import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
-import androidx.lifecycle.lifecycleScope
 import app.perkhub.ContainerActivity
 import app.perkhub.R
-import app.perkhub.Screens.Home.Model.Auth.VerifyOTP
-import app.perkhub.Screens.login.models.GetToken
-import app.perkhub.Screens.login.models.LoginRes
-import app.perkhub.Screens.login.models.SendOtpReq
-import app.perkhub.Screens.login.models.VerifyOtpReq
 import app.perkhub.Utils.BaseFragment
-import app.perkhub.Utils.LOGIN
-import app.perkhub.Utils.Snackbar
-import app.perkhub.Utils.TOKEN
-import app.perkhub.Utils.USERDATA
-import app.perkhub.api.ApiListener
-import app.perkhub.api.BaseRes
-import app.perkhub.api.tokens.TokenManager
+import app.perkhub.Utils.PRIVACYPOLICY
+import app.perkhub.Utils.VERIFY_OTP_FRAGMENT
+import app.perkhub.Utils.hideKeyboard
+import app.perkhub.Utils.openCustomTab
 import app.perkhub.databinding.FragmentEnterMobileNBinding
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 class EnterMobileNFragment : BaseFragment<FragmentEnterMobileNBinding>() {
 
-    private val countdownTimeInSeconds = 120
-    private var timeLeft = countdownTimeInSeconds
-    private var resend = false
-    private var countdownJob: Job? = null
-
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
         _binding = FragmentEnterMobileNBinding.inflate(inflater, container, false)
-        statusBarColor(R.color.login_statusbar_color)
-        setStatusBarIconsDark(false)
+
+        statusBarColor(R.color.white)
+        setStatusBarIconsDark(true)
+
+        setupTerms()
         setupClickListeners()
         handleBackPress()
+
+        updateContinueButtonState()
 
         return binding.root
     }
 
     private fun setupClickListeners() {
+
+        // Allow digits only
+        binding.mobilenumber.keyListener =
+            DigitsKeyListener.getInstance("0123456789")
+
         binding.mobilenumber.addTextChangedListener {
-            binding.sendOTP.isSelected = it?.length == 10
+            updateContinueButtonState()
+        }
+
+        binding.checkTerms.setOnCheckedChangeListener { _, _ ->
+            updateContinueButtonState()
         }
 
         binding.sendOTP.setOnClickListener {
-            if (binding.sendOTP.isSelected) sendOTPAPICall()
-        }
 
-        binding.OTP.addTextChangedListener {
-            binding.verifyOTP.isSelected = it?.length == 6
-        }
+            if (!binding.sendOTP.isEnabled)
+                return@setOnClickListener
 
-        binding.verifyOTP.setOnClickListener {
-            if (binding.verifyOTP.isSelected) verifyOTP()
-        }
+            // Prevent multiple clicks
+            binding.sendOTP.isEnabled = false
 
-        binding.timerCount.setOnClickListener {
-            if (resend) {
-                resend = false
-                startCountdown()
-                sendOTPAPICall()
-            }
+            ContainerActivity.OpenContainer(
+                requireContext(),
+                VERIFY_OTP_FRAGMENT,
+                binding.mobilenumber.text.toString().trim()
+            )
         }
+    }
+
+    /**
+     * Enable Continue button only when:
+     * 1. Mobile number is valid
+     * 2. User has accepted Terms
+     */
+    private fun updateContinueButtonState() {
+
+        val enabled = isValidMobile() &&
+                binding.checkTerms.isChecked
+
+        binding.sendOTP.isEnabled = enabled
+        binding.sendOTP.isSelected = enabled
+        binding.sendOTP.alpha = if (enabled) 1f else 0.5f
+    }
+
+    /**
+     * Indian Mobile Validation
+     */
+    private fun isValidMobile(): Boolean {
+
+        val mobile = binding.mobilenumber.text
+            .toString()
+            .trim()
+
+        return mobile.matches(Regex("^[6-9]\\d{9}$"))
     }
 
     private fun handleBackPress() {
+
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-            if (binding.OTPlayout.isVisible) {
-                binding.mobilenumberlayout.visibility = View.VISIBLE
-                binding.OTPlayout.visibility = View.GONE
-                countdownJob?.cancel()
-            } else {
-                countdownJob?.cancel()
-                requireActivity().supportFragmentManager.popBackStack()
-            }
+            requireActivity().supportFragmentManager.popBackStack()
         }
     }
 
-    private fun sendOTPAPICall() {
-        binding.sendOTP.isSelected = false
-        binding.sendOtpText.text = "Sending..."
-        val request = SendOtpReq(binding.mobilenumber.text.toString())
-        val numberText = "+91 ${binding.mobilenumber.text}"
+    private fun setupTerms() {
 
-        binding.dis1.text = getString(R.string.enter_the_6_digit_code_sent_to, numberText)
+        binding.rootLayout.setOnClickListener {
+            requireActivity().hideKeyboard()
+            binding.mobilenumber.clearFocus()
+        }
 
-        viewModel.sendOTP(request, requireContext(), object : ApiListener<BaseRes> {
-            override fun onSuccess(t: BaseRes?, mess: String) {
-                lifecycleScope.launch(Dispatchers.Main) {
-                    binding.mobilenumberlayout.visibility = View.GONE
-                    binding.OTPlayout.visibility = View.VISIBLE
-                    startCountdown()
-                }
+        val text =
+            "I agree to the Terms & Conditions and Privacy Policy."
+
+        val spannable = SpannableString(text)
+
+        val terms = "Terms & Conditions"
+        val privacy = "Privacy Policy"
+
+        val termsStart = text.indexOf(terms)
+        val termsEnd = termsStart + terms.length
+
+        val privacyStart = text.indexOf(privacy)
+        val privacyEnd = privacyStart + privacy.length
+
+        val brandColor = Color.parseColor("#47E1B5")
+
+        // Terms
+        spannable.setSpan(object : ClickableSpan() {
+
+            override fun onClick(widget: View) {
+                requireContext().openCustomTab(PRIVACYPOLICY)
             }
 
-            override fun onError(mess: String) {
-                lifecycleScope.launch(Dispatchers.Main) {
-                    requireContext().Snackbar(mess,_binding!!.OTPlayout)
-                }
+            override fun updateDrawState(ds: TextPaint) {
+                ds.color = brandColor
+                ds.isUnderlineText = false
             }
-        })
-    }
 
-    private fun verifyOTP() {
-        showProgress()
-        val request = VerifyOtpReq(
-            Number = binding.mobilenumber.text.toString(),
-            Otp = binding.OTP.text.toString()
+        }, termsStart, termsEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+
+        spannable.setSpan(
+            StyleSpan(Typeface.BOLD),
+            termsStart,
+            termsEnd,
+            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
         )
 
-        viewModel.verifyOTP(request, requireContext(), object : ApiListener<VerifyOTP> {
-            override fun onSuccess(t: VerifyOTP?, mess: String) {
-                lifecycleScope.launch(Dispatchers.Main) {
-                    dissmissProgress()
-                    countdownJob?.cancel()
-                    redirectAfterVerification()
-                }
+        // Privacy
+        spannable.setSpan(object : ClickableSpan() {
+
+            override fun onClick(widget: View) {
+                requireContext().openCustomTab(PRIVACYPOLICY)
             }
 
-            override fun onError(mess: String) {
-                lifecycleScope.launch(Dispatchers.Main) {
-                    dissmissProgress()
-                    requireContext().Snackbar(mess,_binding!!.OTPlayout)
-                    binding.OTP.text?.clear()
-                    binding.OTP.requestFocus()
-                }
+            override fun updateDrawState(ds: TextPaint) {
+                ds.color = brandColor
+                ds.isUnderlineText = false
             }
-        })
+
+        }, privacyStart, privacyEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+
+        spannable.setSpan(
+            StyleSpan(Typeface.BOLD),
+            privacyStart,
+            privacyEnd,
+            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+
+        binding.tvTerms.text = spannable
+        binding.tvTerms.movementMethod = LinkMovementMethod.getInstance()
+        binding.tvTerms.highlightColor = Color.TRANSPARENT
     }
 
-    private fun redirectAfterVerification() {
-        val request = GetToken(binding.mobilenumber.text.toString())
-        viewModel.getAuthorizationToken(request, requireContext(), object : ApiListener<BaseRes> {
-            override fun onSuccess(t: BaseRes?, mess: String) {
-                lifecycleScope.launch(Dispatchers.Main) {
-                    t?.Data?.Token?.let { token ->
-                        TokenManager.saveToken(requireContext(), token)
-                        getSharedpref().saveString(TOKEN, token)
-                        fetchUserDetails()
-                    }
-                }
-            }
+    companion object {
 
-            override fun onError(mess: String) {
-                lifecycleScope.launch(Dispatchers.Main) {
-                    requireContext().Snackbar(mess,_binding!!.OTPlayout)
-                }
-            }
-        })
-    }
-
-    private fun fetchUserDetails() {
-        viewModel.getUserDetail(requireContext(), object : ApiListener<LoginRes> {
-            override fun onSuccess(t: LoginRes?, mess: String) {
-                lifecycleScope.launch(Dispatchers.Main) {
-                    t?.let {
-                        getSharedpref().saveUser(USERDATA, it)
-                        if (it.data.name.isNotEmpty()) {
-                            getSharedpref().saveBool(LOGIN, true)
-                            ContainerActivity.OpenContainer(requireContext(), "HomeScreenFragment", null)
-                        } else {
-                            ContainerActivity.OpenContainer(requireContext(), "EnterDetailFragment", null)
-                        }
-                        activity?.finish()
-                    }
-                }
-            }
-
-            override fun onError(mess: String) {
-                lifecycleScope.launch(Dispatchers.Main) {
-                    requireContext().Snackbar(mess,_binding!!.OTPlayout)
-                }
-            }
-        })
-    }
-
-    private fun startCountdown() {
-        countdownJob?.cancel()
-        timeLeft = countdownTimeInSeconds
-
-        countdownJob = lifecycleScope.launch(Dispatchers.Main) {
-            while (timeLeft > 0) {
-                val minutes = timeLeft / 60
-                val seconds = timeLeft % 60
-                binding.timerCount.text = "Resend OTP in %02d:%02d".format(minutes, seconds)
-                delay(1000)
-                timeLeft--
-            }
-            binding.timerCount.text = "Resend OTP"
-            resend = true
-        }
+        @JvmStatic
+        fun newInstance() = EnterMobileNFragment()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        countdownJob?.cancel()
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance() = EnterMobileNFragment()
+        _binding = null
     }
 }

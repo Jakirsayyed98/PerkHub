@@ -93,4 +93,24 @@ abstract class BaseFragment<T:ViewBinding> : Fragment() {
         return "Bearer " + getSharedpref().getString(TOKEN)
     }
 
+    protected fun isInternetAvailable(): Boolean {
+        return NetworkUtils.isInternetAvailable(requireContext())
+    }
+
+    protected fun checkInternet(
+        contentView: View,
+        noInternetView: View
+    ): Boolean {
+
+        val connected = isInternetAvailable()
+
+        contentView.visibility =
+            if (connected) View.VISIBLE else View.GONE
+
+        noInternetView.visibility =
+            if (connected) View.GONE else View.VISIBLE
+
+        return connected
+    }
+
 }
