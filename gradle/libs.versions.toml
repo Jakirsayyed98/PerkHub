@@ -1,8 +1,9 @@
 [versions]
 
 # Build
-agp = "8.5.2"
+agp = "8.6.1"
 kotlin = "1.9.24"
+
 
 # Core (AGP 8.5 compatible)
 coreKtx = "1.13.1"
@@ -40,6 +41,7 @@ lottie = "6.4.0"
 playServicesAuth = "21.5.0"
 
 ksp = "1.9.24-1.0.20"
+swiperefreshlayout = "1.2.0"
 
 [libraries]
 
@@ -88,6 +90,7 @@ lottie = { group = "com.airbnb.android", name = "lottie", version.ref = "lottie"
 
 # Google Sign In
 play-services-auth = { group = "com.google.android.gms", name = "play-services-auth", version.ref = "playServicesAuth" }
+androidx-swiperefreshlayout = { group = "androidx.swiperefreshlayout", name = "swiperefreshlayout", version.ref = "swiperefreshlayout" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

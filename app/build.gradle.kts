@@ -8,7 +8,7 @@ plugins {
 
 android {
     namespace = "app.perkhub"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "app.perkhub"
@@ -20,6 +20,9 @@ android {
     }
 
     buildTypes {
+        debug {
+            isDebuggable = true
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(
@@ -74,6 +77,7 @@ dependencies {
     // Room (KSP)
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
+    implementation(libs.androidx.swiperefreshlayout)
     ksp(libs.room.compiler)
 
     // Coroutines

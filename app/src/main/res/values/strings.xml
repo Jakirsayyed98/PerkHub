@@ -151,5 +151,6 @@ We use your mobile number only for account verification and security. We never s
 </string>
 
     <string name="retry">Retry</string>
+    <string name="unlock_more_save_more">Unlock more.<font color="#097A6A"> Save more.</font></string>
 
 </resources>

@@ -1,5 +1,6 @@
 package app.perkhub.Screens.login
 
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
@@ -31,9 +32,11 @@ import app.perkhub.Screens.login.models.LoginRes
 import app.perkhub.Screens.login.models.SendOtpReq
 import app.perkhub.Screens.login.models.VerifyOtpReq
 import app.perkhub.Utils.BaseFragment
+import app.perkhub.Utils.CONTAINER_TYPE_KEY
 import app.perkhub.Utils.DATA
 import app.perkhub.Utils.ENTER_DETAIL_FRAGMENT
 import app.perkhub.Utils.HOME_SCREEN_FRAGMENT
+import app.perkhub.Utils.LOGIN
 import app.perkhub.Utils.NetworkUtils
 import app.perkhub.Utils.RESENDOTP
 import app.perkhub.Utils.Snackbar
@@ -200,18 +203,16 @@ class OTP_verification_Fragment : BaseFragment<FragmentOTPVerificationBinding>()
                         return@launchSafe
                     }
                     setLoading(false)
-                    dismissVerifiedDialog()
 
-                    if (userName.isNotEmpty()) {
-                        getSharedpref().saveUser(USERDATA, t)
+                    if (userName!="") {
+//                        getSharedpref().saveUser(USERDATA, t)
+                        getSharedpref().saveBool(LOGIN,true)
                         ContainerActivity.OpenContainer(requireContext(), HOME_SCREEN_FRAGMENT, null)
                     } else {
                         ContainerActivity.OpenContainer(requireContext(), ENTER_DETAIL_FRAGMENT, null)
+//
                     }
-
-                    Handler(Looper.getMainLooper()).postDelayed({
-                        activity?.finish()
-                    }, 2000)
+                    requireActivity().finish()
                 }
             }
 
@@ -226,7 +227,6 @@ class OTP_verification_Fragment : BaseFragment<FragmentOTPVerificationBinding>()
     /** Dismiss the "verified" dialog, reset loading state, and surface the error. */
     private fun failAndReset(message: String) {
         setLoading(false)
-        dismissVerifiedDialog()
         if (isAdded) requireContext().Snackbar(message, binding.rootLayout)
     }
 
@@ -474,6 +474,8 @@ class OTP_verification_Fragment : BaseFragment<FragmentOTPVerificationBinding>()
     override fun onDestroyView() {
         countDownTimer?.cancel()
         countDownTimer = null
+        dismissVerifiedDialog()
+        _binding = null
         super.onDestroyView()
     }
 

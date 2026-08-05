@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="100dp"
-    android:layout_height="120dp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:padding="@dimen/dp5"
-    android:layout_margin="@dimen/dp5"
     android:orientation="vertical"
     android:layout_gravity="center"
     android:foreground="?attr/selectableItemBackground">
@@ -19,8 +18,8 @@
         <!-- Category Image -->
         <ImageView
             android:id="@+id/image"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
+            android:layout_width="@dimen/dp55"
+            android:layout_height="@dimen/dp55"
             android:layout_gravity="center"
             />
 <!--   </androidx.cardview.widget.CardView>-->
@@ -31,9 +30,11 @@
             android:layout_height="wrap_content"
             android:textAlignment="center"
             android:gravity="center"
+            android:maxLines="2"
             android:text="Category and water sully"
             android:textColor="@android:color/black"
-            android:textSize="12sp"
+            app:fontFamily="@font/poppins_regular"
+            android:textSize="@dimen/sp10"
             />
 
 </LinearLayout>
