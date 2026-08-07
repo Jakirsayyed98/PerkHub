@@ -55,7 +55,6 @@ class SelectedCategoryFragment : BaseFragment<FragmentSelectedCategoryBinding>()
         MiniAppCategoryAdapter<MiniApp>(object : RecyclerClickListener {
             override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
                 if (data is MiniApp) {
-                    Log.d("MiniApp Store",data.cbActive.toString())
                     ContainerActivity.OpenContainerType2(
                         requireContext(),
                         "StoreDetailFragment",

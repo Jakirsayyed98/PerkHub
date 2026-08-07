@@ -17,17 +17,19 @@ class TrendingStoresAdapter<S>(val cliklistner : RecyclerClickListener): BaseRec
             if (s is MiniApp){
                 with(binding){
 
-                    Glide.with(itemView.context).load(s.icon).circleCrop().into(icon)
+                    Glide.with(itemView.context).load(s.logo).into(imgStoreLogo)
+//                    Glide.with(itemView.context).load(s.icon).circleCrop().into(imgStoreLogo)
 //                    rupee.visibility =if (s.cbActive)  View.VISIBLE else View.GONE
                     if (s.cbActive){
-                        cashbackText.visibility= View.VISIBLE
-                        cashbackBadge.visibility= View.VISIBLE
+                        txtCashback.visibility= View.VISIBLE
+//                        cashbackBadge.visibility= View.VISIBLE
                     }else{
-                        cashbackText.visibility= View.INVISIBLE
-                        cashbackBadge.visibility= View.INVISIBLE
+                        txtCashback.visibility= View.INVISIBLE
+//                        cashbackBadge.visibility= View.INVISIBLE
                     }
-                    storename.text = s.name
-                    cashbackText.text = "Upto "+s.cbPercentage+"\ncashback"
+//                    storename.text = s.name
+//                    cashbackText.text = ""+s.cbPercentage+"\ncashback"
+                    txtCashback.text = s.cbPercentage+" cashback"
                     binding.root.setOnClickListener {
                         cliklistner.RecyclerClickListener(0,s.url,s)
                     }

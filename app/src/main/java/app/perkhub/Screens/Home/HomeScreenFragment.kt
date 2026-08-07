@@ -18,6 +18,8 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import app.perkhub.ContainerActivity
 import app.perkhub.R
+import app.perkhub.Screens.Games.adapter.PopularGameAdapter
+import app.perkhub.Screens.Games.model.Data
 import app.perkhub.Screens.Games.model.GamesRes
 import app.perkhub.Screens.Home.Adapter.*
 import app.perkhub.Screens.Home.Model.Home.*
@@ -163,6 +165,9 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
 
                         setMainCategoryLayout(data.categories)
                         setBanner1(data.banner1)
+                        setTopCashbackProvider(data.topCashback)
+                        setPopularStores(data.popular)
+                        setTrendingStores(data.trending)
                        }
                 }
             }
@@ -174,6 +179,76 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
             }
         })
     }
+
+    private fun setTopCashbackProvider(topCashback: List<MiniApp>) {
+        binding.storeLayout.title.text = "Top Cashback Providers"
+        val mAdapter = TrendingStoresAdapter<MiniApp>(object : RecyclerClickListener {
+            override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
+                if (data is MiniApp) {
+                    ContainerActivity.OpenContainerType2(
+                        requireContext(),
+                        "StoreDetailFragment",
+                        data.name,
+                        data
+                    )
+                }
+            }
+        })
+
+        binding.storeLayout.stores.apply {
+            layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
+            adapter = mAdapter
+        }
+
+        mAdapter.addAllItem(if (topCashback.size > 14) topCashback.subList(0, 14) else topCashback)
+    }
+
+    private fun setPopularStores(popular: List<MiniApp>) {
+        binding.popularStoreLayout.title.text = "Popular Stores"
+        val mAdapter = PopularStoresAdapter<MiniApp>(object : RecyclerClickListener {
+            override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
+                if (data is MiniApp) {
+                    ContainerActivity.OpenContainerType2(
+                        requireContext(),
+                        "StoreDetailFragment",
+                        data.name,
+                        data
+                    )
+                }
+            }
+        })
+
+        binding.popularStoreLayout.stores.apply {
+            layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
+            adapter = mAdapter
+        }
+
+        mAdapter.addAllItem(if (popular.size > 14) popular.subList(0, 14) else popular)
+    }
+
+    private fun setTrendingStores(trending: List<MiniApp>) {
+        binding.trendingStoreLayout.title.text = "Trending now"
+        val mAdapter = TrendingNowStoresAdapter<MiniApp>(object : RecyclerClickListener {
+            override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
+                if (data is MiniApp) {
+                    ContainerActivity.OpenContainerType2(
+                        requireContext(),
+                        "StoreDetailFragment",
+                        data.name,
+                        data
+                    )
+                }
+            }
+        })
+
+        binding.trendingStoreLayout.stores.apply {
+            layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
+            adapter = mAdapter
+        }
+
+        mAdapter.addAllItem(if (trending.size > 14) trending.subList(0, 14) else trending)
+    }
+
 
     private fun setBanner1(banners: List<Banner>?) {
 

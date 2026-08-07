@@ -124,6 +124,25 @@
                     <include
                         android:id="@+id/banner_layout"
                         layout="@layout/layout_banner"/>
+
+
+                    <!-- Stores -->
+                    <include
+                        android:id="@+id/store_layout"
+                        layout="@layout/layout_stores"/>
+
+
+                    <!-- Popular Stores-->
+                    <include
+                        android:id="@+id/popular_store_layout"
+                        layout="@layout/layout_stores"/>
+
+
+                    <!-- Trending Now Stores-->
+                    <include
+                        android:id="@+id/trending_store_layout"
+                        layout="@layout/layout_stores"/>
+
                 </LinearLayout>
 
             </androidx.core.widget.NestedScrollView>
