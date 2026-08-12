@@ -5,12 +5,14 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -28,6 +30,8 @@ import app.perkhub.Utils.PRIVACYPOLICY
 import app.perkhub.Utils.RecyclerClickListener
 import app.perkhub.Utils.Snackbar
 import app.perkhub.Utils.USERDATA
+import app.perkhub.Utils.getAppVersion
+import app.perkhub.Utils.getCopyrightText
 import app.perkhub.Utils.openCustomTab
 import app.perkhub.Utils.rateUsApp
 import app.perkhub.Utils.shareAppLink
@@ -47,7 +51,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentProfileBinding.inflate(layoutInflater,container,false)
-        _binding!!.toolbar.name.text = "Quick Actions"
+        _binding!!.toolbar.name.text = "My Profile"
         _binding!!.toolbar.backbtn.setOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
@@ -56,22 +60,24 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
         _binding!!.Profilename.text= userName?.name!!.replaceFirstChar { it.uppercase() }.orEmpty()
         _binding!!.email.text = userName.email
         _binding!!.ProfilenameShort.text = userName.email.toCharArray()[0].toString().uppercase()
-
+        val appVersion = getAppVersion(requireContext())
+        _binding!!.appversion.text = "App Version v${appVersion}"
+        _binding!!.companyName.text = getCopyrightText()
 
         return _binding?.root
     }
 
     private fun setMenuList() {
         val menulist = ArrayList<menuList>()
-        menulist.add(0, menuList(0,R.drawable.store_orders,"Store Orders","Your All stores Orders (Cashback)"))
-        menulist.add(0, menuList(1,R.drawable.offers,"Offers & Coupons","Save more with exclusive deals"))
-        menulist.add(0, menuList(2,R.drawable.games,"Games","Exciting games for entertainment"))
-        menulist.add(0, menuList(3,R.drawable.wallet_ico,"Wallet & Withdraw","Transfer to bank or UPI"))
+        menulist.add(0, menuList(0,R.drawable.store_orders,"My Orders","Track your orders and cashback"))
+        menulist.add(0, menuList(3,R.drawable.wallet_ico,"Wallet & Transactions","Check your cashback balance and history"))
+        menulist.add(0, menuList(2,R.drawable.games,"Games & Fun","Take a break. Play something fun."))
+        menulist.add(0, menuList(2,R.drawable.games,"PerkHub Partner","Partner with us and grow together"))
         menulist.add(0, menuList(4,R.drawable.support,"Help & Support","Get help and contact support"))
+        menulist.add(0, menuList(7,R.drawable.policy, "Privacy & Security","Privacy policy and data settings"))
+        menulist.add(0, menuList(8,R.drawable.about_us, "About PerkHub","Learn more about us"))
         menulist.add(0, menuList(5,R.drawable.share_icon,"Share","Share PerkHub App"))
         menulist.add(0, menuList(6,R.drawable.rate_us,"Rate PerkHub", "Share your feedback"))
-        menulist.add(0, menuList(7,R.drawable.policy, "Privacy & Security","PerkHub Privacy & Security"))
-        menulist.add(0, menuList(8,R.drawable.about_us, "About us","About PerkHub App"))
         menulist.add(0, menuList(9,R.drawable.logout, "Logout","Sign out of your account"))
 
         val adapter = ProfileMenuAdapter<menuList>(object : RecyclerClickListener{

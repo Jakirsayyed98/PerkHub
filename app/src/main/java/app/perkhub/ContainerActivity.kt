@@ -45,6 +45,7 @@ import app.perkhub.Screens.login.OTP_verification_Fragment
 import app.perkhub.Utils.ENTER_DETAIL_FRAGMENT
 import app.perkhub.Utils.ENTER_MOBILE_NUMBER
 import app.perkhub.Utils.HOME_SCREEN_FRAGMENT
+import app.perkhub.Utils.PROFILE_SCREEN_FRAGMENT
 import app.perkhub.Utils.VERIFY_OTP_FRAGMENT
 
 class ContainerActivity : BaseActivity<ActivityContainerBinding>() {
@@ -190,7 +191,7 @@ class ContainerActivity : BaseActivity<ActivityContainerBinding>() {
                 addFragment(WithdrawalConfirmationFragment.newInstance())
             }
 
-            "ProfileFragment"->{
+            PROFILE_SCREEN_FRAGMENT->{
                 addFragment(ProfileFragment.newInstance())
             }
 

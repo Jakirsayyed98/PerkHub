@@ -2,6 +2,7 @@
 <resources>
     <color name="StaticWhite">#FFF</color>
     <color name="main">#5550BC</color>
+    <color name="main2">#097A6A</color>
     <color name="blue">#1F10C3</color>
     <color name="light_blue">#3478F2</color>
     <color name="grey">#595959</color>

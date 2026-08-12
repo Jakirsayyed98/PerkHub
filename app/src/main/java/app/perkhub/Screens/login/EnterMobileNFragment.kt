@@ -73,6 +73,7 @@ class EnterMobileNFragment : BaseFragment<FragmentEnterMobileNBinding>() {
                 VERIFY_OTP_FRAGMENT,
                 binding.mobilenumber.text.toString().trim()
             )
+            requireActivity().finish()
         }
     }
 

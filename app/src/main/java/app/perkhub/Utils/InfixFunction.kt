@@ -7,7 +7,9 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
@@ -15,10 +17,15 @@ import android.util.TypedValue
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
 import java.text.SimpleDateFormat
+import java.time.Instant
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.util.Calendar
 import java.util.Locale
 
 
@@ -89,6 +96,14 @@ fun onlyDatewithMonth(date: String?): String? {
     // Now format the parsed date into the desired format.
     val outputFormat = SimpleDateFormat("dd MMM, yyyy", Locale.ENGLISH)
     return parsedDate?.let { outputFormat.format(it) }
+}
+
+fun formatDate(date: String): String {
+    val formatter = DateTimeFormatter.ofPattern("dd MMM, yyyy", Locale.ENGLISH)
+
+    return Instant.parse(date)
+        .atZone(ZoneId.of("Asia/Kolkata"))
+        .format(formatter)
 }
 
 fun isValidUpiId(upiId: String): Boolean {
@@ -166,3 +181,32 @@ fun getMaskedMobileNumber(mobile: String): String {
     }
 }
 
+fun getGreeting(name: String): String {
+    val hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+
+    val greeting = when (hour) {
+        in 5..11 -> "Good morning"
+        in 12..16 -> "Good afternoon"
+        else -> "Good evening"
+    }
+
+    val formattedName = name.trim().replaceFirstChar {
+        if (it.isLowerCase()) it.titlecase() else it.toString()
+    }
+    return "$greeting, $formattedName 👋"
+}
+
+fun getAppVersion(context: Context): String {
+    return try {
+        context.packageManager
+            .getPackageInfo(context.packageName, 0)
+            .versionName ?: ""
+    } catch (e: Exception) {
+        ""
+    }
+}
+
+fun getCopyrightText(): String {
+    val year = Calendar.getInstance().get(Calendar.YEAR)
+    return "© $year PerkHub Pvt Ltd"
+}

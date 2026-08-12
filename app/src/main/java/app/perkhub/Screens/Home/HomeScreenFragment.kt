@@ -22,7 +22,10 @@ import app.perkhub.Screens.Games.adapter.PopularGameAdapter
 import app.perkhub.Screens.Games.model.Data
 import app.perkhub.Screens.Games.model.GamesRes
 import app.perkhub.Screens.Home.Adapter.*
+import app.perkhub.Screens.Home.Model.CustomCategories
 import app.perkhub.Screens.Home.Model.Home.*
+import app.perkhub.Screens.Offers.model.Offerlistres
+import app.perkhub.Screens.Offers.model.OffersData
 import app.perkhub.Utils.*
 import app.perkhub.api.ApiListener
 import app.perkhub.databinding.FragmentHomeScreenBinding
@@ -40,7 +43,13 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
     private var blockedDialog: Dialog? = null
     private var firebaseTaskActive = false
 
+    val offers = ArrayList<OffersData>()
+    val coupons = ArrayList<OffersData>()
+
+
     private lateinit var bannerAdapter: BannerAdapter
+    private lateinit var couponAdapter: CouponCodeAdapter<OffersData>
+    private lateinit var offerAdapter: OffersAdapter<OffersData>
 
     private val bannerHandler = Handler(Looper.getMainLooper())
 
@@ -86,11 +95,17 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
 
         setupMenu()
         setupClickEvents()
+        setBestCouponLayout()
+        setBestOfferLayout()
 //        observePopularGames()
         // Fetch data
         lifecycleScope.launch { fetchHomeData() }       // HomeViewModel
+        lifecycleScope.launch { fetchOfferAndCoupons() }       // Coupns and Offers
         if (getSharedpref().getUser(USERDATA)==null){
             getUserDetail()
+        }else{
+            val greet = getGreeting(getSharedpref().getUser(USERDATA)!!.data.name)
+            binding.txtGreeting.text = greet
         }
         binding.bannerLayout.viewPagerBanner.registerOnPageChangeCallback(pageCallback)
         lifecycleScope.launch { updateFirebaseToken() } // requestViewModel
@@ -121,7 +136,8 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         viewModel.getUserDetail(requireContext(), object : ApiListener<LoginRes> {
             override fun onSuccess(t: LoginRes?, mess: String) {
                 t!!.let{
-
+                    val greet = getGreeting(it.data.name)
+                    binding.txtGreeting.text = greet
                     getSharedpref().saveUser(USERDATA, it)
                     setupMenu()
                 }
@@ -157,6 +173,38 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
     }
 
     // ---------------- API CALLS ---------------- //
+    private fun fetchOfferAndCoupons() {
+        viewModel.getOffersListHomePage(requireContext(),object : ApiListener<Offerlistres>{
+            override fun onSuccess(t: Offerlistres?, mess: String) {
+                lifecycleScope.launch(Dispatchers.Main) {
+
+                    coupons.clear()
+                    offers.clear()
+
+                    t?.data?.forEach { item ->
+
+                        when (item.type?.trim()?.lowercase()) {
+
+                            "offer" -> offers.add(item)
+
+                            "coupon" -> coupons.add(item)
+                        }
+                    }
+                    couponAdapter.addAllItem(coupons)
+                    offerAdapter.addAllItem(if (offers.size>20) offers.subList(0,19) else offers)
+                }
+            }
+
+            override fun onError(mess: String) {
+                super.onError(mess)
+                lifecycleScope.launch(Dispatchers.Main) {
+                    requireContext().Snackbar("Home API error: $mess",_binding!!.root)
+                }
+            }
+        })
+    }
+
+    // ---------------- API CALLS ---------------- //
     private suspend fun fetchHomeData() {
         viewModel.getHomeData(object : ApiListener<HomeRes> {
             override fun onSuccess(t: HomeRes?, mess: String) {
@@ -168,6 +216,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
                         setTopCashbackProvider(data.topCashback)
                         setPopularStores(data.popular)
                         setTrendingStores(data.trending)
+                        setTopCategores()
                        }
                 }
             }
@@ -181,6 +230,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
     }
 
     private fun setTopCashbackProvider(topCashback: List<MiniApp>) {
+        binding.storeLayout.root.visibility = View.VISIBLE
         binding.storeLayout.title.text = "Top Cashback Providers"
         val mAdapter = TrendingStoresAdapter<MiniApp>(object : RecyclerClickListener {
             override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
@@ -204,6 +254,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
     }
 
     private fun setPopularStores(popular: List<MiniApp>) {
+        binding.popularStoreLayout.root.visibility = View.VISIBLE
         binding.popularStoreLayout.title.text = "Popular Stores"
         val mAdapter = PopularStoresAdapter<MiniApp>(object : RecyclerClickListener {
             override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
@@ -227,6 +278,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
     }
 
     private fun setTrendingStores(trending: List<MiniApp>) {
+        binding.trendingStoreLayout.root.visibility = View.VISIBLE
         binding.trendingStoreLayout.title.text = "Trending now"
         val mAdapter = TrendingNowStoresAdapter<MiniApp>(object : RecyclerClickListener {
             override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
@@ -249,9 +301,88 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         mAdapter.addAllItem(if (trending.size > 14) trending.subList(0, 14) else trending)
     }
 
+    private fun setBestCouponLayout() {
+        binding.bestCouponLayout.root.visibility = View.VISIBLE
+        binding.bestCouponLayout.title.text = "Today's Best Coupons"
+        binding.bestCouponLayout.viewall.visibility = View.GONE
+        couponAdapter = CouponCodeAdapter<OffersData>(object : RecyclerClickListener {
+            override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
+                if (data is OffersData) {
+                    ContainerActivity.OpenContainerType2(
+                        requireContext(),
+                        "",
+                        "",
+                        data
+                    )
+                }
+            }
+        })
+
+        binding.bestCouponLayout.stores.apply {
+//            layoutManager = GridLayoutManager(requireContext(),3)
+            layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
+            adapter = couponAdapter
+        }
+    }
+
+
+    private fun setBestOfferLayout() {
+        binding.limitOfferLayout.root.visibility = View.VISIBLE
+        binding.limitOfferLayout.title.text = "Limited Time Offer"
+        binding.limitOfferLayout.viewall.visibility = View.GONE
+        offerAdapter = OffersAdapter<OffersData>(object : RecyclerClickListener {
+            override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
+                if (data is OffersData) {
+                    requireContext().openCustomTab(data.url)
+                }
+            }
+        })
+
+        binding.limitOfferLayout.stores.apply {
+//            layoutManager = GridLayoutManager(requireContext(),3)
+            layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
+            adapter = offerAdapter
+        }
+    }
+
+
+    private fun setTopCategores() {
+        binding.topCategoriesLayout.root.visibility = View.VISIBLE
+        binding.topCategoriesLayout.title.text = "Top Categories"
+        binding.topCategoriesLayout.viewall.visibility = View.GONE
+        val mAdapter = CustomCategoryAdapter<CustomCategories>(object : RecyclerClickListener {
+            override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
+                if (data is CustomCategories) {
+                    if (data.click=="GamesFragment"){
+                        ContainerActivity.OpenContainerType2(requireContext(), data.click, "", null)
+                    }else if (data.click=="OffersFragment"){
+                        ContainerActivity.OpenContainerType2(requireContext(), data.click, "", null)
+                    }else{
+                        ContainerActivity.OpenContainerType2(requireContext(), "SelectedCategoryFragment", data.click, null)
+                    }
+
+                }
+            }
+        })
+
+        binding.topCategoriesLayout.stores.apply {
+//            layoutManager = GridLayoutManager(requireContext(),3)
+            layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
+            adapter = mAdapter
+        }
+        val topCategories = arrayListOf(
+            CustomCategories(1, "Coupon Codes", R.drawable.coupon, "Couponcode"),
+            CustomCategories(2, "Offers", R.drawable.offers_img, "OffersFragment"),
+            CustomCategories(3, "Vouchers", R.drawable.voucher_img, "Vouchers"),
+            CustomCategories(4, "Play Games", R.drawable.games_img, "GamesFragment")
+        )
+
+        mAdapter.addAllItem(topCategories)
+    }
+
 
     private fun setBanner1(banners: List<Banner>?) {
-
+        binding.bannerLayout.viewPagerBanner.visibility = View.VISIBLE
         if (banners.isNullOrEmpty()) return
 
         if (!::bannerAdapter.isInitialized) {
@@ -326,6 +457,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
 
     // ---------------- RECYCLERS ---------------- //
     private fun setMainCategoryLayout(categories: List<Category>) {
+        binding.layoutCateory.root.visibility = View.VISIBLE
         val adapter = CategoryAdapter<Category>(object : RecyclerClickListener {
             override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
                 if (data is Category) ContainerActivity.OpenContainerType2(requireContext(), "SelectedCategoryFragment", "CategoryMiniApp", data)
@@ -342,7 +474,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
     private fun setupMenu() {
         val userName = getSharedpref().getUser(USERDATA)?.data
         binding.imgMenu.setOnClickListener {
-            ContainerActivity.OpenContainer(requireContext(), "ProfileFragment", "")
+            ContainerActivity.OpenContainer(requireContext(), PROFILE_SCREEN_FRAGMENT, "")
 //            binding.drawerlayout.open()
         }
 

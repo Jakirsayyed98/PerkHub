@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="220dp"
+    android:layout_height="@dimen/dp200"
+    android:layout_margin="@dimen/dp4"
+    app:cardCornerRadius="@dimen/dp20"
+    android:background="@color/grey">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="14dp">
+
+            <!-- Logo -->
+
+            <ImageView
+                android:id="@+id/imgLogo"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp55"
+                android:scaleType="fitStart"
+                android:src="@drawable/offers_img" />
+
+            <!-- Offer -->
+
+            <TextView
+                android:id="@+id/txtOffer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp12"
+                android:text="FLAT ₹500 OFF"
+                android:textColor="@color/black"
+                android:fontFamily="@font/poppins_semibold"
+                android:maxLines="1"
+                android:textSize="@dimen/sp15"
+                android:textStyle="bold" />
+
+            <!-- Coupon -->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp42"
+                android:layout_marginTop="@dimen/dp12"
+                android:background="@drawable/bg_coupon_code"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="@dimen/dp10">
+
+                <TextView
+                    android:id="@+id/txtCode"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Code: MYN500"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:textSize="@dimen/sp13"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/imgCopy"
+                    android:layout_width="@dimen/dp20"
+                    android:layout_height="@dimen/dp20"
+                    android:src="@drawable/ic_copy"
+                    app:tint="@color/black"/>
+
+            </LinearLayout>
+
+            <!-- Valid Till -->
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/ic_clock"
+                    app:tint="@color/grey"/>
+
+                <TextView
+                    android:id="@+id/validTill"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:text="Valid till: 31 Dec 2026"
+                    android:fontFamily="@font/poppins_medium"
+                    android:textColor="@color/grey"
+                    android:textSize="@dimen/sp12" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+</androidx.cardview.widget.CardView>

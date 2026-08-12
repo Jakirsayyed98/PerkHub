@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     android:background="@color/main_bg"
+    android:fitsSystemWindows="true"
     tools:context=".Screens.Home.HomeScreenFragment">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -33,9 +32,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingHorizontal="@dimen/dp15"
-                    android:paddingTop="@dimen/dp20"
-                    android:paddingBottom="90dp">
+                    android:paddingHorizontal="@dimen/dp16"
+                    android:paddingTop="@dimen/dp16"
+                    android:paddingBottom="@dimen/dp90">
 
                     <!-- Toolbar -->
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -48,11 +47,11 @@
                             android:id="@+id/imgMenu"
                             android:layout_width="@dimen/dp30"
                             android:layout_height="@dimen/dp30"
-                            android:src="@drawable/menu"
                             android:contentDescription="Menu"
-                            app:layout_constraintStart_toStartOf="parent"
+                            android:src="@drawable/menu"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"/>
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <!-- Notification -->
                         <FrameLayout
@@ -67,81 +66,97 @@
                                 android:layout_width="@dimen/dp35"
                                 android:layout_height="@dimen/dp35"
                                 android:layout_gravity="center"
-                                android:src="@drawable/notifications"/>
+                                android:src="@drawable/notifications" />
 
                             <View
                                 android:layout_width="@dimen/dp10"
                                 android:layout_height="@dimen/dp10"
                                 android:layout_gravity="top|end"
-                                android:background="@drawable/bg_notification_dot"/>
+                                android:background="@drawable/bg_notification_dot" />
 
                         </FrameLayout>
 
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            app:layout_constraintTop_toTopOf="parent"
                             android:layout_marginStart="@dimen/dp15"
+                            android:orientation="vertical"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toEndOf="@id/imgMenu"
-                            app:layout_constraintBottom_toBottomOf="parent">
+                            app:layout_constraintTop_toTopOf="parent">
 
                             <TextView
                                 android:id="@+id/txtGreeting"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_medium"
                                 android:text="Good Morning, Jack 👋"
                                 android:textColor="@color/black"
-                                android:textSize="@dimen/sp14"
-                                android:fontFamily="@font/poppins_medium" />
+                                android:textSize="@dimen/sp14" />
 
                             <TextView
                                 android:id="@+id/txtSubTitle"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:fontFamily="@font/poppins_semibold"
                                 android:text="@string/unlock_more_save_more"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/sp18"
-                                android:fontFamily="@font/poppins_semibold"
-                                app:layout_constraintTop_toBottomOf="@id/txtGreeting"
+                                app:layout_constraintEnd_toStartOf="@id/layoutNotification"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintEnd_toStartOf="@id/layoutNotification"/>
+                                app:layout_constraintTop_toBottomOf="@id/txtGreeting" />
                         </LinearLayout>
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <!-- Search -->
                     <include
                         android:id="@+id/layout_search"
-                        layout="@layout/layout_search"/>
+                        layout="@layout/layout_search" />
 
 
                     <!-- Categories -->
                     <include
                         android:id="@+id/layout_cateory"
-                        layout="@layout/layout_category"/>
+                        layout="@layout/layout_category" />
 
                     <!-- Banner1 -->
                     <include
                         android:id="@+id/banner_layout"
-                        layout="@layout/layout_banner"/>
+                        layout="@layout/layout_banner" />
 
 
-                    <!-- Stores -->
+                    <!-- Top Cashback Providers -->
                     <include
                         android:id="@+id/store_layout"
-                        layout="@layout/layout_stores"/>
+                        layout="@layout/layout_stores" />
+
+
+                    <!-- Top Categories -->
+                    <include
+                        android:id="@+id/top_categories_layout"
+                        layout="@layout/layout_stores" />
 
 
                     <!-- Popular Stores-->
                     <include
                         android:id="@+id/popular_store_layout"
-                        layout="@layout/layout_stores"/>
+                        layout="@layout/layout_stores" />
 
 
                     <!-- Trending Now Stores-->
                     <include
                         android:id="@+id/trending_store_layout"
-                        layout="@layout/layout_stores"/>
+                        layout="@layout/layout_stores" />
+
+                    <!-- Todays Best Coupons-->
+                    <include
+                        android:id="@+id/best_coupon_layout"
+                        layout="@layout/layout_stores" />
+
+                    <!-- Limited Time Offers-->
+                    <include
+                        android:id="@+id/limit_offer_layout"
+                        layout="@layout/layout_stores" />
 
                 </LinearLayout>
 
@@ -155,13 +170,13 @@
             android:id="@+id/loadingView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone"
-            android:background="#66000000">
+            android:background="#66000000"
+            android:visibility="gone">
 
             <ProgressBar
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center" />
 
         </FrameLayout>
 
@@ -173,6 +188,6 @@
         android:id="@+id/navigationView"
         android:layout_width="300dp"
         android:layout_height="match_parent"
-        android:layout_gravity="start"/>
+        android:layout_gravity="start" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

@@ -55,7 +55,7 @@
             android:layout_height="wrap_content"
             android:text="Lenskart"
             android:textColor="@color/black"
-            android:textSize="14sp"
+            android:textSize="@dimen/sp16"
             android:maxLines="1"
             android:layout_marginTop="@dimen/dp5"/>
 

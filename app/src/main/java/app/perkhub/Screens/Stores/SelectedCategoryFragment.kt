@@ -146,6 +146,18 @@ class SelectedCategoryFragment : BaseFragment<FragmentSelectedCategoryBinding>()
                 binding.toolbar.name.text = "Search"
                 binding.searchLayout.visibility = View.VISIBLE
             }
+            "Couponcode" -> {
+                binding.toolbar.name.text = "Coupon Codes"
+                binding.searchLayout.visibility = View.GONE
+            }
+            "Offers" -> {
+                binding.toolbar.name.text = "Offers"
+                binding.searchLayout.visibility = View.GONE
+            }
+            "Vouchers" -> {
+                binding.toolbar.name.text = "Vouchers"
+                binding.searchLayout.visibility = View.GONE
+            }
         }
     }
 

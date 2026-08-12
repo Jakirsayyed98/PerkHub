@@ -25,8 +25,8 @@
                 android:id="@+id/imgStoreLogo"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dp45"
-                android:scaleType="fitCenter"
                 android:src="@drawable/logo_background"
+                android:scaleType="fitStart"
                 android:contentDescription="@null"/>
 
         </LinearLayout>
@@ -54,7 +54,7 @@
             android:text="8% Cashback"
             android:textColor="#14A38B"
             android:textSize="@dimen/sp15"
-            app:fontFamily="@font/poppins_bold"/>
+            app:fontFamily="@font/poppins_semibold"/>
 
     </LinearLayout>
 
