@@ -101,17 +101,45 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         // Fetch data
         lifecycleScope.launch { fetchHomeData() }       // HomeViewModel
         lifecycleScope.launch { fetchOfferAndCoupons() }       // Coupns and Offers
-        if (getSharedpref().getUser(USERDATA)==null){
+        if (getSharedpref().getUser(USERDATA) == null) {
             getUserDetail()
-        }else{
+        } else {
             val greet = getGreeting(getSharedpref().getUser(USERDATA)!!.data.name)
             binding.txtGreeting.text = greet
         }
         binding.bannerLayout.viewPagerBanner.registerOnPageChangeCallback(pageCallback)
         lifecycleScope.launch { updateFirebaseToken() } // requestViewModel
         (binding.root.parent as? ViewGroup)?.removeView(binding.root)
-
+        setupSwipeRefresh()
         return binding.root
+    }
+
+    private fun setupSwipeRefresh() {
+        showLoading(true)
+
+        binding.swipeRefresh.setOnRefreshListener {
+            lifecycleScope.launch { fetchHomeData() }       // HomeViewModel
+            lifecycleScope.launch { fetchOfferAndCoupons() }       // Coupns and Offers
+        }
+
+        // Optional: customize refresh indicator colors
+        binding.swipeRefresh.setColorSchemeResources(
+            R.color.colorPrimary,
+            R.color.main2
+        )
+
+        // Optional
+        binding.swipeRefresh.setProgressViewOffset(
+            false,
+            0,
+            resources.getDimensionPixelSize(R.dimen.dp60)
+        )
+    }
+
+
+    private fun showLoading(show: Boolean) {
+        binding.loadingView.visibility =
+            if (show) View.VISIBLE else View.GONE
     }
 
     private fun observePopularGames() {
@@ -135,7 +163,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
     private fun getUserDetail() {
         viewModel.getUserDetail(requireContext(), object : ApiListener<LoginRes> {
             override fun onSuccess(t: LoginRes?, mess: String) {
-                t!!.let{
+                t!!.let {
                     val greet = getGreeting(it.data.name)
                     binding.txtGreeting.text = greet
                     getSharedpref().saveUser(USERDATA, it)
@@ -165,7 +193,12 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
     // ---------------- CLICK EVENTS ---------------- //
     private fun setupClickEvents() = with(binding) {
         layoutSearch.root.setOnClickListener {
-            ContainerActivity.OpenContainerType2(requireContext(), "SelectedCategoryFragment", "Search", null)
+            ContainerActivity.OpenContainerType2(
+                requireContext(),
+                "SelectedCategoryFragment",
+                "Search",
+                null
+            )
         }
         layoutNotification.setOnClickListener {
             ContainerActivity.OpenContainer(requireContext(), "NotificationListFragment", null)
@@ -174,7 +207,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
 
     // ---------------- API CALLS ---------------- //
     private fun fetchOfferAndCoupons() {
-        viewModel.getOffersListHomePage(requireContext(),object : ApiListener<Offerlistres>{
+        viewModel.getOffersListHomePage(requireContext(), object : ApiListener<Offerlistres> {
             override fun onSuccess(t: Offerlistres?, mess: String) {
                 lifecycleScope.launch(Dispatchers.Main) {
 
@@ -190,15 +223,17 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
                             "coupon" -> coupons.add(item)
                         }
                     }
-                    couponAdapter.addAllItem(coupons)
-                    offerAdapter.addAllItem(if (offers.size>20) offers.subList(0,19) else offers)
+                    coupons.random()
+                    offers.random()
+                    couponAdapter.addAllItem(if (coupons.size > 20) coupons.subList(0, 19) else coupons)
+                    offerAdapter.addAllItem(if (offers.size > 20) offers.subList(0, 19) else offers)
                 }
             }
 
             override fun onError(mess: String) {
                 super.onError(mess)
                 lifecycleScope.launch(Dispatchers.Main) {
-                    requireContext().Snackbar("Home API error: $mess",_binding!!.root)
+                    requireContext().Snackbar("Home API error: $mess", _binding!!.root)
                 }
             }
         })
@@ -217,13 +252,16 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
                         setPopularStores(data.popular)
                         setTrendingStores(data.trending)
                         setTopCategores()
-                       }
+                        binding.swipeRefresh.isRefreshing = false
+                        showLoading(false)
+
+                    }
                 }
             }
 
             override fun onError(mess: String) {
                 lifecycleScope.launch(Dispatchers.Main) {
-                    requireContext().Snackbar("Home API error: $mess",_binding!!.root)
+                    requireContext().Snackbar("Home API error: $mess", _binding!!.root)
                 }
             }
         })
@@ -246,7 +284,8 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         })
 
         binding.storeLayout.stores.apply {
-            layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             adapter = mAdapter
         }
 
@@ -270,7 +309,8 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         })
 
         binding.popularStoreLayout.stores.apply {
-            layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             adapter = mAdapter
         }
 
@@ -294,7 +334,8 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         })
 
         binding.trendingStoreLayout.stores.apply {
-            layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             adapter = mAdapter
         }
 
@@ -320,7 +361,8 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
 
         binding.bestCouponLayout.stores.apply {
 //            layoutManager = GridLayoutManager(requireContext(),3)
-            layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             adapter = couponAdapter
         }
     }
@@ -340,7 +382,8 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
 
         binding.limitOfferLayout.stores.apply {
 //            layoutManager = GridLayoutManager(requireContext(),3)
-            layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             adapter = offerAdapter
         }
     }
@@ -353,12 +396,17 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         val mAdapter = CustomCategoryAdapter<CustomCategories>(object : RecyclerClickListener {
             override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
                 if (data is CustomCategories) {
-                    if (data.click=="GamesFragment"){
+                    if (data.click == "GamesFragment") {
                         ContainerActivity.OpenContainerType2(requireContext(), data.click, "", null)
-                    }else if (data.click=="OffersFragment"){
+                    } else if (data.click == "OffersFragment") {
                         ContainerActivity.OpenContainerType2(requireContext(), data.click, "", null)
-                    }else{
-                        ContainerActivity.OpenContainerType2(requireContext(), "SelectedCategoryFragment", data.click, null)
+                    } else {
+                        ContainerActivity.OpenContainerType2(
+                            requireContext(),
+                            "SelectedCategoryFragment",
+                            data.click,
+                            null
+                        )
                     }
 
                 }
@@ -367,7 +415,8 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
 
         binding.topCategoriesLayout.stores.apply {
 //            layoutManager = GridLayoutManager(requireContext(),3)
-            layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             adapter = mAdapter
         }
         val topCategories = arrayListOf(
@@ -429,7 +478,10 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
 
                     override fun onError(mess: String) {
                         lifecycleScope.launch(Dispatchers.Main) {
-                            requireContext().Snackbar("Failed to fetch notifications: $mess",_binding!!.root)
+                            requireContext().Snackbar(
+                                "Failed to fetch notifications: $mess",
+                                _binding!!.root
+                            )
                         }
                     }
                 })
@@ -460,7 +512,12 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         binding.layoutCateory.root.visibility = View.VISIBLE
         val adapter = CategoryAdapter<Category>(object : RecyclerClickListener {
             override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
-                if (data is Category) ContainerActivity.OpenContainerType2(requireContext(), "SelectedCategoryFragment", "CategoryMiniApp", data)
+                if (data is Category) ContainerActivity.OpenContainerType2(
+                    requireContext(),
+                    "SelectedCategoryFragment",
+                    "CategoryMiniApp",
+                    data
+                )
             }
         })
         binding.layoutCateory.category.apply {
@@ -478,11 +535,11 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
 //            binding.drawerlayout.open()
         }
 
-        if (userName?.blocked == true){
+        if (userName?.blocked == true) {
             requireActivity().runOnUiThread {
                 requireContext().showBlockedUserDialog()
             }
-        }else{
+        } else {
             hideBlockedDialog()
         }
     }
@@ -492,7 +549,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         if (backPressedTime + doubleBackPressDuration > System.currentTimeMillis()) {
             activity?.finish()
         } else {
-            requireContext().Snackbar("Press back again to exit",_binding!!.drawerLayout)
+            requireContext().Snackbar("Press back again to exit", _binding!!.drawerLayout)
         }
         backPressedTime = System.currentTimeMillis()
     }

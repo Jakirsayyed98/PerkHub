@@ -19,6 +19,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:orientation="vertical">
             <!-- Name -->
             <TextView
@@ -45,6 +46,12 @@
                 android:textSize="@dimen/sp10"
                 app:fontFamily="@font/poppins_medium"/>
         </LinearLayout>
+
+        <ImageView
+            android:layout_width="@dimen/dp20"
+            android:layout_height="@dimen/dp20"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/arrow_right"/>
     </LinearLayout>
 
     <View

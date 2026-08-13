@@ -4,67 +4,156 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="6dp"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="4dp"
-    android:background="@color/white">
+    android:layout_marginStart="@dimen/dp13"
+    android:layout_marginEnd="@dimen/dp13"
+    android:layout_marginTop="@dimen/dp2"
+    android:layout_marginBottom="16dp"
+    app:cardBackgroundColor="@android:color/white"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="2dp"
+    app:cardUseCompatPadding="false">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="16dp">
-    <androidx.cardview.widget.CardView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:cardCornerRadius="@dimen/dp55"
-        app:cardElevation="@dimen/dp2">
-        <ImageView
-            android:id="@+id/icon"
-            android:layout_width="55dp"
-            android:layout_height="55dp"
-            android:layout_gravity="center_vertical"
-            android:src="@drawable/coinin" />
-    </androidx.cardview.widget.CardView>
+        android:paddingStart="@dimen/dp14"
+        android:paddingTop="@dimen/dp16"
+        android:paddingEnd="@dimen/dp14"
+        android:paddingBottom="@dimen/dp6">
+
+        <!-- Notification Icon -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_gravity="top"
+            app:cardBackgroundColor="@android:color/white"
+            app:cardCornerRadius="32dp"
+            app:cardElevation="0dp">
+
+            <ImageView
+                android:id="@+id/icon"
+                android:layout_width="@dimen/dp55"
+                android:layout_height="@dimen/dp55"
+                android:contentDescription="@null"
+                android:scaleType="centerCrop"
+                android:layout_gravity="center"
+                android:src="@drawable/perkhub_icon" />
+
+        </androidx.cardview.widget.CardView>
+
+
+        <!-- Content -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:orientation="vertical"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:layout_marginStart="14dp"
+            android:orientation="vertical">
 
+            <!-- Title -->
             <TextView
                 android:id="@+id/title"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Coin Credited"
-                android:textStyle="bold"
-                android:maxLines="1"
+                app:fontFamily="@font/poppins_semibold"
+                android:maxLines="2"
                 android:ellipsize="end"
-                android:textSize="16sp"
-                android:textColor="@color/black" />
+                android:text="Discover amazing shopping benefits on Superkicks!"
+                android:textColor="#111111"
+                android:textSize="@dimen/sp14" />
 
+
+            <!-- Message -->
             <TextView
                 android:id="@+id/message"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="₹500 has been credited to your account"
-                android:textSize="14sp"
-                android:maxLines="3"
+                android:layout_marginTop="7dp"
+                app:fontFamily="@font/poppins_regular"
                 android:ellipsize="end"
-                android:textColor="@color/grey"
-                android:layout_marginTop="4dp"/>
+                android:lineSpacingExtra="2dp"
+                android:maxLines="3"
+                android:text="Get Free Shipping on All Orders Above Rs.7999!"
+                android:textColor="#596074"
+                android:textSize="@dimen/sp13" />
 
-            <TextView
-                android:id="@+id/date"
+
+            <!-- Date / Time -->
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Just now"
-                android:textSize="12sp"
-                android:textColor="@color/grey"
-                android:layout_marginTop="4dp"/>
+                android:layout_marginTop="@dimen/dp8"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/dp17"
+                    android:layout_height="@dimen/dp17"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_notification_time"
+                    app:tint="#687080" />
+
+                <TextView
+                    android:id="@+id/date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="14 Aug, 2026"
+                    app:fontFamily="@font/poppins_regular"
+                    android:textColor="#596074"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:text="•"
+                    app:fontFamily="@font/poppins_regular"
+                    android:textColor="#596074"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:text="10:30 AM"
+                    app:fontFamily="@font/poppins_regular"
+                    android:textColor="#596074"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
 
         </LinearLayout>
+
+
+        <!-- Right side -->
+        <LinearLayout
+            android:layout_width="24dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="8dp"
+            android:gravity="top|center_horizontal"
+            android:orientation="vertical">
+
+            <!-- Unread Dot -->
+            <View
+                android:id="@+id/unreadDot"
+                android:layout_width="@dimen/dp13"
+                android:layout_height="@dimen/dp13"
+                android:background="@drawable/bg_notification_unread_dot" />
+
+            <!-- Arrow -->
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginTop="38dp"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_chevron_right"
+                app:tint="#303642" />
+
+        </LinearLayout>
+
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

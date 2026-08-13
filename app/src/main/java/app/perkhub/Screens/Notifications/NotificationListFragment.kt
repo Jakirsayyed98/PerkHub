@@ -24,9 +24,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class NotificationListFragment : BaseFragment<FragmentNotificationListBinding>() {
-
+    private lateinit var notificationRepository: NotificationRepository
     private val notificationAdapter by lazy {
-        NotificationAdapter<Data>(object : RecyclerClickListener {
+        NotificationAdapter(object : RecyclerClickListener {
             override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
                 if (data.toString().startsWith("http")) {
                     requireContext().openCustomTab(data.toString())
@@ -44,6 +44,7 @@ class NotificationListFragment : BaseFragment<FragmentNotificationListBinding>()
         binding.toolbar.backbtn.setOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
+        notificationRepository = NotificationRepository(requireContext())
 
         setupRecyclerView()
 
@@ -58,6 +59,16 @@ class NotificationListFragment : BaseFragment<FragmentNotificationListBinding>()
         binding.notificationlist.apply {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             adapter = notificationAdapter
+            setHasFixedSize(false)
+
+            clipToPadding = false
+            // Gives bottom breathing space
+            setPadding(
+                0,
+                8,
+                0,
+                24
+            )
         }
     }
 
@@ -86,12 +97,10 @@ class NotificationListFragment : BaseFragment<FragmentNotificationListBinding>()
     }
 
     private fun observeNotifications() {
-        val repository = NotificationRepository(requireContext())
-
         // CRITICAL FIX: Use viewLifecycleOwner instead of lifecycleScope
         // This prevents memory leaks when Fragment is destroyed
         viewLifecycleOwner.lifecycleScope.launch {
-            repository.getNotificationsFlow().collect { notifications ->
+            notificationRepository.getNotificationsFlow().collect { notifications ->
                 // This will be called automatically when:
                 // 1. Fragment opens (shows cached data)
                 // 2. Server data is fetched (shows fresh data)
@@ -112,8 +121,8 @@ class NotificationListFragment : BaseFragment<FragmentNotificationListBinding>()
         } else {
             binding.notificationlist.visibility = View.VISIBLE
              binding.noDataFound.visibility = View.GONE
-            notificationAdapter.clear()
-            notificationAdapter.addAllItem(data)
+//            notificationAdapter.clear()
+            notificationAdapter.setNotifications(data)
         }
     }
 

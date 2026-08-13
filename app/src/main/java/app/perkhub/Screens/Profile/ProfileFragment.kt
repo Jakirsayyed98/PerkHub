@@ -25,7 +25,7 @@ import app.perkhub.Screens.Profile.model.menuList
 import app.perkhub.SplashActivity
 import app.perkhub.Utils.ABOUTUS
 import app.perkhub.Utils.BaseFragment
-import app.perkhub.Utils.CONTACTUS
+import app.perkhub.Utils.EDIT_PERSONAL_INFO_FRAGMENT
 import app.perkhub.Utils.PRIVACYPOLICY
 import app.perkhub.Utils.RecyclerClickListener
 import app.perkhub.Utils.Snackbar
@@ -56,23 +56,32 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
         setMenuList()
-        val userName = getSharedpref().getUser(USERDATA)?.data
-        _binding!!.Profilename.text= userName?.name!!.replaceFirstChar { it.uppercase() }.orEmpty()
-        _binding!!.email.text = userName.email
-        _binding!!.ProfilenameShort.text = userName.email.toCharArray()[0].toString().uppercase()
+        setLayoutData()
         val appVersion = getAppVersion(requireContext())
         _binding!!.appversion.text = "App Version v${appVersion}"
         _binding!!.companyName.text = getCopyrightText()
 
+        binding!!.editProfile.setOnClickListener {
+            ContainerActivity.OpenContainer(requireContext(), EDIT_PERSONAL_INFO_FRAGMENT, "")
+        }
+
         return _binding?.root
+    }
+
+    fun setLayoutData(){
+        val userName = getSharedpref().getUser(USERDATA)?.data
+        _binding!!.Profilename.text= userName?.name!!.replaceFirstChar { it.uppercase() }.orEmpty()
+        _binding!!.email.text = userName.email
+        _binding!!.number.text = "+91 "+userName.number
+        _binding!!.ProfilenameShort.text = userName.email.toCharArray()[0].toString().uppercase()
     }
 
     private fun setMenuList() {
         val menulist = ArrayList<menuList>()
         menulist.add(0, menuList(0,R.drawable.store_orders,"My Orders","Track your orders and cashback"))
-        menulist.add(0, menuList(3,R.drawable.wallet_ico,"Wallet & Transactions","Check your cashback balance and history"))
+        menulist.add(0, menuList(3,R.drawable.wallet_icon,"Wallet & Transactions","Check your cashback balance and history"))
         menulist.add(0, menuList(2,R.drawable.games,"Games & Fun","Take a break. Play something fun."))
-        menulist.add(0, menuList(2,R.drawable.games,"PerkHub Partner","Partner with us and grow together"))
+        menulist.add(0, menuList(2,R.drawable.partner_icon,"PerkHub Partner","Partner with us and grow together"))
         menulist.add(0, menuList(4,R.drawable.support,"Help & Support","Get help and contact support"))
         menulist.add(0, menuList(7,R.drawable.policy, "Privacy & Security","Privacy policy and data settings"))
         menulist.add(0, menuList(8,R.drawable.about_us, "About PerkHub","Learn more about us"))
@@ -127,6 +136,11 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
             Snackbar("Logged out successfully",_binding!!.mainlayout)
         }
         dialog.show()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setLayoutData()
     }
 
     companion object {

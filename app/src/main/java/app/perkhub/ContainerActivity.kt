@@ -41,7 +41,9 @@ import app.perkhub.Screens.withdrawal.WithdrawalConfirmationFragment
 import app.perkhub.Utils.CONTAINER_TYPE_KEY1
 import com.google.gson.Gson
 import android.Manifest
+import app.perkhub.Screens.Profile.EditPersonalInfoFragment
 import app.perkhub.Screens.login.OTP_verification_Fragment
+import app.perkhub.Utils.EDIT_PERSONAL_INFO_FRAGMENT
 import app.perkhub.Utils.ENTER_DETAIL_FRAGMENT
 import app.perkhub.Utils.ENTER_MOBILE_NUMBER
 import app.perkhub.Utils.HOME_SCREEN_FRAGMENT
@@ -193,6 +195,9 @@ class ContainerActivity : BaseActivity<ActivityContainerBinding>() {
 
             PROFILE_SCREEN_FRAGMENT->{
                 addFragment(ProfileFragment.newInstance())
+            }
+            EDIT_PERSONAL_INFO_FRAGMENT->{
+                addFragment(EditPersonalInfoFragment.newInstance())
             }
 
             "TicketListFragment"->{
