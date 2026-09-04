@@ -21,17 +21,16 @@
 
     <TextView
         android:id="@+id/name"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="The Label Life"
-        android:textAlignment="center"
         android:textColor="@color/black"
-        android:textSize="@dimen/sp18"
+        android:textSize="@dimen/sp20"
         android:textStyle="bold"
-        android:fontFamily="@font/poppins_medium"
+        android:layout_marginStart="@dimen/dp20"
+        android:fontFamily="@font/poppins_semibold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/backbtn"
         app:layout_constraintTop_toTopOf="parent" />
 
 

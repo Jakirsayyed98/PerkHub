@@ -17,7 +17,7 @@ import app.perkhub.Utils.Snackbar
 import app.perkhub.Utils.setSuffixAmount
 import app.perkhub.api.ApiListener
 import app.perkhub.databinding.FragmentWalletBinding
-import app.perkhub.room.StoresTransactionsRepository
+import app.perkhub.room.StoreTransaction.StoresTransactionsRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

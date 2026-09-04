@@ -1,18 +1,12 @@
 package app.perkhub.Screens.Profile
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updatePadding
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.perkhub.ContainerActivity
-import app.perkhub.R
-import app.perkhub.Screens.Home.Model.Notification.NotificationListRes
 import app.perkhub.Screens.Profile.adapter.TicketsAdapter
 import app.perkhub.Screens.Profile.model.Data
 import app.perkhub.Screens.Profile.model.TicketsRes
@@ -21,7 +15,6 @@ import app.perkhub.Utils.RecyclerClickListener
 import app.perkhub.Utils.Snackbar
 import app.perkhub.api.ApiListener
 import app.perkhub.databinding.FragmentTicketListBinding
-import app.perkhub.room.NotificationRepository
 import app.perkhub.room.Tickets.TicketsRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

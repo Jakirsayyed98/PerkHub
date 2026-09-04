@@ -1,4 +1,4 @@
-package app.perkhub.room
+package app.perkhub.room.Home
 
 import androidx.room.TypeConverter
 import com.google.gson.Gson

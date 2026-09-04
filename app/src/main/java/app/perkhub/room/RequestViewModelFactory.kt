@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import app.perkhub.api.MyApi
 import app.perkhub.api.RequestViewModel
+import app.perkhub.room.Home.HomeRepository
 
 class RequestViewModelFactory(
     private val repository: HomeRepository,

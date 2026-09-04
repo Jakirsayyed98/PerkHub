@@ -31,7 +31,7 @@ class TrendingStoresAdapter<S>(val cliklistner : RecyclerClickListener): BaseRec
 //                    cashbackText.text = ""+s.cbPercentage+"\ncashback"
                     txtCashback.text = s.cbPercentage+" cashback"
                     binding.root.setOnClickListener {
-                        cliklistner.RecyclerClickListener(0,s.url,s)
+                        cliklistner.RecyclerClickListener(0,s.url!!,s)
                     }
                 }
             }

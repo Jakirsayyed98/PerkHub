@@ -33,4 +33,5 @@ object NativeEndpoints {
     external fun ticketsSendMsg(): String
     external fun offersSearchByStore(): String
     external fun offersHomepage(): String
+    external fun getAllStores(): String
 }

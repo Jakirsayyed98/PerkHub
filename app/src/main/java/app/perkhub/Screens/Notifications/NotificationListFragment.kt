@@ -5,9 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updatePadding
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.perkhub.Screens.Home.Adapter.NotificationAdapter
@@ -19,7 +16,7 @@ import app.perkhub.Utils.Snackbar
 import app.perkhub.Utils.openCustomTab
 import app.perkhub.api.ApiListener
 import app.perkhub.databinding.FragmentNotificationListBinding
-import app.perkhub.room.NotificationRepository
+import app.perkhub.room.notification.NotificationRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

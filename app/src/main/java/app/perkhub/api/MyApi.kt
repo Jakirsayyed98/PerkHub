@@ -24,6 +24,7 @@ import app.perkhub.Screens.Profile.model.RequestTicketMessage
 import app.perkhub.Screens.Profile.model.TicketMessageRes
 import app.perkhub.Screens.Profile.model.TicketMessageResponse
 import app.perkhub.Screens.Profile.model.TicketsRes
+import app.perkhub.Screens.Stores.model.StoresRes
 import app.perkhub.Screens.login.models.GetToken
 import app.perkhub.Screens.login.models.LoginRes
 import app.perkhub.Screens.login.models.SaveUserDetail
@@ -49,174 +50,179 @@ import java.util.concurrent.TimeUnit
 
 interface MyApi {
 
-        // ----------------- LOGIN APIs -----------------
-        @POST
-        suspend fun sendOtp(
-            @Url url: String,
-            @Body body: SendOtpReq
-        ): Response<BaseRes>
+    // ----------------- LOGIN APIs -----------------
+    @POST
+    suspend fun sendOtp(
+        @Url url: String,
+        @Body body: SendOtpReq
+    ): Response<BaseRes>
 
-        @POST
-        suspend fun verifyOtp(
-            @Url url: String,
-            @Body body: VerifyOtpReq
-        ): Response<VerifyOTP>
+    @POST
+    suspend fun verifyOtp(
+        @Url url: String,
+        @Body body: VerifyOtpReq
+    ): Response<VerifyOTP>
 
-        @POST
-        suspend fun getAuthorization(
-            @Url url: String,
-            @Body body: GetToken
-        ): Response<BaseRes>
+    @POST
+    suspend fun getAuthorization(
+        @Url url: String,
+        @Body body: GetToken
+    ): Response<BaseRes>
 
-        @GET
-        suspend fun getUserDetail(
-            @Url url: String = NativeEndpoints.getUserDetail()
-        ): Response<LoginRes>
+    @GET
+    suspend fun getUserDetail(
+        @Url url: String = NativeEndpoints.getUserDetail()
+    ): Response<LoginRes>
 
-        @POST
-        suspend fun saveDetail(
-            @Url url: String,
-            @Body body: SaveUserDetail
-        ): Response<BaseRes>
+    @POST
+    suspend fun saveDetail(
+        @Url url: String,
+        @Body body: SaveUserDetail
+    ): Response<BaseRes>
 
-        // ----------------- HOME -----------------
-        @GET
-        suspend fun getHomePage(
-            @Url url: String = NativeEndpoints.getHomePage()
-        ): Response<HomeRes>
+    // ----------------- HOME -----------------
+    @GET
+    suspend fun getHomePage(
+        @Url url: String = NativeEndpoints.getHomePage()
+    ): Response<HomeRes>
 
-        // ----------------- MINI APPS -----------------
-        @POST
-        suspend fun getMiniAppByCategory(
-            @Url url: String,
-            @Body body: MiniAppByCategoryReq
-        ): Response<MiniAppbyCategory>
+    // ----------------- MINI APPS -----------------
+    @POST
+    suspend fun getMiniAppByCategory(
+        @Url url: String,
+        @Body body: MiniAppByCategoryReq
+    ): Response<MiniAppbyCategory>
 
-        @POST
-        suspend fun generateUrl(
-            @Url url: String,
-            @Body body: GenerateSubId
-        ): Response<GenerateSubIdRes>
+    @POST
+    suspend fun generateUrl(
+        @Url url: String,
+        @Body body: GenerateSubId
+    ): Response<GenerateSubIdRes>
 
-        @POST
-        suspend fun searchMiniApps(
-            @Url url: String,
-            @Body body: MiniAppSearchReq
-        ): Response<MiniAppbyCategory>
+    @POST
+    suspend fun searchMiniApps(
+        @Url url: String,
+        @Body body: MiniAppSearchReq
+    ): Response<MiniAppbyCategory>
 
-        @POST
-        suspend fun updateNotification(
-            @Url url: String,
-            @Body body: TokenReq
-        ): Response<BaseRes>
+    @POST
+    suspend fun updateNotification(
+        @Url url: String,
+        @Body body: TokenReq
+    ): Response<BaseRes>
 
-        // ----------------- LOOT PRODUCTS -----------------
-        @POST
-        suspend fun getLootProduct(
-            @Url url: String,
-            @Query("page") page: String
-        ): Response<LootProductRes>
+    // ----------------- LOOT PRODUCTS -----------------
+    @POST
+    suspend fun getLootProduct(
+        @Url url: String,
+        @Query("page") page: String
+    ): Response<LootProductRes>
 
-        // ----------------- GAMES -----------------
-        @GET
-        suspend fun getAllGames(
-            @Url url: String = NativeEndpoints.getAllGames()
-        ): Response<app.perkhub.Screens.Games.model.GamesRes>
+    // ----------------- GAMES -----------------
+    @GET
+    suspend fun getAllGames(
+        @Url url: String = NativeEndpoints.getAllGames()
+    ): Response<app.perkhub.Screens.Games.model.GamesRes>
 
-        @GET
-        suspend fun getAllGamesCategory(
-            @Url url: String = NativeEndpoints.getAllGamesCategory()
-        ): Response<GamesCategoryRes>
+    @GET
+    suspend fun getAllGamesCategory(
+        @Url url: String = NativeEndpoints.getAllGamesCategory()
+    ): Response<GamesCategoryRes>
 
-        @GET
-        suspend fun getPopularGames(
-            @Url url: String = NativeEndpoints.getPopularGames()
-        ): Response<app.perkhub.Screens.Games.model.GamesRes>
+    @GET
+    suspend fun getPopularGames(
+        @Url url: String = NativeEndpoints.getPopularGames()
+    ): Response<app.perkhub.Screens.Games.model.GamesRes>
 
-        // ----------------- TRANSACTIONS -----------------
-        @GET
-        suspend fun getAllTransactions(
-            @Url url: String,
-        ): Response<TransactionDataRes>
+    // ----------------- TRANSACTIONS -----------------
+    @GET
+    suspend fun getAllTransactions(
+        @Url url: String,
+    ): Response<TransactionDataRes>
 
-        // ----------------- WITHDRAWALS -----------------
-        @POST
-        suspend fun requestWithdrawal(
-            @Url url: String,
-            @Body body: WithdrawalReq
-        ): Response<RequestWithdrawalRes>
+    // ----------------- WITHDRAWALS -----------------
+    @POST
+    suspend fun requestWithdrawal(
+        @Url url: String,
+        @Body body: WithdrawalReq
+    ): Response<RequestWithdrawalRes>
 
-        @GET
-        suspend fun getWithdrawalTxn(
-            @Url url: String = NativeEndpoints.withdrawalTransactions()
-        ): Response<withdrawalRes>
+    @GET
+    suspend fun getWithdrawalTxn(
+        @Url url: String = NativeEndpoints.withdrawalTransactions()
+    ): Response<withdrawalRes>
 
-        @GET
-        suspend fun getPaymentMethods(
-            @Url url: String = NativeEndpoints.withdrawalGetPaymentMethod()
-        ): Response<getPaymentMethodsRes>
+    @GET
+    suspend fun getPaymentMethods(
+        @Url url: String = NativeEndpoints.withdrawalGetPaymentMethod()
+    ): Response<getPaymentMethodsRes>
 
-        @POST
-        suspend fun addPaymentMethod(
-            @Url url: String,
-            @Body body: addPaymentMethodReq
-        ): Response<addPaymentMethodRes>
+    @POST
+    suspend fun addPaymentMethod(
+        @Url url: String,
+        @Body body: addPaymentMethodReq
+    ): Response<addPaymentMethodRes>
 
-        @POST
-        suspend fun requestWithdrawalPayment(
-            @Url url: String = NativeEndpoints.withdrawalRequest(),
-            @Body body: RequestWithdrawalReq
-        ): Response<RequestWithdrawalRes>
+    @POST
+    suspend fun requestWithdrawalPayment(
+        @Url url: String = NativeEndpoints.withdrawalRequest(),
+        @Body body: RequestWithdrawalReq
+    ): Response<RequestWithdrawalRes>
 
-        // ----------------- NOTIFICATIONS -----------------
-        @GET
-        suspend fun getNotificationList(
-            @Url url: String = NativeEndpoints.getNotificationHistory()
-        ): Response<NotificationListRes>
+    // ----------------- NOTIFICATIONS -----------------
+    @GET
+    suspend fun getNotificationList(
+        @Url url: String = NativeEndpoints.getNotificationHistory()
+    ): Response<NotificationListRes>
 
-        // ----------------- SUPPORT / TICKETS -----------------
-        @GET
-        suspend fun getAllTickets(
-            @Url url: String = NativeEndpoints.ticketsByUser()
-        ): Response<TicketsRes>
+    // ----------------- SUPPORT / TICKETS -----------------
+    @GET
+    suspend fun getAllTickets(
+        @Url url: String = NativeEndpoints.ticketsByUser()
+    ): Response<TicketsRes>
 
-        @POST
-        suspend fun createTicket(
-            @Url url: String,
-            @Body body: CreateNewTicketRequest
-        ): Response<CreateNewTicketResponse>
+    @POST
+    suspend fun createTicket(
+        @Url url: String,
+        @Body body: CreateNewTicketRequest
+    ): Response<CreateNewTicketResponse>
 
-        @GET
-        suspend fun getTicketMessages(
-            @Url url: String
-        ): Response<TicketMessageRes>
+    @GET
+    suspend fun getTicketMessages(
+        @Url url: String
+    ): Response<TicketMessageRes>
 
-        @POST
-        suspend fun sendTicketMessage(
-            @Url url: String,
-            @Body body: RequestTicketMessage
-        ): Response<TicketMessageResponse>
+    @POST
+    suspend fun sendTicketMessage(
+        @Url url: String,
+        @Body body: RequestTicketMessage
+    ): Response<TicketMessageResponse>
 
-        // ----------------- OFFERS -----------------
-        @POST
-        suspend fun searchOfferByStoreName(
-            @Url url: String,
-            @Body body: SearchOfferReq
-        ): Response<Offerlistres>
+    // ----------------- OFFERS -----------------
+    @POST
+    suspend fun searchOfferByStoreName(
+        @Url url: String,
+        @Body body: SearchOfferReq
+    ): Response<Offerlistres>
 
-        @GET
-        suspend fun getOffersHomePage(
-            @Url url: String = NativeEndpoints.offersHomepage()
-        ): Response<Offerlistres>
+    @GET
+    suspend fun getOffersHomePage(
+        @Url url: String = NativeEndpoints.offersHomepage()
+    ): Response<Offerlistres>
+
+    @GET
+    suspend fun getAllStores(
+        @Url url: String = NativeEndpoints.getAllStores()
+    ): Response<StoresRes>
 
 
-
-    companion object{
-      external fun BaseURL(): String?
-      operator  fun invoke(context : Context):MyApi{
-          System.loadLibrary("perkhub")
-            var BaseURl =BaseURL()
-            val httploggingInterceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+    companion object {
+        external fun BaseURL(): String?
+        operator fun invoke(context: Context): MyApi {
+            System.loadLibrary("perkhub")
+            var BaseURl = BaseURL()
+            val httploggingInterceptor =
+                HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
             val client = OkHttpClient.Builder()
                 .connectTimeout(30, TimeUnit.SECONDS)
                 .readTimeout(30, TimeUnit.SECONDS)
@@ -224,7 +230,8 @@ interface MyApi {
                 .addInterceptor(AuthInterceptor(context))
                 .addInterceptor(httploggingInterceptor).build()
 
-            val retrofit = Retrofit.Builder().baseUrl(BaseURl).addConverterFactory(GsonConverterFactory.create()).client(client).build()
+            val retrofit = Retrofit.Builder().baseUrl(BaseURl)
+                .addConverterFactory(GsonConverterFactory.create()).client(client).build()
 
             return retrofit.create(MyApi::class.java)
         }

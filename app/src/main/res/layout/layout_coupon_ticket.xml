@@ -11,15 +11,17 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:padding="14dp">
+            android:padding="@dimen/dp10">
 
             <!-- Logo -->
 
             <ImageView
                 android:id="@+id/imgLogo"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp55"
+                android:layout_height="@dimen/dp45"
                 android:scaleType="fitStart"
+                android:layout_marginHorizontal="@dimen/dp5"
+                android:layout_marginTop="@dimen/dp5"
                 android:src="@drawable/offers_img" />
 
             <!-- Offer -->
@@ -28,19 +30,18 @@
                 android:id="@+id/txtOffer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp12"
-                android:text="FLAT ₹500 OFF"
+                android:layout_marginTop="@dimen/dp5"
+                android:text="FLAT ₹500\n OFF"
                 android:textColor="@color/black"
-                android:fontFamily="@font/poppins_semibold"
-                android:maxLines="1"
-                android:textSize="@dimen/sp15"
-                android:textStyle="bold" />
+                android:fontFamily="@font/poppins_medium"
+                android:maxLines="2"
+                android:textSize="@dimen/sp13" />
 
             <!-- Coupon -->
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp42"
+                android:layout_height="@dimen/dp30"
                 android:layout_marginTop="@dimen/dp12"
                 android:background="@drawable/bg_coupon_code"
                 android:gravity="center_vertical"
@@ -54,9 +55,8 @@
                     android:layout_weight="1"
                     android:text="Code: MYN500"
                     android:textColor="@color/black"
-                    android:fontFamily="@font/poppins_semibold"
-                    android:textSize="@dimen/sp13"
-                    android:textStyle="bold" />
+                    android:fontFamily="@font/poppins_medium"
+                    android:textSize="@dimen/sp12" />
 
                 <ImageView
                     android:id="@+id/imgCopy"
@@ -77,8 +77,8 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
+                    android:layout_width="@dimen/dp14"
+                    android:layout_height="@dimen/dp14"
                     android:src="@drawable/ic_clock"
                     app:tint="@color/grey"/>
 
@@ -86,11 +86,11 @@
                     android:id="@+id/validTill"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
+                    android:layout_marginStart="@dimen/dp5"
                     android:text="Valid till: 31 Dec 2026"
                     android:fontFamily="@font/poppins_medium"
                     android:textColor="@color/grey"
-                    android:textSize="@dimen/sp12" />
+                    android:textSize="@dimen/sp10" />
 
             </LinearLayout>
 

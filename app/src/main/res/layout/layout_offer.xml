@@ -2,7 +2,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="@dimen/dp190"
-    android:layout_height="@dimen/dp200"
+    android:layout_height="@dimen/dp170"
     android:layout_margin="@dimen/dp4"
     app:cardCornerRadius="@dimen/dp20"
     android:background="@color/grey">
@@ -11,14 +11,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:padding="14dp">
+            android:padding="@dimen/dp10">
 
             <!-- Logo -->
 
             <ImageView
                 android:id="@+id/imgLogo"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp75"
+                android:layout_height="@dimen/dp45"
                 android:scaleType="fitCenter"
                 android:src="@drawable/offers_img" />
 
@@ -31,10 +31,10 @@
                 android:layout_marginTop="@dimen/dp12"
                 android:text="FLAT ₹500\nOFF"
                 android:textColor="@color/black"
-                android:fontFamily="@font/poppins_semibold"
+                android:fontFamily="@font/poppins_medium"
                 android:maxLines="2"
-                android:textSize="@dimen/sp15"
-                android:textStyle="bold" />
+                android:textSize="@dimen/sp13"
+                />
 
             <!-- Coupon -->
 
@@ -43,7 +43,7 @@
                 android:layout_height="@dimen/dp40"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:layout_marginTop="@dimen/dp5"
+                android:layout_marginTop="@dimen/dp10"
                 android:paddingHorizontal="@dimen/dp10">
 
                 <TextView
@@ -52,12 +52,12 @@
                     android:text="Shop Now"
                     android:textColor="@color/success"
                     android:fontFamily="@font/poppins_bold"
-                    android:textSize="@dimen/sp14"
+                    android:textSize="@dimen/sp12"
                     />
 
                 <ImageView
-                    android:layout_width="@dimen/dp20"
-                    android:layout_height="@dimen/dp20"
+                    android:layout_width="@dimen/dp16"
+                    android:layout_height="@dimen/dp16"
                     android:layout_marginStart="@dimen/dp10"
                     android:src="@drawable/ic_arrow_forward"
                     app:tint="@color/success"/>

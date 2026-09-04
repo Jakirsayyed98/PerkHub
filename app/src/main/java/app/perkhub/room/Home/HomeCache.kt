@@ -1,4 +1,4 @@
-package app.perkhub.room
+package app.perkhub.room.Home
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

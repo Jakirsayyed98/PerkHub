@@ -26,7 +26,7 @@ class TrendingStoresAdapter2<S>(val cliklistner : RecyclerClickListener): BaseRe
                     }
                     storename.text = s.name
                     binding.root.setOnClickListener {
-                        cliklistner.RecyclerClickListener(0,s.url,s)
+                        cliklistner.RecyclerClickListener(0,s.url!!,s)
                     }
                 }
             }

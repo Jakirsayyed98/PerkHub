@@ -21,7 +21,7 @@ class MiniAppCategoryAdapter<S>(val clickListener: RecyclerClickListener):BaseRe
 
                 binding.cb.text =if (s.cbActive) "Upto "+s.cbPercentage+" Cashback" else "Cashback is not active"
                 binding.root.setOnClickListener {
-                    clickListener.RecyclerClickListener(0,s.url,s)
+                    clickListener.RecyclerClickListener(0,s.url!!,s)
                 }
             }
         }

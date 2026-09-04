@@ -1,85 +1,782 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/white"
+    android:orientation="vertical"
+
     tools:context=".Screens.Stores.SelectedCategoryFragment">
 
 
-    <LinearLayout
-        android:id="@+id/toolbar2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <!-- ========================================================= -->
+    <!-- TOOLBAR                                                    -->
+    <!-- ========================================================= -->
+
     <include
         android:id="@+id/toolbar"
         layout="@layout/toolbar_layout" />
-    </LinearLayout>
 
-    <!-- Search Bar -->
-    <androidx.cardview.widget.CardView
-        android:id="@+id/searchLayout"
+
+    <!-- ========================================================= -->
+    <!-- NORMAL CONTENT                                             -->
+    <!-- Used for CategoryMiniApp, Categories, Popular, Trending   -->
+    <!-- ========================================================= -->
+
+    <FrameLayout
+        android:id="@+id/normalContent"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginHorizontal="15dp"
-        android:layout_marginTop="10dp"
-        app:cardCornerRadius="10dp"
-        app:cardElevation="4dp">
+        android:layout_height="match_parent">
+
+
+        <!-- Store / Category RecyclerView -->
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/listOfStores"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="10dp"
+            android:clipToPadding="false"
+            android:paddingBottom="20dp"
+            tools:itemCount="10"
+            tools:listitem="@layout/item_search_store"/>
+
+
+        <!-- Normal Empty State -->
+
+        <LinearLayout
+            android:id="@+id/noDataFound"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical"
+
+            android:visibility="gone">
+
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp250"
+
+                android:scaleType="centerInside"
+                android:src="@drawable/no_data_found" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="10dp"
+
+                android:text="Stores not found"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+
+                android:textSize="@dimen/sp18"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+
+    <!-- ========================================================= -->
+    <!-- SEARCH CONTENT                                             -->
+    <!-- ========================================================= -->
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/searchContent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:fillViewport="true"
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:paddingStart="10dp">
-
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/search"
-                app:tint="@color/black" />
-
-            <EditText
-                android:id="@+id/search"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="10dp"
-                android:hint="@string/search_by_store_name"
-                android:background="@android:color/transparent"
-                android:textColor="@color/black"
-                android:inputType="text"
-                android:maxLength="30"
-                android:imeOptions="actionSearch" />
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-
-    <!-- Store List -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/listOfStores"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginHorizontal="10dp" />
-
-    <LinearLayout
-        android:id="@+id/noDataFound"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/dp250"
-            android:src="@drawable/no_data_found"/>
-        <TextView
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Stores not found"
-            android:textStyle="bold"
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            android:textSize="@dimen/sp18"/>
-    </LinearLayout>
+
+            android:orientation="vertical"
+
+            android:paddingBottom="30dp">
+
+
+            <!-- ================================================= -->
+            <!-- SEARCH BAR                                          -->
+            <!-- ================================================= -->
+
+            <androidx.cardview.widget.CardView
+
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="1dp">
+
+
+                <LinearLayout
+
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+
+                    android:paddingStart="14dp"
+                    android:paddingEnd="12dp">
+
+
+                    <!-- Search Icon -->
+
+                    <ImageView
+
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+
+                        android:src="@drawable/search"
+
+                        app:tint="#667085" />
+
+
+                    <!-- ONLY SEARCH EDITTEXT IN THIS XML -->
+
+                    <EditText
+                        android:id="@+id/search"
+
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginStart="12dp"
+
+                        android:layout_weight="1"
+
+                        android:background="@android:color/transparent"
+
+                        android:hint="Search stores, offers, coupons..."
+                        android:imeOptions="actionSearch"
+
+                        android:inputType="text"
+                        android:padding="0dp"
+                        android:singleLine="true"
+
+                        android:textColor="#101828"
+                        android:textColorHint="#667085"
+
+                        android:textSize="15sp" />
+
+
+                    <!-- Clear Search -->
+
+                    <TextView
+                        android:id="@+id/clearSearch"
+
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+
+                        android:clickable="true"
+
+                        android:focusable="true"
+                        android:gravity="center"
+                        android:text="×"
+
+                        android:textColor="#667085"
+
+                        android:textSize="25sp"
+                        android:visibility="gone" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+
+            <!-- ================================================= -->
+            <!-- SEARCH TABS                                         -->
+            <!-- ================================================= -->
+
+            <HorizontalScrollView
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="12dp"
+
+                android:fillViewport="false"
+                android:scrollbars="none">
+
+
+                <LinearLayout
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:orientation="horizontal"
+
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp">
+
+
+                    <!-- ALL -->
+
+                    <TextView
+                        android:id="@+id/tabAll"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+
+                        android:layout_marginEnd="10dp"
+
+                        android:background="@drawable/bg_search_tab"
+
+                        android:clickable="true"
+                        android:focusable="true"
+
+                        android:gravity="center"
+                        android:paddingStart="18dp"
+                        android:paddingEnd="18dp"
+
+                        android:text="▦  All"
+
+                        android:textColor="#101828"
+                        android:textSize="14sp" />
+
+
+                    <!-- STORES -->
+
+                    <TextView
+                        android:id="@+id/tabStores"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+
+                        android:layout_marginEnd="10dp"
+
+                        android:background="@drawable/bg_search_tab"
+
+                        android:clickable="true"
+                        android:focusable="true"
+
+                        android:gravity="center"
+                        android:paddingStart="18dp"
+                        android:paddingEnd="18dp"
+
+                        android:text="▱  Stores"
+
+                        android:textColor="#101828"
+                        android:textSize="14sp" />
+
+
+                    <!-- OFFERS -->
+
+                    <TextView
+                        android:id="@+id/tabOffers"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+
+                        android:layout_marginEnd="10dp"
+
+                        android:background="@drawable/bg_search_tab"
+
+                        android:clickable="true"
+                        android:focusable="true"
+
+                        android:gravity="center"
+                        android:paddingStart="18dp"
+                        android:paddingEnd="18dp"
+
+                        android:text="◇  Offers"
+
+                        android:textColor="#101828"
+                        android:textSize="14sp" />
+
+
+                    <!-- COUPONS -->
+
+                    <TextView
+                        android:id="@+id/tabCoupons"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+
+                        android:layout_marginEnd="10dp"
+
+                        android:background="@drawable/bg_search_tab"
+
+                        android:clickable="true"
+                        android:focusable="true"
+
+                        android:gravity="center"
+                        android:paddingStart="18dp"
+                        android:paddingEnd="18dp"
+
+                        android:text="▤  Coupons"
+
+                        android:textColor="#101828"
+                        android:textSize="14sp" />
+
+
+                    <!-- GAMES -->
+
+                    <TextView
+                        android:id="@+id/tabGames"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+
+                        android:background="@drawable/bg_search_tab"
+
+                        android:clickable="true"
+                        android:focusable="true"
+
+                        android:gravity="center"
+                        android:paddingStart="18dp"
+                        android:paddingEnd="18dp"
+
+                        android:text="⌁  Games"
+
+                        android:textColor="#101828"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+
+            </HorizontalScrollView>
+
+
+            <!-- ================================================= -->
+            <!-- RESULT COUNT                                        -->
+            <!-- ================================================= -->
+
+            <TextView
+                android:id="@+id/resultCount"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="16dp"
+
+                android:text="Search stores, offers, coupons and games"
+
+                android:textColor="#101828"
+                android:textSize="15sp" />
+
+
+            <!-- ================================================= -->
+            <!-- STORES                                              -->
+            <!-- ================================================= -->
+
+            <LinearLayout
+                android:id="@+id/storeSection"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="22dp"
+
+                android:orientation="vertical"
+
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp">
+
+
+                <!-- Store Header -->
+
+                <LinearLayout
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:gravity="center_vertical">
+
+
+                    <TextView
+                        android:id="@+id/storeCount"
+
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+
+                        android:layout_weight="1"
+
+                        android:text="Stores (0)"
+
+                        android:textColor="#101828"
+                        android:textSize="19sp"
+                        android:textStyle="bold" />
+
+
+                    <TextView
+                        android:id="@+id/viewAllStores"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:clickable="true"
+
+                        android:focusable="true"
+                        android:text="View all  ›"
+                        android:textColor="#008F63"
+
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+
+                <!-- Stores RecyclerView -->
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/searchStoresRecycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:clipToPadding="false"
+                    />
+
+            </LinearLayout>
+
+
+            <!-- ================================================= -->
+            <!-- OFFERS                                              -->
+            <!-- ================================================= -->
+
+            <LinearLayout
+                android:id="@+id/offerSection"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="22dp"
+
+                android:orientation="vertical"
+
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+
+                android:visibility="gone">
+
+
+                <!-- Header -->
+
+                <LinearLayout
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:gravity="center_vertical">
+
+
+                    <TextView
+                        android:id="@+id/offerCount"
+
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+
+                        android:layout_weight="1"
+
+                        android:text="Offers (0)"
+
+                        android:textColor="#101828"
+                        android:textSize="19sp"
+                        android:textStyle="bold" />
+
+
+                    <TextView
+                        android:id="@+id/viewAllOffers"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:clickable="true"
+
+                        android:focusable="true"
+                        android:text="View all  ›"
+                        android:textColor="#008F63"
+
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+
+                <!--
+                    Add Offer RecyclerView here later.
+
+                    Example:
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/searchOffersRecycler"
+                        ...
+                    />
+
+                -->
+
+            </LinearLayout>
+
+
+            <!-- ================================================= -->
+            <!-- COUPONS                                             -->
+            <!-- ================================================= -->
+
+            <LinearLayout
+                android:id="@+id/couponSection"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="22dp"
+
+                android:orientation="vertical"
+
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+
+                android:visibility="gone">
+
+
+                <!-- Header -->
+
+                <LinearLayout
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:gravity="center_vertical">
+
+
+                    <TextView
+                        android:id="@+id/couponCount"
+
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+
+                        android:layout_weight="1"
+
+                        android:text="Coupons (0)"
+
+                        android:textColor="#101828"
+                        android:textSize="19sp"
+                        android:textStyle="bold" />
+
+
+                    <TextView
+                        android:id="@+id/viewAllCoupons"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:clickable="true"
+
+                        android:focusable="true"
+                        android:text="View all  ›"
+                        android:textColor="#008F63"
+
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+
+                <!--
+                    Add Coupon RecyclerView here later.
+                -->
+
+            </LinearLayout>
+
+
+            <!-- ================================================= -->
+            <!-- GAMES                                               -->
+            <!-- ================================================= -->
+
+            <LinearLayout
+                android:id="@+id/gameSection"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="22dp"
+
+                android:orientation="vertical"
+
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+
+                android:visibility="gone">
+
+
+                <!-- Header -->
+
+                <LinearLayout
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:gravity="center_vertical">
+
+
+                    <TextView
+                        android:id="@+id/gameCount"
+
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+
+                        android:layout_weight="1"
+
+                        android:text="Games (0)"
+
+                        android:textColor="#101828"
+                        android:textSize="19sp"
+                        android:textStyle="bold" />
+
+
+                    <TextView
+                        android:id="@+id/viewAllGames"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:clickable="true"
+
+                        android:focusable="true"
+                        android:text="View all  ›"
+                        android:textColor="#008F63"
+
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+
+                <!--
+                    Add Games RecyclerView here.
+
+                    Example:
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/searchGamesRecycler"
+                        ...
+                    />
+
+                -->
+
+            </LinearLayout>
+
+
+            <!-- ================================================= -->
+            <!-- EMPTY SEARCH / HELP                                 -->
+            <!-- ================================================= -->
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/emptySearch"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="16dp"
+
+                android:visibility="visible"
+                app:cardCornerRadius="16dp"
+
+                app:cardElevation="1dp">
+
+
+                <LinearLayout
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+
+                    android:padding="20dp">
+
+
+                    <!-- Search Icon -->
+
+                    <ImageView
+
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+
+                        android:padding="12dp"
+
+                        android:src="@drawable/search"
+
+                        app:tint="#008F63" />
+
+
+                    <!-- Text -->
+
+                    <LinearLayout
+
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+
+                        android:layout_marginStart="14dp"
+
+                        android:layout_weight="1"
+
+                        android:orientation="vertical">
+
+
+                        <TextView
+
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+
+                            android:text="Can't find what you're looking for?"
+
+                            android:textColor="#101828"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+
+                        <TextView
+
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginTop="4dp"
+
+                            android:text="Try different keywords or check spelling."
+
+                            android:textColor="#667085"
+                            android:textSize="13sp" />
+
+                    </LinearLayout>
+
+
+                    <!-- Arrow -->
+
+                    <TextView
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:text="›"
+
+                        android:textColor="#667085"
+                        android:textSize="28sp" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
 </LinearLayout>

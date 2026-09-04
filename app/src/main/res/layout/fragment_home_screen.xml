@@ -32,7 +32,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingHorizontal="@dimen/dp16"
+                    android:paddingHorizontal="@dimen/dp10"
                     android:paddingTop="@dimen/dp16"
                     android:paddingBottom="@dimen/dp90">
 

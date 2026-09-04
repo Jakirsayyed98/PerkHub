@@ -4,9 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updatePadding
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.perkhub.ContainerActivity
@@ -18,7 +15,7 @@ import app.perkhub.Utils.RecyclerClickListener
 import app.perkhub.Utils.Snackbar
 import app.perkhub.api.ApiListener
 import app.perkhub.databinding.FragmentTransactionHistoryBinding
-import app.perkhub.room.StoresTransactionsRepository
+import app.perkhub.room.StoreTransaction.StoresTransactionsRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

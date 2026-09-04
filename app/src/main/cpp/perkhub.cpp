@@ -145,4 +145,10 @@ JNIEXPORT jstring JNICALL
 Java_app_perkhub_api_NativeEndpoints_offersHomepage(JNIEnv *env, jobject) {
     return env->NewStringUTF("offers/homepage");
 }
+
+JNIEXPORT jstring JNICALL
+Java_app_perkhub_api_NativeEndpoints_getAllStores(JNIEnv *env, jobject) {
+    return env->NewStringUTF("allMiniApps");
+}
+
 }

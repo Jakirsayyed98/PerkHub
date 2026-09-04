@@ -14,7 +14,7 @@ import app.perkhub.R
 import app.perkhub.api.MyApi
 import app.perkhub.api.RequestViewModel
 import app.perkhub.room.HomeDatabase
-import app.perkhub.room.HomeRepository
+import app.perkhub.room.Home.HomeRepository
 import app.perkhub.room.RequestViewModelFactory
 
 abstract class BaseFragment<T:ViewBinding> : Fragment() {

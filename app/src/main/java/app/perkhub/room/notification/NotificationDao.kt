@@ -1,4 +1,4 @@
-package app.perkhub.room
+package app.perkhub.room.notification
 
 import androidx.room.Dao
 import androidx.room.Insert

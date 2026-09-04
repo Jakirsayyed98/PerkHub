@@ -1,4 +1,4 @@
-package app.perkhub.room
+package app.perkhub.room.Home
 
 import app.perkhub.Screens.Home.Model.Home.HomeRes
 import app.perkhub.api.MyApi

@@ -164,7 +164,7 @@ fun copyToClipboard(context: Context, text: String, bindView: View) {
     val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
     val clip = ClipData.newPlainText("Copied Text", text)
     clipboard.setPrimaryClip(clip)
-    context.Snackbar("Coupon code copied successfully!",bindView)
+    context.Snackbar("copied successfully!",bindView)
 }
 
 fun Activity.hideKeyboard() {
@@ -209,4 +209,16 @@ fun getAppVersion(context: Context): String {
 fun getCopyrightText(): String {
     val year = Calendar.getInstance().get(Calendar.YEAR)
     return "© $year PerkHub Pvt Ltd"
+}
+
+fun getStoreCacheExpiry(): Long {
+
+    val calendar = java.util.Calendar.getInstance()
+    calendar.add(java.util.Calendar.DAY_OF_YEAR, 1)
+    calendar.set(java.util.Calendar.HOUR_OF_DAY, 0)
+    calendar.set(java.util.Calendar.MINUTE, 0)
+    calendar.set(java.util.Calendar.SECOND, 0)
+    calendar.set(java.util.Calendar.MILLISECOND, 0)
+
+    return calendar.timeInMillis
 }

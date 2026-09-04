@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainlayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:id="@+id/mainlayout"
     android:background="@color/white"
+    android:orientation="vertical"
     tools:context=".Screens.withdrawal.WalletFragment">
 
     <!-- Toolbar Section -->
@@ -14,6 +14,7 @@
         android:id="@+id/toolbar2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <include
             android:id="@+id/toolbar"
             layout="@layout/toolbar_layout" />
@@ -33,32 +34,29 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/new_wallet_bg"
                 app:cardCornerRadius="@dimen/dp20"
-                app:cardElevation="@dimen/dp8"
+                app:cardElevation="@dimen/dp1"
                 app:cardUseCompatPadding="true"
-                app:cardBackgroundColor="@color/light_blue"
                 app:strokeWidth="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="@dimen/dp24">
+                    android:padding="@dimen/dp15">
 
                     <!-- Balance Amount -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        >
+                        android:orientation="horizontal">
 
                         <ImageView
-                            android:layout_width="@dimen/dp32"
-                            android:layout_height="@dimen/dp32"
-                            android:src="@drawable/wallet"
-                            app:tint="@color/white_87"
-                            android:layout_marginEnd="@dimen/dp12" />
+                            android:layout_width="@dimen/dp50"
+                            android:layout_height="@dimen/dp50"
+                            android:layout_marginEnd="@dimen/dp12"
+                            android:src="@drawable/img_1" />
 
                         <LinearLayout
                             android:layout_width="0dp"
@@ -70,50 +68,87 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Available Balance"
-                                android:textColor="@color/white_70"
-                                android:textSize="14sp"
-                                 />
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/sp13"
+                                app:fontFamily="@font/poppins_medium" />
 
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:orientation="horizontal"
+                                android:layout_marginTop="@dimen/dp4"
                                 android:gravity="center_vertical"
-                                android:layout_marginTop="@dimen/dp4">
+                                android:orientation="horizontal">
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
                                     android:text="₹"
-                                    android:textColor="@color/white"
-                                    android:textSize="14sp"
-                                    android:textStyle="bold" />
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/sp20"
+                                    app:fontFamily="@font/poppins_semibold" />
 
                                 <TextView
                                     android:id="@+id/available"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:hint="0.00"
-                                    android:textColor="@color/white"
-                                    android:textSize="34sp"
-                                    android:textStyle="bold"
-                                    android:layout_marginStart="@dimen/dp4" />
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginStart="@dimen/dp4"
+                                    android:text="0.00"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/sp25"
+                                    app:fontFamily="@font/poppins_bold" />
+
 
                             </LinearLayout>
 
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Ready for withdraw"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/sp12"
+                                app:fontFamily="@font/poppins_medium" />
                         </LinearLayout>
+
+                        <ImageView
+                            android:layout_width="@dimen/dp25"
+                            android:layout_height="@dimen/dp25"
+                            android:layout_marginEnd="@dimen/dp12"
+                            android:src="@drawable/verified_icon" />
 
                     </LinearLayout>
 
-                    <TextView
-                        android:layout_width="match_parent"
+                    <!-- Withdraw Button -->
+                    <LinearLayout
+                        android:id="@+id/withdraw"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Available for withdrawal"
-                        android:textColor="@color/white_87"
-                        android:textSize="12sp"
-                        android:gravity="center"
-                        android:layout_marginTop="@dimen/dp8" />
+                        android:layout_marginStart="@dimen/dp10"
+                        android:layout_marginTop="@dimen/dp10"
+                        android:background="@drawable/border_5dp"
+                        android:backgroundTint="@color/withdraw_button_bg"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="@dimen/dp15"
+                        android:paddingVertical="@dimen/dp8">
 
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="@dimen/dp15"
+                            android:layout_marginEnd="@dimen/dp30"
+                            android:text="Withdraw Funds"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/sp14"
+                            app:fontFamily="@font/poppins_semibold" />
+
+                        <ImageView
+                            android:layout_width="@dimen/dp25"
+                            android:layout_height="@dimen/dp25"
+                            android:src="@drawable/arrow_right"
+                            app:tint="@color/white" />
+                    </LinearLayout>
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
@@ -122,63 +157,66 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginHorizontal="@dimen/dp8">
+                android:layout_marginHorizontal="@dimen/dp8"
+                android:orientation="horizontal">
 
                 <!-- Pending Card -->
                 <androidx.cardview.widget.CardView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_marginEnd="@dimen/dp8"
-                    app:cardCornerRadius="@dimen/dp16"
-                    app:cardElevation="@dimen/dp4"
-                    app:cardUseCompatPadding="true"
                     app:cardBackgroundColor="@color/pending_card_bg"
+                    app:cardCornerRadius="@dimen/dp16"
+                    app:cardElevation="@dimen/dp1"
+                    app:cardUseCompatPadding="true"
                     app:strokeColor="@color/pending_card_stroke"
                     app:strokeWidth="1dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="@dimen/dp20"
-                        android:gravity="center">
+                        android:orientation="horizontal"
+                        android:padding="@dimen/dp10">
 
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="@dimen/dp38"
-                            android:layout_height="@dimen/dp38"
-                            app:cardCornerRadius="@dimen/dp12"
-                            app:cardElevation="0dp"
-                            app:cardBackgroundColor="@color/pending_icon_bg"
-                            android:layout_marginBottom="@dimen/dp12">
+                        <ImageView
+                            android:layout_width="@dimen/dp30"
+                            android:layout_height="@dimen/dp30"
+                            android:src="@drawable/pending_icon" />
 
-                            <ImageView
-                                android:layout_width="@dimen/dp20"
-                                android:layout_height="@dimen/dp20"
-                                android:layout_gravity="center"
-                                android:src="@drawable/dashboard_icon"
-                                app:tint="@color/pending_icon_tint" />
-
-                        </androidx.cardview.widget.CardView>
-
-                        <TextView
-                            android:id="@+id/pending"
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="0.00"
-                            android:textSize="20sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/pending_text_primary"
-                            android:layout_marginBottom="@dimen/dp4" />
+                            android:layout_weight="1"
+                            android:layout_marginStart="@dimen/dp10"
+                            android:orientation="vertical">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Pending"
-                            android:textSize="14sp"
-                            android:textColor="@color/pending_text_secondary" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Pending Amount"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/sp11"
+                                app:fontFamily="@font/poppins_medium" />
 
+                            <TextView
+                                android:id="@+id/pending"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="@dimen/dp4"
+                                android:text="₹0.00"
+                                android:textColor="@color/pending_text_primary"
+                                android:textSize="@dimen/sp16"
+                                app:fontFamily="@font/poppins_semibold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Under review"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/sp11"
+                                app:fontFamily="@font/poppins_regular" />
+
+                        </LinearLayout>
                     </LinearLayout>
 
                 </androidx.cardview.widget.CardView>
@@ -188,96 +226,162 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_marginStart="@dimen/dp8"
-                    app:cardCornerRadius="@dimen/dp16"
-                    app:cardElevation="@dimen/dp4"
-                    app:cardUseCompatPadding="true"
                     app:cardBackgroundColor="@color/rejected_card_bg"
-                    app:strokeColor="@color/rejected_card_stroke"
+                    app:cardCornerRadius="@dimen/dp16"
+                    app:cardElevation="@dimen/dp1"
+                    app:cardUseCompatPadding="true"
+                    app:strokeColor="@color/rejected_card_bg"
                     app:strokeWidth="1dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="@dimen/dp20"
-                        android:gravity="center">
+                        android:orientation="horizontal"
+                        android:padding="@dimen/dp10">
 
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="@dimen/dp38"
-                            android:layout_height="@dimen/dp38"
-                            app:cardCornerRadius="@dimen/dp12"
-                            app:cardElevation="0dp"
-                            app:cardBackgroundColor="@color/rejected_icon_bg"
-                            android:layout_marginBottom="@dimen/dp12">
+                        <ImageView
+                            android:layout_width="@dimen/dp30"
+                            android:layout_height="@dimen/dp30"
+                            android:src="@drawable/rejected_icon" />
 
-                            <ImageView
-                                android:layout_width="@dimen/dp20"
-                                android:layout_height="@dimen/dp20"
-                                android:layout_gravity="center"
-                                android:src="@drawable/bg_circle_grey"
-                                app:tint="@color/rejected_icon_tint" />
-
-                        </androidx.cardview.widget.CardView>
-
-                        <TextView
-                            android:id="@+id/rejected"
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="0.00"
-                            android:textSize="20sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/rejected_text_primary"
-                            android:layout_marginBottom="@dimen/dp4" />
+                            android:layout_weight="1"
+                            android:layout_marginStart="@dimen/dp10"
+                            android:orientation="vertical">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Rejected"
-                            android:textSize="14sp"
-                            android:textColor="@color/rejected_text_secondary" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Rejected Amount"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/sp11"
+                                app:fontFamily="@font/poppins_medium" />
 
+                            <TextView
+                                android:id="@+id/rejected"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="@dimen/dp4"
+                                android:text="₹0.00"
+                                android:textColor="@color/rejected_text_primary"
+                                android:textSize="@dimen/sp16"
+                                app:fontFamily="@font/poppins_semibold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Cashback rejected"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/sp11"
+                                app:fontFamily="@font/poppins_regular" />
+
+                        </LinearLayout>
                     </LinearLayout>
 
                 </androidx.cardview.widget.CardView>
 
             </LinearLayout>
 
-            <!-- Withdraw Button -->
-            <Button
-                android:id="@+id/withdraw"
+            <!-- Pending Card -->
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp20"
-                android:layout_marginHorizontal="@dimen/dp24"
-                android:text="Withdraw Funds"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:textAllCaps="false"
-                app:cornerRadius="@dimen/dp14"
-                android:background="@drawable/border_5dp"
-                app:backgroundTint="@color/withdraw_button_bg"
-                android:textColor="@color/white"
-                app:icon="@drawable/dashboard_icon"
-                app:iconGravity="textStart"
-                app:iconTint="@color/white"
-                app:iconSize="@dimen/dp20"
-                android:elevation="@dimen/dp4"
-                />
+                app:cardCornerRadius="@dimen/dp16"
+                app:cardElevation="@dimen/dp1"
+                android:layout_marginHorizontal="@dimen/dp8"
+                app:cardUseCompatPadding="true"
+                app:strokeColor="@color/pending_card_stroke"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/dp10">
+
+                    <ImageView
+                        android:layout_width="@dimen/dp40"
+                        android:layout_height="@dimen/dp40"
+                        android:src="@drawable/lifetime_earning" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="@dimen/dp10"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Lifetime Earning"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/sp11"
+                            app:fontFamily="@font/poppins_medium" />
+
+                        <TextView
+                            android:id="@+id/lifetime_cb"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="₹0.00"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/sp16"
+                            app:fontFamily="@font/poppins_semibold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Total cashback earn till now"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/sp11"
+                            app:fontFamily="@font/poppins_regular" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp10"
+                android:layout_marginTop="@dimen/dp5"
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:paddingHorizontal="@dimen/dp15">
+
+
+                <ImageView
+                    android:layout_width="@dimen/dp25"
+                    android:layout_height="@dimen/dp25"
+                    android:src="@drawable/lock_icon" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginHorizontal="@dimen/dp10"
+                    android:text="Secure and safe transfers to your bank account"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp11"
+                    app:fontFamily="@font/poppins_regular" />
+
+            </LinearLayout>
 
             <!-- History Section -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="@dimen/dp32">
+                android:orientation="vertical">
 
                 <!-- Section Header -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:gravity="center_vertical"
+                    android:orientation="horizontal"
                     android:paddingHorizontal="@dimen/dp8"
                     android:paddingVertical="@dimen/dp12">
 
@@ -285,15 +389,17 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical">
+                        android:layout_marginHorizontal="@dimen/dp8"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
 
                         <ImageView
                             android:layout_width="@dimen/dp20"
                             android:layout_height="@dimen/dp20"
+                            android:layout_marginEnd="@dimen/dp8"
                             android:src="@drawable/dashboard_icon"
-                            app:tint="@color/text_primary"
-                            android:layout_marginEnd="@dimen/dp8" />
+                            android:visibility="gone"
+                            app:tint="@color/text_primary" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -305,99 +411,96 @@
 
                     </LinearLayout>
 
-                    <!-- View All Button -->
-                    <Button
-                        android:id="@+id/btnViewAll"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="View All"
-                        android:textSize="12sp"
-                        android:background="@drawable/border_5dp"
-                        android:backgroundTint="@color/primary_button_bg"
-                        android:textColor="@color/white"
-                        android:minHeight="0dp"
-                        android:minWidth="0dp"
-                        android:paddingVertical="@dimen/dp8"
-                        android:paddingHorizontal="@dimen/dp12" />
-
                 </LinearLayout>
 
                 <!-- History Card Container -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <!-- Empty State (when no history) -->
                     <LinearLayout
+                        android:id="@+id/emptyStateLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="@dimen/dp40"
+                        android:visibility="gone">
 
-                        <!-- Empty State (when no history) -->
-                        <LinearLayout
-                            android:id="@+id/emptyStateLayout"
-                            android:layout_width="match_parent"
+                        <ImageView
+                            android:layout_width="@dimen/dp64"
+                            android:layout_height="@dimen/dp64"
+                            android:layout_marginBottom="@dimen/dp16"
+                            android:src="@drawable/outline_history_24"
+                            app:tint="@color/text_disabled" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical"
+                            android:layout_marginBottom="@dimen/dp4"
+                            android:text="No transactions yet"
+                            android:textColor="@color/text_secondary"
+
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:padding="@dimen/dp40"
-                            android:visibility="gone">
-
-                            <ImageView
-                                android:layout_width="@dimen/dp64"
-                                android:layout_height="@dimen/dp64"
-                                android:src="@drawable/outline_history_24"
-                                app:tint="@color/text_disabled"
-                                android:layout_marginBottom="@dimen/dp16" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="No transactions yet"
-                                android:textColor="@color/text_secondary"
-                                android:textSize="16sp"
-                                
-                                android:layout_marginBottom="@dimen/dp4" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Your withdrawal history will appear here"
-                                android:textColor="@color/text_disabled"
-                                android:textSize="14sp"
-                                android:gravity="center" />
-
-                        </LinearLayout>
-
-                        <!-- RecyclerView -->
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/withdrawalhistory"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:clipToPadding="false"
-                            android:scrollbars="none"
-                            android:visibility="gone"
-                            android:overScrollMode="never" />
-
-
-
-                        <LinearLayout
-                            android:id="@+id/noDataFound"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@color/white"
-                            android:orientation="vertical">
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="@dimen/dp250"
-                                android:src="@drawable/no_data_found"/>
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="history not found"
-                                android:textStyle="bold"
-                                android:textAlignment="center"
-                                android:textColor="@color/black"
-                                android:textSize="@dimen/sp18"/>
-                        </LinearLayout>
-
+                            android:text="Your withdrawal history will appear here"
+                            android:textColor="@color/text_disabled"
+                            android:textSize="14sp" />
 
                     </LinearLayout>
+
+                    <!-- RecyclerView -->
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/withdrawalhistory"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clipToPadding="false"
+                        android:overScrollMode="never"
+                        android:scrollbars="none"
+                        android:visibility="gone" />
+
+
+                    <LinearLayout
+                        android:id="@+id/noDataFound"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp10"
+                        android:background="@color/white"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/dp150"
+                            android:src="@drawable/no_data_found" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="No withdrawal history yet"
+                            android:textAlignment="center"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/sp16"
+                            app:fontFamily="@font/poppins_semibold"/>
+
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Your withdrawal transaction will appear here\nonce you make a withdrawal"
+                            android:textAlignment="center"
+                            android:textColor="@color/grey_dark"
+                            android:textSize="@dimen/sp13"
+                            app:fontFamily="@font/poppins_regular"/>
+                    </LinearLayout>
+
+
+                </LinearLayout>
             </LinearLayout>
 
             <!-- Bottom Spacing -->

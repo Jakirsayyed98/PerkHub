@@ -4,7 +4,6 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import app.perkhub.Screens.Games.model.GameCategoryData
 import app.perkhub.Screens.Games.model.GamesCategoryRes
 import app.perkhub.Screens.Games.model.GamesRes
 import app.perkhub.Screens.Home.Model.Auth.VerifyOTP
@@ -19,7 +18,6 @@ import app.perkhub.Screens.Home.Model.Notification.NotificationListRes
 import app.perkhub.Screens.Home.Model.Notification.TokenReq
 import app.perkhub.Screens.Home.Model.TransactionModel.Datas
 import app.perkhub.Screens.Home.Model.TransactionModel.TransactionDataRes
-import app.perkhub.Screens.Home.Model.Withdrawal.WithdrawalReq
 import app.perkhub.Screens.Home.Model.Withdrawal.withdrawalRes
 import app.perkhub.Screens.Offers.model.Offerlistres
 import app.perkhub.Screens.Offers.model.SearchOfferReq
@@ -27,10 +25,10 @@ import app.perkhub.Screens.Profile.model.CreateNewTicketRequest
 import app.perkhub.Screens.Profile.model.CreateNewTicketResponse
 import app.perkhub.Screens.Profile.model.DataTicket
 import app.perkhub.Screens.Profile.model.RequestTicketMessage
-import app.perkhub.Screens.Profile.model.TicketMessage
 import app.perkhub.Screens.Profile.model.TicketMessageRes
 import app.perkhub.Screens.Profile.model.TicketMessageResponse
 import app.perkhub.Screens.Profile.model.TicketsRes
+import app.perkhub.Screens.Stores.model.StoresRes
 import app.perkhub.Screens.login.models.GetToken
 import app.perkhub.Screens.login.models.LoginRes
 import app.perkhub.Screens.login.models.SaveUserDetail
@@ -41,9 +39,11 @@ import app.perkhub.Screens.withdrawal.model.RequestWithdrawalRes
 import app.perkhub.Screens.withdrawal.model.addPaymentMethodReq
 import app.perkhub.Screens.withdrawal.model.addPaymentMethodRes
 import app.perkhub.Screens.withdrawal.model.getPaymentMethodsRes
-import app.perkhub.room.HomeRepository
-import app.perkhub.room.NotificationRepository
-import app.perkhub.room.StoresTransactionsRepository
+import app.perkhub.Utils.getStoreCacheExpiry
+import app.perkhub.room.Home.HomeRepository
+import app.perkhub.room.Store.StoreRepository
+import app.perkhub.room.notification.NotificationRepository
+import app.perkhub.room.StoreTransaction.StoresTransactionsRepository
 import app.perkhub.room.Tickets.TicketMessageRepository
 import app.perkhub.room.Tickets.TicketsRepository
 import app.perkhub.room.games.GamesCategoryRepository
@@ -139,12 +139,54 @@ class RequestViewModel(
         launchApi({ apiProvider(context).getLootProduct(NativeEndpoints.getAllLootoffers(),page) }, listener)
     }
 
-    fun getMiniAppByCategory(
-        req: MiniAppByCategoryReq,
-        context: Context,
-        listener: ApiListener<MiniAppbyCategory>
-    ) {
-        launchApi({ apiProvider(context).getMiniAppByCategory(NativeEndpoints.getStoresByCategory(),req) }, listener)
+    fun getMiniAppByCategory(req: MiniAppByCategoryReq, context: Context, listener: ApiListener<MiniAppbyCategory>) {
+        val repository = StoreRepository(context)
+        viewModelScope.launch {
+            try {
+                // Load cached popular games
+                val cachedData = repository.getAllStoresByCategoryId(req.category_id)
+                if (cachedData.isNotEmpty()) {
+
+                    val cachedResponse = MiniAppbyCategory(
+                            data = ArrayList(cachedData),
+                            message = "Loaded from cache",
+                            status = 200
+                        )
+
+                    listener.onSuccess(
+                        cachedResponse,
+                        "Loaded from cache"
+                    )
+
+                    return@launch
+                }
+
+                launchApi({ apiProvider(context).getMiniAppByCategory(NativeEndpoints.getStoresByCategory(),req) },
+                    object : ApiListener<MiniAppbyCategory> {
+                        override fun onSuccess(t: MiniAppbyCategory?, mess: String) {
+                            viewModelScope.launch {
+                                t?.data?.let {
+                                    // Return API response to listener
+                                    listener.onSuccess(t, mess)
+                                }
+                            }
+                        }
+
+                        override fun onError(mess: String) {
+                            // If no cached data exists, propagate the error
+                            if (cachedData.isEmpty()) {
+                                listener.onError(mess)
+                            }
+                            // Otherwise, we already returned cached data, so ignore
+                        }
+                    }
+                )
+
+            } catch (e: Exception) {
+                listener.onError(e.message ?: "Unknown error")
+            }
+        }
+//        launchApi({ apiProvider(context).getMiniAppByCategory(NativeEndpoints.getStoresByCategory(),req) }, listener)
     }
 
     fun searchMiniApps(
@@ -593,4 +635,80 @@ class RequestViewModel(
         }
     }
 
+    fun getAllStores(
+        context: Context,
+        listener: ApiListener<StoresRes>
+    ) {
+
+        val repository = StoreRepository(context)
+
+        viewModelScope.launch {
+            try {
+                val cachedData = repository.getAllStores()
+
+                val shouldFetch = repository.shouldFetchFromApi()
+                if (cachedData.isNotEmpty() && !shouldFetch) {
+
+                    val cachedResponse =
+                        StoresRes(
+                            data = cachedData,
+                            message = "Loaded from cache",
+                            status = 200
+                        )
+
+                    listener.onSuccess(
+                        cachedResponse,
+                        "Loaded from cache"
+                    )
+
+                    return@launch
+                }
+
+                // ==========================================
+                // API REQUIRED
+                // ==========================================
+
+                launchApi({
+                    apiProvider(context).getAllStores()
+                    },
+                    object : ApiListener<StoresRes> {
+                        override fun onSuccess(t: StoresRes?, mess:String) {
+                            viewModelScope.launch {
+                                try {
+                                    val freshData = t?.data ?: emptyList()
+                                    if (freshData.isNotEmpty()) {
+                                        repository.saveStores(freshData)
+                                    }
+                                    listener.onSuccess(t, mess)
+                                } catch (e: Exception) {
+                                    listener.onError(e.message ?: "Failed to save stores")
+                                }
+                            }
+                        }
+
+                        override fun onError(mess: String) {
+                            if (cachedData.isNotEmpty()) {
+                                listener.onSuccess(
+                                    StoresRes(
+                                        data = cachedData,
+                                        message = "Loaded stale cache",
+                                        status = 200
+                                    ),
+                                    "Loaded stale cache"
+                                )
+
+                            } else {
+                                listener.onError(mess)
+                            }
+                        }
+                    }
+                )
+
+            } catch (e: Exception) {
+                listener.onError(
+                    e.message ?: "Unknown error"
+                )
+            }
+        }
+    }
 }
