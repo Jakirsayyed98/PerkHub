@@ -158,6 +158,16 @@
                         android:id="@+id/limit_offer_layout"
                         layout="@layout/layout_stores" />
 
+                    <!-- Limited Time Offers-->
+                    <include
+                        android:id="@+id/active_categories"
+                        layout="@layout/layout_stores" />
+
+                    <!-- Footer Layout-->
+                    <include
+                        android:id="@+id/footer_layout"
+                        layout="@layout/footer_layout" />
+
                 </LinearLayout>
 
             </androidx.core.widget.NestedScrollView>

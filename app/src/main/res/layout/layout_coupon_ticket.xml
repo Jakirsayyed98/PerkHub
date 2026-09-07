@@ -1,99 +1,208 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="220dp"
-    android:layout_height="@dimen/dp200"
-    android:layout_margin="@dimen/dp4"
-    app:cardCornerRadius="@dimen/dp20"
-    android:background="@color/grey">
+
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/dp12"
+    android:layout_marginVertical="@dimen/dp6"
+
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="@dimen/dp18"
+    app:cardElevation="@dimen/dp2">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dp14">
+
+        <!-- LEFT CONTENT -->
+
+        <ImageView
+            android:id="@+id/imgLogo"
+            android:layout_width="@dimen/dp70"
+            android:layout_height="@dimen/dp42"
+            android:contentDescription="@null"
+            android:scaleType="fitCenter"
+            android:src="@drawable/offers_img"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <!-- LIMITED TIME -->
+
+        <TextView
+            android:id="@+id/txtBadge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginTop="@dimen/dp6"
+
+            android:background="@drawable/badge_background"
+
+            android:fontFamily="@font/poppins_medium"
+            android:includeFontPadding="false"
+
+            android:paddingHorizontal="@dimen/dp7"
+            android:paddingVertical="@dimen/dp3"
+
+            android:text="LIMITED TIME"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp8"
+            android:textStyle="bold"
+
+            app:layout_constraintStart_toStartOf="@id/imgLogo"
+            app:layout_constraintTop_toBottomOf="@id/imgLogo" />
+
+
+        <!-- OFFER -->
+
+        <TextView
+            android:id="@+id/txtOffer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            android:layout_marginStart="@dimen/dp14"
+            android:layout_marginEnd="@dimen/dp8"
+
+            android:fontFamily="@font/poppins_medium"
+            android:includeFontPadding="false"
+
+            android:maxLines="2"
+            android:ellipsize="end"
+
+            android:text="FLAT ₹500 OFF"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp16"
+            android:textStyle="bold"
+
+            app:layout_constraintStart_toEndOf="@id/imgLogo"
+            app:layout_constraintEnd_toStartOf="@id/imgArrow"
+            app:layout_constraintTop_toTopOf="@id/imgLogo" />
+
+
+        <!-- COUPON CODE -->
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="@dimen/dp10">
+            android:id="@+id/layoutCoupon"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp34"
 
-            <!-- Logo -->
+            android:layout_marginStart="@dimen/dp14"
+            android:layout_marginTop="@dimen/dp10"
+            android:layout_marginEnd="@dimen/dp8"
 
-            <ImageView
-                android:id="@+id/imgLogo"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp45"
-                android:scaleType="fitStart"
-                android:layout_marginHorizontal="@dimen/dp5"
-                android:layout_marginTop="@dimen/dp5"
-                android:src="@drawable/offers_img" />
+            android:background="@drawable/bg_coupon_code"
 
-            <!-- Offer -->
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+
+            android:paddingStart="@dimen/dp10"
+            android:paddingEnd="@dimen/dp5"
+
+            app:layout_constraintStart_toEndOf="@id/imgLogo"
+            app:layout_constraintEnd_toStartOf="@id/imgArrow"
+            app:layout_constraintTop_toBottomOf="@id/txtOffer">
 
             <TextView
-                android:id="@+id/txtOffer"
-                android:layout_width="wrap_content"
+                android:id="@+id/txtCode"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp5"
-                android:text="FLAT ₹500\n OFF"
-                android:textColor="@color/black"
+
+                android:layout_weight="1"
+
+                android:ellipsize="end"
+                android:maxLines="1"
+
                 android:fontFamily="@font/poppins_medium"
-                android:maxLines="2"
-                android:textSize="@dimen/sp13" />
+                android:includeFontPadding="false"
 
-            <!-- Coupon -->
+                android:text="MYN500"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp11"
+                android:textStyle="bold" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp30"
-                android:layout_marginTop="@dimen/dp12"
-                android:background="@drawable/bg_coupon_code"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingHorizontal="@dimen/dp10">
+            <ImageView
+                android:id="@+id/imgCopy"
+                android:layout_width="@dimen/dp28"
+                android:layout_height="@dimen/dp28"
 
-                <TextView
-                    android:id="@+id/txtCode"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Code: MYN500"
-                    android:textColor="@color/black"
-                    android:fontFamily="@font/poppins_medium"
-                    android:textSize="@dimen/sp12" />
+                android:background="@color/grey_dark"
 
-                <ImageView
-                    android:id="@+id/imgCopy"
-                    android:layout_width="@dimen/dp20"
-                    android:layout_height="@dimen/dp20"
-                    android:src="@drawable/ic_copy"
-                    app:tint="@color/black"/>
+                android:contentDescription="Copy coupon code"
 
-            </LinearLayout>
+                android:padding="@dimen/dp7"
+                android:src="@drawable/ic_copy"
 
-            <!-- Valid Till -->
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="@dimen/dp14"
-                    android:layout_height="@dimen/dp14"
-                    android:src="@drawable/ic_clock"
-                    app:tint="@color/grey"/>
-
-                <TextView
-                    android:id="@+id/validTill"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/dp5"
-                    android:text="Valid till: 31 Dec 2026"
-                    android:fontFamily="@font/poppins_medium"
-                    android:textColor="@color/grey"
-                    android:textSize="@dimen/sp10" />
-
-            </LinearLayout>
+                app:tint="@color/white" />
 
         </LinearLayout>
+
+
+        <!-- VALID TILL -->
+
+        <LinearLayout
+            android:id="@+id/layoutValidTill"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginStart="@dimen/dp14"
+            android:layout_marginTop="@dimen/dp7"
+
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+
+            app:layout_constraintStart_toEndOf="@id/imgLogo"
+            app:layout_constraintTop_toBottomOf="@id/layoutCoupon">
+
+            <ImageView
+                android:layout_width="@dimen/dp13"
+                android:layout_height="@dimen/dp13"
+
+                android:contentDescription="@null"
+                android:src="@drawable/ic_clock"
+
+                app:tint="#999999" />
+
+            <TextView
+                android:id="@+id/validTill"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_marginStart="@dimen/dp5"
+
+                android:fontFamily="@font/poppins_medium"
+                android:includeFontPadding="false"
+
+                android:text="Valid till 31 Dec 2026"
+                android:textColor="#888888"
+                android:textSize="@dimen/sp9" />
+
+        </LinearLayout>
+
+
+        <!-- ARROW -->
+
+        <ImageView
+            android:id="@+id/imgArrow"
+            android:layout_width="@dimen/dp30"
+            android:layout_height="@dimen/dp30"
+
+            android:background="@drawable/bg_arrow_circle"
+
+            android:contentDescription="View offer"
+
+            android:padding="@dimen/dp8"
+            android:src="@drawable/arrow_right"
+
+            app:tint="@color/white"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>

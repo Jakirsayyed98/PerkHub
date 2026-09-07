@@ -4,98 +4,370 @@ import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import app.perkhub.R
 import app.perkhub.Screens.Offers.model.OffersData
-import app.perkhub.Screens.Profile.model.menuList
-import app.perkhub.Utils.BaseRecyclerView
 import app.perkhub.Utils.RecyclerClickListener
 import app.perkhub.Utils.copyToClipboard
-import app.perkhub.databinding.MenuListItemBinding
 import app.perkhub.databinding.OfferListLayoutBinding
 import com.bumptech.glide.Glide
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.TimeZone
 import java.util.concurrent.TimeUnit
+import kotlin.math.abs
 
-class OffersListAdapter(private val clickList: RecyclerClickListener) :
-    ListAdapter<OffersData, OffersListAdapter.Holder>(DiffCallback()) {
+
+class OffersListAdapter(
+    private val clickList: RecyclerClickListener
+) : ListAdapter<OffersData, OffersListAdapter.Holder>(DiffCallback()) {
+
+
+    // ---------------------------------------------------------
+    // DIFF CALLBACK
+    // ---------------------------------------------------------
 
     class DiffCallback : DiffUtil.ItemCallback<OffersData>() {
-        override fun areItemsTheSame(oldItem: OffersData, newItem: OffersData): Boolean =
-            oldItem.id == newItem.id
 
-        override fun areContentsTheSame(oldItem: OffersData, newItem: OffersData): Boolean =
-            oldItem == newItem
+        override fun areItemsTheSame(
+            oldItem: OffersData,
+            newItem: OffersData
+        ): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(
+            oldItem: OffersData,
+            newItem: OffersData
+        ): Boolean {
+            return oldItem == newItem
+        }
     }
 
-    inner class Holder(val binding: OfferListLayoutBinding) : RecyclerView.ViewHolder(binding.root) {
+
+    // ---------------------------------------------------------
+    // VIEW HOLDER
+    // ---------------------------------------------------------
+
+    inner class Holder(
+        private val binding: OfferListLayoutBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
+
+
         fun bind(item: OffersData) {
+
+            val context = binding.root.context
+
+
+            // =====================================================
+            // STORE
+            // =====================================================
+
             binding.storename.text = item.store_name
+
+            binding.storeType.text =
+                if (item.type.equals("coupon", ignoreCase = true)) {
+                    "COUPON"
+                } else {
+                    "OFFER"
+                }
+
+
+            // =====================================================
+            // TITLE
+            // =====================================================
+
             binding.title.text = item.title
-            binding.dis.text = Html.fromHtml(item.description, Html.FROM_HTML_MODE_LEGACY)
 
-            if (item.type == "coupon") {
-                binding.couponlayout.visibility = View.VISIBLE
-                binding.couponCode.text = item.coupon_code
-            } else {
-                binding.couponlayout.visibility = View.GONE
-            }
 
-            binding.copy.setOnClickListener {
-                copyToClipboard(itemView.context, item.coupon_code, binding.couponlayout)
-            }
+            // =====================================================
+            // DESCRIPTION
+            // =====================================================
 
-            Glide.with(itemView.context)
+            binding.dis.text =
+                Html.fromHtml(
+                    item.description ?: "",
+                    Html.FROM_HTML_MODE_LEGACY
+                )
+
+            binding.dis.visibility =
+                if (item.description.isNullOrBlank()) {
+                    View.GONE
+                } else {
+                    View.VISIBLE
+                }
+
+
+            // =====================================================
+            // STORE IMAGE
+            // =====================================================
+
+            Glide.with(context)
                 .load(item.image)
                 .circleCrop()
-                .placeholder(R.color.offers_bg1) // optional
+                .placeholder(R.color.offers_bg1)
+                .error(R.color.offers_bg1)
                 .into(binding.icon)
 
-            // -----------------------------
-            // Date Handling
-            // -----------------------------
+
+            // =====================================================
+            // BADGE
+            // =====================================================
+
+            setupBadge(item)
+
+
+            // =====================================================
+            // COUPON
+            // =====================================================
+
+            val hasCoupon =
+                item.type.equals("coupon", ignoreCase = true) &&
+                        !item.coupon_code.isNullOrBlank()
+
+
+            if (hasCoupon) {
+
+                binding.couponlayout.visibility = View.VISIBLE
+
+                binding.couponCode.text =
+                    item.coupon_code.trim()
+
+                binding.copy.visibility = View.VISIBLE
+
+                binding.copyLabel.visibility = View.VISIBLE
+
+                binding.copy.setOnClickListener {
+
+                    copyToClipboard(
+                        context,
+                        item.coupon_code,
+                        binding.couponlayout
+                    )
+                }
+
+            } else {
+
+                binding.couponlayout.visibility = View.GONE
+
+                binding.copy.visibility = View.GONE
+
+                binding.copyLabel.visibility = View.GONE
+
+                binding.copy.setOnClickListener(null)
+            }
+
+
+            // =====================================================
+            // DATE
+            // =====================================================
+
             val daysLeft = getDaysLeft(item.end_date)
 
+
             binding.validTill.text =
-                "Valid till ${formatDate(item.end_date)}"
+                if (daysLeft < 0) {
+                    "Expired on ${formatDate(item.end_date)}"
+                } else {
+                    "Valid till ${formatDate(item.end_date)}"
+                }
+
+
+            // =====================================================
+            // URGENCY
+            // =====================================================
+
+            setupUrgency(daysLeft)
+
+
+            // =====================================================
+            // SHOP
+            // =====================================================
+
+            binding.shop.setOnClickListener {
+
+//                val position = bindingAdapterPosition
+
+                if (position != RecyclerView.NO_POSITION) {
+
+                    clickList.RecyclerClickListener(
+                        position,
+                        item.store_id.toString(),
+                        item
+                    )
+                }
+            }
+        }
+
+
+        // ---------------------------------------------------------
+        // BADGE
+        // ---------------------------------------------------------
+
+        private fun setupBadge(item: OffersData) {
+
+            val hash = abs(item.id.hashCode())
+
+            when {
+
+                item.type.equals("coupon", ignoreCase = true) -> {
+
+                    binding.trendingBadge.text = "COUPON"
+                    binding.trendingBadge.visibility = View.VISIBLE
+                }
+
+                hash % 4 == 0 -> {
+
+                    binding.trendingBadge.text = "HOT"
+                    binding.trendingBadge.visibility = View.VISIBLE
+                }
+
+                hash % 4 == 1 -> {
+
+                    binding.trendingBadge.text = "DEAL"
+                    binding.trendingBadge.visibility = View.VISIBLE
+                }
+
+                hash % 4 == 2 -> {
+
+                    binding.trendingBadge.text = "NEW"
+                    binding.trendingBadge.visibility = View.VISIBLE
+                }
+
+                else -> {
+
+                    binding.trendingBadge.visibility = View.GONE
+                }
+            }
+        }
+
+
+        // ---------------------------------------------------------
+        // URGENCY
+        // ---------------------------------------------------------
+
+        private fun setupUrgency(daysLeft: Long) {
+
+            val context = binding.root.context
+
 
             when {
 
                 daysLeft < 0 -> {
-                    binding.urgencyText.text = "Expired"
+
+                    binding.urgencyText.text = "EXPIRED"
+
                     binding.urgencyText.setTextColor(
-                        itemView.context.getColor(R.color.error)
+                        ContextCompat.getColor(
+                            context,
+                            R.color.error
+                        )
                     )
+
+                    binding.urgencyText.background =
+                        ContextCompat.getDrawable(
+                            context,
+                            R.drawable.deal_expired_bg
+                        )
                 }
+
 
                 daysLeft == 0L -> {
-                    binding.urgencyText.text = "Ends Today"
+
+                    binding.urgencyText.text =
+                        "ENDS TODAY"
+
+                    binding.urgencyText.setTextColor(
+                        ContextCompat.getColor(
+                            context,
+                            R.color.urgency_red
+                        )
+                    )
+
+                    binding.urgencyText.background =
+                        ContextCompat.getDrawable(
+                            context,
+                            R.drawable.deal_urgency_bg
+                        )
                 }
+
+
+                daysLeft <= 2L -> {
+
+                    binding.urgencyText.text =
+                        "ENDS IN ${daysLeft}D"
+
+                    binding.urgencyText.setTextColor(
+                        ContextCompat.getColor(
+                            context,
+                            R.color.urgency_red
+                        )
+                    )
+
+                    binding.urgencyText.background =
+                        ContextCompat.getDrawable(
+                            context,
+                            R.drawable.deal_urgency_bg
+                        )
+                }
+
+
+                daysLeft <= 7L -> {
+
+                    binding.urgencyText.text =
+                        "${daysLeft} DAYS LEFT"
+
+                    binding.urgencyText.setTextColor(
+                        ContextCompat.getColor(
+                            context,
+                            R.color.main
+                        )
+                    )
+
+                    binding.urgencyText.background =
+                        ContextCompat.getDrawable(
+                            context,
+                            R.drawable.deal_soft_urgency_bg
+                        )
+                }
+
 
                 else -> {
+
                     binding.urgencyText.text =
-                        "⏰ $daysLeft days left"
+                        "${daysLeft} DAYS LEFT"
+
+                    binding.urgencyText.setTextColor(
+                        ContextCompat.getColor(
+                            context,
+                            R.color.main
+                        )
+                    )
+
+                    binding.urgencyText.background =
+                        ContextCompat.getDrawable(
+                            context,
+                            R.drawable.deal_soft_urgency_bg
+                        )
                 }
             }
-
-            // -----------------------------
-            // Fake Social Proof
-            // -----------------------------
-            val usedCount = generateUsageCount(item.id)
-
-            binding.usageText.text =
-                "$usedCount people used this today"
-
-
-            binding.shop.setOnClickListener {
-                clickList.RecyclerClickListener(adapterPosition, item.store_id.toString(), item)
-            }
         }
-        private fun getDaysLeft(endDate: String): Long {
+
+
+        // ---------------------------------------------------------
+        // GET DAYS LEFT
+        // ---------------------------------------------------------
+
+        private fun getDaysLeft(
+            endDate: String?
+        ): Long {
+
+            if (endDate.isNullOrBlank()) {
+                return 0L
+            }
 
             return try {
 
@@ -104,86 +376,102 @@ class OffersListAdapter(private val clickList: RecyclerClickListener) :
                     Locale.getDefault()
                 )
 
-                sdf.timeZone = TimeZone.getTimeZone("UTC")
+                sdf.timeZone =
+                    TimeZone.getTimeZone("UTC")
+
 
                 val end = sdf.parse(endDate)
-                val current = System.currentTimeMillis()
 
-                val diff = end!!.time - current
+                if (end == null) {
+                    0L
+                } else {
 
-                TimeUnit.MILLISECONDS.toDays(diff)
+                    val diff =
+                        end.time - System.currentTimeMillis()
 
-            } catch (e: Exception) {
-                0
-            }
-        }
-
-        // ---------------------------------
-        // Format Date
-        // Example:
-        // 30 Jun 2026
-        // ---------------------------------
-        private fun formatDate(date: String): String {
-
-            return try {
-
-                val input = SimpleDateFormat(
-                    "yyyy-MM-dd'T'HH:mm:ss'Z'",
-                    Locale.getDefault()
-                )
-
-                input.timeZone = TimeZone.getTimeZone("UTC")
-
-                val output = SimpleDateFormat(
-                    "dd MMM yyyy",
-                    Locale.getDefault()
-                )
-
-                output.format(input.parse(date)!!)
-
-            } catch (e: Exception) {
-                "-"
-            }
-        }
-
-        // ---------------------------------
-        // Fake Usage Count
-        // ---------------------------------
-        private fun generateUsageCount(id: String): String {
-
-            return try {
-
-                val hash = kotlin.math.abs(id.hashCode())
-
-                when {
-
-                    hash % 10 <= 3 -> {
-                        "${500 + (hash % 500)}+"
-                    }
-
-                    hash % 10 <= 7 -> {
-                        "${1000 + (hash % 3000)}+"
-                    }
-
-                    else -> {
-                        "${5000 + (hash % 5000)}+"
-                    }
+                    TimeUnit.MILLISECONDS.toDays(diff)
                 }
 
             } catch (e: Exception) {
-                "1K+"
+
+                0L
             }
         }
 
-}
+
+        // ---------------------------------------------------------
+        // FORMAT DATE
+        // ---------------------------------------------------------
+
+        private fun formatDate(
+            date: String?
+        ): String {
+
+            if (date.isNullOrBlank()) {
+                return "-"
+            }
+
+            return try {
+
+                val input =
+                    SimpleDateFormat(
+                        "yyyy-MM-dd'T'HH:mm:ss'Z'",
+                        Locale.getDefault()
+                    )
+
+                input.timeZone =
+                    TimeZone.getTimeZone("UTC")
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
-        val binding = OfferListLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                val output =
+                    SimpleDateFormat(
+                        "dd MMM yyyy",
+                        Locale.getDefault()
+                    )
+
+                output.format(
+                    input.parse(date)!!
+                )
+
+            } catch (e: Exception) {
+
+                "-"
+            }
+        }
+    }
+
+
+    // ---------------------------------------------------------
+    // CREATE HOLDER
+    // ---------------------------------------------------------
+
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): Holder {
+
+        val binding =
+            OfferListLayoutBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+
         return Holder(binding)
     }
 
-    override fun onBindViewHolder(holder: Holder, position: Int) {
-        holder.bind(getItem(position)) // This is allowed inside the adapter
+
+    // ---------------------------------------------------------
+    // BIND HOLDER
+    // ---------------------------------------------------------
+
+    override fun onBindViewHolder(
+        holder: Holder,
+        position: Int
+    ) {
+
+        holder.bind(
+            getItem(position)
+        )
     }
 }

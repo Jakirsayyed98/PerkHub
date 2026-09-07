@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="24dp"
+    android:paddingEnd="24dp"
+    android:paddingTop="28dp"
+    android:id="@+id/root"
+    android:paddingBottom="28dp"
+    android:background="@color/main_bg">
+
+    <!-- Top Divider -->
+    <View
+        android:id="@+id/footerDivider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#EDEDED"
+        android:layout_marginTop="@dimen/dp20"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- PerkHub Logo / Brand -->
+    <TextView
+        android:id="@+id/tvPerkHub"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="22dp"
+        android:text="PerkHub"
+        android:textColor="#E53935"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:fontFamily="@font/poppins_regular"
+        app:layout_constraintTop_toBottomOf="@id/footerDivider"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Made with Love -->
+    <LinearLayout
+        android:id="@+id/loveSection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/tvPerkHub"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Made with "
+            android:textColor="#777777"
+            app:fontFamily="@font/poppins_regular"
+            android:textSize="13sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="♥"
+            android:textColor="#E53935"
+            app:fontFamily="@font/poppins_regular"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" in India"
+            android:textColor="#777777"
+            app:fontFamily="@font/poppins_regular"
+            android:textSize="13sp" />
+
+    </LinearLayout>
+
+    <!-- Mumbai -->
+    <TextView
+        android:id="@+id/tvMumbai"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="Mumbai, India"
+        android:textColor="#999999"
+        app:fontFamily="@font/poppins_regular"
+        android:textSize="12sp"
+        app:layout_constraintTop_toBottomOf="@id/loveSection"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Company -->
+    <TextView
+        android:id="@+id/tvCompany"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:text="PerkHub Pvt. Ltd."
+        android:textColor="#555555"
+        android:textSize="12sp"
+        app:fontFamily="@font/poppins_regular"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/tvMumbai"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Copyright -->
+    <TextView
+        android:id="@+id/tvCopyright"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="© 2026 PerkHub. All rights reserved."
+        android:textColor="#AAAAAA"
+        android:textSize="11sp"
+        app:fontFamily="@font/poppins_regular"
+        app:layout_constraintTop_toBottomOf="@id/tvCompany"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

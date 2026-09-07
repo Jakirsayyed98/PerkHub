@@ -35,6 +35,7 @@ import kotlinx.coroutines.launch
 import app.perkhub.Screens.login.models.LoginRes
 import app.perkhub.api.BaseRes
 import app.perkhub.room.games.GamesRepository
+import java.util.Calendar
 
 class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
 
@@ -110,6 +111,9 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         binding.bannerLayout.viewPagerBanner.registerOnPageChangeCallback(pageCallback)
         lifecycleScope.launch { updateFirebaseToken() } // requestViewModel
         (binding.root.parent as? ViewGroup)?.removeView(binding.root)
+        val currentYear = Calendar.getInstance().get(Calendar.YEAR)
+        binding.footerLayout.root.visibility = View.GONE
+        binding.footerLayout.tvCopyright.text = "© $currentYear PerkHub. All rights reserved."
         setupSwipeRefresh()
         return binding.root
     }
@@ -227,6 +231,16 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
                     offers.random()
                     couponAdapter.addAllItem(if (coupons.size > 20) coupons.subList(0, 19) else coupons)
                     offerAdapter.addAllItem(if (offers.size > 20) offers.subList(0, 19) else offers)
+                    if(offers.size>0){
+                        binding.limitOfferLayout.root.visibility = View.VISIBLE
+                        binding.limitOfferLayout.title.text = "Limited Time Offer"
+                    }
+
+                    if (coupons.size>0){
+                        binding.bestCouponLayout.root.visibility = View.VISIBLE
+                        binding.bestCouponLayout.title.text = "Today's Best Coupons"
+                    }
+
                 }
             }
 
@@ -251,7 +265,9 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
                         setTopCashbackProvider(data.topCashback)
                         setPopularStores(data.popular)
                         setTrendingStores(data.trending)
+                        setActiveCategories(data.category_list)
                         setTopCategores()
+                        binding.footerLayout.root.visibility = View.VISIBLE
                         binding.swipeRefresh.isRefreshing = false
                         showLoading(false)
 
@@ -265,6 +281,33 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
                 }
             }
         })
+    }
+
+    private fun setActiveCategories(activeCategories: List<Category>) {
+
+        binding.activeCategories.root.visibility = View.VISIBLE
+        binding.activeCategories.title.visibility = View.GONE
+        binding.activeCategories.viewall.visibility = View.GONE
+        val mAdapter = CategoryActiveAdapter<Category>(object : RecyclerClickListener {
+            override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
+                if (data is MiniApp) {
+                    ContainerActivity.OpenContainerType2(
+                        requireContext(),
+                        "StoreDetailFragment",
+                        data.name,
+                        data
+                    )
+                }
+            }
+        })
+
+        binding.activeCategories.stores.apply {
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            adapter = mAdapter
+        }
+
+        mAdapter.addAllItem(activeCategories)
     }
 
     private fun setTopCashbackProvider(topCashback: List<MiniApp>) {
@@ -343,8 +386,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
     }
 
     private fun setBestCouponLayout() {
-        binding.bestCouponLayout.root.visibility = View.VISIBLE
-        binding.bestCouponLayout.title.text = "Today's Best Coupons"
+
         binding.bestCouponLayout.viewall.visibility = View.GONE
         couponAdapter = CouponCodeAdapter<OffersData>(object : RecyclerClickListener {
             override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
@@ -369,8 +411,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
 
 
     private fun setBestOfferLayout() {
-        binding.limitOfferLayout.root.visibility = View.VISIBLE
-        binding.limitOfferLayout.title.text = "Limited Time Offer"
+
         binding.limitOfferLayout.viewall.visibility = View.GONE
         offerAdapter = OffersAdapter<OffersData>(object : RecyclerClickListener {
             override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
@@ -401,12 +442,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
                     } else if (data.click == "OffersFragment") {
                         ContainerActivity.OpenContainerType2(requireContext(), data.click, "", null)
                     } else {
-                        ContainerActivity.OpenContainerType2(
-                            requireContext(),
-                            "SelectedCategoryFragment",
-                            data.click,
-                            null
-                        )
+                        ContainerActivity.OpenContainerType2(requireContext(), "SelectedCategoryFragment", data.click, null)
                     }
 
                 }
@@ -422,7 +458,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         val topCategories = arrayListOf(
             CustomCategories(1, "Coupon Codes", R.drawable.coupon, "Couponcode"),
             CustomCategories(2, "Offers", R.drawable.offers_img, "OffersFragment"),
-            CustomCategories(3, "Vouchers", R.drawable.voucher_img, "Vouchers"),
+//            CustomCategories(3, "Vouchers", R.drawable.voucher_img, "Vouchers"),
             CustomCategories(4, "Play Games", R.drawable.games_img, "GamesFragment")
         )
 
