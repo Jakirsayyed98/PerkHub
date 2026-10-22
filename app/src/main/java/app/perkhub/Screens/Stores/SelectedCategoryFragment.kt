@@ -20,8 +20,13 @@ import app.perkhub.Screens.Stores.model.StoresRes
 import app.perkhub.Utils.BaseFragment
 import app.perkhub.Utils.CONTAINER_TYPE_KEY1
 import app.perkhub.Utils.DATA
+import app.perkhub.Utils.POPULAR_STORES
 import app.perkhub.Utils.RecyclerClickListener
+import app.perkhub.Utils.SEARCH
+import app.perkhub.Utils.SELECTED_CATEGORY_FRAGMENT
 import app.perkhub.Utils.Snackbar
+import app.perkhub.Utils.TOP_CASHBACK_PROVIDER
+import app.perkhub.Utils.TRENDING_STORES
 import app.perkhub.api.ApiListener
 import app.perkhub.databinding.FragmentSelectedCategoryBinding
 import app.perkhub.room.Store.StoreRepository
@@ -82,7 +87,7 @@ class SelectedCategoryFragment :
 
                         ContainerActivity.OpenContainerType2(
                             requireContext(),
-                            "SelectedCategoryFragment",
+                            SELECTED_CATEGORY_FRAGMENT,
                             "CategoryMiniApp",
                             data
                         )
@@ -235,7 +240,17 @@ class SelectedCategoryFragment :
                 }
             }
 
-            "Popular" -> {
+            TOP_CASHBACK_PROVIDER -> {
+                showNormalScreen()
+                binding.toolbar.name.text = "Top Cashback Stores"
+                try {
+                    val popular = gson.fromJson<List<MiniApp>>(value, object : TypeToken<List<MiniApp>>() {}.type)
+                    setLayout(popular)
+                } catch (_: Exception) {
+                }
+            }
+
+            POPULAR_STORES -> {
                 showNormalScreen()
                 binding.toolbar.name.text = "Popular Stores"
                 try {
@@ -245,7 +260,7 @@ class SelectedCategoryFragment :
                 }
             }
 
-            "Trending" -> {
+            TRENDING_STORES -> {
                 showNormalScreen()
                 binding.toolbar.name.text = "Trending Stores"
                 try {
@@ -255,9 +270,9 @@ class SelectedCategoryFragment :
                 }
             }
 
-            "Search" -> {
+            SEARCH -> {
                 showSearchScreen()
-                binding.toolbar.name.text = "Search"
+                binding.toolbar.name.text = SEARCH
                 observeStores()
             }
             "Couponcode" -> {
@@ -460,7 +475,6 @@ class SelectedCategoryFragment :
             clearSearchResults()
             return
         }
-        Log.d("@@@@@@@@@@@@ALL",allStores.toString())
         val filteredStores = allStores.filter { store ->
                 store.name.trim().lowercase().contains(searchQuery)
         }
@@ -475,10 +489,8 @@ class SelectedCategoryFragment :
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
             viewModel.getAllStores(requireContext(), object : ApiListener<StoresRes> {
                     override fun onSuccess(t: StoresRes?, mess: String) {
-                        Log.d("@@@@@@@@@@@@ALL1","Reached")
                     }
                     override fun onError(mess: String) {
-                        Log.d("@@@@@@@@@@@@ALL2",mess)
                         lifecycleScope.launch(Dispatchers.Main) {
                             if (!isAdded) {
                                 return@launch

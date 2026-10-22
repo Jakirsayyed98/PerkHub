@@ -48,6 +48,8 @@ import app.perkhub.Utils.ENTER_DETAIL_FRAGMENT
 import app.perkhub.Utils.ENTER_MOBILE_NUMBER
 import app.perkhub.Utils.HOME_SCREEN_FRAGMENT
 import app.perkhub.Utils.PROFILE_SCREEN_FRAGMENT
+import app.perkhub.Utils.SELECTED_CATEGORY_FRAGMENT
+import app.perkhub.Utils.TRANSACTION_HISTORY_FRAGMENT
 import app.perkhub.Utils.VERIFY_OTP_FRAGMENT
 
 class ContainerActivity : BaseActivity<ActivityContainerBinding>() {
@@ -162,14 +164,14 @@ class ContainerActivity : BaseActivity<ActivityContainerBinding>() {
                 addFragment(HomeScreenFragment.newInstance())
             }
 
-            "SelectedCategoryFragment" ->{
+            SELECTED_CATEGORY_FRAGMENT ->{
                 addFragment(SelectedCategoryFragment.newInstance())
             }
 
             "StoreDetailFragment"->{
                 addFragment(StoreDetailFragment.newInstance())
             }
-            "TransactionHistoryFragment"->{
+            TRANSACTION_HISTORY_FRAGMENT ->{
                 addFragment(TransactionHistoryFragment.newInstance())
             }
             "TransactionDetailFragment"->{

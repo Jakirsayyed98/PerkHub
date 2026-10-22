@@ -28,7 +28,7 @@
         android:textSize="@dimen/sp20"
         android:textStyle="bold"
         android:layout_marginStart="@dimen/dp20"
-        android:fontFamily="@font/poppins_semibold"
+        android:fontFamily="@font/poppins_medium"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/backbtn"
         app:layout_constraintTop_toTopOf="parent" />

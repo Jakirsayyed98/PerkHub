@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:id="@+id/mainlayout"
     tools:context=".Screens.StoreTransaction.TransactionHistoryFragment">
@@ -10,7 +11,10 @@
     <LinearLayout
         android:id="@+id/toolbar2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
     <include
         android:id="@+id/toolbar"
         layout="@layout/toolbar_layout"
@@ -22,6 +26,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/toolbar2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginStart="@dimen/dp5"
         android:layout_marginEnd="@dimen/dp5"/>
 
@@ -29,11 +37,16 @@
     <LinearLayout
         android:id="@+id/noDataFound"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         android:orientation="vertical">
         <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/dp250"
+            android:layout_height="@dimen/dp150"
             android:src="@drawable/no_data_found"/>
         <TextView
             android:layout_width="match_parent"
@@ -42,8 +55,8 @@
             android:textStyle="bold"
             android:textAlignment="center"
             android:textColor="@color/black"
-            android:textSize="@dimen/sp18"/>
+            android:textSize="@dimen/sp15"/>
     </LinearLayout>
 
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

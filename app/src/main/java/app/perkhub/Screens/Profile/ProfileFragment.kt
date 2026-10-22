@@ -24,11 +24,14 @@ import app.perkhub.Screens.Profile.adapter.ProfileMenuAdapter
 import app.perkhub.Screens.Profile.model.menuList
 import app.perkhub.SplashActivity
 import app.perkhub.Utils.ABOUTUS
+import app.perkhub.Utils.ALL_TRANSACTIONS
 import app.perkhub.Utils.BaseFragment
 import app.perkhub.Utils.EDIT_PERSONAL_INFO_FRAGMENT
+import app.perkhub.Utils.PARTNERSHIP_URL
 import app.perkhub.Utils.PRIVACYPOLICY
 import app.perkhub.Utils.RecyclerClickListener
 import app.perkhub.Utils.Snackbar
+import app.perkhub.Utils.TRANSACTION_HISTORY_FRAGMENT
 import app.perkhub.Utils.USERDATA
 import app.perkhub.Utils.getAppVersion
 import app.perkhub.Utils.getCopyrightText
@@ -81,7 +84,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
         menulist.add(0, menuList(0,R.drawable.store_orders,"My Orders","Track your orders and cashback"))
         menulist.add(0, menuList(3,R.drawable.wallet_icon,"Wallet & Transactions","Check your cashback balance and history"))
         menulist.add(0, menuList(2,R.drawable.games,"Games & Fun","Take a break. Play something fun."))
-        menulist.add(0, menuList(2,R.drawable.partner_icon,"PerkHub Partner","Partner with us and grow together"))
+        menulist.add(0, menuList(1,R.drawable.partner_icon,"PerkHub Partner","Partner with us and grow together"))
         menulist.add(0, menuList(4,R.drawable.support,"Help & Support","Get help and contact support"))
         menulist.add(0, menuList(7,R.drawable.policy, "Privacy & Security","Privacy policy and data settings"))
         menulist.add(0, menuList(8,R.drawable.about_us, "About PerkHub","Learn more about us"))
@@ -92,8 +95,8 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
         val adapter = ProfileMenuAdapter<menuList>(object : RecyclerClickListener{
             override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
                 when (type) {
-                    "0" -> ContainerActivity.OpenContainer(requireContext(), "TransactionHistoryFragment", "")
-                    "1" -> ContainerActivity.OpenContainer(requireContext(), "OffersFragment", "")
+                    "0" -> ContainerActivity.OpenContainer(requireContext(),TRANSACTION_HISTORY_FRAGMENT,ALL_TRANSACTIONS)
+                    "1" -> requireContext().openCustomTab(PARTNERSHIP_URL)
                     "2" -> ContainerActivity.OpenContainer(requireContext(), "GamesFragment", "")
                     "3" -> ContainerActivity.OpenContainer(requireContext(), "WalletFragment", "")
                     "4" -> ContainerActivity.OpenContainer(requireContext(), "TicketListFragment", "")

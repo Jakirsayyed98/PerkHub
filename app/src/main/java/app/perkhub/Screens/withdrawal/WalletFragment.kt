@@ -11,9 +11,14 @@ import app.perkhub.ContainerActivity
 import app.perkhub.Screens.Home.Adapter.WalletWithdrawalAdapter
 import app.perkhub.Screens.Home.Model.TransactionModel.TransactionDataRes
 import app.perkhub.Screens.Home.Model.Withdrawal.withdrawalRes
+import app.perkhub.Utils.ALL_TRANSACTIONS
 import app.perkhub.Utils.BaseFragment
+import app.perkhub.Utils.PENDING_TRANSACTIONS
+import app.perkhub.Utils.REJECTED_TRANSACTIONS
 import app.perkhub.Utils.RecyclerClickListener
 import app.perkhub.Utils.Snackbar
+import app.perkhub.Utils.TRANSACTION_HISTORY_FRAGMENT
+import app.perkhub.Utils.VERIFIED_TRANSACTIONS
 import app.perkhub.Utils.setSuffixAmount
 import app.perkhub.api.ApiListener
 import app.perkhub.databinding.FragmentWalletBinding
@@ -40,6 +45,18 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>() {
         _binding!!.toolbar.name.text = "PerkHub Wallet"
         getTransactionData()
 
+
+        _binding!!.pendingLayout.setOnClickListener {
+            ContainerActivity.OpenContainer(requireContext(),TRANSACTION_HISTORY_FRAGMENT,PENDING_TRANSACTIONS)
+        }
+
+        _binding!!.rejectedLayout.setOnClickListener {
+            ContainerActivity.OpenContainer(requireContext(),TRANSACTION_HISTORY_FRAGMENT,REJECTED_TRANSACTIONS)
+        }
+
+        _binding!!.verifiedLayout.setOnClickListener {
+            ContainerActivity.OpenContainer(requireContext(),TRANSACTION_HISTORY_FRAGMENT, VERIFIED_TRANSACTIONS)
+        }
 
         return _binding?.root
     }

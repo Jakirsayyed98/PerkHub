@@ -173,6 +173,7 @@
                     app:strokeWidth="1dp">
 
                     <LinearLayout
+                        android:id="@+id/pending_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
@@ -234,6 +235,7 @@
                     app:strokeWidth="1dp">
 
                     <LinearLayout
+                        android:id="@+id/rejected_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
@@ -296,6 +298,7 @@
                 app:strokeWidth="1dp">
 
                 <LinearLayout
+                    android:id="@+id/verified_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"

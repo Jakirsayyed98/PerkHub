@@ -196,14 +196,19 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
 
     // ---------------- CLICK EVENTS ---------------- //
     private fun setupClickEvents() = with(binding) {
-        layoutSearch.root.setOnClickListener {
+        layoutSearch.searchBar.setOnClickListener {
             ContainerActivity.OpenContainerType2(
                 requireContext(),
-                "SelectedCategoryFragment",
-                "Search",
+                SELECTED_CATEGORY_FRAGMENT,
+                SEARCH,
                 null
             )
         }
+
+        layoutSearch.imgQr.setOnClickListener {
+            requireContext().Snackbar("Search QR code",binding.layoutSearch.imgQr)
+        }
+
         layoutNotification.setOnClickListener {
             ContainerActivity.OpenContainer(requireContext(), "NotificationListFragment", null)
         }
@@ -284,7 +289,6 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
     }
 
     private fun setActiveCategories(activeCategories: List<Category>) {
-
         binding.activeCategories.root.visibility = View.VISIBLE
         binding.activeCategories.title.visibility = View.GONE
         binding.activeCategories.viewall.visibility = View.GONE
@@ -311,6 +315,9 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
     }
 
     private fun setTopCashbackProvider(topCashback: List<MiniApp>) {
+        binding.storeLayout.viewall.setOnClickListener {
+            ContainerActivity.OpenContainerType2(requireContext(), SELECTED_CATEGORY_FRAGMENT, TOP_CASHBACK_PROVIDER, topCashback)
+        }
         binding.storeLayout.root.visibility = View.VISIBLE
         binding.storeLayout.title.text = "Top Cashback Providers"
         val mAdapter = TrendingStoresAdapter<MiniApp>(object : RecyclerClickListener {
@@ -336,6 +343,9 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
     }
 
     private fun setPopularStores(popular: List<MiniApp>) {
+        binding.popularStoreLayout.viewall.setOnClickListener {
+            ContainerActivity.OpenContainerType2(requireContext(), SELECTED_CATEGORY_FRAGMENT, POPULAR_STORES, popular)
+        }
         binding.popularStoreLayout.root.visibility = View.VISIBLE
         binding.popularStoreLayout.title.text = "Popular Stores"
         val mAdapter = PopularStoresAdapter<MiniApp>(object : RecyclerClickListener {
@@ -361,6 +371,9 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
     }
 
     private fun setTrendingStores(trending: List<MiniApp>) {
+        binding.trendingStoreLayout.viewall.setOnClickListener {
+            ContainerActivity.OpenContainerType2(requireContext(), SELECTED_CATEGORY_FRAGMENT, TRENDING_STORES, trending)
+        }
         binding.trendingStoreLayout.root.visibility = View.VISIBLE
         binding.trendingStoreLayout.title.text = "Trending now"
         val mAdapter = TrendingNowStoresAdapter<MiniApp>(object : RecyclerClickListener {
@@ -442,7 +455,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
                     } else if (data.click == "OffersFragment") {
                         ContainerActivity.OpenContainerType2(requireContext(), data.click, "", null)
                     } else {
-                        ContainerActivity.OpenContainerType2(requireContext(), "SelectedCategoryFragment", data.click, null)
+                        ContainerActivity.OpenContainerType2(requireContext(), SELECTED_CATEGORY_FRAGMENT, data.click, null)
                     }
 
                 }
@@ -550,7 +563,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
             override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
                 if (data is Category) ContainerActivity.OpenContainerType2(
                     requireContext(),
-                    "SelectedCategoryFragment",
+                    SELECTED_CATEGORY_FRAGMENT,
                     "CategoryMiniApp",
                     data
                 )

@@ -33,8 +33,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
-        Log.d("FCM", "From: ${remoteMessage.from}")
-
         // Handle notification payload (title + body)
         remoteMessage.notification?.let {
             sendNotification(it.title ?: "PerkHub", it.body ?: "", remoteMessage.data)
