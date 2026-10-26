@@ -29,7 +29,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp15"
-        android:text="₹250"
+        android:hint="₹250"
         android:textAlignment="center"
         android:textColor="@color/green"
         android:textSize="@dimen/sp35"
@@ -89,7 +89,8 @@
         android:layout_marginTop="@dimen/dp30"
         android:layout_marginEnd="@dimen/dp45"
         android:layout_marginBottom="@dimen/dp20"
-        android:background="@drawable/selected_button_layout">
+        android:background="@drawable/border_5dp"
+        android:backgroundTint="@color/withdraw_button_bg">
 
         <TextView
             android:layout_width="match_parent"

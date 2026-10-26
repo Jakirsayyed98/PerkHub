@@ -26,6 +26,8 @@ const val PENDING_TRANSACTIONS = "Pending_Transactions"
 const val REJECTED_TRANSACTIONS = "Rejected_Transactions"
 const val VERIFIED_TRANSACTIONS = "Verified_Transactions"
 
+const val WITHDRAW_FLOW_FRAGMENT = "WithdrawFlowFragment"
+
 
 //FRAGMENTS
 const val VERIFY_OTP_FRAGMENT = "VerifyOtpFragment"

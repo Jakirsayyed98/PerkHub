@@ -51,6 +51,7 @@ import app.perkhub.Utils.PROFILE_SCREEN_FRAGMENT
 import app.perkhub.Utils.SELECTED_CATEGORY_FRAGMENT
 import app.perkhub.Utils.TRANSACTION_HISTORY_FRAGMENT
 import app.perkhub.Utils.VERIFY_OTP_FRAGMENT
+import app.perkhub.Utils.WITHDRAW_FLOW_FRAGMENT
 
 class ContainerActivity : BaseActivity<ActivityContainerBinding>() {
 
@@ -181,7 +182,7 @@ class ContainerActivity : BaseActivity<ActivityContainerBinding>() {
             "WalletFragment"->{
                 addFragment(WalletFragment.newInstance())
             }
-            "WidthdrawFlowFragment"->{
+            WITHDRAW_FLOW_FRAGMENT ->{
                 addFragment(WithdrawalFlowFragment.newInstance())
             }
             "NotificationListFragment"->{

@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,7 +28,10 @@ import app.perkhub.Screens.withdrawal.model.Data
 import app.perkhub.Screens.withdrawal.model.getPaymentMethodsRes
 import app.perkhub.StatusDialogFragment
 import app.perkhub.Utils.BaseFragment
+import app.perkhub.Utils.DATA
 import app.perkhub.Utils.RecyclerClickListener
+import app.perkhub.Utils.Snackbar
+import app.perkhub.Utils.setSuffixAmount
 import app.perkhub.api.ApiListener
 import app.perkhub.databinding.FragmentWithdrawalFlowBinding
 
@@ -45,32 +49,52 @@ class WithdrawalFlowFragment : BaseFragment<FragmentWithdrawalFlowBinding>() {
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentWithdrawalFlowBinding.inflate(layoutInflater,container,false)
-        _binding!!.toolbar.name.text = "Withdraw Amount"
+        _binding!!.toolbar.name.text = "Withdraw Funds"
         _binding!!.toolbar.backbtn.setOnClickListener {
-            requireActivity().onBackPressedDispatcher?.onBackPressed()
+            requireActivity().onBackPressedDispatcher.onBackPressed()
         }
-
-        _binding!!.amount.addTextChangedListener {
-            if (it.toString()!=""){
-                if (it.toString().toInt()>=100){
-                    _binding!!.continueBtn.isSelected = true
-                }else{
-                    _binding!!.continueBtn.isSelected = false
-                }
-            }
-
-        }
-
+        val data =  requireActivity().intent.getStringExtra(DATA)?.removeSurrounding("\"")
+        binding.availableAmount.text = setSuffixAmount(data.toString())
         _binding!!.continueBtn.setOnClickListener {
-            if(_binding!!.continueBtn.isSelected){
-                getPaymentMethod()
-
+            val availableAmount = data.toString().toFloatOrNull()
+            if (availableAmount == null) {
+                requireContext().Snackbar("Unable to fetch available amount", _binding!!.root)
+                return@setOnClickListener
             }
+            WithdrawFlowContinue(availableAmount)
         }
 
         return _binding?.root
     }
 
+    fun WithdrawFlowContinue(availableAmount : Float){
+        val enteredAmount = _binding!!.amount.text.toString().trim().toIntOrNull()
+        when {
+            enteredAmount == null -> {
+                requireContext().Snackbar("Please enter a valid amount", _binding!!.mainLayout)
+            }
+
+            availableAmount < 100 -> {
+                requireContext().Snackbar("Available amount must be at least 100", _binding!!.mainLayout)
+            }
+
+            enteredAmount <= 0 -> {
+                requireContext().Snackbar("Amount must be greater than 0", _binding!!.mainLayout)
+            }
+
+            enteredAmount < 100 -> {
+                requireContext().Snackbar("Minimum withdrawal amount is 100", _binding!!.mainLayout)
+            }
+
+            enteredAmount > availableAmount -> {
+                requireContext().Snackbar("Amount should not be greater than available amount", _binding!!.mainLayout)
+            }
+
+            else -> {
+                getPaymentMethod()
+            }
+        }
+    }
     private fun getPaymentMethod() {
 
         viewModel.GetPaymentMethod(requireContext(),object:ApiListener<getPaymentMethodsRes>{

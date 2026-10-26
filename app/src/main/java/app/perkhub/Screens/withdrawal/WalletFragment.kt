@@ -19,6 +19,7 @@ import app.perkhub.Utils.RecyclerClickListener
 import app.perkhub.Utils.Snackbar
 import app.perkhub.Utils.TRANSACTION_HISTORY_FRAGMENT
 import app.perkhub.Utils.VERIFIED_TRANSACTIONS
+import app.perkhub.Utils.WITHDRAW_FLOW_FRAGMENT
 import app.perkhub.Utils.setSuffixAmount
 import app.perkhub.api.ApiListener
 import app.perkhub.databinding.FragmentWalletBinding
@@ -98,9 +99,11 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>() {
 
         mAdapter.addAllItem(data)
         if (data.isEmpty()){
+            binding.withdrawalHistoryLayout.visibility = View.GONE
             binding.noDataFound.visibility = View.VISIBLE
             binding.withdrawalhistory.visibility = View.GONE
         }else{
+            binding.withdrawalHistoryLayout.visibility = View.VISIBLE
             binding.noDataFound.visibility = View.GONE
             binding.withdrawalhistory.visibility = View.VISIBLE
         }
@@ -122,13 +125,8 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>() {
                                     _binding!!.pending.text = setSuffixAmount(data.pending)
 
                                     _binding!!.withdraw.setOnClickListener {
-                                        Log.d("MyBalance", avail.toString())
                                         if (avail >= 100) {
-                                            ContainerActivity.OpenContainer(
-                                                requireContext(),
-                                                "WidthdrawFlowFragment",
-                                                ""
-                                            )
+                                            ContainerActivity.OpenContainer(requireContext(),WITHDRAW_FLOW_FRAGMENT, avail.toString())
                                         } else {
                                             requireContext().Snackbar("Available Amount should not be less then ₹100",_binding!!.mainlayout)
                                         }

@@ -4,12 +4,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingStart="24dp"
-    android:paddingEnd="24dp"
-    android:paddingTop="28dp"
     android:id="@+id/root"
     android:paddingBottom="28dp"
-    android:background="@color/main_bg">
+    android:paddingTop="@dimen/dp50"
+    android:background="@color/white">
+
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp250"
+        android:src="@drawable/footer_img"
+        android:scaleType="centerCrop"
+        android:layout_marginTop="@dimen/dp100"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- Top Divider -->
     <View
@@ -27,7 +36,7 @@
         android:id="@+id/tvPerkHub"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="22dp"
+        android:layout_marginTop="@dimen/dp50"
         android:text="PerkHub"
         android:textColor="#E53935"
         android:textSize="22sp"
@@ -117,7 +126,6 @@
         app:fontFamily="@font/poppins_regular"
         app:layout_constraintTop_toBottomOf="@id/tvCompany"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

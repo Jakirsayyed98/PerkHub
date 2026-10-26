@@ -1,58 +1,87 @@
+
 package app.perkhub.Utils
 
 import android.content.Context
-import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
-import android.util.Log
 import app.perkhub.Screens.login.models.LoginRes
 import com.google.gson.Gson
 
-class AppSharedPefrence {
-    companion object{
-        lateinit var insatance : AppSharedPefrence
-        lateinit var prefrence : SharedPreferences
+class AppSharedPefrence private constructor(context: Context) {
 
-        fun getInstance(context:Context):AppSharedPefrence{
-            if (this::insatance.isInitialized.not()){
-                    insatance = AppSharedPefrence()
+    private val preference: SharedPreferences =
+        context.applicationContext.getSharedPreferences(PREFS_NAME,Context.MODE_PRIVATE)
+
+    private val gson = Gson()
+
+    companion object {
+        private const val PREFS_NAME = "PerkHub"
+
+        @Volatile
+        private var instance: AppSharedPefrence? = null
+
+        fun getInstance(context: Context): AppSharedPefrence {
+            return instance ?: synchronized(this) {
+                instance ?: AppSharedPefrence(context).also {
+                    instance = it
+                }
             }
-
-            if (this::prefrence.isInitialized.not()){
-                prefrence = context.getSharedPreferences("PerkHub",MODE_PRIVATE)
-            }
-
-            return insatance
-
         }
     }
 
-    fun saveString(key:String,value:String){
-        prefrence.edit().putString(key,value).apply()
+    // Save string
+    fun saveString(key: String, value: String) {
+        preference.edit()
+            .putString(key, value)
+            .apply()
     }
 
-    fun getString(key: String):String?{
-        return  prefrence.getString(key,null)
+    // Get string
+    fun getString(key: String): String? {
+        return preference.getString(key, null)
     }
 
-    fun saveBool(key: String,value:Boolean){
-        prefrence.edit().putBoolean(key, value).apply()
-    }
-    fun getBoolen(key: String):Boolean?{
-        return  prefrence.getBoolean(key,false)
-    }
-
-    fun saveUser(USERDATA :String,data: LoginRes){
-        var user = Gson().toJson(data)
-        prefrence.edit().putString(USERDATA,user).apply()
+    // Save boolean
+    fun saveBool(key: String, value: Boolean) {
+        preference.edit()
+            .putBoolean(key, value)
+            .apply()
     }
 
-    fun getUser(USERDATA :String): LoginRes? {
-        val response= prefrence.getString(USERDATA,null)
-        return Gson().fromJson<LoginRes?>(response,LoginRes::class.java)
+    // Get boolean
+    fun getBoolen(key: String): Boolean {
+        return preference.getBoolean(key, false)
     }
 
+    // Save user data
+    fun saveUser(USERDATA: String, data: LoginRes) {
+        preference.edit()
+            .putString(USERDATA, gson.toJson(data))
+            .apply()
+    }
+
+    // Get user data
+    fun getUser(USERDATA: String): LoginRes? {
+        val response = preference.getString(USERDATA, null)
+            ?: return null
+
+        return try {
+            gson.fromJson(response, LoginRes::class.java)
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    // Remove a specific key
+    fun remove(key: String) {
+        preference.edit()
+            .remove(key)
+            .apply()
+    }
+
+    // Clear all SharedPreferences data
     fun clearAll() {
-        prefrence.edit().clear().apply()
+        preference.edit()
+            .clear()
+            .apply()
     }
-
 }

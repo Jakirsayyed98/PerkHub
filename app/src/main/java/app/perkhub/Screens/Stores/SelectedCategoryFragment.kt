@@ -58,22 +58,12 @@ class SelectedCategoryFragment :
 
     private var currentSearchQuery = ""
 
-    private var currentTab = SearchTab.ALL
-
-    private enum class SearchTab {
-        ALL,
-        STORES,
-        OFFERS,
-        COUPONS,
-        GAMES
-    }
 
     // =========================================================
     // CATEGORY ADAPTER
     // =========================================================
 
     private val categoryAdapter by lazy {
-
         CategoryAdapter<Category>(
             object : RecyclerClickListener {
 
@@ -182,7 +172,6 @@ class SelectedCategoryFragment :
         setupRecyclerViews()
         setupInitialView()
         setupSearchListener()
-        setupSearchTabs()
         setupClearSearch()
 
         return binding.root
@@ -272,7 +261,7 @@ class SelectedCategoryFragment :
 
             SEARCH -> {
                 showSearchScreen()
-                binding.toolbar.name.text = SEARCH
+                binding.toolbar.name.text = "Search"
                 observeStores()
             }
             "Couponcode" -> {
@@ -329,121 +318,10 @@ class SelectedCategoryFragment :
         }
     }
 
-    private fun setupSearchTabs() {
-        binding.tabAll.setOnClickListener {
-            currentTab = SearchTab.ALL
-            selectSearchTab(binding.tabAll)
-            updateSearchSections()
-        }
-
-        binding.tabStores.setOnClickListener {
-            currentTab = SearchTab.STORES
-            selectSearchTab(binding.tabStores)
-            updateSearchSections()
-        }
-
-        binding.tabOffers.setOnClickListener {
-            currentTab = SearchTab.OFFERS
-            selectSearchTab(binding.tabOffers)
-            updateSearchSections()
-        }
-
-        binding.tabCoupons.setOnClickListener {
-            currentTab = SearchTab.COUPONS
-            selectSearchTab(binding.tabCoupons)
-            updateSearchSections()
-        }
-
-        binding.tabGames.setOnClickListener {
-            currentTab = SearchTab.GAMES
-            selectSearchTab(binding.tabGames)
-            updateSearchSections()
-        }
-
-        selectSearchTab(binding.tabAll)
-    }
-
-    private fun selectSearchTab(selectedView: View) {
-        val tabs = listOf(
-            binding.tabAll,
-            binding.tabStores,
-            binding.tabOffers,
-            binding.tabCoupons,
-            binding.tabGames
-        )
-
-        tabs.forEach { tab ->
-            tab.isSelected = tab == selectedView
-        }
-    }
-
-    // =========================================================
-    // SEARCH SECTION VISIBILITY
-    // =========================================================
-
-    private fun updateSearchSections() {
-        val hasStores = searchStoreAdapter.itemCount > 0
-        when (currentTab) {
-            SearchTab.ALL -> {
-                binding.storeSection.visibility =
-                    if (hasStores) {
-                        View.VISIBLE
-                    } else {
-                        View.GONE
-                    }
-
-                binding.offerSection.visibility =View.GONE
-                binding.couponSection.visibility = View.GONE
-                binding.gameSection.visibility = View.GONE
-            }
-
-            SearchTab.STORES -> {
-                binding.storeSection.visibility = if (hasStores) {
-                        View.VISIBLE
-                    } else {
-                        View.GONE
-                    }
-                binding.offerSection.visibility = View.GONE
-                binding.couponSection.visibility = View.GONE
-                binding.gameSection.visibility = View.GONE
-            }
-
-            SearchTab.OFFERS -> {
-                binding.storeSection.visibility = View.GONE
-                binding.offerSection.visibility = View.VISIBLE
-                binding.couponSection.visibility = View.GONE
-                binding.gameSection.visibility = View.GONE
-            }
-
-            SearchTab.COUPONS -> {
-                binding.storeSection.visibility = View.GONE
-                binding.offerSection.visibility = View.GONE
-                binding.couponSection.visibility = View.VISIBLE
-                binding.gameSection.visibility = View.GONE
-            }
-
-            SearchTab.GAMES -> {
-                binding.storeSection.visibility = View.GONE
-                binding.offerSection.visibility = View.GONE
-                binding.couponSection.visibility = View.GONE
-                binding.gameSection.visibility = View.VISIBLE
-            }
-        }
-    }
-
-    // =========================================================
-    // CLEAR SEARCH RESULTS
-    // =========================================================
-
     private fun clearSearchResults() {
         searchStoreAdapter.clear()
         binding.resultCount.text = "Search stores, offers, coupons and games"
         binding.storeCount.text = "Stores (0)"
-        binding.storeSection.visibility = View.GONE
-        binding.offerSection.visibility = View.GONE
-        binding.couponSection.visibility = View.GONE
-        binding.gameSection.visibility = View.GONE
-        binding.emptySearch.visibility = View.VISIBLE
     }
 
     // =========================================================
@@ -514,13 +392,6 @@ class SelectedCategoryFragment :
         val count = data.size
         binding.storeCount.text = "Stores ($count)"
         binding.resultCount.text = "$count result found for \"$currentSearchQuery\""
-        binding.emptySearch.visibility = if (count == 0) {
-                View.VISIBLE
-            } else {
-                View.GONE
-            }
-
-        updateSearchSections()
     }
 
     // =========================================================

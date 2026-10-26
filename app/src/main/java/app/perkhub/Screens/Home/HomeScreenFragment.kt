@@ -47,7 +47,6 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
     val offers = ArrayList<OffersData>()
     val coupons = ArrayList<OffersData>()
 
-
     private lateinit var bannerAdapter: BannerAdapter
     private lateinit var couponAdapter: CouponCodeAdapter<OffersData>
     private lateinit var offerAdapter: OffersAdapter<OffersData>
@@ -196,17 +195,15 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
 
     // ---------------- CLICK EVENTS ---------------- //
     private fun setupClickEvents() = with(binding) {
-        layoutSearch.searchBar.setOnClickListener {
-            ContainerActivity.OpenContainerType2(
-                requireContext(),
-                SELECTED_CATEGORY_FRAGMENT,
-                SEARCH,
-                null
-            )
-        }
 
+        layoutSearch.searchBar.setOnClickListener {
+            ContainerActivity.OpenContainerType2(requireContext(), SELECTED_CATEGORY_FRAGMENT, SEARCH, null)
+        }
+        layoutSearch.edtSearch.setOnClickListener {
+            ContainerActivity.OpenContainerType2(requireContext(), SELECTED_CATEGORY_FRAGMENT, SEARCH, null)
+        }
         layoutSearch.imgQr.setOnClickListener {
-            requireContext().Snackbar("Search QR code",binding.layoutSearch.imgQr)
+            requireContext().Snackbar("Search QR code",binding.root)
         }
 
         layoutNotification.setOnClickListener {
@@ -259,7 +256,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
     }
 
     // ---------------- API CALLS ---------------- //
-    private suspend fun fetchHomeData() {
+    private fun fetchHomeData() {
         viewModel.getHomeData(object : ApiListener<HomeRes> {
             override fun onSuccess(t: HomeRes?, mess: String) {
                 t?.data?.let { data ->
@@ -399,7 +396,6 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
     }
 
     private fun setBestCouponLayout() {
-
         binding.bestCouponLayout.viewall.visibility = View.GONE
         couponAdapter = CouponCodeAdapter<OffersData>(object : RecyclerClickListener {
             override fun RecyclerClickListener(posi: Int, type: String, data: Any?) {
@@ -422,7 +418,6 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         }
     }
 
-
     private fun setBestOfferLayout() {
 
         binding.limitOfferLayout.viewall.visibility = View.GONE
@@ -441,7 +436,6 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
             adapter = offerAdapter
         }
     }
-
 
     private fun setTopCategores() {
         binding.topCategoriesLayout.root.visibility = View.VISIBLE
@@ -477,7 +471,6 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
 
         mAdapter.addAllItem(topCategories)
     }
-
 
     private fun setBanner1(banners: List<Banner>?) {
         binding.bannerLayout.viewPagerBanner.visibility = View.VISIBLE
@@ -607,7 +600,6 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
         @JvmStatic
         fun newInstance() = HomeScreenFragment()
     }
-
 
     private fun Context.showBlockedUserDialog() {
         blockedDialog = Dialog(this)
