@@ -68,15 +68,11 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
     private fun handleNavigation() {
         val gameId = intent.getStringExtra("game_id").orEmpty()
         val url = intent.getStringExtra("url").orEmpty()
-
-        Log.d("FCM", "Notification game_id: $gameId")
-        Log.d("FCM", "Notification URL: $url")
-
         if (gameId.isNotBlank() && url.isNotBlank()) {
             if (url.startsWith("https://") || url.startsWith("http://")) {
                 this.openCustomTab(url)
-                finish()
-                return
+               // finish()
+//                return
             }
         }
 

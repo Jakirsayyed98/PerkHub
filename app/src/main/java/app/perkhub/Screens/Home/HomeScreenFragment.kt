@@ -42,7 +42,6 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
     private var backPressedTime: Long = 0
     private val doubleBackPressDuration = 3000L
     private var blockedDialog: Dialog? = null
-    private var firebaseTaskActive = false
 
     val offers = ArrayList<OffersData>()
     val coupons = ArrayList<OffersData>()
@@ -108,7 +107,6 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
             binding.txtGreeting.text = greet
         }
         binding.bannerLayout.viewPagerBanner.registerOnPageChangeCallback(pageCallback)
-        lifecycleScope.launch { updateFirebaseToken() } // requestViewModel
         (binding.root.parent as? ViewGroup)?.removeView(binding.root)
         val currentYear = Calendar.getInstance().get(Calendar.YEAR)
         binding.footerLayout.root.visibility = View.GONE
@@ -527,25 +525,6 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
                         }
                     }
                 })
-        }
-    }
-
-    private fun updateFirebaseToken() {
-        firebaseTaskActive = true
-        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
-            if (!firebaseTaskActive) return@addOnCompleteListener
-            if (!task.isSuccessful) return@addOnCompleteListener
-            val token = task.result ?: return@addOnCompleteListener
-
-            if (!isAdded || activity == null) return@addOnCompleteListener
-
-            viewModel.updateNotification(token, requireContext(), object : ApiListener<BaseRes> {
-                override fun onSuccess(t: BaseRes?, mess: String) {
-
-                }
-
-                override fun onError(mess: String) {}
-            })
         }
     }
 
