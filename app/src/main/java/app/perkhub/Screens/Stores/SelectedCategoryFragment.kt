@@ -449,8 +449,9 @@ class SelectedCategoryFragment :
 
     private fun setLayout(data: List<MiniApp>) {
         miniAppAdapter.clear()
-        miniAppAdapter.addAllItem(data)
-        if (data.isEmpty()) {
+        val sortedData = data.sortedByDescending { it.cbActive }
+        miniAppAdapter.addAllItem(sortedData)
+        if (sortedData.isEmpty()) {
             binding.listOfStores.visibility = View.GONE
             binding.noDataFound.visibility = View.VISIBLE
         } else {

@@ -41,7 +41,6 @@ class BannerAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         val banner = list[position]
-        Log.e("LogBanner",banner.image.toString())
         Glide.with(holder.itemView)
             .load(banner.image)
             .centerCrop()

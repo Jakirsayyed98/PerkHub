@@ -18,7 +18,7 @@
     <string name="open">Open</string>
     <string name="close">Close</string>
     <string name="logout">Logout</string>
-    <string name="txn_id"><b>Txn ID : #</b>%s</string>
+    <string name="txn_id"><b>Txn ID : #TX</b>%s</string>
     <string name="sale_amount"><b>Order Amount : </b>%s</string>
     <string name="commission_amount"><b>CB : </b>%s</string>
     <string name="withdrawal_history">Withdrawals History</string>

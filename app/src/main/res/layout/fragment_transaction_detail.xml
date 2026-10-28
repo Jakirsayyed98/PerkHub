@@ -119,7 +119,7 @@
 
                                 <ImageView
                                     android:id="@+id/topStatusIcon"
-                                    android:layout_width="@dimen/dp16"
+                                    android:layout_width="14dp"
                                     android:layout_height="@dimen/dp16"
                                     android:src="@drawable/outline_history_24"
                                     app:tint="@color/status_pending_text" />
@@ -535,7 +535,7 @@
                         <ImageView
                             android:layout_width="@dimen/dp20"
                             android:layout_height="@dimen/dp20"
-                            android:src="@drawable/outline_history_24"
+                            android:src="@drawable/ic_clock"
                             app:tint="@color/text_secondary" />
 
                         <TextView
@@ -556,7 +556,7 @@
                             app:cardBackgroundColor="@color/status_pending_bg">
 
                             <TextView
-                                android:id="@+id/transactionstatus"
+                                android:id="@+id/transactionStatus"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:paddingHorizontal="@dimen/dp10"

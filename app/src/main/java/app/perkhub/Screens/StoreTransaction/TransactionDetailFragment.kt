@@ -1,6 +1,7 @@
 package app.perkhub.Screens.StoreTransaction
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,8 +9,10 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
+import app.perkhub.ContainerActivity
 import app.perkhub.R
 import app.perkhub.Screens.Home.Model.TransactionModel.Data
+import app.perkhub.Screens.Profile.model.CreateNewTicketRequest
 import app.perkhub.Utils.BaseFragment
 import app.perkhub.Utils.DATA
 import app.perkhub.Utils.copyToClipboard
@@ -56,14 +59,91 @@ class TransactionDetailFragment : BaseFragment<FragmentTransactionDetailBinding>
         _binding!!.transactionId.text ="Transaction Id:- #TX"+ data.transaction_id
         _binding!!.transactionAmt.text = setSuffixAmount(data.sale_amount)
         _binding!!.commision.text = setSuffixAmount(data.user_commission)
-        _binding!!.transactionstatus.text = if (data.status=="pending") "Pending" else if(data.status=="verified") "Verified" else "Rejected"
-//        _binding!!.transactionstatus.text = if (data!!.status=="pending") "Your Transaction is Tracked Successfully" else if(data!!.status=="verified") "Your Transaction is Verified" else "Your Transaction is Rejected"
-        _binding!!.status.text = if (data.status=="pending") "Transaction in Pending" else if(data.status=="verified") "Transaction is Verified" else "Transaction is Rejected"
-        _binding!!.transactionstatus.setTextColor( if (data.status=="pending") ContextCompat.getColor(requireContext(),R.color.orange) else if(data.status=="verified")  ContextCompat.getColor(requireContext(),R.color.green) else  ContextCompat.getColor(requireContext(),R.color.red))
-        _binding!!.icon.setColorFilter(if (data.status=="pending") ContextCompat.getColor(requireContext(),R.color.orange) else if(data.status=="verified")  ContextCompat.getColor(requireContext(),R.color.green) else  ContextCompat.getColor(requireContext(),R.color.red))
-        _binding!!.statusView.setCardBackgroundColor(if (data.status=="pending") ContextCompat.getColor(requireContext(),R.color.status_note_stroke) else if(data.status=="verified")  ContextCompat.getColor(requireContext(),R.color.status_verified_bg) else  ContextCompat.getColor(requireContext(),R.color.red_100))
+
         _binding!!.transactionIdContainer.setOnClickListener {
             copyToClipboard(requireContext(), data.transaction_id,binding.root)
+        }
+
+        _binding!!.helpCard.setOnClickListener {
+            val orderId = data.transaction_id
+            val subject = "Shopping Cashback Issue – Order ID: $orderId"
+            val description = """
+                    Cashback not credited for Order ID: $orderId. Please check the cashback status and help resolve this issue.
+                """.trimIndent()
+            val data = CreateNewTicketRequest(subject=subject,body=description,priority="", category = "")
+            ContainerActivity.OpenContainer(requireContext(),"NewTicketFragment",data)
+        }
+
+        setTransactionStatus(data)
+    }
+
+    private fun setTransactionStatus(data: Data) {
+        val context = requireContext()
+        val binding = _binding ?: return
+        val statusKey = data.status.lowercase()
+        val status = when (statusKey) {
+            "pending" -> "Pending"
+            "verified" -> "Verified"
+            else -> "Rejected"
+        }
+
+        val message = when (statusKey) {
+            "pending" -> "Transaction in Pending"
+            "verified" -> "Transaction is Verified"
+            else -> "Transaction is Rejected"
+        }
+
+        val description = when (statusKey) {
+            "pending" -> "Commission will be credited to your account"
+            "verified" -> "Cashback is credited to your account"
+            else -> ""
+        }
+
+        val estimatedPayoutTime = when (statusKey) {
+            "pending" -> "60 Days from Order date"
+            "verified" -> "Cashback Credited"
+            else -> "Cashback Rejected"
+        }
+
+        val statusColorRes = when (statusKey) {
+            "pending" -> R.color.orange
+            "verified" -> R.color.green
+            else -> R.color.red
+        }
+
+        val backgroundColorRes = when (statusKey) {
+            "pending" -> R.color.status_note_stroke
+            "verified" -> R.color.status_verified_bg
+            else -> R.color.red_100
+        }
+
+        val statusImg = when (statusKey) {
+            "pending" -> R.drawable.outline_history_24
+            "verified" -> R.drawable.baseline_check_circle_24
+            else -> R.drawable.baseline_cancel_24
+        }
+
+        val statusColor = ContextCompat.getColor(context, statusColorRes)
+        val backgroundColor = ContextCompat.getColor(context, backgroundColorRes)
+
+        with(binding) {
+            transactionStatus.text = status
+            topStatusText.text = status
+            estimatedPayout.text = estimatedPayoutTime
+            progressStatus.text = status
+            statusDescription.text = description
+            progressDate.text = ""
+            this.status.text = message
+            transactionStatus.setTextColor(statusColor)
+            progressStatus.setTextColor(statusColor)
+            topStatusText.setTextColor(statusColor)
+            icon.setColorFilter(statusColor)
+            topStatusIcon.setColorFilter(statusColor)
+            statusView.setCardBackgroundColor(backgroundColor)
+            topStatusView.setCardBackgroundColor(backgroundColor)
+            step3Icon.setCardBackgroundColor(backgroundColor)
+            Glide.with(context).load(statusImg).into(topStatusIcon)
+            Glide.with(context).load(statusImg).into(icon)
         }
     }
 

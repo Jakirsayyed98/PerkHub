@@ -41,10 +41,9 @@ class SearchGameFragment : BaseFragment<FragmentSearchGameBinding>() {
         // Inflate the layout for this fragment
         _binding = FragmentSearchGameBinding.inflate(inflater,container,false)
         binding.toolbar.name.text = "Search Games"
-        binding.toolbar.name.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-        binding.toolbar.root.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.games_bg))
-        requireActivity().window.statusBarColor =
-            ContextCompat.getColor(requireContext(), R.color.games_bg)
+//        binding.toolbar.name.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+//        binding.toolbar.root.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.games_bg))
+//        requireActivity().window.statusBarColor = ContextCompat.getColor(requireContext(), R.color.games_bg)
 
         binding.toolbar.backbtn.setOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()

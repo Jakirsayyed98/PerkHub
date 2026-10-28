@@ -8,7 +8,6 @@
     app:cardCornerRadius="16dp"
     android:layout_marginTop="@dimen/dp25"
     app:cardElevation="2dp"
-    android:visibility="gone"
     app:cardUseCompatPadding="true">
 
     <TextView
@@ -33,6 +32,7 @@
         android:textColor="@color/grey"
         app:layout_constraintEnd_toEndOf="parent"
         android:textSize="@dimen/sp15"
+        android:visibility="gone"
         android:layout_marginEnd="@dimen/dp10"
         app:layout_constraintBottom_toBottomOf="@+id/title"
         android:fontFamily="@font/poppins_regular"/>

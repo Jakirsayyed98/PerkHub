@@ -23,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="24dp">
+            android:paddingVertical="@dimen/dp24">
             <!-- Logo -->
             <ImageView
                 android:id="@+id/icon"
@@ -192,6 +192,7 @@
                 app:cardCornerRadius="@dimen/dp18"
                 android:enabled="false"
                 android:alpha="0.5"
+                android:layout_marginHorizontal="@dimen/dp24"
                 app:cardElevation="0dp">
 
                 <RelativeLayout
@@ -238,6 +239,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
+                android:layout_marginHorizontal="@dimen/dp24"
                 android:layout_marginTop="30dp">
 
                 <ImageView

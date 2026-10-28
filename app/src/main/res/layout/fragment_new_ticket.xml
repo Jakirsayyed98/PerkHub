@@ -28,196 +28,213 @@
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/dp15"
-                    android:layout_marginTop="@dimen/dp15"
-                    android:layout_marginBottom="@dimen/dp15"
-                    app:cardCornerRadius="@dimen/dp15"
-                    app:cardBackgroundColor="@android:color/white">
+                    android:layout_marginHorizontal="6dp"
+                    android:layout_marginTop="-2dp"
+                    app:cardBackgroundColor="#FFFFFF"
+                    app:cardCornerRadius="28dp"
+                    app:cardElevation="2dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="@dimen/dp15"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:paddingStart="22dp"
+                        android:paddingEnd="22dp"
+                        android:paddingTop="28dp"
+                        android:paddingBottom="24dp">
 
-                        <!-- Header -->
+                        <!-- Subject -->
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Create New Ticket"
+                            android:text="Subject *"
+                            android:textColor="#191621"
+                            android:textSize="16sp"
                             android:textStyle="bold"
-                            android:textSize="@dimen/sp24"
-                            android:textColor="#212121"
-                            android:letterSpacing="0.01"
-                            android:layout_marginBottom="8dp"/>
+                            android:labelFor="@id/subject" />
 
-                        <View
-                            android:layout_width="@dimen/dp48"
-                            android:layout_height="@dimen/dp4"
-                            android:background="@color/light_blue"
-                            android:layout_marginBottom="24dp"/>
-
-                        <!-- Subject Section -->
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/subjectLayout"
+                        <EditText
+                            android:id="@+id/subject"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="Subject *"
-                            app:hintTextColor="#757575"
-                            app:boxStrokeColor="@color/light_blue"
-                            app:boxBackgroundMode="outline"
-                            app:boxCornerRadiusTopStart="@dimen/dp12"
-                            app:boxCornerRadiusTopEnd="@dimen/dp12"
-                            app:boxCornerRadiusBottomStart="@dimen/dp12"
-                            app:boxCornerRadiusBottomEnd="@dimen/dp12">
+                            android:layout_height="54dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/ticket_input_background"
+                            android:paddingStart="14dp"
+                            android:paddingEnd="14dp"
+                            android:hint="Enter ticket subject"
+                            android:inputType="textCapSentences"
+                            android:maxLines="1"
+                            android:imeOptions="actionNext"
+                            android:textColor="#191621"
+                            android:textColorHint="#777382"
+                            android:textSize="15sp"
+                            android:importantForAutofill="no" />
 
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/subject"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:inputType="text"
-                                android:maxLines="1"
-                                android:textSize="@dimen/dp16"
-                                android:padding="@dimen/dp16"
-                                android:textColor="#212121"/>
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <!-- Category Section -->
+                        <!-- Category -->
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="26dp"
                             android:text="Category *"
-                            android:layout_marginTop="@dimen/dp10"
-                            android:textSize="@dimen/sp16"
+                            android:textColor="#191621"
+                            android:textSize="16sp"
                             android:textStyle="bold"
-                            android:textColor="#212121"
-                            android:layout_marginBottom="@dimen/dp8"/>
+                            android:labelFor="@id/category" />
 
                         <androidx.cardview.widget.CardView
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            app:cardCornerRadius="@dimen/dp12"
-                            app:strokeWidth="@dimen/dp1"
-                            app:strokeColor="#BDBDBD"
-                            app:cardBackgroundColor="@android:color/white">
+                            android:layout_height="56dp"
+                            android:layout_marginTop="10dp"
+                            app:cardBackgroundColor="#FFFFFF"
+                            app:cardCornerRadius="14dp"
+                            app:cardElevation="1dp"
+                            android:layout_marginHorizontal="@dimen/dp1">
 
                             <Spinner
                                 android:id="@+id/category"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:minHeight="@dimen/dp45"
-                                android:paddingStart="@dimen/dp15"
-                                android:paddingEnd="@dimen/dp15"
-                                android:spinnerMode="dropdown"/>
+                                android:layout_height="match_parent"
+                                android:paddingStart="14dp"
+                                android:paddingEnd="12dp"
+                                android:spinnerMode="dropdown"
+                                android:backgroundTint="#D8D2E4"
+                                android:contentDescription="Select ticket category" />
+
                         </androidx.cardview.widget.CardView>
 
-                        <!-- Priority Section -->
+                        <!-- Priority -->
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="26dp"
                             android:text="Priority *"
-                            android:layout_marginTop="@dimen/dp10"
-                            android:textSize="@dimen/dp15"
-                            android:textStyle="bold"
-                            android:textColor="#212121"
-                            android:layout_marginBottom="@dimen/dp8"/>
+                            android:textColor="#191621"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
 
                         <RadioGroup
                             android:id="@+id/priorityGroup"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical">
+                            android:layout_marginTop="12dp"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical">
 
+                            <RadioButton
+                                android:id="@+id/low"
+                                android:layout_width="0dp"
+                                android:layout_height="48dp"
+                                android:layout_weight="1"
+                                android:layout_marginEnd="6dp"
+                                android:button="@null"
+                                android:gravity="center"
+                                android:background="@drawable/ticket_priority_low"
+                                android:paddingStart="2dp"
+                                android:paddingEnd="2dp"
+                                android:text="Low"
+                                android:textColor="#FFFFFF"
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                android:minWidth="0dp"
+                                android:minHeight="48dp" />
 
-                                <RadioButton
-                                    android:id="@+id/low"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:minHeight="@dimen/dp45"
-                                    android:paddingStart="16dp"
-                                    android:paddingEnd="16dp"
-                                    android:background="?attr/selectableItemBackground"
-                                    android:buttonTint="@color/light_blue"
-                                    android:checked="true"
-                                    android:textSize="@dimen/dp15"
-                                    android:textColor="#212121"
-                                    android:text="Low" />
+                            <RadioButton
+                                android:id="@+id/medium"
+                                android:layout_width="0dp"
+                                android:layout_height="48dp"
+                                android:layout_weight="1.15"
+                                android:layout_marginHorizontal="2dp"
+                                android:button="@null"
+                                android:gravity="center"
+                                android:background="@drawable/ticket_priority_medium"
+                                android:paddingStart="2dp"
+                                android:paddingEnd="2dp"
+                                android:text="Medium"
+                                android:textColor="#FFFFFF"
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                android:checked="true"
+                                android:minWidth="0dp"
+                                android:minHeight="48dp" />
 
+                            <RadioButton
+                                android:id="@+id/high"
+                                android:layout_width="0dp"
+                                android:layout_height="48dp"
+                                android:layout_weight="1"
+                                android:layout_marginStart="6dp"
+                                android:button="@null"
+                                android:gravity="center"
+                                android:background="@drawable/ticket_priority_high"
+                                android:paddingStart="2dp"
+                                android:paddingEnd="2dp"
+                                android:text="High"
+                                android:textColor="#FFFFFF"
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                android:minWidth="0dp"
+                                android:minHeight="48dp" />
 
-                                <RadioButton
-                                    android:id="@+id/medium"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:minHeight="@dimen/dp45"
-                                    android:paddingStart="16dp"
-                                    android:paddingEnd="16dp"
-                                    android:background="?attr/selectableItemBackground"
-                                    android:buttonTint="@color/light_blue"
-                                    android:textSize="@dimen/dp15"
-                                    android:textColor="#212121"
-                                    android:text="Medium" />
-
-                                <RadioButton
-                                    android:id="@+id/high"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:minHeight="@dimen/dp45"
-                                    android:paddingStart="16dp"
-                                    android:paddingEnd="16dp"
-                                    android:background="?attr/selectableItemBackground"
-                                    android:buttonTint="@color/light_blue"
-                                    android:textSize="@dimen/dp15"
-                                    android:textColor="#212121"
-                                    android:text="High" />
                         </RadioGroup>
 
-                        <!-- Description Section -->
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/descriptionLayout"
+                        <!-- Description -->
+                        <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/dp10"
-                            android:hint="Description *"
-                            app:hintTextColor="#757575"
-                            app:boxStrokeColor="@color/light_blue"
-                            app:boxBackgroundMode="outline"
-                            app:boxCornerRadiusTopStart="12dp"
-                            app:boxCornerRadiusTopEnd="12dp"
-                            app:boxCornerRadiusBottomStart="12dp"
-                            app:boxCornerRadiusBottomEnd="12dp"
-                            app:counterEnabled="true"
-                            app:counterMaxLength="500">
+                            android:layout_marginTop="26dp"
+                            android:text="Description *"
+                            android:textColor="#191621"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:labelFor="@id/description" />
 
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/description"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:minHeight="120dp"
-                                android:gravity="top|start"
-                                android:inputType="textMultiLine|textCapSentences"
-                                android:maxLength="500"
-                                android:padding="16dp"
-                                android:textSize="@dimen/dp15"
-                                android:textColor="#212121"
-                                android:hint="Please provide detailed information about your issue..."/>
-                        </com.google.android.material.textfield.TextInputLayout>
+                        <EditText
+                            android:id="@+id/description"
+                            android:layout_width="match_parent"
+                            android:layout_height="150dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/ticket_input_background"
+                            android:gravity="top|start"
+                            android:padding="14dp"
+                            android:hint="Describe your issue in detail..."
+                            android:inputType="textMultiLine|textCapSentences"
+                            android:maxLength="500"
+                            android:minLines="4"
+                            android:maxLines="8"
+                            android:imeOptions="actionDone"
+                            android:scrollbars="vertical"
+                            android:overScrollMode="ifContentScrolls"
+                            android:textColor="#191621"
+                            android:textColorHint="#777382"
+                            android:textSize="15sp" />
+
+                        <!-- Character Limit -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="Maximum 500 characters"
+                            android:textColor="#777382"
+                            android:textSize="12sp" />
 
                         <!-- Submit Button -->
                         <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/createTicketBtn"
                             android:layout_width="match_parent"
                             android:layout_height="56dp"
-                            android:layout_marginTop="@dimen/dp10"
-                            android:text="Create Ticket"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            android:textAllCaps="false"
-                            android:textColor="@android:color/white"
-                            app:cornerRadius="12dp"
+                            android:layout_marginTop="28dp"
                             android:background="@drawable/selected_button_layout"
-                            app:elevation="2dp"/>
+                            android:backgroundTint="#7217B7"
+                            android:text="Submit Ticket"
+                            android:textAllCaps="false"
+                            android:textColor="#FFFFFF"
+                            android:textSize="17sp"
+                            android:textStyle="bold"
+                            android:minHeight="56dp"
+                            android:stateListAnimator="@null" />
 
                     </LinearLayout>
+
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView

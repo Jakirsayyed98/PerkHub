@@ -143,23 +143,6 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
             if (show) View.VISIBLE else View.GONE
     }
 
-    private fun observePopularGames() {
-        val repository = GamesRepository(requireContext())
-
-        // CRITICAL FIX: Use viewLifecycleOwner instead of lifecycleScope
-        // This prevents memory leaks when Fragment is destroyed
-        viewLifecycleOwner.lifecycleScope.launch {
-            repository.getAllPopularGamesFlow().collect { games ->
-                // This will be called automatically when:
-                // 1. Fragment opens (shows cached data)
-                // 2. Server data is fetched (shows fresh data)
-                // 3. Push notification arrives (shows new notification)
-            }
-        }
-
-        // Trigger refresh from server in background
-        fetchGamesList(forceRefresh = true)
-    }
 
     private fun getUserDetail() {
         viewModel.getUserDetail(requireContext(), object : ApiListener<LoginRes> {
@@ -482,6 +465,7 @@ class HomeScreenFragment : BaseFragment<FragmentHomeScreenBinding>() {
 
                 if (banner.url.isNotEmpty()) {
                     // Open banner
+                    requireContext().openCustomTab(banner.url)
                 }
             }
 
